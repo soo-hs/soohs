@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>受付求人票 操作ガイド｜曽於高等学校</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Rajdhani:wght@500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8f5ef;
+  --bg2: #f0ebe0;
+  --ink: #1a1614;
+  --ink2: #3d342e;
+  --ink3: #6b5e56;
+  --rule: #d4c8bc;
+  --accent: #c0392b;
+  --accent2: #e74c3c;
+  --accent-pale: #fdf0ee;
+  --gold: #b5860d;
+  --gold-pale: #fdf8ee;
+  --blue: #2563eb;
+  --blue-pale: #eff6ff;
+  --green: #15803d;
+  --green-pale: #f0fdf4;
+  --step-bg: #fff;
+  --shadow: rgba(26,22,20,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+  min-height: 100vh;
+}
+
+/* ===== NOISE TEXTURE OVERLAY ===== */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.5;
+}
+
+/* ===== HEADER ===== */
+#site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--ink);
+  padding: 0 40px;
+  display: flex; align-items: center; gap: 20px;
+  height: 52px;
+  border-bottom: 3px solid var(--accent);
+}
+.hdr-badge {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px; font-weight: 600; letter-spacing: 4px;
+  color: var(--accent2); text-transform: uppercase;
+  border: 1px solid #3d2520;
+  padding: 2px 8px; border-radius: 2px;
+}
+.hdr-title {
+  font-size: 14px; font-weight: 700; color: #fff;
+  letter-spacing: 1px;
+}
+.hdr-sep { flex:1; }
+.hdr-link {
+  font-size: 11px; color: #888;
+  text-decoration: none; letter-spacing: 0.5px;
+  transition: color 0.15s;
+}
+.hdr-link:hover { color: var(--accent2); }
+
+/* ===== HERO ===== */
+#hero {
+  position: relative;
+  background: var(--ink);
+  padding: 72px 60px 64px;
+  overflow: hidden;
+}
+#hero::before {
+  content: 'GUIDE';
+  position: absolute; right: -20px; top: -20px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 180px; font-weight: 700;
+  color: rgba(255,255,255,0.03);
+  line-height: 1; pointer-events: none;
+  letter-spacing: -8px;
+}
+#hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: repeating-linear-gradient(90deg, var(--accent) 0 40px, transparent 40px 48px);
+}
+.hero-eyebrow {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px; font-weight: 600; letter-spacing: 6px;
+  color: var(--accent2); text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before {
+  content: ''; display: block;
+  width: 32px; height: 1px; background: var(--accent);
+}
+.hero-h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(36px, 5vw, 56px);
+  color: #fff; line-height: 1.1;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+.hero-h1 em {
+  font-style: normal;
+  color: var(--accent2);
+}
+.hero-sub {
+  color: #9ca3af; font-size: 14px; font-weight: 300;
+  max-width: 560px; line-height: 1.7;
+  margin-bottom: 40px;
+}
+.hero-meta {
+  display: flex; gap: 32px; flex-wrap: wrap;
+}
+.hero-meta-item {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.hmi-label {
+  font-size: 10px; color: #6b7280; letter-spacing: 2px; text-transform: uppercase;
+}
+.hmi-val {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px; font-weight: 700; color: #fff; line-height: 1;
+}
+.hmi-unit { font-size: 11px; color: #9ca3af; }
+
+/* ===== TOC ===== */
+#toc-section {
+  padding: 40px 60px;
+  position: relative; z-index: 1;
+}
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2px;
+  border: 1px solid var(--rule);
+  background: var(--rule);
+}
+.toc-item {
+  background: var(--step-bg);
+  padding: 16px 20px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer;
+  text-decoration: none; color: inherit;
+  transition: background 0.15s;
+}
+.toc-item:hover { background: var(--accent-pale); }
+.toc-num {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 20px; font-weight: 700; color: var(--accent);
+  line-height: 1; flex-shrink: 0; width: 28px;
+}
+.toc-text { font-size: 13px; font-weight: 500; color: var(--ink2); line-height: 1.4; }
+.toc-sub { font-size: 10px; color: var(--ink3); margin-top: 2px; }
+
+/* ===== SECTION WRAPPER ===== */
+.guide-section {
+  padding: 64px 60px 0;
+  position: relative; z-index: 1;
+}
+.guide-section:last-of-type { padding-bottom: 80px; }
+
+/* ===== SECTION HEADER ===== */
+.sec-header {
+  display: flex; align-items: flex-start; gap: 20px;
+  margin-bottom: 36px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+}
+.sec-num {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 64px; font-weight: 700;
+  color: var(--accent); line-height: 0.85;
+  flex-shrink: 0;
+  margin-top: -4px;
+}
+.sec-head-text {}
+.sec-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px; font-weight: 600; letter-spacing: 4px;
+  color: var(--ink3); text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.sec-title {
+  font-size: 24px; font-weight: 900; color: var(--ink);
+  line-height: 1.2; letter-spacing: -0.3px;
+}
+.sec-desc { margin-top: 6px; font-size: 13px; color: var(--ink3); line-height: 1.6; }
+
+/* ===== STEP CARDS ===== */
+.steps-wrap {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.step-card {
+  background: var(--step-bg);
+  border: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.step-card:hover {
+  box-shadow: 4px 4px 0 var(--accent), 0 8px 24px var(--shadow);
+  transform: translateX(-2px) translateY(-2px);
+  z-index: 2; position: relative;
+}
+.step-num-col {
+  background: var(--ink);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 20px;
+}
+.step-num-col span {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 28px; font-weight: 700; color: var(--accent2);
+  line-height: 1;
+}
+.step-body { padding: 20px 24px; }
+.step-title {
+  font-size: 15px; font-weight: 700; color: var(--ink);
+  margin-bottom: 8px; line-height: 1.3;
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap;
+}
+.step-tag {
+  font-size: 10px; font-weight: 600; letter-spacing: 1px;
+  padding: 2px 8px; border-radius: 2px;
+  text-transform: uppercase;
+}
+.tag-header { background: var(--ink); color: #fff; }
+.tag-search { background: var(--accent); color: #fff; }
+.tag-table { background: #0f4c81; color: #fff; }
+.tag-sort { background: var(--gold); color: #fff; }
+.tag-page { background: #166534; color: #fff; }
+.tag-sp { background: #6d28d9; color: #fff; }
+.tag-col { background: #0891b2; color: #fff; }
+
+.step-desc {
+  font-size: 13px; color: var(--ink3); line-height: 1.75;
+  margin-bottom: 12px;
+}
+.step-desc:last-child { margin-bottom: 0; }
+
+/* UI Mock Elements */
+.mock-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 16px 18px;
+  margin: 12px 0;
+  position: relative;
+}
+.mock-label {
+  position: absolute; top: -9px; left: 14px;
+  background: var(--bg2);
+  font-size: 9px; font-weight: 700; letter-spacing: 2px;
+  color: var(--ink3); text-transform: uppercase;
+  padding: 0 6px;
+}
+
+/* Header mock */
+.mock-header {
+  background: #0a0d14;
+  border-radius: 3px;
+  padding: 10px 16px;
+  display: flex; align-items: center; gap: 12px;
+  font-size: 12px;
+}
+.mh-logo { color: #60a5fa; font-family: 'Rajdhani',sans-serif; font-size: 10px; letter-spacing: 2px; border: 1px solid #2a4080; padding: 1px 6px; }
+.mh-title { color: #e2e8f0; font-weight: 700; font-size: 13px; }
+.mh-sp { color: #9ca3af; font-size: 10px; border: 1px solid #252e45; padding: 2px 8px; border-radius: 3px; cursor: default; }
+.mh-sp:hover { color: #60a5fa; border-color: #3b82f6; }
+.mh-count { background: #161c2a; border: 1px solid #252e45; border-radius: 3px; padding: 4px 12px; color: #60a5fa; font-family:'Rajdhani',sans-serif; font-size: 18px; font-weight: 700; }
+.mh-spacer { flex:1; }
+
+/* Search toggle bar mock */
+.mock-toggle-bar {
+  background: #161c2a;
+  border-radius: 3px;
+  padding: 7px 16px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  color: #64748b; font-size: 11px; cursor: default;
+  margin-top: 2px;
+}
+.mock-toggle-bar:hover { color: #60a5fa; }
+
+/* Search panel mock */
+.mock-search-panel {
+  background: #111620;
+  border: 1px solid #252e45;
+  border-radius: 3px;
+  padding: 14px 16px;
+  margin-top: 2px;
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end;
+}
+.msp-group { display:flex; flex-direction:column; gap:3px; }
+.msp-label { font-size:9px; color:#64748b; letter-spacing:1px; }
+.msp-input {
+  background: #161c2a; border: 1px solid #252e45; border-radius: 2px;
+  color: #e2e8f0; padding: 4px 8px; font-size: 11px;
+  height: 26px; min-width: 80px;
+}
+.msp-input.focus { border-color: #3b82f6; }
+.msp-select {
+  background: #161c2a; border: 1px solid #252e45; border-radius: 2px;
+  color: #e2e8f0; padding: 4px 8px; font-size: 11px;
+  height: 26px; min-width: 100px;
+}
+.msp-range { display:flex; align-items:center; gap:4px; }
+.msp-btn-search { background:#3b82f6; color:#fff; border:none; border-radius:2px; padding:4px 14px; font-size:11px; height:26px; cursor:default; }
+.msp-btn-clear { background:#161c2a; color:#94a3b8; border:1px solid #252e45; border-radius:2px; padding:4px 12px; font-size:11px; height:26px; cursor:default; }
+.msp-count { color:#10b981; font-family:'Rajdhani',sans-serif; font-size:20px; font-weight:700; }
+
+/* Column header mock */
+.mock-col-header {
+  background: #111620;
+  border: 1px solid #252e45;
+  border-radius: 3px;
+  padding: 0;
+  margin-top: 2px;
+  display: flex; overflow: hidden;
+}
+.mch-cell {
+  padding: 9px 10px;
+  font-size: 10px; font-weight: 700; color: #64748b;
+  border-right: 1px solid #252e45;
+  white-space: nowrap; cursor: default;
+  display: flex; align-items: center; gap: 4px;
+}
+.mch-cell:hover { color: #60a5fa; background: rgba(59,130,246,0.05); }
+.mch-cell.active { color: #60a5fa; }
+.mch-arrow { font-size: 8px; }
+
+/* Data row mock */
+.mock-rows { margin-top: 2px; }
+.mock-row {
+  background: #0a0d14;
+  border: 1px solid #1d2538;
+  border-bottom: none;
+  display: flex; align-items: center;
+  height: 36px;
+  overflow: hidden;
+}
+.mock-row:last-child { border-bottom: 1px solid #1d2538; border-radius: 0 0 3px 3px; }
+.mock-row:first-child { border-radius: 3px 3px 0 0; }
+.mock-row:nth-child(even) { background: #111620; }
+.mock-row:hover { background: rgba(59,130,246,0.07); }
+.mrow-cell {
+  padding: 0 8px; font-size: 11px; color: #64748b;
+  border-right: 1px solid #1d2538;
+  white-space: nowrap; overflow: hidden;
+  height: 100%; display: flex; align-items: center;
+}
+.mrow-cell.num { color: #e2e8f0; font-family:'Rajdhani',sans-serif; font-size:13px; font-weight:600; }
+.mrow-cell.salary { color: #34d399; font-family:'Rajdhani',sans-serif; font-size:13px; font-weight:600; }
+.badge-m {
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:1px 7px; border-radius:2px; font-size:9px; font-weight:700;
+}
+.bm-ari { background:#064e3b; color:#10b981; border:1px solid rgba(16,185,129,0.2); }
+.bm-nasi { background:#450a0a; color:#ef4444; border:1px solid rgba(239,68,68,0.2); }
+.bm-mai { background:#1e3a6e; color:#60a5fa; border:1px solid rgba(59,130,246,0.2); }
+.bm-sno { background:#1d2538; color:#64748b; border:1px solid #252e45; }
+
+/* Pagination mock */
+.mock-pagination {
+  background: #111620;
+  border: 1px solid #252e45;
+  border-radius: 3px;
+  padding: 8px 16px;
+  margin-top: 2px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.mp-btn {
+  width:28px; height:24px; display:flex; align-items:center; justify-content:center;
+  background:#161c2a; border:1px solid #252e45; border-radius:2px;
+  color:#94a3b8; font-size:11px; font-family:'Rajdhani',sans-serif; font-weight:600;
+  cursor:default;
+}
+.mp-btn:hover { border-color:#3b82f6; color:#60a5fa; }
+.mp-btn.cur { background:#1e3a6e; border-color:#3b82f6; color:#60a5fa; }
+.mp-info { font-size:10px; color:#64748b; padding:0 6px; }
+.mp-input { width:40px; height:24px; text-align:center; background:#161c2a; border:1px solid #252e45; border-radius:2px; color:#e2e8f0; font-size:11px; font-family:'Rajdhani',sans-serif; }
+
+/* Resize indicator */
+.resize-demo {
+  display: flex; gap: 0; margin-top: 2px;
+  border: 1px solid #252e45; border-radius: 3px; overflow: hidden;
+}
+.rd-col {
+  background: #0a0d14; padding: 8px 12px;
+  font-size:10px; color:#64748b; position:relative;
+  border-right: 1px solid #252e45;
+  white-space: nowrap;
+}
+.rd-handle {
+  position:absolute; right:0; top:0; bottom:0; width:4px;
+  background: #3b82f6; cursor:col-resize;
+}
+.rd-col.wide { flex: 2; }
+
+/* Mobile mock */
+.mock-mobile {
+  display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px;
+}
+.mobile-card {
+  background: #111620;
+  border: 1px solid #252e45; border-radius: 4px;
+  padding: 12px 14px;
+  width: 200px;
+  position: relative;
+}
+.mc-id { color:#60a5fa; font-family:'Rajdhani',sans-serif; font-size:14px; font-weight:700; }
+.mc-company { color:#e2e8f0; font-size:13px; font-weight:700; margin: 6px 0 3px; }
+.mc-job { color:#94a3b8; font-size:11px; margin-bottom:8px; }
+.mc-salary-m { color:#34d399; font-family:'Rajdhani',sans-serif; font-size:15px; font-weight:700; }
+.mc-badges-m { display:flex; gap:4px; margin-top:6px; flex-wrap:wrap; }
+
+/* ===== TIPS BOX ===== */
+.tip-box {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--gold-pale);
+  border-left: 3px solid var(--gold);
+  padding: 14px 18px;
+  margin: 14px 0;
+  border-radius: 0 4px 4px 0;
+}
+.tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.tip-text { font-size: 12px; color: #78350f; line-height: 1.7; }
+.tip-text strong { color: #92400e; }
+
+.note-box {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--blue-pale);
+  border-left: 3px solid var(--blue);
+  padding: 14px 18px;
+  margin: 14px 0;
+  border-radius: 0 4px 4px 0;
+}
+.note-text { font-size: 12px; color: #1e40af; line-height: 1.7; }
+.note-text strong { color: #1d4ed8; }
+
+/* ===== COLUMN TABLE ===== */
+.col-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 12px;
+}
+.col-table th {
+  background: var(--ink);
+  color: #fff;
+  padding: 8px 14px;
+  text-align: left;
+  font-weight: 700; font-size: 11px; letter-spacing: 0.5px;
+  border-right: 1px solid #3d342e;
+}
+.col-table td {
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+  color: var(--ink2);
+  vertical-align: top;
+  line-height: 1.6;
+}
+.col-table tr:nth-child(even) td { background: var(--bg2); }
+.col-table tr:hover td { background: var(--accent-pale); }
+.col-key {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600; color: var(--ink); font-size: 13px;
+}
+.col-special { color: var(--accent); font-weight: 700; }
+
+/* ===== SHORTCUT TABLE ===== */
+.shortcut-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+.shortcut-item {
+  background: var(--step-bg);
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.shortcut-key {
+  font-family: 'Rajdhani', sans-serif;
+  background: var(--ink);
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: 3px;
+  font-size: 12px; font-weight: 600;
+  white-space: nowrap; flex-shrink: 0;
+  box-shadow: 0 2px 0 #3d342e;
+}
+.shortcut-desc { font-size: 12px; color: var(--ink2); }
+
+/* ===== DIVIDER ===== */
+.sec-divider {
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--rule) 0 8px, transparent 8px 12px);
+  margin: 0 60px;
+}
+
+/* ===== FOOTER ===== */
+#guide-footer {
+  background: var(--ink);
+  padding: 40px 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 40px;
+  gap: 20px; flex-wrap: wrap;
+}
+.footer-logo {
+  font-family: 'DM Serif Display', serif;
+  color: #fff; font-size: 20px;
+}
+.footer-logo span { color: var(--accent2); }
+.footer-copy { font-size: 11px; color: #4b5563; }
+.footer-badge {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px; font-weight: 600; letter-spacing: 3px;
+  color: var(--accent2); border: 1px solid #3d2520; padding: 4px 12px;
+  border-radius: 2px;
+}
+
+/* ===== SCROLL REVEAL ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  #site-header { padding: 0 20px; }
+  #hero { padding: 48px 24px 40px; }
+  #toc-section { padding: 32px 24px; }
+  .guide-section { padding: 48px 24px 0; }
+  .sec-divider { margin: 0 24px; }
+  #guide-footer { padding: 32px 24px; }
+  .step-card { grid-template-columns: 44px 1fr; }
+  .mock-mobile { flex-direction: column; }
+  .mobile-card { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="site-header">
+  <div class="hdr-badge">曽於高等学校</div>
+  <div class="hdr-title">受付求人票 操作ガイド</div>
+  <div class="hdr-sep"></div>
+  <a href="#sec-1" class="hdr-link">検索</a>
+  <a href="#sec-2" class="hdr-link">一覧</a>
+  <a href="#sec-3" class="hdr-link">ソート</a>
+  <a href="#sec-4" class="hdr-link">ページ</a>
+  <a href="#sec-5" class="hdr-link">SP表示</a>
+</header>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-eyebrow">Operation Manual</div>
+  <h1 class="hero-h1">受付求人票<br><em>操作ガイド</em></h1>
+  <p class="hero-sub">求人票一覧システムの検索・絞り込み・ソート・ページネーション・スマートフォン表示など、すべての操作方法を解説します。</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="hmi-label">総件数</span>
+      <span class="hmi-val">2,949<span class="hmi-unit"> 件</span></span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hmi-label">1ページ表示</span>
+      <span class="hmi-val">50<span class="hmi-unit"> 件</span></span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hmi-label">カラム数</span>
+      <span class="hmi-val">18<span class="hmi-unit"> 列</span></span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hmi-label">業種区分</span>
+      <span class="hmi-val">8<span class="hmi-unit"> 種</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- TOC -->
+<section id="toc-section" class="reveal">
+  <div class="toc-grid">
+    <a class="toc-item" href="#sec-1">
+      <div class="toc-num">01</div>
+      <div><div class="toc-text">ヘッダーの見方</div><div class="toc-sub">タイトル・件数・SP切替</div></div>
+    </a>
+    <a class="toc-item" href="#sec-2">
+      <div class="toc-num">02</div>
+      <div><div class="toc-text">検索パネルの使い方</div><div class="toc-sub">絞り込み・プルダウン・範囲</div></div>
+    </a>
+    <a class="toc-item" href="#sec-3">
+      <div class="toc-num">03</div>
+      <div><div class="toc-text">一覧の見方</div><div class="toc-sub">カラム・バッジ・色分け</div></div>
+    </a>
+    <a class="toc-item" href="#sec-4">
+      <div class="toc-num">04</div>
+      <div><div class="toc-text">ソート機能</div><div class="toc-sub">昇順・降順・全列対応</div></div>
+    </a>
+    <a class="toc-item" href="#sec-5">
+      <div class="toc-num">05</div>
+      <div><div class="toc-text">ページネーション</div><div class="toc-sub">50件/ページ・直接入力</div></div>
+    </a>
+    <a class="toc-item" href="#sec-6">
+      <div class="toc-num">06</div>
+      <div><div class="toc-text">列幅の変更</div><div class="toc-sub">マウスドラッグで調整</div></div>
+    </a>
+    <a class="toc-item" href="#sec-7">
+      <div class="toc-num">07</div>
+      <div><div class="toc-text">SP表示モード</div><div class="toc-sub">スマートフォン最適表示</div></div>
+    </a>
+    <a class="toc-item" href="#sec-8">
+      <div class="toc-num">08</div>
+      <div><div class="toc-text">カラム一覧</div><div class="toc-sub">全18項目の詳細説明</div></div>
+    </a>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== SECTION 1: HEADER ===== -->
+<section class="guide-section reveal" id="sec-1">
+  <div class="sec-header">
+    <div class="sec-num">01</div>
+    <div class="sec-head-text">
+      <div class="sec-label">Header</div>
+      <div class="sec-title">ヘッダーの見方</div>
+      <div class="sec-desc">画面最上部に常に固定表示されるヘッダーバーです。</div>
+    </div>
+  </div>
+
+  <div class="steps-wrap">
+    <div class="step-card">
+      <div class="step-num-col"><span>1</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-header">ヘッダー</span>タイトルと識別バッジ</div>
+        <div class="step-desc">左端の青いバッジ「KYUJIN」はシステム識別子です。隣に「曽於高等学校 【受付求人票】」のタイトルが表示されます。</div>
+        <div class="mock-wrap">
+          <div class="mock-label">HEADER PREVIEW</div>
+          <div class="mock-header">
+            <span class="mh-logo">KYUJIN</span>
+            <span class="mh-title">曽於高等学校 【受付求人票】</span>
+            <span class="mh-spacer"></span>
+            <span class="mh-sp">📱 SP</span>
+            <span class="mh-count">2,949</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num-col"><span>2</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-header">ヘッダー</span>全レコード件数表示</div>
+        <div class="step-desc">ヘッダー右端の青い数字バッジが<strong>全データの総件数</strong>を示します。検索・絞り込みに関わらず常に総件数が表示されます（現在 <strong>2,949件</strong>）。</div>
+        <div class="tip-box">
+          <div class="tip-icon">💡</div>
+          <div class="tip-text">絞り込み後の件数は、検索パネル内の緑色の数字（「絞込 ○○件」）で確認できます。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== SECTION 2: SEARCH ===== -->
+<section class="guide-section reveal" id="sec-2">
+  <div class="sec-header">
+    <div class="sec-num">02</div>
+    <div class="sec-head-text">
+      <div class="sec-label">Search Panel</div>
+      <div class="sec-title">検索パネルの使い方</div>
+      <div class="sec-desc">初期状態では非表示。クリックで開閉できるスライドパネルで絞り込み検索ができます。</div>
+    </div>
+  </div>
+
+  <div class="steps-wrap">
+    <div class="step-card">
+      <div class="step-num-col"><span>1</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-search">検索</span>パネルの開き方</div>
+        <div class="step-desc">ヘッダー直下の「<strong>🔍 絞り込み検索 ∨</strong>」バーをクリックすると、検索パネルがスムーズにスライドして開きます。もう一度クリックすると閉じます。</div>
+        <div class="mock-wrap">
+          <div class="mock-label">TOGGLE BAR</div>
+          <div class="mock-toggle-bar">🔍 絞り込み検索 ∨</div>
+          <div class="mock-search-panel" style="margin-top:2px;">
+            <div class="msp-group"><div class="msp-label">求人番号（前方一致）</div><input class="msp-input" placeholder="46080-" readonly></div>
+            <div class="msp-group"><div class="msp-label">事業所名（曖昧）</div><input class="msp-input focus" placeholder="ナンチク" readonly></div>
+            <div class="msp-group"><div class="msp-label">業種8種</div><select class="msp-select" disabled><option>製造分野</option></select></div>
+            <div class="msp-group"><div class="msp-label">年間休日数</div><div class="msp-range"><input class="msp-input" placeholder="最小" style="width:60px" readonly><span style="color:#64748b;font-size:11px">〜</span><input class="msp-input" placeholder="最大" style="width:60px" readonly></div></div>
+            <div style="display:flex;gap:8px;align-items:flex-end;margin-left:auto">
+              <div style="display:flex;flex-direction:column;align-items:center"><span style="font-size:9px;color:#64748b">絞込</span><span class="msp-count">247</span><span style="font-size:9px;color:#64748b">件</span></div>
+              <button class="msp-btn-clear">クリア</button>
+              <button class="msp-btn-search">検索</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num-col"><span>2</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-search">検索</span>求人番号（前方一致）</div>
+        <div class="step-desc">求人番号の<strong>先頭から一致</strong>するものを絞り込みます。例えば「<code>46080</code>」と入力すると大隅公共職業安定所の求人のみが表示されます。「<code>46080-85</code>」のように詳細に入力するとさらに絞り込めます。</div>
+        <div class="note-box">
+          <div class="tip-icon">📝</div>
+          <div class="note-text"><strong>前方一致とは：</strong> 入力した文字列で始まるものだけにマッチします。「460」と入力すれば460から始まる全求人番号が対象になります。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num-col"><span>3</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-search">検索</span>曖昧検索（4項目）</div>
+        <div class="step-desc">「事業所名」「所在地」「就業場所」「職種」の4項目は、入力した文字が<strong>どこかに含まれるもの</strong>を検索します（部分一致）。</div>
+        <table class="col-table">
+          <tr><th>入力欄</th><th>検索対象</th><th>入力例</th><th>マッチする例</th></tr>
+          <tr><td class="col-key">事業所名</td><td>会社・法人名</td><td>ナンチク</td><td>株式会社 ナンチク</td></tr>
+          <tr><td class="col-key">所在地</td><td>事業所の住所</td><td>曽於市</td><td>鹿児島県曽於市</td></tr>
+          <tr><td class="col-key">就業場所</td><td>実際の勤務地</td><td>鹿児島</td><td>鹿児島県、鹿児島市</td></tr>
+          <tr><td class="col-key">職種</td><td>仕事の種類</td><td>事務</td><td>一般事務、営業事務職</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num-col"><span>4</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-search">検索</span>業種8種プルダウン</div>
+        <div class="step-desc">8つの業種カテゴリからひとつ選んで絞り込みます。「すべて」を選ぶと絞り込み解除になります。</div>
+        <div class="shortcut-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); margin-top: 8px;">
+          <div class="shortcut-item"><div class="shortcut-key">製造分野</div><div class="shortcut-desc">食品・機械・繊維など</div></div>
+          <div class="shortcut-item"><div class="shortcut-key">建築・設備</div><div class="shortcut-desc">土木・電気・管工事など</div></div>
+          <div class="shortcut-item"><div class="shortcut-key">販売・小売・スーパー</div><div class="shortcut-desc">小売・百貨店・自動車販売</div></div>
+          <div class="shortcut-item"><div class="shortcut-key">運輸・倉庫・インフラ</div><div class="shortcut-desc">輸送・倉庫・バスなど</div></div>
+          <div class="shortcut-item"><div class="shortcut-key">医療・福祉</div><div class="shortcut-desc">介護・病院・障害者支援</div></div>
+          <div class="shortcut-item"><div class="shortcut-key">飲食・宿泊</div><div class="shortcut-desc">レストラン・ホテルなど</div></div>
+          <div class="shortcut-item"><div class="shortcut-key">理美容・生活</div><div class="shortcut-desc">テーマパーク・洗濯業など</div></div>
+          <div class="shortcut-item"><div class="shortcut-key">その他の分野</div><div class="shortcut-desc">農業・金融・廃棄物処理など</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num-col"><span>5</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-search">検索</span>産業分類プルダウン</div>
+        <div class="step-desc">239種類の産業分類から選択できます。「畜産食料品製造業」「電気工事業」「老人福祉・介護事業」など、より詳細な業種で絞り込む際に使用します。業種8種と組み合わせると効果的です。</div>
+        <div class="tip-box">
+          <div class="tip-icon">💡</div>
+          <div class="tip-text"><strong>組み合わせ例：</strong>業種8種で「医療・福祉」を選び、産業分類で「老人福祉・介護事業」を選ぶと、特養・デイサービスなどの介護求人に絞れます。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num-col"><span>6</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-search">検索</span>年間休日数の範囲指定</div>
+        <div class="step-desc">「最小値」と「最大値」を入力することで、年間休日数の範囲を指定できます。片方だけ入力することも可能です。</div>
+        <table class="col-table">
+          <tr><th>入力パターン</th><th>効果</th><th>例</th></tr>
+          <tr><td>最小のみ</td><td>○日以上の求人</td><td>最小=120 → 年間120日以上</td></tr>
+          <tr><td>最大のみ</td><td>○日以下の求人</td><td>最大=100 → 年間100日以下</td></tr>
+          <tr><td>両方入力</td><td>○日〜○日の範囲</td><td>最小=100, 最大=120</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num-col"><span>7</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-search">検索</span>検索実行とクリア</div>
+        <div class="step-desc">条件を入力後、青い「<strong>検索</strong>」ボタンをクリックします。各入力欄で<strong>Enterキー</strong>を押しても検索実行できます。「<strong>クリア</strong>」ボタンで全条件をリセットします。</div>
+        <div class="note-box">
+          <div class="tip-icon">ℹ️</div>
+          <div class="note-text">複数の条件を同時に入力すると、すべての条件を満たすもの（AND検索）が表示されます。絞り込まれた件数はパネル右端の緑色の数字でリアルタイムに確認できます。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== SECTION 3: TABLE ===== -->
+<section class="guide-section reveal" id="sec-3">
+  <div class="sec-header">
+    <div class="sec-num">03</div>
+    <div class="sec-head-text">
+      <div class="sec-label">Data Table</div>
+      <div class="sec-title">一覧の見方</div>
+      <div class="sec-desc">カラムヘッダーは検索パネルと一覧の間に固定表示され、縦スクロールしても常に見えます。</div>
+    </div>
+  </div>
+
+  <div class="steps-wrap">
+    <div class="step-card">
+      <div class="step-num-col"><span>1</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-table">一覧</span>固定カラムヘッダー</div>
+        <div class="step-desc">カラムヘッダー行はページ内に固定表示されます。データ行を下にスクロールしても列名が常に見えます。また横スクロールはヘッダーとデータ行が<strong>連動</strong>して動きます。</div>
+        <div class="mock-wrap">
+          <div class="mock-label">COLUMN HEADER (FIXED)</div>
+          <div class="mock-col-header">
+            <div class="mch-cell active">独自番号 <span class="mch-arrow">▲</span></div>
+            <div class="mch-cell">安定所名 <span class="mch-arrow">⇅</span></div>
+            <div class="mch-cell">事業所名 <span class="mch-arrow">⇅</span></div>
+            <div class="mch-cell">所在地 <span class="mch-arrow">⇅</span></div>
+            <div class="mch-cell">月額賃金 <span class="mch-arrow">⇅</span></div>
+            <div class="mch-cell">賞与 <span class="mch-arrow">⇅</span></div>
+            <div class="mch-cell">週休２日制 <span class="mch-arrow">⇅</span></div>
+            <div class="mch-cell">…</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num-col"><span>2</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-table">一覧</span>月額賃金（緑色）</div>
+        <div class="step-desc">月額賃金は<strong style="color:#15803d">緑色</strong>で表示され、カンマ区切りに整形されます。一覧の中で視認性を高めるための色分けです。</div>
+        <div class="mock-rows">
+          <div class="mock-row">
+            <div class="mrow-cell num" style="width:72px">0001</div>
+            <div class="mrow-cell" style="width:180px">株式会社 ナンチク</div>
+            <div class="mrow-cell salary" style="width:110px">172,200円</div>
+            <div class="mrow-cell" style="width:80px"><span class="badge-m bm-ari">あり</span></div>
+            <div class="mrow-cell" style="width:100px"><span class="badge-m bm-sno">その他</span></div>
+          </div>
+          <div class="mock-row">
+            <div class="mrow-cell num" style="width:72px">0030</div>
+            <div class="mrow-cell" style="width:180px">株式会社 九南</div>
+            <div class="mrow-cell salary" style="width:110px">211,000円</div>
+            <div class="mrow-cell" style="width:80px"><span class="badge-m bm-ari">あり</span></div>
+            <div class="mrow-cell" style="width:100px"><span class="badge-m bm-sno">その他</span></div>
+          </div>
+          <div class="mock-row">
+            <div class="mrow-cell num" style="width:72px">0031</div>
+            <div class="mrow-cell" style="width:180px">株式会社 九南フィールド…</div>
+            <div class="mrow-cell salary" style="width:110px">205,000円</div>
+            <div class="mrow-cell" style="width:80px"><span class="badge-m bm-ari">あり</span></div>
+            <div class="mrow-cell" style="width:100px"><span class="badge-m bm-mai">毎週</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num-col"><span>3</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-table">一覧</span>賞与バッジの色分け</div>
+        <div class="step-desc">「賞与」列はバッジ形式で色分け表示されます。</div>
+        <div class="mock-wrap">
+          <div class="mock-label">BADGE TYPES — 賞与</div>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:8px;"><span class="badge-m bm-ari">あり</span><span style="font-size:12px;color:var(--ink3)">緑色 — 賞与あり</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span class="badge-m bm-nasi">なし</span><span style="font-size:12px;color:var(--ink3)">赤色 — 賞与なし</span></div>
+          </div>
+        </div>
+        <div class="step-title" style="margin-top:16px"><span class="step-tag tag-table">一覧</span>週休２日制バッジの色分け</div>
+        <div class="mock-wrap">
+          <div class="mock-label">BADGE TYPES — 週休２日制</div>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:8px;"><span class="badge-m bm-mai">毎週</span><span style="font-size:12px;color:var(--ink3)">青色 — 完全週休2日</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span class="badge-m bm-sno">その他</span><span style="font-size:12px;color:var(--ink3)">グレー — 週休2日制あり（月数回）</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span class="badge-m bm-nasi">なし</span><span style="font-size:12px;color:var(--ink3)">赤色 — 週休2日制なし</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== SECTION 4: SORT ===== -->
+<section class="guide-section reveal" id="sec-4">
+  <div class="sec-header">
+    <div class="sec-num">04</div>
+    <div class="sec-head-text">
+      <div class="sec-label">Sort</div>
+      <div class="sec-title">ソート機能</div>
+      <div class="sec-desc">全18列のカラムヘッダーをクリックしてデータを並び替えられます。</div>
+    </div>
+  </div>
+
+  <div class="steps-wrap">
+    <div class="step-card">
+      <div class="step-num-col"><span>1</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-sort">ソート</span>クリックで昇順/降順切替</div>
+        <div class="step-desc">任意の列ヘッダーをクリックするとその列で昇順ソートになります。もう一度クリックすると降順になります。初期状態は「<strong>独自番号</strong>」の昇順です。</div>
+        <div class="mock-wrap">
+          <div class="mock-label">SORT INDICATORS</div>
+          <div style="display:flex;gap:2px;flex-wrap:wrap;">
+            <div class="mch-cell active" style="background:#0a0d14;border:1px solid #252e45;border-radius:3px;">独自番号 <span class="mch-arrow" style="color:#60a5fa">▲</span></div>
+            <span style="display:flex;align-items:center;font-size:11px;color:var(--ink3);padding:0 8px;">→ クリック →</span>
+            <div class="mch-cell active" style="background:#0a0d14;border:1px solid #252e45;border-radius:3px;">独自番号 <span class="mch-arrow" style="color:#60a5fa">▼</span></div>
+          </div>
+        </div>
+        <table class="col-table" style="margin-top:12px;">
+          <tr><th>アイコン</th><th>意味</th></tr>
+          <tr><td>⇅</td><td>ソートなし（クリックで昇順）</td></tr>
+          <tr><td>▲</td><td>昇順（小→大、あ→ん）</td></tr>
+          <tr><td>▼</td><td>降順（大→小、ん→あ）</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num-col"><span>2</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-sort">ソート</span>数値・文字列の自動判定</div>
+        <div class="step-desc">ソートは列の内容に応じて自動で数値ソートと文字列ソートを切り替えます。</div>
+        <table class="col-table">
+          <tr><th>列名</th><th>ソート方式</th><th>昇順の例</th></tr>
+          <tr><td class="col-key">独自番号</td><td>数値順</td><td>0001 → 0002 → 0003</td></tr>
+          <tr><td class="col-key">月額賃金</td><td>数値順</td><td>153,600 → 158,400 → …</td></tr>
+          <tr><td class="col-key">年間休日数</td><td>数値順</td><td>84 → 85 → 91 → …</td></tr>
+          <tr><td class="col-key">社員数</td><td>数値順</td><td>2 → 6 → 10 → …</td></tr>
+          <tr><td class="col-key">事業所名</td><td>文字順（日本語）</td><td>あいうえお順</td></tr>
+          <tr><td class="col-key">業種8種</td><td>文字順</td><td>五十音順</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== SECTION 5: PAGINATION ===== -->
+<section class="guide-section reveal" id="sec-5">
+  <div class="sec-header">
+    <div class="sec-num">05</div>
+    <div class="sec-head-text">
+      <div class="sec-label">Pagination</div>
+      <div class="sec-title">ページネーション</div>
+      <div class="sec-desc">画面下部に固定されたフッターバーでページを切り替えます。1ページあたり50件を表示します。</div>
+    </div>
+  </div>
+
+  <div class="steps-wrap">
+    <div class="step-card">
+      <div class="step-num-col"><span>1</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-page">ページ</span>フッターの構成</div>
+        <div class="mock-wrap">
+          <div class="mock-label">PAGINATION FOOTER</div>
+          <div class="mock-pagination">
+            <div class="mp-btn">«</div>
+            <div class="mp-btn">‹</div>
+            <div class="mp-btn">1</div>
+            <div class="mp-btn cur">2</div>
+            <div class="mp-btn">3</div>
+            <div class="mp-btn">…</div>
+            <div class="mp-btn">59</div>
+            <div class="mp-btn">›</div>
+            <div class="mp-btn">»</div>
+            <div class="mp-info">51-100 / 2,949件</div>
+            <input class="mp-input" value="2">
+          </div>
+        </div>
+        <table class="col-table" style="margin-top:12px;">
+          <tr><th>ボタン</th><th>動作</th></tr>
+          <tr><td class="col-key">«</td><td>最初のページへ</td></tr>
+          <tr><td class="col-key">‹</td><td>前のページへ</td></tr>
+          <tr><td class="col-key">数字ボタン</td><td>そのページへ直接ジャンプ</td></tr>
+          <tr><td class="col-key">›</td><td>次のページへ</td></tr>
+          <tr><td class="col-key">»</td><td>最後のページへ</td></tr>
+          <tr><td class="col-key">入力欄</td><td>ページ番号を直接入力してEnter</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num-col"><span>2</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-page">ページ</span>表示件数の確認</div>
+        <div class="step-desc">フッター中央の「<strong>51-100 / 2,949件</strong>」のように、現在表示中の範囲と総件数が常に表示されます。検索で絞り込むと件数に応じてページ数が自動更新されます。</div>
+        <div class="tip-box">
+          <div class="tip-icon">💡</div>
+          <div class="tip-text">絞り込み後にページネーションは自動で1ページ目に戻ります。大量の候補がある場合は、検索をさらに絞り込むと目的の求人を見つけやすくなります。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== SECTION 6: RESIZE ===== -->
+<section class="guide-section reveal" id="sec-6">
+  <div class="sec-header">
+    <div class="sec-num">06</div>
+    <div class="sec-head-text">
+      <div class="sec-label">Column Resize</div>
+      <div class="sec-title">列幅の変更</div>
+      <div class="sec-desc">カラムヘッダーの境界線をドラッグして、任意の列幅に変更できます。</div>
+    </div>
+  </div>
+
+  <div class="steps-wrap">
+    <div class="step-card">
+      <div class="step-num-col"><span>1</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-col">列幅</span>ドラッグで列幅調整</div>
+        <div class="step-desc">各カラムヘッダーの右端にマウスを近づけると、カーソルが ↔ に変わります。そのまま<strong>左右にドラッグ</strong>すると列幅が変わります。</div>
+        <div class="mock-wrap">
+          <div class="mock-label">RESIZE HANDLE (青い縦線 = ドラッグ可能)</div>
+          <div class="resize-demo">
+            <div class="rd-col" style="width:80px">独自番号<div class="rd-handle"></div></div>
+            <div class="rd-col wide">事業所名（ドラッグで広げられます）<div class="rd-handle"></div></div>
+            <div class="rd-col" style="width:100px">月額賃金<div class="rd-handle"></div></div>
+          </div>
+        </div>
+        <div class="step-desc" style="margin-top:12px;">
+          「職種」や「事業所名」など内容が長い列を広げると、テキストが途切れずに読みやすくなります。逆に「求人数」「求人番号」など短い列は狭くして、画面を有効活用できます。
+        </div>
+        <div class="note-box">
+          <div class="tip-icon">ℹ️</div>
+          <div class="note-text">列幅の変更はページを再読み込みするとリセットされます。列幅の最小値は40pxに設定されています。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== SECTION 7: MOBILE ===== -->
+<section class="guide-section reveal" id="sec-7">
+  <div class="sec-header">
+    <div class="sec-num">07</div>
+    <div class="sec-head-text">
+      <div class="sec-label">Smartphone Mode</div>
+      <div class="sec-title">SP表示モード</div>
+      <div class="sec-desc">スマートフォンや小画面での閲覧に最適化したカード型表示に切り替えます。</div>
+    </div>
+  </div>
+
+  <div class="steps-wrap">
+    <div class="step-card">
+      <div class="step-num-col"><span>1</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-sp">SP表示</span>切替ボタンの場所</div>
+        <div class="step-desc">ヘッダーのタイトル右横にある「📱 SP」ボタンをクリックするとSP表示モードに切り替わります。もう一度クリックすると通常の横スクロールテーブル表示に戻ります。</div>
+        <div class="mock-wrap">
+          <div class="mock-label">SP TOGGLE BUTTON</div>
+          <div class="mock-header">
+            <span class="mh-logo">KYUJIN</span>
+            <span class="mh-title">曽於高等学校 【受付求人票】</span>
+            <span class="mh-spacer"></span>
+            <span class="mh-sp" style="border-color:#3b82f6;color:#60a5fa;background:rgba(59,130,246,0.1);">📱 SP ✓</span>
+            <span class="mh-count">2,949</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num-col"><span>2</span></div>
+      <div class="step-body">
+        <div class="step-title"><span class="step-tag tag-sp">SP表示</span>カード形式のレイアウト</div>
+        <div class="step-desc">SP表示では各求人が縦型カードとして表示されます。独自番号・事業所名・職種・月額賃金・賞与・週休２日制を見やすく配置します。</div>
+        <div class="mock-mobile">
+          <div class="mobile-card">
+            <div class="mc-id">0001</div>
+            <div class="mc-company">株式会社 ナンチク</div>
+            <div class="mc-job">総合職（食肉製造加工）</div>
+            <div class="mc-salary-m">172,200円</div>
+            <div class="mc-badges-m">
+              <span class="badge-m bm-ari">あり</span>
+              <span class="badge-m bm-sno">その他</span>
+            </div>
+          </div>
+          <div class="mobile-card">
+            <div class="mc-id">0031</div>
+            <div class="mc-company">株式会社 九南FE</div>
+            <div class="mc-job">送電線鉄塔の建設作業員</div>
+            <div class="mc-salary-m">205,000円</div>
+            <div class="mc-badges-m">
+              <span class="badge-m bm-ari">あり</span>
+              <span class="badge-m bm-mai">毎週</span>
+            </div>
+          </div>
+          <div class="mobile-card">
+            <div class="mc-id">0082</div>
+            <div class="mc-company">社会福祉法人 豊の里</div>
+            <div class="mc-job">介護職（無資格）</div>
+            <div class="mc-salary-m">165,500円</div>
+            <div class="mc-badges-m">
+              <span class="badge-m bm-nasi">なし</span>
+              <span class="badge-m bm-sno">その他</span>
+            </div>
+          </div>
+        </div>
+        <div class="note-box" style="margin-top:14px;">
+          <div class="tip-icon">ℹ️</div>
+          <div class="note-text">SP表示でも検索・絞り込み・ソート・ページネーションはすべて同じように使えます。ページ幅に応じてカラム幅の同期も自動で行われます。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"></div>
+
+<!-- ===== SECTION 8: COLUMNS ===== -->
+<section class="guide-section reveal" id="sec-8">
+  <div class="sec-header">
+    <div class="sec-num">08</div>
+    <div class="sec-head-text">
+      <div class="sec-label">Column Reference</div>
+      <div class="sec-title">カラム一覧（全18項目）</div>
+      <div class="sec-desc">一覧に表示される全カラムの内容説明です。</div>
+    </div>
+  </div>
+
+  <div class="steps-wrap">
+    <div class="step-card">
+      <div class="step-num-col"><span>—</span></div>
+      <div class="step-body">
+        <table class="col-table">
+          <tr>
+            <th style="width:130px">カラム名</th>
+            <th style="width:80px">種別</th>
+            <th>内容</th>
+          </tr>
+          <tr>
+            <td class="col-key">独自番号</td>
+            <td>数値（4桁）</td>
+            <td>システム内の管理番号。0001〜の連番。デフォルトのソート基準</td>
+          </tr>
+          <tr>
+            <td class="col-key">安定所名</td>
+            <td>テキスト</td>
+            <td>求人を受け付けた公共職業安定所（ハローワーク）の名称</td>
+          </tr>
+          <tr>
+            <td class="col-key">求人番号</td>
+            <td>コード</td>
+            <td>ハローワーク発行の正式な求人番号（例：46080-85159）</td>
+          </tr>
+          <tr>
+            <td class="col-key">事業所名</td>
+            <td>テキスト</td>
+            <td>採用する企業・法人・団体の正式名称</td>
+          </tr>
+          <tr>
+            <td class="col-key">所在地</td>
+            <td>テキスト</td>
+            <td>事業所の所在する都道府県・市区町村</td>
+          </tr>
+          <tr>
+            <td class="col-key">資本金</td>
+            <td>テキスト</td>
+            <td>会社の資本金額（例：1億円、3,000万円）</td>
+          </tr>
+          <tr>
+            <td class="col-key">社員数</td>
+            <td>数値</td>
+            <td>事業所全体の従業員数</td>
+          </tr>
+          <tr>
+            <td class="col-key">就業場所人数</td>
+            <td>数値</td>
+            <td>実際の就業場所における従業員数</td>
+          </tr>
+          <tr>
+            <td class="col-key">求人数</td>
+            <td>数値</td>
+            <td>この求人で採用予定の人数</td>
+          </tr>
+          <tr>
+            <td class="col-key">就業場所</td>
+            <td>テキスト</td>
+            <td>実際に働く場所の都道府県（事業所所在地と異なる場合あり）</td>
+          </tr>
+          <tr>
+            <td class="col-key col-special">月額賃金</td>
+            <td>数値（緑表示）</td>
+            <td>基本給の月額（円）。カンマ区切りで表示。<strong>緑色</strong>で強調</td>
+          </tr>
+          <tr>
+            <td class="col-key col-special">賞与</td>
+            <td>バッジ</td>
+            <td><strong>あり</strong>（緑）/ <strong>なし</strong>（赤）のバッジ表示</td>
+          </tr>
+          <tr>
+            <td class="col-key">時間外平均</td>
+            <td>数値（h）</td>
+            <td>月平均の時間外労働時間（時間）</td>
+          </tr>
+          <tr>
+            <td class="col-key col-special">週休２日制</td>
+            <td>バッジ</td>
+            <td><strong>毎週</strong>（青）/ <strong>その他</strong>（グレー）/ <strong>なし</strong>（赤）のバッジ</td>
+          </tr>
+          <tr>
+            <td class="col-key">年間休日数</td>
+            <td>数値（日）</td>
+            <td>年間の休日日数。範囲検索の対象項目</td>
+          </tr>
+          <tr>
+            <td class="col-key">業種8種</td>
+            <td>カテゴリ</td>
+            <td>8つに分類した業種（製造・建築・販売・運輸・医療・飲食・理美容・その他）</td>
+          </tr>
+          <tr>
+            <td class="col-key">産業分類</td>
+            <td>テキスト</td>
+            <td>より詳細な産業の分類名（239種類）</td>
+          </tr>
+          <tr>
+            <td class="col-key">職種</td>
+            <td>テキスト</td>
+            <td>募集している職務・仕事内容の名称</td>
+          </tr>
+        </table>
+        <div class="note-box" style="margin-top:4px;">
+          <div class="tip-icon">ℹ️</div>
+          <div class="note-text"><strong>赤字カラム</strong>（月額賃金・賞与・週休２日制）は特別な表示形式（色・バッジ）が適用されます。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="guide-footer">
+  <div class="footer-logo">曽於高等学校<br><span>受付求人票システム</span></div>
+  <div class="footer-copy">操作ガイド © 曽於高等学校<br>本ドキュメントは受付求人票一覧HTMLの操作説明書です。</div>
+  <div class="footer-badge">OPERATION MANUAL</div>
+</footer>
+
+<script>
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.06 });
+revealEls.forEach(el => observer.observe(el));
+
+// Stagger children of toc-grid
+const tocItems = document.querySelectorAll('.toc-item');
+tocItems.forEach((item, i) => {
+  item.style.transitionDelay = (i * 0.04) + 's';
+  item.style.opacity = '0';
+  item.style.transform = 'translateY(16px)';
+  item.style.transition = 'opacity 0.4s ease, transform 0.4s ease, background 0.15s';
+});
+const tocObs = new IntersectionObserver((entries) => {
+  if(entries[0].isIntersecting) {
+    tocItems.forEach(item => {
+      item.style.opacity = '1';
+      item.style.transform = 'none';
+    });
+    tocObs.disconnect();
+  }
+}, { threshold: 0.1 });
+tocObs.observe(document.querySelector('.toc-grid'));
+
+// Smooth scroll for anchors
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if(t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
