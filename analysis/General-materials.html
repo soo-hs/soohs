@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>曽於高等学校 進路資料</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2a4a;
+    --navy-mid: #243660;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f8f6f0;
+    --white: #ffffff;
+    --text: #1e2030;
+    --text-muted: #5a6070;
+    --border: #ddd8cc;
+    --tab-h: 56px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--navy);
+    color: var(--white);
+    padding: 20px 32px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.25);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 16px;
+  }
+  .school-crest {
+    width: 40px; height: 40px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px; font-weight: 700;
+    color: var(--navy);
+    flex-shrink: 0;
+  }
+  .header-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: var(--gold-light);
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  /* ── Tabs ── */
+  .tab-bar {
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    background: rgba(255,255,255,0.06);
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 12px 22px 10px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .tab-btn:hover { color: var(--gold-light); background: rgba(255,255,255,0.1); }
+  .tab-btn.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    background: rgba(201,168,76,0.08);
+  }
+
+  /* ── Layout ── */
+  .main-wrapper {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+    gap: 24px;
+  }
+
+  /* ── Sidebar TOC ── */
+  .toc-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: calc(var(--tab-h) + 56px);
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .toc-sidebar::-webkit-scrollbar { width: 4px; }
+  .toc-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .toc-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 16px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+  }
+  .toc-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+  .toc-list { list-style: none; }
+  .toc-item a {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 6px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    line-height: 1.45;
+    transition: all 0.15s;
+  }
+  .toc-item a:hover { background: #f0ede6; color: var(--navy); }
+  .toc-item a.active { background: #f0ede6; color: var(--navy); font-weight: 500; }
+  .toc-num {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--gold);
+    min-width: 18px;
+    padding-top: 1px;
+  }
+
+  /* ── Content area ── */
+  .content-area { flex: 1; min-width: 0; }
+
+  /* ── Tab panels ── */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── Slides ── */
+  .slide {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    scroll-margin-top: 130px;
+    transition: box-shadow 0.2s;
+  }
+  .slide:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.1); }
+
+  .slide-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    padding: 14px 20px;
+  }
+  .slide-num {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--gold);
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 4px;
+    padding: 2px 8px;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .slide-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+  }
+
+  .slide-body {
+    padding: 20px 24px;
+    font-size: 0.88rem;
+    line-height: 1.8;
+    color: var(--text);
+  }
+
+  /* Content blocks */
+  .slide-body .section-label {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--white);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 3px;
+    margin: 12px 0 6px;
+    letter-spacing: 0.05em;
+  }
+  .slide-body p { margin: 6px 0; }
+  .slide-body .stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .stat-card {
+    background: #f4f2ec;
+    border-left: 3px solid var(--gold);
+    border-radius: 6px;
+    padding: 10px 16px;
+    min-width: 120px;
+    flex: 1;
+  }
+  .stat-card .val {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .stat-card .lbl {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+    margin: 10px 0;
+  }
+  .data-cell {
+    background: #f8f7f3;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.82rem;
+    border: 1px solid var(--border);
+  }
+  .data-cell strong {
+    display: block;
+    color: var(--navy);
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .bullet-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+  .bullet-list li {
+    padding: 4px 0 4px 20px;
+    position: relative;
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+  .bullet-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 0.75rem;
+    top: 5px;
+  }
+  .table-wrap { overflow-x: auto; margin: 10px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+  th {
+    background: var(--navy);
+    color: var(--white);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.78rem;
+  }
+  td { padding: 7px 12px; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: #f8f6f0; }
+  .highlight-row td { background: #fff8e7 !important; font-weight: 600; }
+  .tag {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 3px;
+    font-size: 0.68rem;
+    padding: 1px 7px;
+    margin: 2px 3px 2px 0;
+  }
+  .tag.gold { background: var(--gold); color: var(--navy); }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+  .subtitle { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px; }
+
+  @media (max-width: 768px) {
+    .toc-sidebar { display: none; }
+    .main-wrapper { padding: 16px 12px 40px; }
+    .slide-body { padding: 14px 16px; }
+    .stat-card .val { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="school-crest">曽</div>
+    <div>
+      <div class="header-title">鹿児島県立 曽於高等学校</div>
+      <div class="header-sub">笑顔輝き 夢かなう 曽於高校</div>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(0)" id="tab0">学校案内</button>
+    <button class="tab-btn" onclick="switchTab(1)" id="tab1">進路状況（7期生〜9期生）</button>
+    <button class="tab-btn" onclick="switchTab(2)" id="tab2">進路状況（10期生）</button>
+  </div>
+</header>
+
+<div class="main-wrapper">
+  <!-- Sidebar TOC -->
+  <aside class="toc-sidebar" id="toc-sidebar">
+    <div class="toc-box">
+      <div class="toc-title">目次</div>
+      <ul class="toc-list" id="toc-list"></ul>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="content-area">
+
+    <!-- ══════════════════════════════ TAB 0: 学校案内 ══════════════════════════════ -->
+    <div class="tab-panel active" id="panel0">
+
+      <div class="slide" id="p0-s1">
+        <div class="slide-header">
+          <span class="slide-num">Slide 1</span>
+          <span class="slide-title">鹿児島県立曽於高等学校</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">進路ガイド 2025 ― 在校生・保護者の皆様へ</p>
+          <p>「<strong>笑顔輝き 夢かなう 曽於高校</strong>」の理念のもと、生徒一人ひとりの進路実現を全力でサポートします。</p>
+        </div>
+      </div>
+
+      <div class="slide" id="p0-s2">
+        <div class="slide-header">
+          <span class="slide-num">Slide 2</span>
+          <span class="slide-title">学校概要</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">5学科11コースで多様な進路を実現</p>
+          <div class="stat-row">
+            <div class="stat-card"><div class="val">2014</div><div class="lbl">開校年</div></div>
+            <div class="stat-card"><div class="val">5</div><div class="lbl">学科数</div></div>
+            <div class="stat-card"><div class="val">11</div><div class="lbl">コース数</div></div>
+            <div class="stat-card"><div class="val">200名</div><div class="lbl">定員（各学科40名）</div></div>
+          </div>
+          <p>県内唯一の4分野（普通・農業・工業・商業）設置校として、多様な進路に対応しています。</p>
+          <div class="data-grid">
+            <div class="data-cell"><strong>文理科</strong>文系・理系コース</div>
+            <div class="data-cell"><strong>普通科</strong>進学・キャリア探究コース</div>
+            <div class="data-cell"><strong>畜産食農科</strong>畜産・食品・栽培コース</div>
+            <div class="data-cell"><strong>機械電子科</strong>機械・電子機械コース</div>
+            <div class="data-cell"><strong>商業科</strong>地域経済・会計コース</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p0-s3">
+        <div class="slide-header">
+          <span class="slide-num">Slide 3</span>
+          <span class="slide-title">進路実績ハイライト</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">令和5年度（8期生）の成果</p>
+          <div class="stat-row">
+            <div class="stat-card"><div class="val">100%</div><div class="lbl">進学決定率 ― 全員の進路が決定</div></div>
+            <div class="stat-card"><div class="val">100%</div><div class="lbl">就職内定率 ― 8年連続達成</div></div>
+            <div class="stat-card"><div class="val">17名</div><div class="lbl">国公立大学合格 ― 開校以来最多</div></div>
+          </div>
+          <p style="font-size:0.76rem;color:var(--text-muted)">※令和5年度卒業生（8期生）実績</p>
+        </div>
+      </div>
+
+      <div class="slide" id="p0-s4">
+        <div class="slide-header">
+          <span class="slide-num">Slide 4</span>
+          <span class="slide-title">大学進学実績</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">2021年度（5期生）主要合格実績</p>
+          <div class="table-wrap">
+            <table>
+              <tr><th>区分</th><th>合格先</th><th>人数</th></tr>
+              <tr><td>国公立大学</td><td>東京大学</td><td>1名</td></tr>
+              <tr><td></td><td>旧帝大・一橋・東工大</td><td>7名</td></tr>
+              <tr><td></td><td>その他国立大学</td><td>15名</td></tr>
+              <tr><td></td><td>鹿児島大学 / 宮崎大学・熊本大学</td><td>複数名</td></tr>
+              <tr><td>私立大学</td><td>早慶上理ICU</td><td>4名</td></tr>
+              <tr><td></td><td>GMARCH</td><td>11名</td></tr>
+              <tr><td></td><td>関関同立</td><td>1名</td></tr>
+              <tr><td></td><td>西南学院大学</td><td>8名</td></tr>
+              <tr><td></td><td>明治大学</td><td>5名</td></tr>
+            </table>
+          </div>
+          <p style="font-size:0.76rem;color:var(--text-muted)">※2021年度実績。最新情報は学校公式サイトでご確認ください。</p>
+        </div>
+      </div>
+
+      <div class="slide" id="p0-s5">
+        <div class="slide-header">
+          <span class="slide-num">Slide 5</span>
+          <span class="slide-title">就職実績</span>
+        </div>
+        <div class="slide-body">
+          <div class="stat-row">
+            <div class="stat-card"><div class="val">100%</div><div class="lbl">就職内定率 ― 開校以来8年連続達成（2017〜2024年度）</div></div>
+          </div>
+          <div class="data-grid">
+            <div class="data-cell"><strong>地元企業との強い連携</strong>曽於市・都城市を中心に、地域の優良企業との太いパイプ</div>
+            <div class="data-cell"><strong>専門学科の実践力</strong>機械電子科・畜産食農科・商業科の即戦力人材を輩出</div>
+            <div class="data-cell"><strong>手厚い就職支援</strong>面接指導・企業見学・インターンシップなど段階的なサポート</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p0-s6">
+        <div class="slide-header">
+          <span class="slide-num">Slide 6</span>
+          <span class="slide-title">学科別 進路の特色</span>
+        </div>
+        <div class="slide-body">
+          <div class="data-grid">
+            <div class="data-cell"><strong>文理科</strong>国公立・難関私立への進学。少人数制で東大・旧帝大合格実績あり。</div>
+            <div class="data-cell"><strong>普通科</strong>四年制大学・短大・専門学校・就職。進学コースとキャリア探究コース。</div>
+            <div class="data-cell"><strong>畜産食農科</strong>農業系大学・専門学校・農業法人就職。全国和牛能力共進会で優等賞1席。</div>
+            <div class="data-cell"><strong>機械電子科</strong>工業系企業就職・大学進学。製造業への高い就職実績、資格取得も充実。</div>
+            <div class="data-cell"><strong>商業科</strong>商業系大学・企業就職・公務員。簿記部県内トップクラス。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p0-s7">
+        <div class="slide-header">
+          <span class="slide-num">Slide 7</span>
+          <span class="slide-title">資格取得と進路</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">資格は努力と能力の証 ― 進路実現の武器に</p>
+          <div class="data-grid">
+            <div class="data-cell">
+              <strong>商業科の資格</strong>
+              <ul class="bullet-list">
+                <li>日商簿記検定</li>
+                <li>全商簿記検定1級</li>
+                <li>情報処理検定</li>
+                <li>ビジネス文書検定</li>
+              </ul>
+            </div>
+            <div class="data-cell">
+              <strong>機械電子科の資格</strong>
+              <ul class="bullet-list">
+                <li>危険物取扱者</li>
+                <li>第二種電気工事士</li>
+                <li>技能検定（旋盤等）</li>
+                <li>ガス溶接技能講習</li>
+              </ul>
+            </div>
+            <div class="data-cell">
+              <strong>畜産食農科の資格</strong>
+              <ul class="bullet-list">
+                <li>日本農業技術検定</li>
+                <li>家畜人工授精師</li>
+                <li>食品衛生責任者</li>
+                <li>危険物取扱者</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p0-s8">
+        <div class="slide-header">
+          <span class="slide-num">Slide 8</span>
+          <span class="slide-title">キャリア支援体制</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">1年次から3年次まで段階的にサポート</p>
+          <div class="data-grid">
+            <div class="data-cell">
+              <strong>1年次</strong>
+              <ul class="bullet-list">
+                <li>進路ガイダンス（GAMB）</li>
+                <li>職業理解講座</li>
+                <li>学科横断の科目選択</li>
+              </ul>
+            </div>
+            <div class="data-cell">
+              <strong>2年次</strong>
+              <ul class="bullet-list">
+                <li>インターンシップ</li>
+                <li>コース別専門学習</li>
+                <li>オープンキャンパス参加</li>
+                <li>進路ガイダンス</li>
+              </ul>
+            </div>
+            <div class="data-cell">
+              <strong>3年次</strong>
+              <ul class="bullet-list">
+                <li>就職面接講座</li>
+                <li>受験対策講座</li>
+                <li>個別面談・出願支援</li>
+                <li>受験報告会（後輩へ）</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p0-s9">
+        <div class="slide-header">
+          <span class="slide-num">Slide 9</span>
+          <span class="slide-title">曽於高校ならではの学び</span>
+        </div>
+        <div class="slide-body">
+          <div class="data-grid">
+            <div class="data-cell"><strong>学科横断の科目選択</strong>普通科が商業科目を、工業科が普通科科目を選択可能。柔軟なカリキュラム設計。</div>
+            <div class="data-cell"><strong>曽於学（探究活動）</strong>地域課題解決型の探究学習。慶應義塾大学との連携や高校生探究コンテストでの受賞実績も。</div>
+            <div class="data-cell"><strong>曽於市の支援制度</strong>曽於市が在学生に対して総合的な支援を実施。地域全体で生徒の学びをバックアップ。</div>
+            <div class="data-cell"><strong>充実の部活動</strong>体育系13部・文化系8部、計21部。全国和牛能力共進会 優等賞1席、簿記部県内トップクラス。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p0-s10">
+        <div class="slide-header">
+          <span class="slide-num">Slide 10</span>
+          <span class="slide-title">あなたの夢を全力で応援します</span>
+        </div>
+        <div class="slide-body">
+          <ul class="bullet-list">
+            <li>進学決定率・就職内定率 100% の確かな実績</li>
+            <li>5学科11コースで一人ひとりの進路を実現</li>
+            <li>1年次からの段階的キャリア支援</li>
+            <li>地域・大学との連携による実践的な学び</li>
+          </ul>
+          <hr class="divider">
+          <p style="font-size:0.82rem;color:var(--text-muted)">
+            鹿児島県立曽於高等学校<br>
+            〒899-8605 鹿児島県曽於市末吉町二之方6080　TEL: 0986-76-6646
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /panel0 -->
+
+    <!-- ══════════════════════════════ TAB 1: 進路状況 7-9期生 ══════════════════════════════ -->
+    <div class="tab-panel" id="panel1">
+
+      <div class="slide" id="p1-s1">
+        <div class="slide-header">
+          <span class="slide-num">Slide 1</span>
+          <span class="slide-title">卒業生 進路分析レポート</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">就職・進学の統計とグラフ化 ― 令和4年度〜令和6年度（7期生〜9期生）</p>
+          <p>2026年5月作成</p>
+        </div>
+      </div>
+
+      <div class="slide" id="p1-s2">
+        <div class="slide-header">
+          <span class="slide-num">Slide 2</span>
+          <span class="slide-title">学校概要</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">鹿児島県内唯一の5学科を擁する総合高等学校</p>
+          <p>曽於高等学校は2014年に開校し、普通教育から専門教育まで幅広い学びを提供しています。5つの学科と11のコースで、生徒一人ひとりの進路実現を全力サポートしています。</p>
+          <div class="data-grid" style="margin-top:12px">
+            <div class="data-cell"><strong>文理科</strong>国公立大学への進学を目指す</div>
+            <div class="data-cell"><strong>普通科</strong>進学・キャリア探究コース</div>
+            <div class="data-cell"><strong>畜産食農科</strong>畜産・食品・栽培のプロを育成</div>
+            <div class="data-cell"><strong>機械電子科</strong>ものづくりの技術を磨く</div>
+            <div class="data-cell"><strong>商業科</strong>ビジネスと会計スキル</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p1-s3">
+        <div class="slide-header">
+          <span class="slide-num">Slide 3</span>
+          <span class="slide-title">進路状況サマリー</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">9期生（令和6年度）卒業生124名の実績</p>
+          <div class="stat-row">
+            <div class="stat-card"><div class="val">100%</div><div class="lbl">進路決定率（122名/124名）</div></div>
+            <div class="stat-card"><div class="val">58.1%</div><div class="lbl">進学率（大学37+短大6+専修29名）</div></div>
+            <div class="stat-card"><div class="val">40.3%</div><div class="lbl">就職率（民間46+公務員2+縁故2名）</div></div>
+            <div class="stat-card"><div class="val">14名</div><div class="lbl">国公立大学合格</div></div>
+          </div>
+          <ul class="bullet-list">
+            <li>開校以来、就職内定率 <strong>8年連続100%</strong> を達成</li>
+            <li>4年制国公立大学合格者を毎年輩出 ― 8期生では本校最多の17名が合格</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="slide" id="p1-s4">
+        <div class="slide-header">
+          <span class="slide-num">Slide 4</span>
+          <span class="slide-title">進路先の内訳</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">9期生（令和6年度）全124名</p>
+          <div class="table-wrap">
+            <table>
+              <tr><th>区分</th><th>人数</th><th>割合</th></tr>
+              <tr class="highlight-row"><td>進学（合計）</td><td>72名</td><td>58.1%</td></tr>
+              <tr><td>　└ 大学</td><td>37名</td><td>29.8%</td></tr>
+              <tr><td>　└ 短大</td><td>6名</td><td>4.8%</td></tr>
+              <tr><td>　└ 専修学校等</td><td>29名</td><td>23.4%</td></tr>
+              <tr class="highlight-row"><td>就職（合計）</td><td>50名</td><td>40.3%</td></tr>
+              <tr><td>　└ 民間就職</td><td>46名</td><td>37.1%</td></tr>
+              <tr><td>　└ 公務員</td><td>2名</td><td>1.6%</td></tr>
+              <tr><td>未定</td><td>2名</td><td>1.6%</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p1-s5">
+        <div class="slide-header">
+          <span class="slide-num">Slide 5</span>
+          <span class="slide-title">学科別 進路状況</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">9期生 学科ごとの進路先比較</p>
+          <p>各学科の特性に応じた進路先分布を示しています。文理科・普通科は進学が中心、機械電子科・畜産食農科は就職比率が高い傾向です。</p>
+        </div>
+      </div>
+
+      <div class="slide" id="p1-s6">
+        <div class="slide-header">
+          <span class="slide-num">Slide 6</span>
+          <span class="slide-title">大学進学の詳細</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">国公立・私立大学への進学状況（9期生）</p>
+          <p><strong>学科別 大学進学者数</strong></p>
+          <div class="table-wrap">
+            <table>
+              <tr><th>学科</th><th>進学者数</th><th>進学率</th></tr>
+              <tr><td>文理科</td><td>14名</td><td>93.3%</td></tr>
+              <tr><td>普通科</td><td>14名</td><td>56.0%</td></tr>
+              <tr><td>畜産食農科</td><td>0名</td><td>0.0%</td></tr>
+              <tr><td>機械電子科</td><td>4名</td><td>12.5%</td></tr>
+              <tr><td>商業科</td><td>5名</td><td>15.2%</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p1-s7">
+        <div class="slide-header">
+          <span class="slide-num">Slide 7</span>
+          <span class="slide-title">主な進学先</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">9期生が合格した主要大学・短期大学</p>
+          <div class="data-grid">
+            <div class="data-cell">
+              <strong>国公立大学（14名合格）</strong>
+              <ul class="bullet-list">
+                <li>鹿児島大学 / 宮崎大学</li>
+                <li>宮崎公立大学 / 佐賀大学</li>
+                <li>大分大学 / 鳥取大学</li>
+                <li>徳島大学 / 九州工業大学</li>
+                <li>都留文科大学 / 釧路公立大学</li>
+                <li>下関市立大学 / 長崎県立大学</li>
+                <li>宮崎県立看護大学 / 尾道市立大学</li>
+              </ul>
+            </div>
+            <div class="data-cell">
+              <strong>私立大学（23名合格）</strong>
+              <ul class="bullet-list">
+                <li>東京理科大学 / 関西外国語大学</li>
+                <li>立命館大学 / 福岡大学</li>
+                <li>久留米工業大学 / 崇城大学</li>
+                <li>鹿児島国際大学 / 第一工科大学</li>
+                <li>東京経済大学 / 九州産業大学</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p1-s8">
+        <div class="slide-header">
+          <span class="slide-num">Slide 8</span>
+          <span class="slide-title">短大・専修学校等への進学</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">9期生の短期大学・専門学校進学状況</p>
+          <div class="data-grid">
+            <div class="data-cell">
+              <strong>短期大学</strong>
+              <ul class="bullet-list">
+                <li>鹿児島県立短期大学</li>
+                <li>鹿児島女子短期大学</li>
+                <li>南九州大学短期大学部</li>
+                <li>宮崎学園短期大学</li>
+              </ul>
+            </div>
+            <div class="data-cell">
+              <strong>農業系</strong>
+              <ul class="bullet-list">
+                <li>鹿児島県立農業大学校</li>
+                <li>宮崎県立農業大学校</li>
+                <li>くまもと林業大学校</li>
+              </ul>
+            </div>
+            <div class="data-cell">
+              <strong>技術系</strong>
+              <ul class="bullet-list">
+                <li>川内職業能力開発短期大学校</li>
+                <li>鹿児島県立鹿屋高等技術専門校</li>
+                <li>鹿児島県立吹上高等技術専門校</li>
+              </ul>
+            </div>
+            <div class="data-cell">
+              <strong>看護系</strong>
+              <ul class="bullet-list">
+                <li>鹿屋市立鹿屋看護専門学校</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p1-s9">
+        <div class="slide-header">
+          <span class="slide-num">Slide 9</span>
+          <span class="slide-title">就職状況の概要</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">9期生の就職実績</p>
+          <div class="stat-row">
+            <div class="stat-card"><div class="val">50名</div><div class="lbl">就職者合計（民間46+公務員2+縁故2）</div></div>
+            <div class="stat-card"><div class="val">100%</div><div class="lbl">就職内定率 ― 8年連続達成</div></div>
+            <div class="stat-card"><div class="val">46名</div><div class="lbl">民間就職（全就職者の92%）</div></div>
+          </div>
+          <p><strong>学科別 就職者数</strong></p>
+          <div class="table-wrap">
+            <table>
+              <tr><th>学科</th><th>就職者数</th><th>就職率</th></tr>
+              <tr><td>文理科</td><td>0名</td><td>0%</td></tr>
+              <tr><td>普通科</td><td>0名</td><td>0%</td></tr>
+              <tr><td>畜産食農科</td><td>12名</td><td>63%</td></tr>
+              <tr><td>機械電子科</td><td>20名</td><td>63%</td></tr>
+              <tr><td>商業科</td><td>16名</td><td>48%</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p1-s10">
+        <div class="slide-header">
+          <span class="slide-num">Slide 10</span>
+          <span class="slide-title">就職先の地域分布</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">民間就職者46名の就職先地域</p>
+          <div class="stat-row">
+            <div class="stat-card"><div class="val">17名</div><div class="lbl">鹿児島県（37.0%）― 地元就職が最多</div></div>
+            <div class="stat-card"><div class="val">13名</div><div class="lbl">宮崎県（28.3%）― 隣県への就職も活発</div></div>
+            <div class="stat-card"><div class="val">16名</div><div class="lbl">県外（34.8%）― 関東・関西圏など広域</div></div>
+          </div>
+          <p>地元（鹿児島・宮崎）での就職が全体の<strong>65%</strong>を占め、地域人材の定着に大きく貢献しています。</p>
+        </div>
+      </div>
+
+      <div class="slide" id="p1-s11">
+        <div class="slide-header">
+          <span class="slide-num">Slide 11</span>
+          <span class="slide-title">年度別推移（3年間）</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">7期生〜9期生の進路先推移</p>
+          <ul class="bullet-list">
+            <li>大学進学率が7期の<strong>19%</strong>から9期の<strong>30%</strong>へ上昇</li>
+            <li>就職者数は減少傾向だが内定率は<strong>100%を維持</strong></li>
+            <li>国公立大合格者が安定的に輩出（8〜17名/年）</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="slide" id="p1-s12">
+        <div class="slide-header">
+          <span class="slide-num">Slide 12</span>
+          <span class="slide-title">全国平均との比較</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">文部科学省 令和7年度 学校基本調査データとの比較</p>
+          <div class="table-wrap">
+            <table>
+              <tr><th>区分</th><th>大学・短大</th><th>専修学校等</th><th>就職</th></tr>
+              <tr class="highlight-row"><td>曽於高校（9期生）</td><td>34.7%</td><td>23.4%</td><td>40.3%</td></tr>
+              <tr><td>全国平均（総計）</td><td>62.6%</td><td>18.6%</td><td>13.8%</td></tr>
+              <tr><td>全国 普通科</td><td>71.8%</td><td>16.7%</td><td>6.1%</td></tr>
+              <tr><td>全国 農業科</td><td>18.2%</td><td>31.2%</td><td>47.5%</td></tr>
+              <tr><td>全国 工業科</td><td>18.2%</td><td>16.6%</td><td>63.3%</td></tr>
+              <tr><td>全国 商業科</td><td>34.5%</td><td>29.3%</td><td>33.6%</td></tr>
+            </table>
+          </div>
+          <p style="font-size:0.8rem;margin-top:10px">曽於高校は5学科の複合型のため単純比較は難しいですが、就職率40%は全国平均13.8%を大きく上回り、実践的な職業教育の成果が表れています。</p>
+        </div>
+      </div>
+
+      <div class="slide" id="p1-s13">
+        <div class="slide-header">
+          <span class="slide-num">Slide 13</span>
+          <span class="slide-title">注目すべき成果と特色</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">曽於高等学校の強みと実績</p>
+          <div class="data-grid">
+            <div class="data-cell"><strong>就職内定率 8年連続100%</strong>開校以来途切れることなく全就職希望者が内定を獲得。</div>
+            <div class="data-cell"><strong>国公立大学合格者を安定輩出</strong>8期生では過去最多17名が国公立大学に合格。九州圏の有力大学への進学実績が光ります。</div>
+            <div class="data-cell"><strong>地元定着率65%</strong>就職者の約65%が鹿児島・宮崎圏で就職。地域の産業・経済を支える人材供給源として貢献。</div>
+            <div class="data-cell"><strong>進路決定率ほぼ100%</strong>9期生124名中、未定はわずか2名。学校全体の支援体制が充実。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p1-s14">
+        <div class="slide-header">
+          <span class="slide-num">Slide 14</span>
+          <span class="slide-title">まとめと今後の展望</span>
+        </div>
+        <div class="slide-body">
+          <ul class="bullet-list">
+            <li>進学率は3年間で<strong>47.6% → 58.1%</strong>と着実に上昇中</li>
+            <li>就職内定率100%を<strong>8年連続</strong>で維持 ― 信頼の実績</li>
+            <li>国公立大学合格者を毎年安定的に輩出（年間<strong>8〜17名</strong>）</li>
+            <li>地元（鹿児島・宮崎）への就職が<strong>65%</strong>を占め、地域に貢献</li>
+            <li>5学科の多様な進路選択肢が生徒の夢の実現を支援</li>
+          </ul>
+          <hr class="divider">
+          <p style="font-size:0.9rem;font-family:'Noto Serif JP',serif;color:var(--navy);font-weight:600;text-align:center;margin-top:10px">
+            「笑顔輝き 夢かなう 曽於高校」<br>
+            <span style="font-size:0.78rem;font-weight:400;color:var(--text-muted)">一人ひとりの進路実現に向けて、これからも全力でサポートしてまいります</span>
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /panel1 -->
+
+    <!-- ══════════════════════════════ TAB 2: 進路状況 10期生 ══════════════════════════════ -->
+    <div class="tab-panel" id="panel2">
+
+      <div class="slide" id="p2-s1">
+        <div class="slide-header">
+          <span class="slide-num">Slide 1</span>
+          <span class="slide-title">10期生 進路データ分析レポート</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">Career Path Analysis Report ― 学科別・進路区分・職種別 総合分析</p>
+          <div class="stat-row">
+            <div class="stat-card"><div class="val">130名</div><div class="lbl">総生徒数</div></div>
+            <div class="stat-card"><div class="val">64名</div><div class="lbl">就職</div></div>
+            <div class="stat-card"><div class="val">65名</div><div class="lbl">進学</div></div>
+            <div class="stat-card"><div class="val">5学科</div><div class="lbl">学科数</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p2-s2">
+        <div class="slide-header">
+          <span class="slide-num">Slide 2</span>
+          <span class="slide-title">学科別 生徒数</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">Students by Department ― 総生徒数：130名</p>
+          <p>5学科それぞれに生徒が在籍し、多様な進路を目指しています。</p>
+        </div>
+      </div>
+
+      <div class="slide" id="p2-s3">
+        <div class="slide-header">
+          <span class="slide-num">Slide 3</span>
+          <span class="slide-title">進路区分（就職・進学）</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">Employment vs Higher Education</p>
+          <div class="stat-row">
+            <div class="stat-card"><div class="val">64名</div><div class="lbl">就職（49.2%）</div></div>
+            <div class="stat-card"><div class="val">65名</div><div class="lbl">進学（50.0%）</div></div>
+            <div class="stat-card"><div class="val">1名</div><div class="lbl">未定（0.8%）</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p2-s4">
+        <div class="slide-header">
+          <span class="slide-num">Slide 4</span>
+          <span class="slide-title">進路分類 全体分布</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">Career Classification Distribution</p>
+          <div class="stat-row">
+            <div class="stat-card"><div class="val" style="font-size:1.2rem">1位</div><div class="lbl">専門学校・職業訓練 ― <strong>29名</strong></div></div>
+            <div class="stat-card"><div class="val" style="font-size:1.2rem">2位</div><div class="lbl">県外就職 ― <strong>26名</strong></div></div>
+            <div class="stat-card"><div class="val" style="font-size:1.2rem">3位</div><div class="lbl">県内就職 ― <strong>25名</strong></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="p2-s5">
+        <div class="slide-header">
+          <span class="slide-num">Slide 5</span>
+          <span class="slide-title">学科別 進路分類</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">Career Classification by Department</p>
+          <p>機械電子科は就職が多く（84%）、文理科・商業科・普通科は進学が主流です。各学科の特性が明確に反映されています。</p>
+        </div>
+      </div>
+
+      <div class="slide" id="p2-s6">
+        <div class="slide-header">
+          <span class="slide-num">Slide 6</span>
+          <span class="slide-title">就職者の職種別分析</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">Job Category Analysis（Employment）― 就職総数：64名 ／ 上位6職種を表示</p>
+          <ul class="bullet-list">
+            <li>建設・機械・電気作業 ― 9名（最多）</li>
+            <li>自衛官 ― 8名</li>
+            <li>販売・製造職 ― 多数</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="slide" id="p2-s7">
+        <div class="slide-header">
+          <span class="slide-num">Slide 7</span>
+          <span class="slide-title">進学者の専攻分野別分析</span>
+        </div>
+        <div class="slide-body">
+          <p class="subtitle">Major Field Analysis（Higher Education）</p>
+          <ul class="bullet-list">
+            <li>医療・薬学・健康・スポーツ ― 17名（突出して最多）</li>
+            <li>法律・経済 ― 10名</li>
+            <li>教育 ― 8名</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="slide" id="p2-s8">
+        <div class="slide-header">
+          <span class="slide-num">Slide 8</span>
+          <span class="slide-title">分析サマリー</span>
+        </div>
+        <div class="slide-body">
+          <div class="data-grid">
+            <div class="data-cell"><strong>就職・進学比率</strong>就職64名（49.2%）・進学65名（50.0%）とほぼ均等。</div>
+            <div class="data-cell"><strong>学科別特徴</strong>機械電子科は就職が多く（84%）、文理科・商業科・普通科は進学が主流。</div>
+            <div class="data-cell"><strong>進路分類トップ</strong>専門学校・職訓（29名）が最多。県外就職（26名）・県内就職（25名）が続く。</div>
+            <div class="data-cell"><strong>就職職種</strong>建設・機械・電気作業（9名）が最多。自衛官（8名）、販売・製造も多い。</div>
+            <div class="data-cell"><strong>進学専攻分野</strong>医療・薬学・健康・スポーツ（17名）が突出。法律・経済（10名）、教育（8名）が続く。</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /panel2 -->
+
+  </main>
+</div><!-- /main-wrapper -->
+
+<script>
+  // ── Tab data ──
+  const TABS = [
+    {
+      label: '学校案内',
+      slides: [
+        '鹿児島県立曽於高等学校',
+        '学校概要',
+        '進路実績ハイライト',
+        '大学進学実績',
+        '就職実績',
+        '学科別 進路の特色',
+        '資格取得と進路',
+        'キャリア支援体制',
+        '曽於高校ならではの学び',
+        'あなたの夢を全力で応援します',
+      ]
+    },
+    {
+      label: '進路状況（7期生〜9期生）',
+      slides: [
+        '卒業生 進路分析レポート',
+        '学校概要',
+        '進路状況サマリー',
+        '進路先の内訳',
+        '学科別 進路状況',
+        '大学進学の詳細',
+        '主な進学先',
+        '短大・専修学校等への進学',
+        '就職状況の概要',
+        '就職先の地域分布',
+        '年度別推移（3年間）',
+        '全国平均との比較',
+        '注目すべき成果と特色',
+        'まとめと今後の展望',
+      ]
+    },
+    {
+      label: '進路状況（10期生）',
+      slides: [
+        '10期生 進路データ分析レポート',
+        '学科別 生徒数',
+        '進路区分（就職・進学）',
+        '進路分類 全体分布',
+        '学科別 進路分類',
+        '就職者の職種別分析',
+        '進学者の専攻分野別分析',
+        '分析サマリー',
+      ]
+    },
+  ];
+
+  let currentTab = 0;
+
+  function buildTOC(tabIdx) {
+    const list = document.getElementById('toc-list');
+    list.innerHTML = '';
+    TABS[tabIdx].slides.forEach((title, i) => {
+      const li = document.createElement('li');
+      li.className = 'toc-item';
+      li.innerHTML = `<a href="#p${tabIdx}-s${i+1}"><span class="toc-num">${i+1}</span>${title}</a>`;
+      list.appendChild(li);
+    });
+  }
+
+  function switchTab(idx) {
+    // panels
+    document.querySelectorAll('.tab-panel').forEach((p,i) => p.classList.toggle('active', i===idx));
+    // tab buttons
+    document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===idx));
+    currentTab = idx;
+    buildTOC(idx);
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  // Active TOC highlight on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.id;
+      document.querySelectorAll('#toc-list a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    });
+  }, { rootMargin: '-120px 0px -60% 0px', threshold: 0 });
+
+  function observeSlides() {
+    document.querySelectorAll('.slide').forEach(s => observer.observe(s));
+  }
+
+  // Init
+  buildTOC(0);
+  observeSlides();
+</script>
+</body>
+</html>
