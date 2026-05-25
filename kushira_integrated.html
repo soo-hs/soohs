@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>令和4〜7年度 進路状況ダッシュボード</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Hiragino Sans', 'Meiryo', sans-serif; background: #f5f4f0; color: #1a1a1a; padding: 2rem; }
+  .container { max-width: 960px; margin: 0 auto; }
+
+  header { margin-bottom: 1.5rem; border-bottom: 2px solid #185FA5; padding-bottom: 1rem; }
+  header h1 { font-size: 22px; font-weight: 600; color: #185FA5; margin-bottom: 4px; }
+  header p { font-size: 13px; color: #666; }
+
+  /* ── タブ ── */
+  .tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; }
+  .tab-btn {
+    padding: 9px 22px; border-radius: 6px 6px 0 0; border: 1px solid #d0cfca;
+    background: #e8e7e2; color: #555; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: background 0.15s, color 0.15s;
+    border-bottom: none;
+  }
+  .tab-btn.active { background: #185FA5; color: #fff; border-color: #185FA5; }
+  .tab-btn:hover:not(.active) { background: #d4d3ce; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── ダッシュボード ── */
+  .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+  .metric { background: #fff; border-radius: 8px; padding: 16px; border: 1px solid #e0dfd8; }
+  .metric-year { font-size: 11px; font-weight: 600; color: #185FA5; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .metric-total { font-size: 28px; font-weight: 700; color: #1a1a1a; line-height: 1; margin-bottom: 6px; }
+  .metric-total span { font-size: 13px; font-weight: 400; color: #666; }
+  .metric-bar { height: 6px; background: #e8e7e2; border-radius: 3px; overflow: hidden; margin-bottom: 6px; }
+  .metric-bar-fill { height: 100%; background: linear-gradient(to right, #378ADD, #1D9E75); }
+  .metric-detail { display: flex; justify-content: space-between; font-size: 12px; }
+  .metric-emp { color: #185FA5; font-weight: 500; }
+  .metric-edu { color: #0F6E56; font-weight: 500; }
+
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+  .chart-card { background: #fff; border-radius: 8px; padding: 1.25rem; border: 1px solid #e0dfd8; }
+  .chart-card h3 { font-size: 13px; font-weight: 600; color: #444; margin-bottom: 12px; }
+  .legend { display: flex; gap: 14px; margin-bottom: 10px; flex-wrap: wrap; }
+  .legend span { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #666; }
+  .legend-sq { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+  .section-title { font-size: 15px; font-weight: 600; color: #185FA5; margin: 1.5rem 0 0.75rem; border-left: 3px solid #185FA5; padding-left: 10px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #185FA5; color: #fff; font-weight: 500; padding: 8px 10px; text-align: center; font-size: 12px; }
+  th:first-child { text-align: left; }
+  td { padding: 8px 10px; border-bottom: 1px solid #e8e7e2; text-align: center; }
+  td:first-child { text-align: left; font-weight: 600; color: #185FA5; }
+  tr:nth-child(even) td { background: #f8f7f3; }
+  tr:last-child td { border-bottom: none; font-weight: 600; background: #EBF3FB; color: #185FA5; }
+
+  .table-wrap { background: #fff; border-radius: 8px; border: 1px solid #e0dfd8; overflow: hidden; margin-bottom: 1.5rem; }
+  .table-head { padding: 12px 16px; border-bottom: 1px solid #e0dfd8; }
+  .table-head h3 { font-size: 13px; font-weight: 600; color: #444; }
+  .table-body { padding: 0 16px 16px; overflow-x: auto; }
+
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge-emp { background: #E6F1FB; color: #185FA5; }
+  .badge-edu { background: #E1F5EE; color: #0F6E56; }
+
+  .bar-wrap { display: flex; align-items: center; gap: 6px; justify-content: center; }
+  .bar-bg { flex: 1; height: 6px; background: #e8e7e2; border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; background: #378ADD; border-radius: 3px; }
+  .pct { font-size: 11px; color: #666; min-width: 30px; text-align: right; }
+
+  /* ── 集計報告タブ ── */
+  .report-section { background: #fff; border-radius: 8px; border: 1px solid #e0dfd8; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .report-section h2 { font-size: 16px; font-weight: 700; color: #185FA5; border-left: 4px solid #185FA5; padding-left: 10px; margin-bottom: 1rem; }
+  .report-section p { font-size: 13px; color: #444; line-height: 1.8; margin-bottom: 1rem; }
+  .report-section table td:first-child { color: #333; font-weight: 500; }
+  .point-list { list-style: none; padding: 0; }
+  .point-list li { font-size: 13px; color: #333; line-height: 1.8; padding: 8px 12px; border-left: 3px solid #378ADD; margin-bottom: 8px; background: #f4f8fd; border-radius: 0 6px 6px 0; }
+  .point-list li strong { color: #185FA5; display: block; font-size: 13px; margin-bottom: 2px; }
+  .report-note { font-size: 11px; color: #999; margin-top: 0.5rem; }
+
+  footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e0dfd8; font-size: 11px; color: #999; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>令和4〜7年度 進路状況ダッシュボード</h1>
+    <p>就職・進学の年度別集計｜R4=2022年度、R5=2023年度、R6=2024年度（10月時点）、R7=2025年度（3月時点）</p>
+  </header>
+
+  <!-- タブボタン -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('dashboard', this)">📊 ダッシュボード</button>
+    <button class="tab-btn" onclick="switchTab('report', this)">📄 集計報告</button>
+  </div>
+
+  <!-- ① ダッシュボードタブ -->
+  <div id="tab-dashboard" class="tab-panel active">
+    <div class="metric-grid">
+      <div class="metric">
+        <div class="metric-year">令和4年度</div>
+        <div class="metric-total">59 <span>名</span></div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:42%"></div></div>
+        <div class="metric-detail"><span class="metric-emp">就職 25名</span><span class="metric-edu">進学 34名</span></div>
+      </div>
+      <div class="metric">
+        <div class="metric-year">令和5年度</div>
+        <div class="metric-total">54 <span>名</span></div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:59%"></div></div>
+        <div class="metric-detail"><span class="metric-emp">就職 32名</span><span class="metric-edu">進学 22名</span></div>
+      </div>
+      <div class="metric">
+        <div class="metric-year">令和6年度</div>
+        <div class="metric-total">34 <span>名</span></div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:50%"></div></div>
+        <div class="metric-detail"><span class="metric-emp">就職 17名</span><span class="metric-edu">進学 17名</span></div>
+      </div>
+      <div class="metric">
+        <div class="metric-year">令和7年度</div>
+        <div class="metric-total">68 <span>名</span></div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:63%"></div></div>
+        <div class="metric-detail"><span class="metric-emp">就職 43名</span><span class="metric-edu">進学 25名</span></div>
+      </div>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>年度別 就職・進学人数</h3>
+        <div class="legend">
+          <span><span class="legend-sq" style="background:#378ADD;"></span>就職</span>
+          <span><span class="legend-sq" style="background:#1D9E75;"></span>進学</span>
+        </div>
+        <div style="position:relative; width:100%; height:220px;">
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>年度別 就職・進学 割合（%）</h3>
+        <div class="legend">
+          <span><span class="legend-sq" style="background:#378ADD;"></span>就職</span>
+          <span><span class="legend-sq" style="background:#1D9E75;"></span>進学</span>
+        </div>
+        <div style="position:relative; width:100%; height:220px;">
+          <canvas id="stackedChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>就職 職種別内訳（積み上げ）</h3>
+        <div class="legend">
+          <span><span class="legend-sq" style="background:#378ADD;"></span>事務職</span>
+          <span><span class="legend-sq" style="background:#AFA9EC;"></span>サービス・販売</span>
+          <span><span class="legend-sq" style="background:#5DCAA5;"></span>製造・技能</span>
+          <span><span class="legend-sq" style="background:#EF9F27;"></span>公務員</span>
+          <span><span class="legend-sq" style="background:#B4B2A9;"></span>その他</span>
+        </div>
+        <div style="position:relative; width:100%; height:220px;">
+          <canvas id="jobChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>進学 種別内訳（積み上げ）</h3>
+        <div class="legend">
+          <span><span class="legend-sq" style="background:#1D9E75;"></span>大学</span>
+          <span><span class="legend-sq" style="background:#97C459;"></span>短大</span>
+          <span><span class="legend-sq" style="background:#C0DD97;"></span>専門学校</span>
+          <span><span class="legend-sq" style="background:#D3D1C7;"></span>その他</span>
+        </div>
+        <div style="position:relative; width:100%; height:220px;">
+          <canvas id="eduChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-title">詳細集計表</p>
+
+    <div class="table-wrap">
+      <div class="table-head"><h3>年度別 就職・進学 総括</h3></div>
+      <div class="table-body">
+        <table>
+          <thead>
+            <tr>
+              <th>年度</th><th>合計</th>
+              <th colspan="2">就職</th>
+              <th colspan="2">進学</th>
+              <th>就職率</th>
+            </tr>
+            <tr>
+              <th></th><th></th>
+              <th>人数</th><th>（県内/県外/公務）</th>
+              <th>人数</th><th>（大学/短大/専門）</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>R4</td><td>59</td>
+              <td><span class="badge badge-emp">25</span></td><td>12 / 9 / 2</td>
+              <td><span class="badge badge-edu">34</span></td><td>3 / 7 / 23</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:42%"></div></div><span class="pct">42%</span></div></td>
+            </tr>
+            <tr>
+              <td>R5</td><td>54</td>
+              <td><span class="badge badge-emp">32</span></td><td>24 / 4 / 1</td>
+              <td><span class="badge badge-edu">22</span></td><td>5 / 3 / 13</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:59%"></div></div><span class="pct">59%</span></div></td>
+            </tr>
+            <tr>
+              <td>R6</td><td>34</td>
+              <td><span class="badge badge-emp">17</span></td><td>9 / 4 / —</td>
+              <td><span class="badge badge-edu">17</span></td><td>5 / 3 / 9</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:50%"></div></div><span class="pct">50%</span></div></td>
+            </tr>
+            <tr>
+              <td>R7</td><td>68</td>
+              <td><span class="badge badge-emp">43</span></td><td>25 / 4 / 11</td>
+              <td><span class="badge badge-edu">25</span></td><td>5 / 3 / 17</td>
+              <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:63%"></div></div><span class="pct">63%</span></div></td>
+            </tr>
+            <tr>
+              <td>合計</td><td>215</td>
+              <td colspan="2">117名</td>
+              <td colspan="2">98名</td>
+              <td>54%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="chart-grid">
+      <div class="table-wrap">
+        <div class="table-head"><h3>就職 職種別内訳</h3></div>
+        <div class="table-body">
+          <table>
+            <thead><tr><th>職種</th><th>R4</th><th>R5</th><th>R6</th><th>R7</th><th>計</th></tr></thead>
+            <tbody>
+              <tr><td>事務職</td><td>8</td><td>17</td><td>6</td><td>11</td><td>42</td></tr>
+              <tr><td>サービス・販売</td><td>9</td><td>5</td><td>4</td><td>9</td><td>27</td></tr>
+              <tr><td>製造・技能職</td><td>5</td><td>4</td><td>3</td><td>7</td><td>19</td></tr>
+              <tr><td>公務員・自衛隊</td><td>2</td><td>1</td><td>—</td><td>11</td><td>14</td></tr>
+              <tr><td>営業・技術職</td><td>1</td><td>2</td><td>—</td><td>—</td><td>3</td></tr>
+              <tr><td>その他・縁故</td><td>0</td><td>3</td><td>4</td><td>5</td><td>12</td></tr>
+              <tr><td>合計</td><td>25</td><td>32</td><td>17</td><td>43</td><td>117</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-head"><h3>進学 種別内訳</h3></div>
+        <div class="table-body">
+          <table>
+            <thead><tr><th>種別</th><th>R4</th><th>R5</th><th>R6</th><th>R7</th><th>計</th></tr></thead>
+            <tbody>
+              <tr><td>大学（国公立）</td><td>0</td><td>3</td><td>2</td><td>1</td><td>6</td></tr>
+              <tr><td>大学（私立）</td><td>3</td><td>2</td><td>3</td><td>4</td><td>12</td></tr>
+              <tr><td>短期大学</td><td>7</td><td>3</td><td>3</td><td>3</td><td>16</td></tr>
+              <tr><td>専門学校</td><td>23</td><td>13</td><td>9</td><td>17</td><td>62</td></tr>
+              <tr><td>その他・各種</td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td></tr>
+              <tr><td>合計</td><td>34</td><td>22</td><td>17</td><td>25</td><td>98</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      ※ R6は10月15日時点の速報値、R7は3月27日時点のデータ。R4・R5は年度末最終値。
+    </footer>
+  </div><!-- /tab-dashboard -->
+
+  <!-- ② 集計報告タブ -->
+  <div id="tab-report" class="tab-panel">
+
+    <div class="report-section">
+      <h2>1．年度別 就職・進学 総括</h2>
+      <p>令和4年度から令和7年度の4年間における進路決定状況を集計しました。就職率はR4の42%からR7の63%へと上昇傾向にあります。</p>
+      <div class="table-body" style="padding:0;">
+        <table>
+          <thead>
+            <tr>
+              <th>年度</th><th>合計</th><th>就職</th><th>（県内/県外/公務）</th><th>進学</th><th>（大学/短大/専門）</th><th>就職率</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>R4</td><td>59</td><td>25</td><td>12 / 9 / 2</td><td>34</td><td>3 / 7 / 23</td><td>42%</td></tr>
+            <tr><td>R5</td><td>54</td><td>32</td><td>24 / 4 / 1</td><td>22</td><td>5 / 3 / 13</td><td>59%</td></tr>
+            <tr><td>R6</td><td>34</td><td>17</td><td>9 / 4 / —</td><td>17</td><td>5 / 3 / 9</td><td>50%</td></tr>
+            <tr><td>R7</td><td>68</td><td>43</td><td>25 / 4 / 11</td><td>25</td><td>5 / 3 / 17</td><td>63%</td></tr>
+            <tr><td>合計</td><td>215</td><td colspan="2">117名</td><td colspan="2">98名</td><td>54%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="report-note">※ R6は10月15日時点の速報値、R7は3月27日時点のデータ。R4・R5は年度末最終値。</p>
+    </div>
+
+    <div class="report-section">
+      <h2>2．就職先 職種別内訳</h2>
+      <p>就職者を職種別に分類した集計です。事務職が最多で4年間合計42名、次いでサービス・販売職が27名となっています。R7年度は公務員・自衛隊が11名と大幅に増加しました。</p>
+      <div class="table-body" style="padding:0;">
+        <table>
+          <thead><tr><th>職種</th><th>R4</th><th>R5</th><th>R6</th><th>R7</th><th>合計</th></tr></thead>
+          <tbody>
+            <tr><td>事務職</td><td>8</td><td>17</td><td>6</td><td>11</td><td>42</td></tr>
+            <tr><td>サービス・販売職</td><td>9</td><td>5</td><td>4</td><td>9</td><td>27</td></tr>
+            <tr><td>製造・技能職</td><td>5</td><td>4</td><td>3</td><td>7</td><td>19</td></tr>
+            <tr><td>公務員・自衛隊</td><td>2</td><td>1</td><td>—</td><td>11</td><td>14</td></tr>
+            <tr><td>営業・技術職</td><td>1</td><td>2</td><td>—</td><td>—</td><td>3</td></tr>
+            <tr><td>その他・縁故</td><td>0</td><td>3</td><td>4</td><td>5</td><td>12</td></tr>
+            <tr><td>合計</td><td>25</td><td>32</td><td>17</td><td>43</td><td>117</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="report-section">
+      <h2>3．進学先 種別内訳</h2>
+      <p>進学者を種別に分類した集計です。専門学校への進学が最多で4年間合計62名（全進学者の63%）を占めています。大学・短大への進学者は合計34名です。</p>
+      <div class="table-body" style="padding:0;">
+        <table>
+          <thead><tr><th>種別</th><th>R4</th><th>R5</th><th>R6</th><th>R7</th><th>合計</th></tr></thead>
+          <tbody>
+            <tr><td>大学（国公立）</td><td>0</td><td>3</td><td>2</td><td>1</td><td>6</td></tr>
+            <tr><td>大学（私立）</td><td>3</td><td>2</td><td>3</td><td>4</td><td>12</td></tr>
+            <tr><td>短期大学</td><td>7</td><td>3</td><td>3</td><td>3</td><td>16</td></tr>
+            <tr><td>専門学校</td><td>23</td><td>13</td><td>9</td><td>17</td><td>62</td></tr>
+            <tr><td>その他・各種</td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td></tr>
+            <tr><td>合計</td><td>34</td><td>22</td><td>17</td><td>25</td><td>98</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="report-section">
+      <h2>4．就職 男女・県内外別内訳</h2>
+      <p>就職者の県内・県外・公務員別内訳を男女別に示します。</p>
+      <div class="table-body" style="padding:0;">
+        <table>
+          <thead><tr><th>年度・性別</th><th>県内</th><th>県外</th><th>公務員</th><th>縁故</th><th>備考</th></tr></thead>
+          <tbody>
+            <tr><td>R4 男子</td><td>5</td><td>7</td><td>1</td><td>2</td><td>—</td></tr>
+            <tr><td>R4 女子</td><td>9</td><td>4</td><td>1</td><td>2</td><td>—</td></tr>
+            <tr><td>R5 男子</td><td>8</td><td>4</td><td>1</td><td>2</td><td>—</td></tr>
+            <tr><td>R5 女子</td><td>16</td><td>1</td><td>3</td><td>1</td><td>—</td></tr>
+            <tr><td>R6 男子</td><td>2</td><td>2</td><td>—</td><td>—</td><td>3(結果待)</td></tr>
+            <tr><td>R6 女子</td><td>7</td><td>2</td><td>—</td><td>—</td><td>1(結果待)</td></tr>
+            <tr><td>R7 男子</td><td>12</td><td>2</td><td>10</td><td>1</td><td>1(未定)</td></tr>
+            <tr><td>R7 女子</td><td>13</td><td>2</td><td>1</td><td>0</td><td>1(未定)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="report-section">
+      <h2>5．進学 男女・種別内訳</h2>
+      <p>進学者の種別内訳を男女別に示します。</p>
+      <div class="table-body" style="padding:0; overflow-x:auto;">
+        <table>
+          <thead><tr><th>年度・性別</th><th>国立大</th><th>公立大</th><th>私立大</th><th>公立短</th><th>私立短</th><th>専門</th></tr></thead>
+          <tbody>
+            <tr><td>R4 男子</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>7</td></tr>
+            <tr><td>R4 女子</td><td>0</td><td>0</td><td>2</td><td>0</td><td>7</td><td>16</td></tr>
+            <tr><td>R5 男子</td><td>1</td><td>0</td><td>2</td><td>0</td><td>0</td><td>6</td></tr>
+            <tr><td>R5 女子</td><td>1</td><td>0</td><td>1</td><td>1</td><td>2</td><td>7</td></tr>
+            <tr><td>R6 男子</td><td>2</td><td>0</td><td>2</td><td>0</td><td>0</td><td>3</td></tr>
+            <tr><td>R6 女子</td><td>0</td><td>0</td><td>1</td><td>0</td><td>3</td><td>6</td></tr>
+            <tr><td>R7 男子</td><td>0</td><td>0</td><td>3</td><td>0</td><td>0</td><td>8</td></tr>
+            <tr><td>R7 女子</td><td>1</td><td>0</td><td>1</td><td>0</td><td>3</td><td>9</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="report-section">
+      <h2>6．主な傾向とポイント</h2>
+      <ul class="point-list">
+        <li>
+          <strong>① 就職率の上昇傾向</strong>
+          R4年度42% → R5年度59% → R6年度50% → R7年度63%と、全体的に就職率が上昇しています。
+        </li>
+        <li>
+          <strong>② 公務員志向の拡大（R7）</strong>
+          R7年度の公務員・自衛隊内定者は11名で、鹿屋市役所・自衛官（一般曹候補）などへの就職が増加しました。
+        </li>
+        <li>
+          <strong>③ 進学の中心は専門学校</strong>
+          全年度を通じて専門学校進学が進学者の過半数を占めており、看護・情報・美容・保育などの分野への進学が多い傾向です。
+        </li>
+        <li>
+          <strong>④ 事務職への需要が高い</strong>
+          職種別では事務職への就職が4年間合計42名と最多で、金融・農協・物流などの県内企業への就職が中心です。
+        </li>
+      </ul>
+      <p class="report-note" style="margin-top:1rem;">本資料は各年度の進路概要PDFに基づき集計したものです。</p>
+    </div>
+
+    <footer>
+      令和4〜7年度 進路状況集計
+    </footer>
+  </div><!-- /tab-report -->
+
+</div><!-- /container -->
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+const years = ['R4','R5','R6','R7'];
+const baseOpts = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { grid: { display: false }, ticks: { color: '#666', font: { size: 12 } } },
+    y: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#666', font: { size: 12 } } }
+  }
+};
+
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+    labels: years,
+    datasets: [
+      { label: '就職', data: [25,32,17,43], backgroundColor: '#378ADD', borderRadius: 3, barPercentage: 0.55 },
+      { label: '進学', data: [34,22,17,25], backgroundColor: '#1D9E75', borderRadius: 3, barPercentage: 0.55 }
+    ]
+  },
+  options: { ...baseOpts, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.raw}名` } } } }
+});
+
+new Chart(document.getElementById('stackedChart'), {
+  type: 'bar',
+  data: {
+    labels: years,
+    datasets: [
+      { label: '就職', data: [42,59,50,63], backgroundColor: '#378ADD', stack: 's' },
+      { label: '進学', data: [58,41,50,37], backgroundColor: '#1D9E75', stack: 's' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.raw}%` } } },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { color: '#666' } },
+      y: { stacked: true, max: 100, ticks: { callback: v => v+'%', color: '#666' }, grid: { color: 'rgba(0,0,0,0.06)' } }
+    }
+  }
+});
+
+new Chart(document.getElementById('jobChart'), {
+  type: 'bar',
+  data: {
+    labels: years,
+    datasets: [
+      { label: '事務職', data: [8,17,6,11], backgroundColor: '#378ADD', stack: 'j', borderRadius: 2 },
+      { label: 'サービス・販売', data: [9,5,4,9], backgroundColor: '#AFA9EC', stack: 'j' },
+      { label: '製造・技能', data: [5,4,3,7], backgroundColor: '#5DCAA5', stack: 'j' },
+      { label: '公務員', data: [2,1,0,11], backgroundColor: '#EF9F27', stack: 'j' },
+      { label: 'その他', data: [1,5,4,5], backgroundColor: '#B4B2A9', stack: 'j', borderRadius: 2 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { color: '#666' } },
+      y: { stacked: true, ticks: { color: '#666' }, grid: { color: 'rgba(0,0,0,0.06)' } }
+    }
+  }
+});
+
+new Chart(document.getElementById('eduChart'), {
+  type: 'bar',
+  data: {
+    labels: years,
+    datasets: [
+      { label: '大学', data: [3,5,5,5], backgroundColor: '#1D9E75', stack: 'e', borderRadius: 2 },
+      { label: '短大', data: [7,3,3,3], backgroundColor: '#97C459', stack: 'e' },
+      { label: '専門学校', data: [23,13,9,17], backgroundColor: '#C0DD97', stack: 'e' },
+      { label: 'その他', data: [1,1,0,0], backgroundColor: '#D3D1C7', stack: 'e', borderRadius: 2 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { color: '#666' } },
+      y: { stacked: true, ticks: { color: '#666' }, grid: { color: 'rgba(0,0,0,0.06)' } }
+    }
+  }
+});
+</script>
+</body>
+</html>
