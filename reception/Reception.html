@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>来訪者対応接記録用紙</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Shippori+Mincho:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --bg2: #161922;
+    --surface: #1c2030;
+    --surface2: #232838;
+    --border: #2e3448;
+    --border-light: #252b3b;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: rgba(201,168,76,0.12);
+    --gold-glow: rgba(201,168,76,0.25);
+    --accent: #4a8fe8;
+    --accent-light: rgba(74,143,232,0.12);
+    --text: #e8eaf0;
+    --text-sub: #9ba3b8;
+    --text-muted: #5c6480;
+    --danger: #e05252;
+    --danger-dim: rgba(224,82,82,0.12);
+    --success: #4caf82;
+    --success-dim: rgba(76,175,130,0.12);
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    --shadow-lg: 0 12px 48px rgba(0,0,0,0.6);
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201,168,76,0.07) 0%, transparent 70%);
+  }
+
+  /* ===== WRAPPER ===== */
+  .main-wrap {
+    background: var(--bg2);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(201,168,76,0.08);
+    overflow: hidden;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ===== HEADER ===== */
+  .app-header {
+    background: linear-gradient(135deg, #0d1520 0%, #1a2235 50%, #0f1a2a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 22px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .app-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.04) 50%, transparent 100%);
+    pointer-events: none;
+  }
+  .app-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 32px; right: 32px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.5;
+  }
+  .app-header h1 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.45rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--gold-light);
+    text-shadow: 0 0 30px rgba(201,168,76,0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .app-header h1 .icon-badge {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--gold), #a07830);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(201,168,76,0.3);
+  }
+  .app-header .subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+  }
+  .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ===== TABS ===== */
+  .tabs {
+    display: flex;
+    background: #0d1118;
+    padding: 0 32px;
+    gap: 2px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    padding: 12px 26px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    transition: all 0.22s;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    position: relative;
+  }
+  .tab:hover { color: var(--text-sub); }
+  .tab.active {
+    color: var(--gold-light);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ===== VIEW ===== */
+  .view { display: none; padding: 28px 32px; }
+  .view.active { display: block; }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border: none; border-radius: 7px;
+    font-family: inherit; font-size: 0.8rem; font-weight: 500;
+    cursor: pointer; transition: all 0.18s; letter-spacing: 0.05em;
+    white-space: nowrap; position: relative;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #3a7bd5, #2563b8);
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(58,123,213,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(58,123,213,0.4); }
+  .btn-success {
+    background: linear-gradient(135deg, #3d9e70, #2d7a55);
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(61,158,112,0.3);
+  }
+  .btn-success:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(61,158,112,0.4); }
+  .btn-danger {
+    background: linear-gradient(135deg, #d94f4f, #b83535);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(217,79,79,0.25);
+  }
+  .btn-danger:hover { transform: translateY(-1px); }
+  .btn-outline {
+    background: rgba(255,255,255,0.04);
+    color: var(--text-sub);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(4px);
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold-light); background: var(--gold-dim); }
+  .btn-sm { padding: 5px 11px; font-size: 0.75rem; }
+
+  /* header buttons special */
+  .header-actions .btn-outline {
+    color: rgba(255,255,255,0.6);
+    border-color: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.04);
+  }
+  .header-actions .btn-outline:hover {
+    color: var(--gold-light); border-color: var(--gold); background: var(--gold-dim);
+  }
+
+  /* ===== FORM CARD ===== */
+  .form-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+    margin-bottom: 18px;
+    transition: box-shadow 0.2s;
+  }
+  .form-card:hover { box-shadow: 0 0 0 1px rgba(201,168,76,0.1), 0 8px 32px rgba(0,0,0,0.3); }
+  .form-card-header {
+    background: linear-gradient(90deg, var(--surface2), var(--surface));
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  #kigyoHeader::before { display:none; }
+  .form-card-header::before {
+    content: '';
+    width: 3px; height: 14px;
+    background: linear-gradient(180deg, var(--gold), #a07830);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .form-card-body { padding: 20px; }
+
+  /* ===== FORM LAYOUT ===== */
+  .form-top-bar {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap; margin-bottom: 20px;
+  }
+  .form-top-bar .left { display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap; }
+
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  .field-group label {
+    font-size: 0.72rem; color: var(--text-muted); font-weight: 500;
+    letter-spacing: 0.07em; text-transform: uppercase;
+  }
+  .field-group input[type="text"],
+  .field-group input[type="date"],
+  .field-group input[type="time"],
+  .field-group input[type="number"],
+  .field-group select,
+  .field-group textarea {
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    background: var(--bg);
+    color: var(--text);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+  }
+  .field-group input:focus,
+  .field-group select:focus,
+  .field-group textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-dim);
+  }
+  .field-group input::placeholder,
+  .field-group textarea::placeholder { color: var(--text-muted); }
+  .field-group textarea { resize: vertical; min-height: 70px; }
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(0.6); cursor: pointer; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  /* ===== CHECKBOXES ===== */
+  .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .cb-label {
+    display: inline-flex; align-items: center; gap: 7px;
+    cursor: pointer; font-size: 0.82rem; padding: 6px 12px;
+    border-radius: 6px; border: 1px solid var(--border-light);
+    transition: all 0.15s; user-select: none; white-space: nowrap;
+    color: var(--text-sub); background: var(--bg);
+  }
+  .cb-label:hover { border-color: var(--gold); color: var(--gold-light); background: var(--gold-dim); }
+  .cb-label input[type="checkbox"] { display: none; }
+  .cb-box {
+    width: 15px; height: 15px; border: 1.5px solid var(--border);
+    border-radius: 3px; display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.15s; background: var(--surface2);
+  }
+  .cb-label input:checked + .cb-box {
+    background: linear-gradient(135deg, var(--gold), #a07830);
+    border-color: var(--gold);
+  }
+  .cb-label input:checked + .cb-box::after { content: '✓'; color: #1a1200; font-size: 10px; font-weight: 900; }
+  .cb-label input:checked ~ .cb-text { color: var(--gold-light); font-weight: 600; }
+  .cb-label:has(input:checked) { border-color: var(--gold); background: var(--gold-dim); }
+
+  .radio-group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .rb-label {
+    display: inline-flex; align-items: center; gap: 7px;
+    cursor: pointer; font-size: 0.82rem; padding: 6px 12px;
+    border-radius: 6px; border: 1px solid var(--border-light);
+    transition: all 0.15s; user-select: none;
+    color: var(--text-sub); background: var(--bg);
+  }
+  .rb-label:hover { border-color: var(--gold); color: var(--gold-light); background: var(--gold-dim); }
+  .rb-label input[type="radio"] { display: none; }
+  .rb-box {
+    width: 15px; height: 15px; border: 1.5px solid var(--border);
+    border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.15s; background: var(--surface2);
+  }
+  .rb-label input:checked + .rb-box { border-color: var(--gold); }
+  .rb-label input:checked + .rb-box::after {
+    content: ''; width: 7px; height: 7px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  }
+  .rb-label input:checked ~ .rb-text { color: var(--gold-light); font-weight: 600; }
+  .rb-label:has(input:checked) { border-color: var(--gold); background: var(--gold-dim); }
+
+  /* ===== REGION TABLE ===== */
+  .region-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+  .region-table th {
+    background: var(--surface2);
+    color: var(--gold);
+    padding: 9px 14px; text-align: center; font-weight: 600;
+    border: 1px solid var(--border); font-size: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+  .region-table td { border: 1px solid var(--border-light); padding: 6px 12px; text-align: center; }
+  .region-table tr:hover td { background: rgba(201,168,76,0.04); }
+
+  /* ===== LIST VIEW ===== */
+  .list-controls {
+    display: flex; gap: 10px; align-items: center; margin-bottom: 18px; flex-wrap: wrap;
+  }
+  .search-box {
+    flex: 1; min-width: 200px;
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 9px 16px; font-family: inherit; font-size: 0.85rem; outline: none;
+    transition: all 0.15s; background: var(--surface); color: var(--text);
+  }
+  .search-box::placeholder { color: var(--text-muted); }
+  .search-box:focus { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-dim); }
+
+  .records-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .records-table thead tr {
+    background: linear-gradient(90deg, #0d1118, #131825);
+    border-bottom: 1px solid var(--gold);
+  }
+  .records-table th {
+    color: var(--gold);
+    padding: 11px 14px; text-align: left; font-weight: 600;
+    letter-spacing: 0.08em; white-space: nowrap; font-size: 0.74rem;
+  }
+  .records-table td {
+    padding: 11px 14px; border-bottom: 1px solid var(--border-light);
+    vertical-align: middle; color: var(--text-sub);
+  }
+  .records-table td strong { color: var(--text); font-weight: 600; }
+  .records-table tbody tr { transition: background 0.15s; }
+  .records-table tbody tr:hover td { background: rgba(201,168,76,0.05); color: var(--text); }
+  .records-table .actions { display: flex; gap: 6px; justify-content: center; }
+
+  .badge {
+    display: inline-block; padding: 3px 9px; border-radius: 20px;
+    font-size: 0.72rem; font-weight: 700; white-space: nowrap; letter-spacing: 0.06em;
+  }
+  .badge-employment {
+    background: rgba(74,143,232,0.15); color: #6bb3f5;
+    border: 1px solid rgba(74,143,232,0.3);
+  }
+  .badge-education {
+    background: rgba(76,175,130,0.15); color: #6dd4a8;
+    border: 1px solid rgba(76,175,130,0.3);
+  }
+
+  .empty-state {
+    text-align: center; padding: 70px 20px; color: var(--text-muted);
+  }
+  .empty-state .icon { font-size: 3rem; margin-bottom: 14px; opacity: 0.3; }
+  .empty-state p { font-size: 0.88rem; line-height: 1.7; }
+
+  /* ===== SECTION TITLE ===== */
+  .section-title {
+    font-size: 0.72rem; font-weight: 700; color: var(--gold);
+    letter-spacing: 0.12em; text-transform: uppercase;
+    margin: 20px 0 10px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: var(--gold); display: inline-block;
+  }
+
+  /* ===== ALERT ===== */
+  .alert {
+    padding: 12px 18px; border-radius: 8px; margin-bottom: 18px;
+    font-size: 0.84rem; display: flex; align-items: center; gap: 10px;
+    animation: fadeIn 0.25s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  .alert-success {
+    background: var(--success-dim); color: #6dd4a8;
+    border: 1px solid rgba(76,175,130,0.3);
+  }
+  .alert-error {
+    background: var(--danger-dim); color: #f08080;
+    border: 1px solid rgba(224,82,82,0.3);
+  }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    z-index: 100; align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface); border-radius: 14px; padding: 32px;
+    max-width: 420px; width: 90%;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+    animation: slideUp 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes slideUp { from { transform: translateY(24px) scale(0.96); opacity: 0; } to { transform: none; opacity: 1; } }
+  .modal h3 { margin-bottom: 12px; color: var(--danger); font-size: 1rem; }
+  .modal p { font-size: 0.86rem; color: var(--text-sub); margin-bottom: 24px; line-height: 1.7; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* ===== DETAIL VIEW ===== */
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .detail-item { padding: 10px 14px; background: var(--bg); border-radius: 6px; border: 1px solid var(--border-light); }
+  .detail-item .label { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 4px; }
+  .detail-item .value { font-size: 0.88rem; font-weight: 500; }
+  .detail-item.full { grid-column: 1/-1; }
+
+  /* ===== STATS ===== */
+  .stats-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .stat-card {
+    flex: 1; min-width: 120px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-light);
+    padding: 16px 20px; text-align: center;
+    position: relative; overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .stat-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .stat-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .stat-card:hover::before { opacity: 1; }
+  .stat-card .num {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 2rem; font-weight: 700; color: var(--gold-light);
+    line-height: 1;
+  }
+  .stat-card .lbl { font-size: 0.72rem; color: var(--text-muted); margin-top: 6px; letter-spacing: 0.06em; }
+
+  /* ===== SELECT in list ===== */
+  select.btn-outline {
+    background: var(--surface); color: var(--text-sub);
+    border: 1px solid var(--border); border-radius: 8px;
+  }
+  select.btn-outline:hover { border-color: var(--gold); color: var(--gold-light); }
+  select.btn-outline option { background: var(--surface2); color: var(--text); }
+
+  .records-table th.sortable {
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .records-table th.sortable:hover { color: var(--gold-light); }
+  .records-table th.sort-active { color: var(--gold-light); }
+  .sort-icon { font-size: 0.7rem; opacity: 0.6; margin-left: 3px; }
+  .sort-active .sort-icon { opacity: 1; color: var(--gold); }
+
+  @media (max-width: 640px) {
+    body { padding: 12px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .view { padding: 16px; }
+    .app-header { padding: 16px; }
+    .tabs { padding: 0 16px; }
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<div class="main-wrap">
+  <div class="app-header">
+    <div>
+      <h1><span class="icon-badge">📋</span>来訪者対応接記録</h1>
+      <div class="subtitle">VISITOR RECEPTION RECORD SYSTEM</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="exportExcel()">📊 就職Excel出力</button>
+      <button class="btn btn-outline" onclick="exportExcelGakkou()">📊 進学Excel出力</button>
+      <button class="btn btn-outline" onclick="exportJSON()">💾 エクスポート</button>
+      <button class="btn btn-outline" onclick="document.getElementById('importFile').click()">📂 インポート</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(this)">
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('form')">＋ 新規記録</div>
+    <div class="tab" onclick="switchTab('list')">≡ 記録一覧</div>
+  </div>
+
+  <!-- ===== FORM VIEW ===== -->
+  <div class="view active" id="view-form">
+    <div id="formAlert"></div>
+
+    <!-- TOP: 種別・受付No・来訪日・来訪時刻・応対者 -->
+    <div class="form-card">
+      <div class="form-card-header">基本情報</div>
+      <div class="form-card-body">
+        <div style="display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;">
+          <div class="field-group">
+            <label>種　別</label>
+            <div class="radio-group">
+              <label class="rb-label"><input type="radio" name="category" value="就職" checked tabindex="1"><span class="rb-box"></span><span class="rb-text">就　職</span></label>
+              <label class="rb-label"><input type="radio" name="category" value="進学" tabindex="2"><span class="rb-box"></span><span class="rb-text">進　学</span></label>
+            </div>
+          </div>
+          <div class="field-group">
+            <label>受付 No. <span style="font-size:0.72rem;color:var(--gold);font-weight:400;letter-spacing:0.04em;">自動採番</span></label>
+            <input type="text" id="f_receiptNo" readonly tabindex="-1" style="width:110px;background:var(--bg2);cursor:default;font-weight:700;color:var(--gold-light);letter-spacing:0.12em;border-color:var(--border)">
+          </div>
+          <div class="field-group">
+            <label>来　訪　日</label>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <input type="date" id="f_date" tabindex="3" style="width:150px;">
+              <span id="f_weekday" style="font-size:0.85rem;color:var(--gold-light);font-weight:600;white-space:nowrap;min-width:40px;"></span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label>来訪時刻</label>
+            <input type="time" id="f_time" step="600" tabindex="4" style="width:120px;">
+          </div>
+          <div class="field-group" style="flex:1;min-width:140px;">
+            <label>応　対　者</label>
+            <input type="text" id="f_handler" list="handlerList" placeholder="担当者名" tabindex="5" oninput="updateHandlerList()">
+            <datalist id="handlerList"></datalist>
+          </div>
+        </div>
+        <div id="editingId" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- 企業／学校情報 -->
+    <div class="form-card">
+      <div class="form-card-header" style="display:flex;align-items:center;justify-content:flex-end;position:relative;min-height:36px;" id="kigyoHeader">
+        <span id="kigyoCardHeader" style="position:absolute;left:50%;transform:translateX(-50%);font-size:1rem;font-weight:700;letter-spacing:0.18em;color:var(--gold-light);text-shadow:0 0 12px rgba(201,168,76,0.4);white-space:nowrap;pointer-events:none;">企　業　情　報</span>
+        <!-- 進学のみ表示 -->
+        <div id="schoolTypeWrap" style="display:none;">
+          <div class="radio-group" style="gap:6px;flex-wrap:nowrap;justify-content:flex-end;">
+            <label class="rb-label" style="padding:4px 10px;"><input type="radio" name="schoolType" value="大学" tabindex="6"><span class="rb-box"></span><span class="rb-text">大　学</span></label>
+            <label class="rb-label" style="padding:4px 10px;"><input type="radio" name="schoolType" value="短大" tabindex="7"><span class="rb-box"></span><span class="rb-text">短　大</span></label>
+            <label class="rb-label" style="padding:4px 10px;"><input type="radio" name="schoolType" value="専門学校" tabindex="8"><span class="rb-box"></span><span class="rb-text">専門学校</span></label>
+            <label class="rb-label" style="padding:4px 10px;"><input type="radio" name="schoolType" value="受験産業" tabindex="9"><span class="rb-box"></span><span class="rb-text">受験産業</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="form-card-body">
+        <div style="display:grid;grid-template-columns:7fr 3fr;gap:16px;margin-bottom:14px;">
+          <div class="field-group">
+            <label id="companyLabel">企　業　名</label>
+            <input type="text" id="f_company" placeholder="企業名を入力" tabindex="9">
+          </div>
+          <div class="field-group">
+            <label>訪問者氏名</label>
+            <input type="text" id="f_visitor" placeholder="訪問者氏名を入力" tabindex="10">
+          </div>
+        </div>
+
+        <!-- 地区 & 寮の有無 -->
+        <div class="section-title">地　区 ／ 寮 の 有 無</div>
+        <div style="display:grid;grid-template-columns:7fr 3fr;gap:16px;align-items:flex-end;">
+          <div class="field-group">
+            <label>地　　区</label>
+            <input type="text" id="f_region" list="regionList" placeholder="地区を選択または入力" tabindex="11" onchange="toggleRegionOther()" oninput="toggleRegionOther()">
+            <datalist id="regionList">
+              <option value="鹿児島県">
+              <option value="宮崎県">
+              <option value="九州">
+              <option value="関西">
+              <option value="中京">
+              <option value="関東">
+              <option value="その他">
+            </datalist>
+          </div>
+          <div class="field-group">
+            <label>寮　の　有　無</label>
+            <div class="radio-group" style="gap:0;">
+              <label class="rb-label" style="flex:1;justify-content:center;border-radius:7px 0 0 7px;border-right:none;"><input type="radio" name="dorm" id="dorm_yes" value="有" tabindex="12"><span class="rb-box"></span><span class="rb-text">有</span></label>
+              <label class="rb-label" style="flex:1;justify-content:center;border-radius:0 7px 7px 0;"><input type="radio" name="dorm" id="dorm_no" value="無" checked tabindex="13"><span class="rb-box"></span><span class="rb-text">無</span></label>
+            </div>
+          </div>
+        </div>
+        <div id="regionOtherWrap" style="display:none;margin-top:10px;">
+          <div class="field-group">
+            <label>その他の県</label>
+            <input type="text" id="f_regionOther" placeholder="県名を入力" tabindex="14">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 就職のみ表示するセクション -->
+    <div id="employmentSections">
+      <!-- 業務内容 & 性別・推薦・学科 -->
+      <div class="grid-2" style="gap:16px;">
+        <div class="form-card">
+          <div class="form-card-header">業　務　内　容</div>
+          <div class="form-card-body">
+            <div class="checkbox-group" style="flex-direction:column;align-items:flex-start;gap:8px;">
+              <label class="cb-label"><input type="checkbox" data-field="work" value="事務" tabindex="15"><span class="cb-box"></span><span class="cb-text">事　務</span></label>
+              <label class="cb-label"><input type="checkbox" data-field="work" value="販売" tabindex="16"><span class="cb-box"></span><span class="cb-text">販　売</span></label>
+              <label class="cb-label"><input type="checkbox" data-field="work" value="サービス" tabindex="17"><span class="cb-box"></span><span class="cb-text">サービス</span></label>
+              <label class="cb-label"><input type="checkbox" data-field="work" value="製造（土石・金属材料・化学製品）" tabindex="18"><span class="cb-box"></span><span class="cb-text">製造（土石・金属材料・化学製品）</span></label>
+              <label class="cb-label"><input type="checkbox" data-field="work" value="製造（金属製品・機械製品）" tabindex="19"><span class="cb-box"></span><span class="cb-text">製造（金属製品・機械製品）</span></label>
+              <label class="cb-label"><input type="checkbox" data-field="work" value="製造（飲料・食料品）" tabindex="20"><span class="cb-box"></span><span class="cb-text">製造（飲料・食料品）</span></label>
+              <label class="cb-label"><input type="checkbox" data-field="work" value="製造（紡績・衣料・繊維製品）" tabindex="21"><span class="cb-box"></span><span class="cb-text">製造（紡績・衣料・繊維製品）</span></label>
+              <label class="cb-label"><input type="checkbox" data-field="work" value="製造（その他製造）" tabindex="22"><span class="cb-box"></span><span class="cb-text">製造（その他製造）</span></label>
+              <label class="cb-label"><input type="checkbox" data-field="work" value="建設・機械・電気作業" tabindex="23"><span class="cb-box"></span><span class="cb-text">建設・機械・電気作業</span></label>
+              <label class="cb-label"><input type="checkbox" data-field="work" value="採掘" tabindex="24"><span class="cb-box"></span><span class="cb-text">採　掘</span></label>
+              <label class="cb-label"><input type="checkbox" data-field="work" value="その他の職業" tabindex="25" onchange="toggleWorkOther(this)"><span class="cb-box"></span><span class="cb-text">その他の職業</span></label>
+            <div id="workOtherWrap" style="display:none;margin-top:4px;padding-left:4px;">
+              <input type="text" id="f_workOther" placeholder="職業を入力" tabindex="25" style="width:100%;font-size:0.85rem;">
+            </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="form-card" style="display:flex;flex-direction:column;">
+              <div class="form-card-header">性　別</div>
+              <div class="form-card-body" style="flex:1;display:flex;align-items:center;">
+                <div class="radio-group">
+                  <label class="rb-label"><input type="radio" name="gender" value="男" tabindex="26"><span class="rb-box"></span><span class="rb-text">男</span></label>
+                  <label class="rb-label"><input type="radio" name="gender" value="女" tabindex="27"><span class="rb-box"></span><span class="rb-text">女</span></label>
+                  <label class="rb-label"><input type="radio" name="gender" value="不問" tabindex="28"><span class="rb-box"></span><span class="rb-text">不　問</span></label>
+                </div>
+              </div>
+            </div>
+            <div class="form-card" style="display:flex;flex-direction:column;">
+              <div class="form-card-header">推薦人数</div>
+              <div class="form-card-body" style="flex:1;display:flex;align-items:center;">
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <div class="radio-group" style="flex-wrap:nowrap;">
+                    <label class="rb-label"><input type="radio" name="recommend" id="rec1" value="1" tabindex="29" onchange="toggleRecOther()"><span class="rb-box"></span><span class="rb-text">1 名</span></label>
+                    <label class="rb-label"><input type="radio" name="recommend" id="rec2" value="2" tabindex="30" onchange="toggleRecOther()"><span class="rb-box"></span><span class="rb-text">2 名</span></label>
+                    <label class="rb-label"><input type="radio" name="recommend" id="recOtherCb" value="other" tabindex="31" onchange="toggleRecOther()"><span class="rb-box"></span><span class="rb-text">その他</span></label>
+                  </div>
+                  <div class="field-group" id="recOtherWrap" style="display:none;">
+                    <input type="number" id="f_recOther" min="1" tabindex="32" placeholder="人数" style="width:80px;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <div class="form-card-header">募集・学科</div>
+            <div class="form-card-body">
+              <div class="checkbox-group">
+                <label class="cb-label"><input type="checkbox" data-field="dept" value="S" tabindex="33"><span class="cb-box"></span><span class="cb-text">S</span></label>
+                <label class="cb-label"><input type="checkbox" data-field="dept" value="G" tabindex="34"><span class="cb-box"></span><span class="cb-text">G</span></label>
+                <label class="cb-label"><input type="checkbox" data-field="dept" value="A" tabindex="35"><span class="cb-box"></span><span class="cb-text">A</span></label>
+                <label class="cb-label"><input type="checkbox" data-field="dept" value="M" tabindex="36"><span class="cb-box"></span><span class="cb-text">M</span></label>
+                <label class="cb-label"><input type="checkbox" data-field="dept" value="B" tabindex="37"><span class="cb-box"></span><span class="cb-text">B</span></label>
+                <label class="cb-label"><input type="checkbox" data-field="dept" value="不問" tabindex="38"><span class="cb-box"></span><span class="cb-text">不　問</span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <div class="form-card-header">資　料　等</div>
+            <div class="form-card-body">
+              <div class="checkbox-group" style="flex-wrap:wrap;gap:8px;">
+                <label class="cb-label"><input type="checkbox" data-field="material" value="求人票" tabindex="39"><span class="cb-box"></span><span class="cb-text">求　人　票</span></label>
+                <label class="cb-label"><input type="checkbox" data-field="material" value="企業案内" tabindex="40"><span class="cb-box"></span><span class="cb-text">企　業　案　内</span></label>
+                <label class="cb-label"><input type="checkbox" data-field="material" value="その他" tabindex="41" onchange="toggleMaterialOther(this)"><span class="cb-box"></span><span class="cb-text">その　他</span></label>
+              </div>
+              <div class="field-group" id="materialOtherWrap" style="display:none;margin-top:10px;">
+                <label>その他（内容）</label>
+                <input type="text" id="f_materialOther" placeholder="その他の資料名" tabindex="42">
+              </div>
+            </div>
+          </div>
+
+          <!-- 会社見学 & インターンシップ（資料等の直下） -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="form-card">
+              <div class="form-card-header">会社見学</div>
+              <div class="form-card-body">
+                <div class="radio-group">
+                  <label class="rb-label"><input type="radio" name="tour" id="tour_yes" value="有" tabindex="43"><span class="rb-box"></span><span class="rb-text">有</span></label>
+                  <label class="rb-label"><input type="radio" name="tour" id="tour_no" value="無" tabindex="44"><span class="rb-box"></span><span class="rb-text">無</span></label>
+                </div>
+              </div>
+            </div>
+            <div class="form-card">
+              <div class="form-card-header">インターンシップ</div>
+              <div class="form-card-body">
+                <div class="radio-group">
+                  <label class="rb-label"><input type="radio" name="intern" id="intern_yes" value="有" tabindex="45"><span class="rb-box"></span><span class="rb-text">有</span></label>
+                  <label class="rb-label"><input type="radio" name="intern" id="intern_no" value="無" tabindex="46"><span class="rb-box"></span><span class="rb-text">無</span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 求める人材 & 企業アピール -->
+      <div class="grid-2" style="gap:16px;">
+        <div class="form-card">
+          <div class="form-card-header">求める人材</div>
+          <div class="form-card-body">
+            <textarea id="f_talent" placeholder="求める人材の内容を入力" tabindex="47" style="width:100%;min-height:100px;"></textarea>
+          </div>
+        </div>
+        <div class="form-card">
+          <div class="form-card-header">企業アピール</div>
+          <div class="form-card-body">
+            <textarea id="f_appeal" placeholder="企業アピールの内容を入力" tabindex="48" style="width:100%;min-height:100px;"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 応対記録 -->
+    <div class="form-card" id="recordSection">
+      <div class="form-card-header">応　対　記　録</div>
+      <div class="form-card-body">
+        <textarea id="f_record" placeholder="応対記録を入力" tabindex="49" style="width:100%;min-height:110px;"></textarea>
+      </div>
+    </div>
+
+    <!-- 備考 -->
+    <div class="form-card">
+      <div class="form-card-header">備　　考</div>
+      <div class="form-card-body">
+        <textarea id="f_note" placeholder="備考・特記事項を入力" tabindex="50" style="width:100%;min-height:90px;"></textarea>
+      </div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
+      <button class="btn btn-outline" tabindex="51" onclick="resetForm()">🔄 リセット</button>
+      <button class="btn btn-success" tabindex="52" onclick="saveRecord()" id="saveBtn">💾 保存する</button>
+    </div>
+  </div>
+
+  <!-- ===== LIST VIEW ===== -->
+  <div class="view" id="view-list">
+    <div class="stats-bar" id="statsBar"></div>
+
+    <div class="list-controls">
+      <input class="search-box" type="text" id="searchBox" placeholder="🔍 企業名・訪問者名・担当者で検索..." oninput="renderList()">
+      <div style="display:flex;align-items:center;gap:6px;">
+        <label class="rb-label" style="padding:8px 14px;"><input type="radio" name="listCategory" value="" checked onchange="filterCategory(this.value)"><span class="rb-box"></span><span class="rb-text">すべて</span></label>
+        <label class="rb-label" style="padding:8px 14px;"><input type="radio" name="listCategory" value="就職" onchange="filterCategory(this.value)"><span class="rb-box"></span><span class="rb-text">就　職</span></label>
+        <label class="rb-label" style="padding:8px 14px;"><input type="radio" name="listCategory" value="進学" onchange="filterCategory(this.value)"><span class="rb-box"></span><span class="rb-text">進　学</span></label>
+      </div>
+      <button class="btn btn-primary" onclick="switchTab('form')">＋ 新規追加</button>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-body" style="padding:0;overflow-x:auto;">
+        <table class="records-table">
+          <thead>
+            <tr>
+              <th class="sortable" onclick="setSort('receiptNo')" id="th-receiptNo">受付No <span class="sort-icon">↕</span></th>
+              <th class="sortable" onclick="setSort('date')" id="th-date">日付 <span class="sort-icon">↓</span></th>
+              <th id="th-company">企業名／学校名</th>
+              <th>訪問者</th>
+              <th>担当者</th>
+              <th>種別</th>
+              <th>地区</th>
+              <th style="text-align:center;">操作</th>
+            </tr>
+          </thead>
+          <tbody id="recordsBody"></tbody>
+        </table>
+        <div id="emptyState" class="empty-state" style="display:none;">
+          <div class="icon">📭</div>
+          <p>記録がありません。「新規記録」から追加してください。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal">
+    <h3>🗑️ 記録を削除</h3>
+    <p id="deleteModalMsg">この記録を削除してもよろしいですか？<br>削除した記録は元に戻せません。</p>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeDeleteModal()">キャンセル</button>
+      <button class="btn btn-danger" onclick="confirmDelete()">削除する</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const STORAGE_KEY = 'visitor_records_v2';
+const WEEKDAYS = ['日','月','火','水','木','金','土'];
+const REGIONS = ['鹿児島県','宮崎県','九州','関西','中京','関東','その他'];
+
+const EXCEL_SEED_DATA = [{"id": "県外_3", "receiptNo": "w0001", "category": "就職", "date": "2026-04-14", "company": "豊田鉄工株式会社 （トヨテツ）", "visitor": "加知　真一", "work": "製造（金属製品･機械製品）", "region": "中京", "dormitory": "○", "gender": "不問", "count": "全体50 何名でも", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "", "appeal": "新年度挨拶。愛知県にあり，車の車体部品（ボデーピラーやシャシ部品，樹脂内装）の金属，樹脂加工をしている企業。仕事内容はプレスや組み立て，また，機械の保全作業もしている。食堂付きの寮もあり。主に愛知県内の工場（九州・東北にもあり）。", "handler": "米倉", "material": "企業案内", "note": "", "companyType": "県外", "fromExcel": true}, {"id": "県外_4", "receiptNo": "w0002", "category": "就職", "date": "2026-04-15", "company": "JR貨物鉄道株式会社九州支社", "visitor": "中山　昇 岩野　有記", "work": "その他職業", "region": "九州", "dormitory": "○", "gender": "不問", "count": "九州450名 鹿児島15名", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "", "appeal": "鉄道の4つの分野（貨物駅業務・車両の検査修繕業務・施設電気設備の保全業務・運転士）のエキスパート職種。鹿児島駅を中心に九州各県で採用可能。応募前職場見学も１・２年生も可。", "handler": "高吉", "material": "企業案内", "note": "", "companyType": "県外", "fromExcel": true}, {"id": "県外_5", "receiptNo": "w0003", "category": "就職", "date": "2026-04-15", "company": "ワタキューセイモア株式会社", "visitor": "山下　龍児 梅木　隆広", "work": "サービス", "region": "宮崎", "dormitory": "", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "", "appeal": "佐賀市に本社がある都城のクリーニング工場。昨年度本校より2名入社。日勤。", "handler": "高吉", "material": "企業案内", "note": "", "companyType": "県外", "fromExcel": true}, {"id": "県外_6", "receiptNo": "w0004", "category": "就職", "date": "2026-04-15", "company": "大三ミート産業株式会社", "visitor": "原之園　唯", "work": "販売", "region": "宮崎", "dormitory": "", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "", "appeal": "都城ダイレックス内（5店舗）の精肉加工・販売の仕事。255,000からの給与スタート。曜日のシフトあるが日勤。", "handler": "高吉", "material": "企業案内", "note": "", "companyType": "県外", "fromExcel": true}, {"id": "県外_7", "receiptNo": "w0005", "category": "就職", "date": "2026-05-12", "company": "株式会社電洋社", "visitor": "小田島　雅之 近藤　宏二", "work": "建設・機械・電気作業", "region": "関東", "dormitory": "○", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "", "appeal": "千葉県の東京電力元請け会社。架空配電線工事、通信工事、電気設備工事等を行っている。寮に関しては独身寮となる。福利厚生はＫＤＤＩに準ずるものが多い。千葉ロッテのオフィシャルスポンサー。", "handler": "米倉", "material": "企業案内", "note": "", "companyType": "県外", "fromExcel": true}, {"id": "県外_8", "receiptNo": "w0006", "category": "就職", "date": "2026-05-14", "company": "株式会社　三徳", "visitor": "伊藤　浩友", "work": "サービス", "region": "関東", "dormitory": "○", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "", "appeal": "関東（東京・横浜中心）のスーパー。販売からベーカリーまで多業種。寮もしっかり完備しており女性でも安心して就業できる。4年前の女子生徒が頑張っている。", "handler": "高吉", "material": "企業案内", "note": "", "companyType": "県外", "fromExcel": true}, {"id": "県外_9", "receiptNo": "w0007", "category": "就職", "date": "2026-05-19", "company": "東京パワーテクノロジー株式会社", "visitor": "総務部人材開発グループ 薬師寺　恵", "work": "建設・機械・電気作業", "region": "関東", "dormitory": "○", "gender": "不問", "count": "昨年実績で 44人", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "発電に関わる施工、オペレーション、環境、保安、溶接に 関わる管理が出来る人材", "appeal": "発電施設の施工・オペレーション・環境・保安・溶接まで、エネルギーインフラを幅広く支える仕事に携われる。充実した研修制度で未経験からでも着実にスキルアップでき、福利厚生も充実。社会を根底から支えるやりがいある現場で、確かな技術者を目指せる企業だと思います。※東京電力100%出資の優良企業", "handler": "吉永", "material": "企業案内", "note": "就職希望者には、相談次第でインターンシップや社内見学を希望すれば旅費を出すようです。", "companyType": "県外", "fromExcel": true}, {"id": "県外_10", "receiptNo": "w0008", "category": "就職", "date": "2026-05-19", "company": "株式会社木内設計", "visitor": "経営企画室企画課 木内　章人", "work": "建設・機械・電気作業", "region": "関西", "dormitory": "○", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "電気設備の仕事に興味があり、資格取得に意欲的で全国各地での勤務に挑戦したい人材を求む。", "appeal": "日本全国のプラントや工場で電気設備の点検・修繕を行う現場エンジニアの仕事。年間休日120日以上で土日祝・年末年始はしっかり休める。資格取得費用は会社負担で報奨金最大13万円支給、社員の平均資格保有数は4.9個とスキルアップできる環境が整っている。家賃補助月3万円・引越費用全額負担など、地元を離れて働く際のサポートも手厚い。", "handler": "吉永", "material": "企業案内", "note": "", "companyType": "県外", "fromExcel": true}, {"id": "県外_11", "receiptNo": "w0009", "category": "就職", "date": "2026-05-19", "company": "艶栄工業株式会社", "visitor": "九州事務所所長 福田麻希", "work": "製造（紡績・衣類・繊維製品）", "region": "中京", "dormitory": "○", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "チームワークを大切にして責任感を持ち、仕事に意欲的に取り組める人材。", "appeal": "創業77年以上の染色加工の専門企業。衣類やインテリア布製品に色・機能・質感を与える技術職で、自分が手がけた製品が世界中の人々の暮らしに届く達成感がある。社員同士がアットホームな家族的な職場で、実力を正当に評価してもらえる環境が整っている。", "handler": "吉永", "material": "企業案内", "note": "今期、来期卒業の生徒に対して、インターンシップや社内見学を希望すれば旅費出しますとのこと。", "companyType": "県外", "fromExcel": true}, {"id": "県外_12", "receiptNo": "w0010", "category": "就職", "date": "2026-05-21", "company": "双信電機株式会社", "visitor": "都城人事課　阿多口　奈津美", "work": "建設・機械・電気作業", "region": "宮崎", "dormitory": "○", "gender": "不問", "count": "4人程度", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "高い専門性と技術力を磨き、アジアから世界へ向けた新時代のものづくりに挑戦し続ける意欲のある人材", "appeal": "宮崎に根ざし、EVや医療機器の最先端部品を作る安定企業。年間休日120日で有給取得率は75%を超え、充実した社宅制度や手厚い家族手当など福利厚生が非常に高いレベルで整っている。仕事と生活の両立を応援する「ひなたの極」の認証も受けており、県内で腰を据えて長く安心して働き続けられる環境がある。", "handler": "吉永", "material": "企業案内", "note": "", "companyType": "県外", "fromExcel": true}, {"id": "県外_13", "receiptNo": "w0011", "category": "就職", "date": "2026-05-22", "company": "佐川急便　都城営業所", "visitor": "安全推進課係長　山崎　修", "work": "サービス", "region": "宮崎", "dormitory": "", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "未経験歓迎。明るく誠実にお客様と向き合いながら物流の現場で活躍できる人材を求む。", "appeal": "地域の人々の暮らしを支え続ける物流の大手企業。都城営業所では充実した研修制度と先輩によるフォロー体制が整い、高校を卒業したばかりでも安心してスタートできる環境。努力と成長を公正に評価し、年齢・経験を問わずキャリアアップが狙える職場です。", "handler": "吉永", "material": "企業案内", "note": "", "companyType": "県外", "fromExcel": true}, {"id": "県外_14", "receiptNo": "w0012", "category": "就職", "date": "2026-05-25", "company": "プロマ精工株式会社", "visitor": "設計部　丸山　祐二", "work": "製造（金属製品･機械製品）", "region": "宮崎", "dormitory": "", "gender": "不問", "count": "", "gradeG": false, "gradeA": false, "gradeM": true, "gradeB": false, "tour": true, "wanted": "ものづくりが好きで主体性があり、新しいことに挑戦する向上心と、チームの調和やルールを大切にできる人材", "appeal": "産業機械の設計・製造を通じ、工場の省力化や自動化を支える技術集団。未経験からでも「ものづくり」のプロを目指せる環境があり、自ら考え挑戦する姿勢を全力でバックアップしている。自分の手がけた機械が形になり、社会を動かす大きなやりがいと達成感がある。", "handler": "吉永", "material": "企業案内", "note": "友晃電機㈱グループ埼玉県戸田市にあり、海外での業務がある。", "companyType": "県外", "fromExcel": true}, {"id": "県外_15", "receiptNo": "w0013", "category": "就職", "date": "2026-05-25", "company": "株式会社きりしまベーカリー", "visitor": "代表取締役社長 隅川　祐二", "work": "製造（飲料・食料品）", "region": "宮崎", "dormitory": "", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "チームワークを大切にしながら、主体的に美味しいパン作りに貢献できる人材。", "appeal": "地元で長年愛され、1日の売り上げが地域No.1のである。充実した研修制度や、完全週休2日制、住宅手当など、安心して働ける福利厚生。地元の豊かな食材を使ったこだわりのパン作りを通じて、地域に貢献して来た。", "handler": "吉永", "material": "企業案内", "note": "", "companyType": "県外", "fromExcel": true}, {"id": "県外_16", "receiptNo": "w0014", "category": "就職", "date": "2026-05-26", "company": "株式会社九州コガネイ", "visitor": "管理部部長　島田　二郎", "work": "製造（金属製品･機械製品）", "region": "宮崎", "dormitory": "", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "チームと協力し高品質なモノづくりに真面目に取組む人。やる気と元気があり時間を守る誠実な人材を求め、仕事と私生活の双方の充実を後押しします。", "appeal": "年間休日129日の完全週休2日制（土日祝）で、仕事とプライベートを両立できる環境。空調完備の快適なクリーン工場にて、自動車や半導体産業を支える駆動機器のモノづくりに携わる。新入社員研修などの教育体制が充実しており、未経験からでも安心して部品加工や組立の技術を習得可能。地元宮崎に根差し、チームワークを大切にしながら安定して長く働ける。", "handler": "吉永", "material": "企業案内", "note": "ロボットアイディア甲子園のパンフレットと参加を促された。機械科の先生と会いたい様です。", "companyType": "県外", "fromExcel": true}, {"id": "県内_3", "receiptNo": "k0001", "category": "就職", "date": "2026-04-16", "company": "日本工業検査株式会社", "visitor": "元川　康正", "work": "その他職業", "region": "その他", "dormitory": "○", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "", "appeal": "現在日本で劣化・老朽化している構築物・建物等の検査のみをする優良企業。志布志コンビナートはもとより、東京スカイツリー・富士急ハイランド・東京ディズニーランド・造船所など多岐にわたる。25100円スタートの賞与3回。８：３０から１７：３０の日勤。", "handler": "高吉", "material": "求人票、企業案内", "note": "", "companyType": "県内", "fromExcel": true}, {"id": "県内_4", "receiptNo": "k0002", "category": "就職", "date": "2026-04-21", "company": "株式会社鹿児島電気サービス", "visitor": "古川　竜一 徳永　裕一", "work": "建設・機械・電気作業", "region": "鹿児島", "dormitory": "", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "", "appeal": "県内（鹿屋・志布志も含む）電信柱にかかる倒木や樹木の伐採・撤去の仕事。九州電力の同型企業。", "handler": "高吉", "material": "企業案内", "note": "", "companyType": "県内", "fromExcel": true}, {"id": "県内_5", "receiptNo": "k0003", "category": "就職", "date": "2026-04-22", "company": "鹿児島くみあいチキンフーズ株式会社", "visitor": "竜口　みなみ", "work": "製造（飲料・食料品）", "region": "鹿児島", "dormitory": "", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "", "appeal": "卵の孵化から食肉加工までを一手に引き受けている全農の子会社。大隅・宮崎ともに支社あり。日・祝休日の日勤。", "handler": "高吉", "material": "企業案内", "note": "", "companyType": "県内", "fromExcel": true}, {"id": "県内_6", "receiptNo": "k0004", "category": "就職", "date": "2026-05-01", "company": "株式会社錦城", "visitor": "元田　光明 持田　恭子", "work": "建設・機械・電気作業", "region": "鹿児島", "dormitory": "", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "", "appeal": "新年度挨拶。地元企業で設計・測量等を行う。", "handler": "米倉", "material": "企業案内", "note": "", "companyType": "県内", "fromExcel": true}, {"id": "県内_7", "receiptNo": "k0005", "category": "就職", "date": "2026-05-12", "company": "株式会社鹿大丸", "visitor": "野田　信幸", "work": "建設・機械・電気作業", "region": "鹿児島", "dormitory": "", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "", "appeal": "県内の９９％公共事業の総合建設会社。実務は下請け会社がするので施工管理を採用してる。役場が完全週休２日制なのでGWも９連休だった。８：００～１７：００の日勤。ただし、社宅完全無料（光熱費除く）ただし、年度末決算期は土曜日出勤もある。", "handler": "高吉", "material": "企業案内", "note": "", "companyType": "県内", "fromExcel": true}, {"id": "県内_8", "receiptNo": "k0006", "category": "就職", "date": "2026-05-12", "company": "ネッツトヨタ鹿児島株式会社", "visitor": "濵田　政弘", "work": "サービス", "region": "鹿児島", "dormitory": "", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "", "appeal": "働きながら資格を取得か、企業奨学制度を活用して進学して資格取得後働くか。残業もほぼなし、かなりブラックからの脱却を図っている。県内ディーラー異動あり。借上社宅制度。", "handler": "米倉", "material": "企業案内", "note": "", "companyType": "県内", "fromExcel": true}, {"id": "県内_9", "receiptNo": "k0007", "category": "就職", "date": "2026-05-12", "company": "ヤマダホルディングス株式会社", "visitor": "佐藤　明", "work": "サービス", "region": "鹿児島", "dormitory": "", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "", "appeal": "都城のヤマダに昨年度採用。エリア採用等福利厚生も良い。3年以内の10%切るなど、若田社員採用・育成に積極的。有休も多い。研修制度充実している。", "handler": "高吉", "material": "企業案内", "note": "", "companyType": "県内", "fromExcel": true}, {"id": "県内_10", "receiptNo": "k0008", "category": "就職", "date": "2026-05-22", "company": "山川造船鉄工株式会社", "visitor": "総務部係長　大関賢斗", "work": "製造（その他製品）", "region": "鹿児島", "dormitory": "○", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "体を動かすことが好きで、明るくコミュニケーションが取れる人。未経でも歓迎。", "appeal": "創業95年超、鹿児島県内トップクラスの船舶修理企業。フェリー・漁船など多様な船を手がけ、高い技術力で全国から信頼を得ている。入社後に必要資格を取得でき費用は全額会社負担。月2万円の社員寮完備で、未経験でも安心してプロを目指せる環境が整っている。", "handler": "吉永", "material": "企業案内", "note": "会社見学は、送迎をや交通費を支給", "companyType": "県内", "fromExcel": true}, {"id": "県内_11", "receiptNo": "k0009", "category": "就職", "date": "2026-05-23", "company": "坂元酒造株式会社", "visitor": "総務部係長　永元　健太", "work": "製造（飲料・食料品）", "region": "鹿児島", "dormitory": "", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "伝統製法を支える誠実なものづくり人材／製造・品質管理・営業・研究開発職に意欲的な人材", "appeal": "江戸時代後期創業、200年以上の歴史を持つ壺造り黒酢の製造元。化石燃料不使用・無添加の環境にやさしい伝統製法を守りながら、国内外へ展開。地理的表示（GI）保護制度の全国第一弾認定を受け、品質と革新を追求し続ける企業。", "handler": "吉永", "material": "企業案内", "note": "卒業生が掲載されたパンフレット 5/24:18:00 テレビ朝日系で放映", "companyType": "県内", "fromExcel": true}, {"id": "県内_12", "receiptNo": "k0010", "category": "就職", "date": "2026-05-26", "company": "株式会社クラフティア", "visitor": "鹿児島支部　総務課　高口　晴香", "work": "建設・機械・電気作業", "region": "鹿児島", "dormitory": "", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "高い技術習得への意欲、協調性、誠実さ、そして新しい課題に果敢に挑戦する人", "appeal": "高い技術力と確かな実績を強みに、迅速・丁寧な施工で厚い信頼を獲得。未経験からでもプロを目指せる充実した研修制度を整え、社員の成長を全力でバックアップ。チームワーク抜群の風通しの良い社風のもと、顧客ファーストの精神で安全・快適な環境づくりに貢献している", "handler": "吉永", "material": "企業案内", "note": "通年、生徒が就職している。", "companyType": "県内", "fromExcel": true}, {"id": "県内_13", "receiptNo": "k0011", "category": "就職", "date": "2026-05-28", "company": "株式会社栄電社", "visitor": "電設部営業グループ 野﨑　敦子", "work": "建設・機械・電気作業", "region": "鹿児島", "dormitory": "", "gender": "不問", "count": "", "gradeG": true, "gradeA": true, "gradeM": true, "gradeB": true, "tour": true, "wanted": "何事にも主体的に取り組み、周囲と協調しながら自ら成長し続けられる人材", "appeal": "電気の安定供給を支える高い技術力と信頼を強みに、社会インフラの発展に貢献。未経験からプロへ育てる手厚い教育体制と、資格取得を全力でバックアップする環境が整う。風通しが良くチームワークを重視する社風のもと、若手からベテランまで一人ひとりが主役となり、誇りを持って挑戦し続けられる。", "handler": "吉永", "material": "企業案内", "note": "試験は、面接と適正のみボーナスは年6.0 訪問した担当で他の職種も選択可(事務など)", "companyType": "県内", "fromExcel": true}];
+// localStorageにデータがあればそれを使い、なければExcelデータを初期値として使用
+let records = (() => {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) return JSON.parse(stored);
+  // 初回起動時はExcelデータを自動ロード
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(EXCEL_SEED_DATA));
+  return EXCEL_SEED_DATA;
+})();
+let editingId = null;
+let deleteTargetId = null;
+let categoryFilter = '';
+let sortKey = 'date';
+let sortDir = 'desc'; // 最新順をデフォルト
+
+// ===== INIT =====
+function nextReceiptNo(category) {
+  const prefix = category === '進学' ? 'e' : 'w';
+  const same = records.filter(r => (r.receiptNo || '').startsWith(prefix));
+  const max = same.reduce((m, r) => {
+    const n = parseInt((r.receiptNo || '0').replace(/\D/g, ''), 10);
+    return isNaN(n) ? m : Math.max(m, n);
+  }, 0);
+  return prefix + String(max + 1).padStart(4, '0');
+}
+
+function getCategory() {
+  return document.querySelector('input[name="category"]:checked')?.value || '就職';
+}
+
+function refreshReceiptNo() {
+  if (editingId) return; // 編集中は採番しない
+  document.getElementById('f_receiptNo').value = nextReceiptNo(getCategory());
+}
+
+function updateCompanyLabel() {
+  const isGakkou = getCategory() === '進学';
+  const label = document.getElementById('companyLabel');
+  const input = document.getElementById('f_company');
+  const header = document.getElementById('kigyoCardHeader');
+  if (label) label.textContent = isGakkou ? '学　校　名' : '企　業　名';
+  if (input) input.placeholder = isGakkou ? '学校名を入力' : '企業名を入力';
+  if (header) header.textContent = isGakkou ? '学　校　情　報' : '企　業　情　報';
+  // 就職専用セクションの表示切替
+  const empSec = document.getElementById('employmentSections');
+  if (empSec) empSec.style.display = isGakkou ? 'none' : 'block';
+  // 学校種別ラジオの表示切替
+  const stWrap = document.getElementById('schoolTypeWrap');
+  if (stWrap) stWrap.style.display = isGakkou ? 'flex' : 'none';
+  // 応対記録は進学のみ表示
+  const recSec = document.getElementById('recordSection');
+  if (recSec) recSec.style.display = isGakkou ? 'block' : 'none';
+}
+
+function updateHandlerList() {
+  const names = [...new Set(records.map(r => r.handler).filter(Boolean))].sort();
+  const dl = document.getElementById('handlerList');
+  dl.innerHTML = names.map(n => `<option value="${n}">`).join('');
+}
+
+function init() {
+  setToday();
+  document.getElementById('f_receiptNo').value = nextReceiptNo(getCategory());
+  document.getElementById('tour_no').checked = true;
+  document.getElementById('intern_no').checked = true;
+  document.getElementById('dorm_no').checked = true;
+  updateHandlerList();
+  // 種別変更時に受付No・ラベル更新
+  document.querySelectorAll('input[name="category"]').forEach(r => {
+    r.addEventListener('change', () => { refreshReceiptNo(); updateCompanyLabel(); });
+  });
+  updateCompanyLabel();
+  renderList();
+  renderStats();
+  document.getElementById('f_date').addEventListener('change', updateWeekday);
+}
+
+function setToday() {
+  const today = new Date();
+  document.getElementById('f_date').value = today.toISOString().slice(0,10);
+  updateWeekday();
+  document.getElementById('f_time').value = today.toTimeString().slice(0,5);
+}
+
+function updateWeekday() {
+  const v = document.getElementById('f_date').value;
+  const el = document.getElementById('f_weekday');
+  if (!v) { el.textContent = ''; return; }
+  const d = new Date(v);
+  el.textContent = WEEKDAYS[d.getDay()] + '曜日';
+}
+
+// ===== TABS =====
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (tab==='form'?0:1)===i));
+  document.getElementById('view-form').classList.toggle('active', tab==='form');
+  document.getElementById('view-list').classList.toggle('active', tab==='list');
+  if (tab==='list') { renderList(); renderStats(); }
+}
+
+// ===== COLLECT / FILL =====
+function collectChecks(field) {
+  return Array.from(document.querySelectorAll(`input[data-field="${field}"]:checked`)).map(c=>c.value);
+}
+
+function collectRegions() {
+  const region = document.getElementById('f_region').value;
+  const dorm = document.querySelector('input[name="dorm"]:checked')?.value || '';
+  if (!region) return [];
+  return [{ region, dorm }];
+}
+
+function getRecommendCount() {
+  const checked = document.querySelector('input[name="recommend"]:checked');
+  if (!checked) return '';
+  if (checked.value === 'other') return document.getElementById('f_recOther').value || 'その他';
+  return checked.value;
+}
+
+function collectForm() {
+  return {
+    id: editingId || Date.now().toString(),
+    category: document.querySelector('input[name="category"]:checked')?.value || '就職',
+    receiptNo: document.getElementById('f_receiptNo').value.trim(),
+    handler: document.getElementById('f_handler').value.trim(),
+    date: document.getElementById('f_date').value,
+    weekday: document.getElementById('f_weekday').textContent,
+    time: document.getElementById('f_time').value,
+    company: document.getElementById('f_company').value.trim(),
+    visitor: document.getElementById('f_visitor').value.trim(),
+    regions: collectRegions(),
+    regionOther: document.getElementById('f_regionOther').value.trim(),
+    work: collectChecks('work'),
+    workOther: document.getElementById('f_workOther').value.trim(),
+    gender: document.querySelector('input[name="gender"]:checked')?.value || '',
+    recommendCount: getRecommendCount(),
+    dept: collectChecks('dept'),
+    material: collectChecks('material'),
+    materialOther: document.getElementById('f_materialOther').value.trim(),
+    schoolType: document.querySelector('input[name="schoolType"]:checked')?.value || '',
+    tour: document.querySelector('input[name="tour"]:checked')?.value || '',
+    intern: document.querySelector('input[name="intern"]:checked')?.value || '',
+    talent: document.getElementById('f_talent').value.trim(),
+    appeal: document.getElementById('f_appeal').value.trim(),
+    record: document.getElementById('f_record').value.trim(),
+    note: document.getElementById('f_note').value.trim(),
+    createdAt: editingId ? (records.find(r=>r.id===editingId)?.createdAt || new Date().toISOString()) : new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+}
+
+function fillForm(rec) {
+  document.querySelector(`input[name="category"][value="${rec.category}"]`).checked = true;
+  document.getElementById('f_receiptNo').value = rec.receiptNo || '';
+  document.getElementById('f_handler').value = rec.handler || '';
+  document.getElementById('f_date').value = rec.date || '';
+  document.getElementById('f_weekday').textContent = rec.weekday || '';
+  document.getElementById('f_time').value = rec.time || '';
+  document.getElementById('f_company').value = rec.company || '';
+  document.getElementById('f_visitor').value = rec.visitor || '';
+  document.getElementById('f_regionOther').value = rec.regionOther || '';
+
+  // 地区・寮
+  const firstRegion = (rec.regions||[])[0];
+  document.getElementById('f_region').value = firstRegion?.region || '';
+  const dormVal = firstRegion?.dorm || '無';
+  const dormCb = document.querySelector(`input[name="dorm"][value="${dormVal}"]`);
+  if (dormCb) dormCb.checked = true;
+  toggleRegionOther();
+
+  ['work','dept','material'].forEach(field => {
+    document.querySelectorAll(`input[data-field="${field}"]`).forEach(c => {
+      c.checked = (rec[field]||[]).includes(c.value);
+    });
+  });
+  // その他職業テキスト復元
+  document.getElementById('f_workOther').value = rec.workOther || '';
+  const workOtherCb = document.querySelector('input[data-field="work"][value="その他の職業"]');
+  document.getElementById('workOtherWrap').style.display = (workOtherCb && workOtherCb.checked) ? 'block' : 'none';
+
+  // Recommend
+  const isOther = rec.recommendCount && !['1','2'].includes(rec.recommendCount);
+  const recVal = isOther ? 'other' : (rec.recommendCount || '');
+  const recRb = document.querySelector(`input[name="recommend"][value="${recVal}"]`);
+  if (recRb) recRb.checked = true;
+  document.getElementById('f_recOther').value = isOther ? rec.recommendCount : '';
+  toggleRecOther();
+
+  if (rec.schoolType) { const r = document.querySelector(`input[name="schoolType"][value="${rec.schoolType}"]`); if (r) r.checked = true; }
+  if (rec.gender) { const r = document.querySelector(`input[name="gender"][value="${rec.gender}"]`); if (r) r.checked = true; }
+
+  document.getElementById('f_materialOther').value = rec.materialOther || '';
+  const matOtherCb = document.querySelector('input[data-field="material"][value="その他"]');
+  document.getElementById('materialOtherWrap').style.display = (matOtherCb && matOtherCb.checked) ? 'block' : 'none';
+
+  if (rec.tour) { const r = document.querySelector(`input[name="tour"][value="${rec.tour}"]`); if (r) r.checked = true; }
+  if (rec.intern) { const r = document.querySelector(`input[name="intern"][value="${rec.intern}"]`); if (r) r.checked = true; }
+
+  document.getElementById('f_talent').value = rec.talent || '';
+  document.getElementById('f_appeal').value = rec.appeal || '';
+  document.getElementById('f_record').value = rec.record || '';
+  document.getElementById('f_note').value = rec.note || '';
+}
+
+// ===== SAVE =====
+function saveRecord() {
+  const rec = collectForm();
+  if (!rec.company) { showAlert('企業名を入力してください。', 'error'); return; }
+  if (!rec.date) { showAlert('来訪日を入力してください。', 'error'); return; }
+
+  if (editingId) {
+    const idx = records.findIndex(r => r.id === editingId);
+    if (idx >= 0) records[idx] = rec;
+  } else {
+    records.unshift(rec);
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+  showAlert(editingId ? '✅ 記録を更新しました。' : '✅ 新しい記録を保存しました。', 'success');
+  editingId = null;
+  document.getElementById('saveBtn').textContent = '💾 保存する';
+  updateHandlerList();
+  resetForm();
+  renderList();
+  renderStats();
+}
+
+// ===== RESET =====
+function resetForm() {
+  editingId = null;
+  document.getElementById('saveBtn').textContent = '💾 保存する';
+  document.querySelector('input[name="category"][value="就職"]').checked = true;
+  ['f_receiptNo','f_handler','f_company','f_visitor','f_regionOther','f_materialOther','f_talent','f_appeal','f_recOther','f_record','f_note'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('f_weekday').textContent = '';
+  document.querySelectorAll('input[name="schoolType"]').forEach(r => r.checked = false);
+  document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
+  document.querySelectorAll('input[name="tour"], input[name="intern"], input[name="gender"], input[name="recommend"]').forEach(r => r.checked = false);
+  document.getElementById('tour_no').checked = true;
+  document.getElementById('intern_no').checked = true;
+  document.getElementById('f_region').value = '';
+  document.getElementById('dorm_no').checked = true;
+  document.getElementById('recOtherWrap').style.display = 'none';
+  document.getElementById('materialOtherWrap').style.display = 'none';
+  document.getElementById('regionOtherWrap').style.display = 'none';
+  document.getElementById('workOtherWrap').style.display = 'none';
+  document.getElementById('f_workOther').value = '';
+  setToday();
+  document.getElementById('formAlert').innerHTML = '';
+  if (!editingId) {
+    document.getElementById('f_receiptNo').value = nextReceiptNo(getCategory());
+    updateCompanyLabel();
+  }
+}
+
+// ===== EDIT =====
+function editRecord(id) {
+  const rec = records.find(r => r.id === id);
+  if (!rec) return;
+  editingId = id;
+  fillForm(rec);
+  updateCompanyLabel();
+  document.getElementById('saveBtn').textContent = '✏️ 更新する';
+  switchTab('form');
+  window.scrollTo(0,0);
+}
+
+// ===== DELETE =====
+function deleteRecord(id) {
+  deleteTargetId = id;
+  const rec = records.find(r => r.id === id);
+  document.getElementById('deleteModalMsg').innerHTML = `<strong>${rec?.company || '（企業名なし）'}</strong> の記録を削除してもよろしいですか？<br>削除した記録は元に戻せません。`;
+  document.getElementById('deleteModal').classList.add('open');
+}
+function closeDeleteModal() {
+  document.getElementById('deleteModal').classList.remove('open');
+  deleteTargetId = null;
+}
+function confirmDelete() {
+  records = records.filter(r => r.id !== deleteTargetId);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+  closeDeleteModal();
+  renderList();
+  renderStats();
+}
+
+// ===== FILTER =====
+function filterCategory(val) { categoryFilter = val; renderList(); }
+
+// ===== SORT =====
+function setSort(key) {
+  if (sortKey === key) {
+    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    sortKey = key;
+    sortDir = key === 'date' ? 'desc' : 'asc';
+  }
+  renderList();
+}
+
+function updateSortHeaders() {
+  ['receiptNo', 'date'].forEach(key => {
+    const th = document.getElementById(`th-${key}`);
+    if (!th) return;
+    const icon = th.querySelector('.sort-icon');
+    if (sortKey === key) {
+      th.classList.add('sort-active');
+      icon.textContent = sortDir === 'asc' ? '↑' : '↓';
+    } else {
+      th.classList.remove('sort-active');
+      icon.textContent = '↕';
+    }
+  });
+}
+
+// ===== RENDER LIST =====
+function renderList() {
+  const q = (document.getElementById('searchBox')?.value || '').toLowerCase();
+  let filtered = records.filter(r => {
+    const matchCat = !categoryFilter || r.category === categoryFilter;
+    const matchQ = !q || [r.company,r.visitor,r.handler,r.receiptNo].some(v => (v||'').toLowerCase().includes(q));
+    return matchCat && matchQ;
+  });
+
+  // ソート
+  filtered.sort((a, b) => {
+    let va, vb;
+    if (sortKey === 'receiptNo') {
+      va = parseInt((a.receiptNo || '0').replace(/\D/g, ''), 10) || 0;
+      vb = parseInt((b.receiptNo || '0').replace(/\D/g, ''), 10) || 0;
+    } else {
+      va = (a.date || '') + (a.time || '');
+      vb = (b.date || '') + (b.time || '');
+    }
+    if (va < vb) return sortDir === 'asc' ? -1 : 1;
+    if (va > vb) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  updateSortHeaders();
+
+  // 企業名／学校名ヘッダーを種別フィルターに応じて切替
+  const thCompany = document.getElementById('th-company');
+  if (thCompany) {
+    thCompany.textContent = categoryFilter === '就職' ? '企　業　名'
+                          : categoryFilter === '進学' ? '学　校　名'
+                          : '企業名／学校名';
+  }
+
+  const tbody = document.getElementById('recordsBody');
+  const empty = document.getElementById('emptyState');
+  tbody.innerHTML = '';
+
+  if (filtered.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  filtered.forEach((rec, i) => {
+    const regionStr = (rec.regions||[]).map(r=>r.region).join('、') + (rec.regionOther ? `（${rec.regionOther}）` : '');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${rec.receiptNo||'—'}</td>
+      <td style="white-space:nowrap;">${rec.date||'—'}<br><span style="font-size:0.75rem;color:var(--text-muted);">${rec.weekday||''} ${rec.time||''}</span></td>
+      <td><strong>${rec.company||'—'}</strong></td>
+      <td>${rec.visitor||'—'}</td>
+      <td>${rec.handler||'—'}</td>
+      <td><span class="badge ${rec.category==='就職'?'badge-employment':'badge-education'}">${rec.category||'—'}</span></td>
+      <td style="font-size:0.8rem;">${regionStr||'—'}</td>
+      <td>
+        <div class="actions">
+          <button class="btn btn-outline btn-sm" onclick="editRecord('${rec.id}')">✏️ 編集</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteRecord('${rec.id}')">🗑️</button>
+        </div>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ===== STATS =====
+function renderStats() {
+  const total = records.length;
+  const emp = records.filter(r=>r.category==='就職').length;
+  const edu = records.filter(r=>r.category==='進学').length;
+  const today = new Date().toISOString().slice(0,10);
+  const todayCount = records.filter(r=>r.date===today).length;
+  document.getElementById('statsBar').innerHTML = `
+    <div class="stat-card"><div class="num">${total}</div><div class="lbl">総記録数</div></div>
+    <div class="stat-card"><div class="num" style="color:#1e40af;">${emp}</div><div class="lbl">就職</div></div>
+    <div class="stat-card"><div class="num" style="color:#166534;">${edu}</div><div class="lbl">進学</div></div>
+    <div class="stat-card"><div class="num" style="color:#92400e;">${todayCount}</div><div class="lbl">本日</div></div>`;
+}
+
+// ===== HELPERS =====
+function showAlert(msg, type) {
+  const el = document.getElementById('formAlert');
+  el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+  setTimeout(() => el.innerHTML = '', 4000);
+}
+
+function toggleWorkOther(cb) {
+  document.getElementById('workOtherWrap').style.display = cb.checked ? 'block' : 'none';
+  if (!cb.checked) document.getElementById('f_workOther').value = '';
+}
+
+function toggleMaterialOther(cb) {
+  document.getElementById('materialOtherWrap').style.display = cb.checked ? 'block' : 'none';
+  if (!cb.checked) document.getElementById('f_materialOther').value = '';
+}
+
+function toggleRegionOther() {
+  const sel = document.getElementById('f_region');
+  const show = sel && sel.value === 'その他';
+  document.getElementById('regionOtherWrap').style.display = show ? 'block' : 'none';
+  if (!show && document.getElementById('f_regionOther')) document.getElementById('f_regionOther').value = '';
+}
+
+function toggleRecOther() {
+  const checked = document.querySelector('input[name="recommend"]:checked');
+  document.getElementById('recOtherWrap').style.display =
+    (checked && checked.value === 'other') ? 'block' : 'none';
+}
+
+
+// ===== EXPORT / IMPORT =====
+function exportExcel() {
+  // 就職データのみ対象
+  const target = records.filter(r => r.category === '就職');
+  if (target.length === 0) {
+    alert('就職の記録データがありません。');
+    return;
+  }
+
+  // ファイル名判定：就職 かつ 地区が鹿児島県 → 県内企業、それ以外 → 県外企業
+  const firstRegion = (target[0].regions||[])[0]?.region || '';
+  const isKagoshima = target.every(r => {
+    const reg = (r.regions||[])[0]?.region || r.regionOther || '';
+    return reg.includes('鹿児島');
+  });
+  // 全件で判定するのでなく、出力データ全体で「鹿児島のみ」か確認
+  const allKagoshima = target.every(r =>
+    ((r.regions||[])[0]?.region || '').includes('鹿児島')
+  );
+  const fileName = allKagoshima ? '県内企業' : '県外企業';
+
+  // ヘッダー定義（募集・学科をG/A/M/B個別列に）
+  const headers = [
+    'No', '日付', '企業名', '訪問者氏名', '業務内容',
+    '地区', '寮', '男女', '人数',
+    'G', 'A', 'M', 'B',
+    '見学', '求める人材', '企業アピール',
+    '応対者', '資料等', '備考欄'
+  ];
+
+  const DEPT_COLS = ['G', 'A', 'M', 'B'];
+
+  const rows = target.map(r => {
+    // No: 英字除去して数値
+    const no = parseInt((r.receiptNo || '0').replace(/[^\d]/g, ''), 10) || '';
+
+    // 日付: Excelの日付型
+    let dateVal = '';
+    if (r.date) {
+      const parts = r.date.split('-');
+      if (parts.length === 3) {
+        dateVal = new Date(
+          parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])
+        );
+      }
+    }
+
+    // 企業名
+    const company = r.company || '';
+
+    // 業務内容: ・区切り（その他の職業はworkOtherを付加）
+    const workList = (r.work||[]).map(w =>
+      w === 'その他の職業' && r.workOther ? `その他(${r.workOther})` : w
+    );
+    const work = workList.join('・');
+
+    // 地区
+    const region = (r.regions||[])[0]?.region || '';
+    const regionDisp = [region, r.regionOther].filter(Boolean).join(' ');
+
+    // 寮: 有なら〇
+    const dorm = (r.regions||[])[0]?.dorm === '有' ? '〇' : '';
+
+    // 男女
+    const gender = r.gender || '';
+
+    // 人数
+    const recCount = r.recommendCount || '';
+
+    // 募集・学科: G/A/M/B 個別〇
+    const dept = r.dept || [];
+    const isFumon = dept.includes('不問');
+    const deptCols = DEPT_COLS.map(d => (isFumon || dept.includes(d)) ? '〇' : '');
+
+    // 見学: 有なら〇
+    const tour = r.tour === '有' ? '〇' : '';
+
+    // 求める人材・企業アピール
+    const talent = r.talent || '';
+    const appeal = r.appeal || '';
+
+    // 応対者
+    const handler = r.handler || '';
+
+    // 資料等: 資料名 + [その他資料]
+    const matList = (r.material||[]).join('・');
+    const matOther = r.materialOther ? `  [${r.materialOther}]` : '';
+    const material = matList + matOther;
+
+    // 備考欄
+    const note = r.note || '';
+
+    return [
+      no, dateVal, company, r.visitor || '', work,
+      regionDisp, dorm, gender, recCount,
+      ...deptCols,
+      tour, talent, appeal,
+      handler, material, note
+    ];
+  });
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+
+  // 日付列（B列=index 1）のフォーマット設定
+  rows.forEach((_, ri) => {
+    const cellRef = XLSX.utils.encode_cell({r: ri+1, c: 1});
+    if (ws[cellRef] && ws[cellRef].v instanceof Date) {
+      ws[cellRef].t = 'd';
+      ws[cellRef].z = 'yyyy/mm/dd';
+    }
+  });
+
+  // 列幅
+  ws['!cols'] = [
+    {wch:8},  // No
+    {wch:12}, // 日付
+    {wch:22}, // 企業名
+    {wch:12}, // 訪問者氏名
+    {wch:28}, // 業務内容
+    {wch:12}, // 地区
+    {wch:5},  // 寮
+    {wch:6},  // 男女
+    {wch:5},  // 人数
+    {wch:4},{wch:4},{wch:4},{wch:4}, // G A M B
+    {wch:5},  // 見学
+    {wch:24}, // 求める人材
+    {wch:24}, // 企業アピール
+    {wch:10}, // 応対者
+    {wch:24}, // 資料等
+    {wch:24}, // 備考欄
+  ];
+
+  // ヘッダースタイル
+  headers.forEach((_, ci) => {
+    const cellRef = XLSX.utils.encode_cell({r:0, c:ci});
+    if (!ws[cellRef]) return;
+    ws[cellRef].s = {
+      font: { bold: true, color: { rgb: 'FFFFFF' } },
+      fill: { fgColor: { rgb: '1A3A5C' } },
+      alignment: { horizontal: 'center', vertical: 'center', wrapText: true },
+      border: {
+        top:    { style:'thin', color:{rgb:'AAAAAA'} },
+        bottom: { style:'thin', color:{rgb:'AAAAAA'} },
+        left:   { style:'thin', color:{rgb:'AAAAAA'} },
+        right:  { style:'thin', color:{rgb:'AAAAAA'} }
+      }
+    };
+  });
+
+  // データ行スタイル（交互背景・〇は中央揃え）
+  const centerCols = new Set([0,6,7,8,9,10,11,12,13]); // No,寮,男女,人数,G,A,M,B,見学
+  rows.forEach((_, ri) => {
+    const bg = ri % 2 === 0 ? 'FFFFFF' : 'EEF2FA';
+    headers.forEach((__, ci) => {
+      const cellRef = XLSX.utils.encode_cell({r: ri+1, c: ci});
+      if (!ws[cellRef]) ws[cellRef] = {v:'', t:'s'};
+      ws[cellRef].s = {
+        fill: { fgColor: { rgb: bg } },
+        alignment: {
+          horizontal: centerCols.has(ci) ? 'center' : 'left',
+          vertical: 'center', wrapText: true
+        },
+        border: {
+          top:    { style:'thin', color:{rgb:'D0D8E8'} },
+          bottom: { style:'thin', color:{rgb:'D0D8E8'} },
+          left:   { style:'thin', color:{rgb:'D0D8E8'} },
+          right:  { style:'thin', color:{rgb:'D0D8E8'} }
+        }
+      };
+    });
+  });
+
+  XLSX.utils.book_append_sheet(wb, ws, '来訪者対応接記録');
+  XLSX.writeFile(wb, `${fileName}_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+function exportExcelGakkou() {
+  const target = records.filter(r => r.category === '進学');
+  if (target.length === 0) {
+    alert('進学の記録データがありません。');
+    return;
+  }
+
+  // ファイル名判定: 大学/短大/受験産業のみ → '大学・短大・受験産業'、専門学校含む → '専門学校'
+  const SCHOOL_TYPES_DAIGAKU = ['大学', '短大', '受験産業'];
+  const allMatch = target.every(r => SCHOOL_TYPES_DAIGAKU.includes(r.schoolType || ''));
+  const fileName = allMatch ? '大学・短大・受験産業' : '専門学校';
+
+  const headers = ['No', '日付', '学校名', '応対記録', '訪問者氏名', '担当教諭', '資料等', '備考欄'];
+
+  const rows = target.map(r => {
+    const no = parseInt((r.receiptNo || '0').replace(/[^\d]/g, ''), 10) || '';
+
+    let dateVal = '';
+    if (r.date) {
+      const p = r.date.split('-');
+      if (p.length === 3) dateVal = new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+    }
+
+    const matList = (r.material||[]).join('・');
+    const matOther = r.materialOther ? `  [${r.materialOther}]` : '';
+    const material = matList + matOther;
+
+    return [
+      no,
+      dateVal,
+      r.company || '',
+      r.record  || '',
+      r.visitor || '',
+      r.handler || '',
+      material,
+      r.note    || ''
+    ];
+  });
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+
+  // 日付フォーマット
+  rows.forEach((_, ri) => {
+    const cellRef = XLSX.utils.encode_cell({r: ri+1, c: 1});
+    if (ws[cellRef] && ws[cellRef].v instanceof Date) {
+      ws[cellRef].t = 'd';
+      ws[cellRef].z = 'yyyy/mm/dd';
+    }
+  });
+
+  // 列幅
+  ws['!cols'] = [
+    {wch:8},  // No
+    {wch:12}, // 日付
+    {wch:22}, // 学校名
+    {wch:30}, // 応対記録
+    {wch:12}, // 訪問者氏名
+    {wch:12}, // 担当教諭
+    {wch:24}, // 資料等
+    {wch:24}, // 備考欄
+  ];
+
+  const centerCols = new Set([0]); // No のみ中央
+
+  // ヘッダースタイル
+  headers.forEach((_, ci) => {
+    const cellRef = XLSX.utils.encode_cell({r:0, c:ci});
+    if (!ws[cellRef]) return;
+    ws[cellRef].s = {
+      font: { bold: true, color: { rgb: 'FFFFFF' } },
+      fill: { fgColor: { rgb: '1A3A5C' } },
+      alignment: { horizontal: 'center', vertical: 'center', wrapText: true },
+      border: {
+        top:    { style:'thin', color:{rgb:'AAAAAA'} },
+        bottom: { style:'thin', color:{rgb:'AAAAAA'} },
+        left:   { style:'thin', color:{rgb:'AAAAAA'} },
+        right:  { style:'thin', color:{rgb:'AAAAAA'} }
+      }
+    };
+  });
+
+  // データ行スタイル
+  rows.forEach((_, ri) => {
+    const bg = ri % 2 === 0 ? 'FFFFFF' : 'EEF2FA';
+    headers.forEach((__, ci) => {
+      const cellRef = XLSX.utils.encode_cell({r: ri+1, c: ci});
+      if (!ws[cellRef]) ws[cellRef] = {v:'', t:'s'};
+      ws[cellRef].s = {
+        fill: { fgColor: { rgb: bg } },
+        alignment: {
+          horizontal: centerCols.has(ci) ? 'center' : 'left',
+          vertical: 'center', wrapText: true
+        },
+        border: {
+          top:    { style:'thin', color:{rgb:'D0D8E8'} },
+          bottom: { style:'thin', color:{rgb:'D0D8E8'} },
+          left:   { style:'thin', color:{rgb:'D0D8E8'} },
+          right:  { style:'thin', color:{rgb:'D0D8E8'} }
+        }
+      };
+    });
+  });
+
+  XLSX.utils.book_append_sheet(wb, ws, '進学応接記録');
+  XLSX.writeFile(wb, `${fileName}_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(records, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `来訪者対応接記録_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function importJSON(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!Array.isArray(data)) throw new Error();
+      records = data;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+      renderList(); renderStats();
+      alert(`✅ ${data.length} 件の記録をインポートしました。`);
+    } catch {
+      alert('❌ JSONファイルの読み込みに失敗しました。');
+    }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+init();
+</script>
+</body>
+</html>
