@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>職種診断 | 曽於高等学校</title>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a0e1a;
+    --navy2: #111827;
+    --navy3: #1a2233;
+    --border: #1e2d4a;
+    --gold: #d4a017;
+    --gold2: #f0c040;
+    --gold3: #fff3b0;
+    --scarlet: #c0392b;
+    --scarlet2: #e74c3c;
+    --white: #ffffff;
+    --offwhite: #e8eaf2;
+    --muted: #7a8aaa;
+    --green: #0f9960;
+    --cyan: #0097b2;
+    --radius: 12px;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--navy);
+    color: var(--offwhite);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ========== BACKGROUND ========== */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 90% 50% at 10% 0%, rgba(212,160,23,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 60% at 90% 100%, rgba(192,57,43,0.07) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* diagonal stripe overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      -55deg,
+      transparent,
+      transparent 40px,
+      rgba(212,160,23,0.015) 40px,
+      rgba(212,160,23,0.015) 41px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
+
+  /* ========== SCHOOL HEADER ========== */
+  .school-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: rgba(10,14,26,0.85);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 28px;
+    backdrop-filter: blur(8px);
+  }
+
+  .school-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .school-emblem {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    box-shadow: 0 0 16px rgba(212,160,23,0.4);
+  }
+
+  .school-name {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 0.9rem;
+    color: var(--gold2);
+    line-height: 1.3;
+    letter-spacing: 0.05em;
+  }
+
+  .school-name small {
+    display: block;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .school-year {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+
+  /* ========== START SCREEN ========== */
+  #start-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 80vh;
+    padding-top: 20px;
+    animation: fadeUp 0.7s var(--ease) both;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-top: 2px solid var(--gold);
+    border-bottom: 1px solid rgba(212,160,23,0.3);
+    padding: 6px 14px;
+    margin-bottom: 32px;
+  }
+
+  .hero-title-block {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .hero-jp {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: clamp(2.4rem, 10vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--white);
+    margin-bottom: 8px;
+    position: relative;
+  }
+
+  .hero-jp .accent {
+    color: var(--gold2);
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-jp .accent::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0; right: 0;
+    height: 4px;
+    background: var(--scarlet2);
+    border-radius: 2px;
+  }
+
+  .hero-sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 400px;
+    margin: 0 auto 36px;
+    text-align: center;
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 44px;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .stat-item {
+    flex: 1;
+    padding: 18px 12px;
+    text-align: center;
+    background: var(--navy2);
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 2rem;
+    color: var(--gold2);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-lbl {
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* CTA */
+  .cta-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    max-width: 340px;
+  }
+
+  .start-btn {
+    width: 100%;
+    padding: 18px 40px;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    box-shadow: 0 4px 0 #8b6a0a, 0 8px 24px rgba(212,160,23,0.3);
+  }
+
+  .start-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    transform: skewX(-20deg);
+    animation: shimmer 2.4s infinite 1s;
+  }
+
+  .start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #8b6a0a, 0 16px 32px rgba(212,160,23,0.4);
+  }
+
+  .start-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #8b6a0a, 0 4px 12px rgba(212,160,23,0.3);
+  }
+
+  .disclaimer {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @keyframes shimmer {
+    0% { left: -100%; }
+    60%, 100% { left: 150%; }
+  }
+
+  /* ========== QUIZ SCREEN ========== */
+  #quiz-screen { display: none; }
+
+  .quiz-topbar {
+    display: grid;
+    grid-template-columns: 60px 1fr 60px;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .q-counter {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .q-counter b {
+    font-size: 1.4rem;
+    color: var(--gold2);
+    line-height: 1;
+    display: block;
+  }
+
+  .progress-track {
+    height: 5px;
+    background: var(--navy3);
+    border-radius: 99px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold2));
+    border-radius: 99px;
+    transition: width 0.5s var(--ease);
+  }
+
+  .q-pct {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-align: right;
+    letter-spacing: 0.05em;
+  }
+
+  .q-pct b {
+    font-size: 1.1rem;
+    color: var(--gold);
+    display: block;
+  }
+
+  /* Question card */
+  .q-card {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px 28px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    animation: slideIn 0.35s var(--ease) both;
+  }
+
+  .q-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold2), var(--scarlet2));
+  }
+
+  .q-num-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding: 3px 10px;
+    border: 1px solid rgba(212,160,23,0.4);
+    border-radius: 4px;
+  }
+
+  .q-icon {
+    font-size: 2.2rem;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .q-text {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: clamp(1.05rem, 3.5vw, 1.4rem);
+    color: var(--white);
+    line-height: 1.4;
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  .q-hint {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  /* Options */
+  .options-grid {
+    display: grid;
+    gap: 8px;
+  }
+
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 13px 16px;
+    color: var(--offwhite);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .option-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(212,160,23,0.06), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .option-btn:hover {
+    border-color: rgba(212,160,23,0.5);
+    transform: translateX(4px);
+  }
+
+  .option-btn:hover::before { opacity: 1; }
+
+  .option-btn.selected {
+    border-color: var(--gold);
+    background: rgba(212,160,23,0.08);
+  }
+
+  .option-btn.selected .opt-key {
+    background: var(--gold);
+    color: var(--navy);
+  }
+
+  .opt-key {
+    min-width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--navy3);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: background 0.2s, color 0.2s;
+    font-family: 'Dela Gothic One', sans-serif;
+  }
+
+  /* Nav */
+  .nav-row {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 6px;
+  }
+
+  .btn-back {
+    padding: 11px 24px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-back:hover { border-color: var(--muted); color: var(--offwhite); }
+
+  .btn-next {
+    padding: 11px 32px;
+    background: var(--gold);
+    border: none;
+    border-radius: 8px;
+    color: var(--navy);
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s, box-shadow 0.15s;
+    opacity: 0.3;
+    pointer-events: none;
+    box-shadow: 0 3px 0 #8b6a0a;
+  }
+
+  .btn-next.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .btn-next.active:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 0 #8b6a0a, 0 8px 20px rgba(212,160,23,0.35);
+  }
+
+  /* ========== RESULT SCREEN ========== */
+  #result-screen { display: none; }
+
+  .result-hero {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 44px 28px 36px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    animation: fadeUp 0.6s var(--ease) both;
+  }
+
+  .result-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold2), var(--scarlet2));
+  }
+
+  .result-hero::after {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,160,23,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .result-eyebrow {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .result-emoji {
+    font-size: 4.5rem;
+    margin-bottom: 12px;
+    display: block;
+    position: relative;
+    animation: pop 0.6s cubic-bezier(0.68,-0.55,0.27,1.55) 0.2s both;
+  }
+
+  .result-type-name {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: clamp(1.6rem, 6vw, 2.6rem);
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 4px;
+    position: relative;
+    letter-spacing: 0.03em;
+  }
+
+  .result-type-sub {
+    font-size: 0.75rem;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    position: relative;
+  }
+
+  .result-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.85;
+    max-width: 440px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* Section cards */
+  .result-card {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 24px 20px;
+    margin-bottom: 14px;
+    animation: fadeUp 0.5s var(--ease) both;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .section-head-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .section-head-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* stats */
+  .stats-grid-r {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .stat-r {
+    background: var(--navy3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+
+  .stat-r-val {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: 1.25rem;
+    color: var(--gold2);
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .stat-r-lbl {
+    font-size: 0.65rem;
+    color: var(--muted);
+  }
+
+  /* job tags */
+  .job-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .job-tag {
+    padding: 6px 14px;
+    background: rgba(212,160,23,0.1);
+    border: 1px solid rgba(212,160,23,0.3);
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--gold2);
+    transition: background 0.2s;
+  }
+
+  .job-tag:hover { background: rgba(212,160,23,0.2); }
+
+  /* traits */
+  .traits-list { display: grid; gap: 10px; }
+
+  .trait-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.88rem;
+    color: var(--offwhite);
+  }
+
+  .trait-marker {
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(180deg, var(--gold), var(--scarlet2));
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* score bars */
+  .score-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .score-row:last-child { margin-bottom: 0; }
+
+  .sc-label {
+    min-width: 100px;
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .sc-track {
+    flex: 1;
+    height: 6px;
+    background: var(--navy3);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .sc-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 1s cubic-bezier(0.4,0,0.2,1) 0.4s;
+  }
+
+  .sc-val {
+    min-width: 34px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-align: right;
+    font-family: 'Dela Gothic One', sans-serif;
+  }
+
+  /* Retry */
+  .retry-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    margin-top: 10px;
+    letter-spacing: 0.04em;
+  }
+
+  .retry-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold2);
+    background: rgba(212,160,23,0.05);
+  }
+
+  /* ========== ANIMATIONS ========== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes pop {
+    from { transform: scale(0.4); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 480px) {
+    .q-card { padding: 24px 16px 20px; }
+    .result-hero { padding: 32px 16px 28px; }
+    .result-card { padding: 20px 16px; }
+    .stats-grid-r { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .stat-r-val { font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- SCHOOL HEADER -->
+  <header class="school-header">
+    <div class="school-logo">
+      <div class="school-emblem">🏫</div>
+      <div class="school-name">
+        曽於高等学校
+        <small>CAREER COMPASS 2025</small>
+      </div>
+    </div>
+    <div class="school-year">3年 進路探究</div>
+  </header>
+
+  <!-- START SCREEN -->
+  <div id="start-screen">
+    <div class="hero-eyebrow">
+      ⚡ For Soo High School Students Only
+    </div>
+
+    <div class="hero-title-block">
+      <div class="hero-jp">
+        あなたにピッタリ<br>の<span class="accent">仕事</span>は？
+      </div>
+    </div>
+
+    <p class="hero-sub">
+      21問に答えるだけ。<br>
+      宮崎県の求人データ 2,940件 から<br>
+      あなたの個性・価値観に合った職種を診断します。
+    </p>
+
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num">21</div>
+        <div class="stat-lbl">質問数</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">8</div>
+        <div class="stat-lbl">職種タイプ</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3<span style="font-size:1rem">分</span></div>
+        <div class="stat-lbl">所要時間</div>
+      </div>
+    </div>
+
+    <div class="cta-group">
+      <button class="start-btn" onclick="startQuiz()">
+        診断スタート →
+      </button>
+      <p class="disclaimer">※ 結果は参考情報です。担任・進路担当にも相談しよう！</p>
+    </div>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen">
+    <div class="quiz-topbar">
+      <div class="q-counter">
+        QUESTION<b id="q-current">1</b>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <div class="q-pct">
+        DONE<b id="q-pct">0%</b>
+      </div>
+    </div>
+
+    <div class="q-card" id="q-card">
+      <div class="q-num-tag">Question <span id="q-num-label">01</span> / 21</div>
+      <span class="q-icon" id="q-icon">💭</span>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-hint" id="q-hint"></div>
+      <div class="options-grid" id="options-container"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-back" id="btn-back" onclick="prevQuestion()">← もどる</button>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen">
+    <div class="result-hero">
+      <div class="result-eyebrow">あなたの診断結果</div>
+      <div class="result-emoji" id="r-emoji"></div>
+      <div class="result-type-name" id="r-type-name"></div>
+      <div class="result-type-sub">Best Match Career Type</div>
+      <div class="result-desc" id="r-desc"></div>
+    </div>
+
+    <div class="result-card" style="animation-delay:0.1s">
+      <div class="section-head">
+        <div class="section-head-label">📊 給与・休日データ</div>
+        <div class="section-head-line"></div>
+      </div>
+      <div class="stats-grid-r" id="r-stats-grid"></div>
+    </div>
+
+    <div class="result-card" style="animation-delay:0.2s">
+      <div class="section-head">
+        <div class="section-head-label">📈 各分野との相性スコア</div>
+        <div class="section-head-line"></div>
+      </div>
+      <div id="score-bars"></div>
+    </div>
+
+    <div class="result-card" style="animation-delay:0.3s">
+      <div class="section-head">
+        <div class="section-head-label">💼 おすすめ職種</div>
+        <div class="section-head-line"></div>
+      </div>
+      <div class="job-tags" id="r-job-tags"></div>
+    </div>
+
+    <div class="result-card" style="animation-delay:0.4s">
+      <div class="section-head">
+        <div class="section-head-label">✨ あなたの強み・特徴</div>
+        <div class="section-head-line"></div>
+      </div>
+      <div class="traits-list" id="r-traits"></div>
+    </div>
+
+    <button class="retry-btn" onclick="resetQuiz()">🔄 もう一度診断する</button>
+  </div>
+
+</div>
+
+<script>
+const CATEGORIES = {
+  manufacturing: {
+    name: '製造・ものづくり',
+    emoji: '⚙️',
+    color: '#d4a017',
+    desc: '工場や生産ラインで製品を生み出す仕事。機械を扱ったり、品質を守ったりと、黙々と集中して取り組む人に向いています。地道な努力が形になる達成感が魅力。',
+    jobs: ['製造オペレーター', '機械オペレーター', '生産管理', '品質管理', '技能職（食品加工）', '生産技術職'],
+    traits: ['黙々と集中できる', '手先が器用・丁寧な作業が得意', '決まった手順・ルールを守れる', '体を動かすことが苦にならない'],
+    stats: [{ label: '月収目安', val: '17〜21万' }, { label: '年間休日', val: '110〜118日' }, { label: '残業/月', val: '5〜15h' }]
+  },
+  construction: {
+    name: '建築・設備・インフラ',
+    emoji: '🏗️',
+    color: '#e74c3c',
+    desc: '建物・道路・電気・配管など、社会のインフラを支える仕事。体力と技術が求められ、資格を取ることでどんどんキャリアアップできます。',
+    jobs: ['建築施工管理', '電気工事士', '配管工', '大工', '重機オペレーター', '設備保全'],
+    traits: ['体を動かすことが好き', '資格・スキルを身につけたい', 'チームで一つの目標に向かえる', 'ものが完成する達成感が好き'],
+    stats: [{ label: '月収目安', val: '18〜23万' }, { label: '年間休日', val: '107〜125日' }, { label: '残業/月', val: '8〜20h' }]
+  },
+  retail: {
+    name: '販売・自動車・小売',
+    emoji: '🚗',
+    color: '#0f9960',
+    desc: 'お客様に直接関わりながら、商品やサービスを提供する仕事。自動車整備から店舗スタッフまで幅広く、コミュニケーションが活かせます。',
+    jobs: ['自動車整備士', '販売スタッフ', '整備士候補', '営業職', '店舗管理', '鮮魚・精肉加工販売'],
+    traits: ['人と話すのが好き', '機械・車が好き', '丁寧な接客ができる', '目標に向かってコツコツ取り組める'],
+    stats: [{ label: '月収目安', val: '19〜23万' }, { label: '年間休日', val: '100〜118日' }, { label: '残業/月', val: '5〜12h' }]
+  },
+  transport: {
+    name: '運輸・観光・インフラ',
+    emoji: '🚌',
+    color: '#0097b2',
+    desc: '人・ものを運ぶ仕事や、観光を支える仕事。バスガイドから配送ドライバーまで、地域を動かす大切な役割を担います。',
+    jobs: ['観光バスガイド', '観光バス運転士', '配送ドライバー', '空港グランドハンドリング', 'センター業務職', 'フェリー乗務'],
+    traits: ['人をもてなすことが好き', '地理・旅行・観光に興味がある', '運転・乗り物が好き', 'コミュニケーション力がある'],
+    stats: [{ label: '月収目安', val: '19〜26万' }, { label: '年間休日', val: '102〜124日' }, { label: '残業/月', val: '8〜18h' }]
+  },
+  hospitality: {
+    name: '飲食・宿泊・観光',
+    emoji: '🍽️',
+    color: '#d4a017',
+    desc: 'ホテル・旅館・レストランで人をもてなす仕事。料理を作ったり、接客したり、毎日生き生きと働ける環境が魅力です。',
+    jobs: ['ホテルスタッフ', '調理スタッフ', 'ホールスタッフ', '旅館スタッフ', 'フロントスタッフ', '調理師見習い'],
+    traits: ['人を喜ばせることが好き', '食・料理に興味がある', 'チームワークを大切にできる', '明るく元気に働ける'],
+    stats: [{ label: '月収目安', val: '17〜22万' }, { label: '年間休日', val: '100〜115日' }, { label: '残業/月', val: '5〜15h' }]
+  },
+  other: {
+    name: 'IT・事務・その他',
+    emoji: '💼',
+    color: '#8b5cf6',
+    desc: '事務・営業・警備など、幅広い職種が含まれる分野。デスクワークから屋外作業まで多様で、自分のペースでコツコツ働きたい人に向いています。',
+    jobs: ['一般事務', '営業事務', '警備員', '大工（住宅建築）', '足場職人', '総合職'],
+    traits: ['計画的・几帳面に物事を進められる', 'パソコン・書類作業が苦にならない', '縁の下の力持ちが好き', '一人で集中して作業できる'],
+    stats: [{ label: '月収目安', val: '18〜22万' }, { label: '年間休日', val: '100〜120日' }, { label: '残業/月', val: '5〜15h' }]
+  },
+  welfare: {
+    name: '医療・福祉・介護',
+    emoji: '❤️',
+    color: '#ec4899',
+    desc: '人の生活・健康を支える、社会になくてはならない仕事。介護・医療・支援の現場は、人のやさしさと体力が活かせる場所です。',
+    jobs: ['介護職員', '介護スタッフ', '生活支援員', '調理員（福祉施設）', '介護補助', 'ヘルパー'],
+    traits: ['人の役に立ちたい', '思いやり・共感力がある', '体を動かしながら仕事したい', '感謝される喜びをモチベーションにできる'],
+    stats: [{ label: '月収目安', val: '18〜22万' }, { label: '年間休日', val: '100〜115日' }, { label: '残業/月', val: '5〜10h' }]
+  },
+  beauty: {
+    name: '理美容・生活・レジャー',
+    emoji: '✂️',
+    color: '#14b8a6',
+    desc: '美容師・理容師・キャディなど、専門技術で人の生活を豊かにする仕事。センスや感性を活かしたい人にぴったりです。',
+    jobs: ['美容師見習い', '美容アシスタント', '理容師', 'キャディ', 'テーマパークサービス職', 'ホテルサービス職'],
+    traits: ['おしゃれ・美容・ファッションに興味がある', '人の外見を変えることにやりがいを感じる', '感性・センスに自信がある', '手先が器用'],
+    stats: [{ label: '月収目安', val: '17〜22万' }, { label: '年間休日', val: '100〜120日' }, { label: '残業/月', val: '3〜10h' }]
+  }
+};
+
+const QUESTIONS = [
+  { icon: '🏢', text: '仕事をするなら、どんな環境がいい？', hint: '毎日通う職場のイメージをえらんでね', options: [
+    { text: '工場・作業場で手を動かして作る', scores: { manufacturing: 3, construction: 1 } },
+    { text: '屋外・現場でダイナミックに働く', scores: { construction: 3, transport: 1 } },
+    { text: 'お店・施設でお客さんと関わる', scores: { retail: 2, hospitality: 2, beauty: 1 } },
+    { text: 'オフィス・デスクで落ち着いて働く', scores: { other: 3, welfare: 1 } }
+  ]},
+  { icon: '🌅', text: '勤務時間のスタイルはどれが合う？', hint: 'ライフスタイルに合った働き方を選ぼう', options: [
+    { text: '決まった時間（日勤のみ）でシフト安定', scores: { manufacturing: 2, other: 2 } },
+    { text: '季節や繁忙期によって変動しても良い', scores: { construction: 2, transport: 1, hospitality: 1 } },
+    { text: 'シフト制・早朝や夜もOK', scores: { hospitality: 3, retail: 2 } },
+    { text: '不規則でも高収入・スキルアップを優先', scores: { transport: 3, construction: 1 } }
+  ]},
+  { icon: '👥', text: '仕事中、人とどれくらい関わりたい？', hint: 'チームワーク or 個人作業、どっちが好き？', options: [
+    { text: '毎日たくさんのお客さんと会話したい', scores: { hospitality: 3, retail: 2, beauty: 2 } },
+    { text: 'チームで協力しながら目標達成したい', scores: { construction: 2, transport: 2, welfare: 1 } },
+    { text: '少人数でアットホームに働きたい', scores: { beauty: 2, welfare: 2, other: 1 } },
+    { text: '個人作業が中心で集中して取り組みたい', scores: { manufacturing: 3, other: 2 } }
+  ]},
+  { icon: '📍', text: '勤務地について、どう考える？', hint: '地元 vs チャレンジ、あなたの価値観は？', options: [
+    { text: '地元・宮崎で長く働きたい', scores: { welfare: 2, manufacturing: 2, construction: 1 } },
+    { text: '県内外問わず、仕事が充実していれば移動OK', scores: { transport: 3, hospitality: 2 } },
+    { text: '全国・世界を飛び回るような仕事に憧れる', scores: { transport: 3, hospitality: 2 } },
+    { text: 'まずは近場でスキルを積みたい', scores: { construction: 2, beauty: 2, retail: 1 } }
+  ]},
+  { icon: '💪', text: '体を使う仕事と頭を使う仕事、どっちが向いてると思う？', hint: 'どちらも大事！自分のイメージで選んでね', options: [
+    { text: 'バリバリ体を動かしたい！', scores: { construction: 3, welfare: 2, transport: 1 } },
+    { text: 'どちらかといえば体が好き', scores: { manufacturing: 2, hospitality: 2, beauty: 1 } },
+    { text: 'どちらかといえば頭脳・技術を使いたい', scores: { retail: 2, other: 2, construction: 1 } },
+    { text: 'デスクワーク・企画・分析が得意', scores: { other: 3, manufacturing: 1 } }
+  ]},
+  { icon: '❤️', text: '一番興味があることは何？', hint: '好きなこと・得意なことから職種を探そう', options: [
+    { text: 'ものを作る・機械・工業技術', scores: { manufacturing: 3, construction: 2 } },
+    { text: '人を助ける・医療・福祉・介護', scores: { welfare: 3, other: 1 } },
+    { text: '食・料理・おもてなし・接客サービス', scores: { hospitality: 3, retail: 1, beauty: 1 } },
+    { text: 'おしゃれ・美容・ファッション・レジャー', scores: { beauty: 3, hospitality: 1 } }
+  ]},
+  { icon: '🚗', text: '乗り物・運転・旅行は好き？', hint: '移動・運輸系の仕事に関わる質問', options: [
+    { text: '大好き！乗り物・旅行が趣味', scores: { transport: 3, hospitality: 1 } },
+    { text: '車や機械は好きで自動車整備にも興味', scores: { retail: 3, transport: 1 } },
+    { text: 'まあまあ。旅行は好きだけど仕事にするかは…', scores: { hospitality: 2, other: 1 } },
+    { text: 'あまり興味はない', scores: { manufacturing: 1, welfare: 1, beauty: 1 } }
+  ]},
+  { icon: '🔨', text: '建物・インフラ・工事現場に興味はある？', hint: '社会を作る仕事のイメージ', options: [
+    { text: 'とても興味がある！現場仕事がしたい', scores: { construction: 3 } },
+    { text: '電気・設備系なら興味がある', scores: { construction: 3, manufacturing: 1 } },
+    { text: 'どちらかといえばインドア系の方が好き', scores: { other: 2, welfare: 1, beauty: 1 } },
+    { text: 'あまり向いてない・苦手そう', scores: { hospitality: 1, retail: 1, other: 1 } }
+  ]},
+  { icon: '📱', text: 'パソコン・事務作業・IT機器の扱いは得意？', hint: 'デジタルスキルに関する質問', options: [
+    { text: '得意！パソコン仕事が向いている', scores: { other: 3 } },
+    { text: 'まあまあ。普通に使える', scores: { other: 2, manufacturing: 1 } },
+    { text: '苦手だけど覚えるのは頑張れる', scores: { retail: 1, welfare: 1 } },
+    { text: 'あまり得意ではない・体を動かす方が好き', scores: { construction: 2, welfare: 1, beauty: 1 } }
+  ]},
+  { icon: '🎨', text: '「センスや感性」が必要な仕事に憧れる？', hint: 'クリエイティブ・表現系の適性を確認', options: [
+    { text: 'はい！デザイン・美容・アートが好き', scores: { beauty: 3 } },
+    { text: 'どちらかといえば好き・料理でセンスを活かしたい', scores: { hospitality: 2, beauty: 2 } },
+    { text: 'センスより技術・資格の方が重要だと思う', scores: { construction: 2, manufacturing: 1 } },
+    { text: 'センスよりも体力・コミュニケーション力が武器', scores: { welfare: 2, transport: 2 } }
+  ]},
+  { icon: '🎯', text: '仕事でいちばん大切にしたいことは？', hint: '働く上での優先順位を教えて', options: [
+    { text: '安定した給与・休日・生活基盤', scores: { manufacturing: 2, other: 2, welfare: 1 } },
+    { text: '専門スキル・国家資格を取って成長したい', scores: { construction: 3, beauty: 2, retail: 1 } },
+    { text: '人に喜ばれる・感謝される仕事がしたい', scores: { welfare: 3, hospitality: 2, beauty: 1 } },
+    { text: 'やりがい・冒険・新しい体験を求めたい', scores: { transport: 3, hospitality: 1 } }
+  ]},
+  { icon: '📈', text: '5年後・10年後の自分のイメージは？', hint: 'キャリアアップの考え方を教えて', options: [
+    { text: 'スペシャリストとして一つの技術を極めたい', scores: { construction: 3, beauty: 2, manufacturing: 1 } },
+    { text: '管理職・チームリーダーになりたい', scores: { other: 2, manufacturing: 2, construction: 1 } },
+    { text: 'お客さんや利用者さんに直接関わり続けたい', scores: { welfare: 3, hospitality: 2, retail: 1 } },
+    { text: 'いろんな経験を積んで可能性を広げたい', scores: { transport: 3, other: 1 } }
+  ]},
+  { icon: '🏆', text: '資格や免許の取得について、どう思う？', hint: 'スキルアップへの意欲を教えて', options: [
+    { text: '国家資格・免許を絶対に取りたい！', scores: { construction: 3, retail: 2, beauty: 2 } },
+    { text: '資格は取れるなら取りたいが、必須ではない', scores: { manufacturing: 2, welfare: 1, transport: 1 } },
+    { text: '経験・実力の方が大事だと思う', scores: { hospitality: 2, welfare: 2, other: 1 } },
+    { text: 'OJT・現場研修で成長する方が向いている', scores: { transport: 2, manufacturing: 1, welfare: 1 } }
+  ]},
+  { icon: '💰', text: '給与・待遇について率直に答えてね', hint: 'お金のことも大切！正直に選んでね', options: [
+    { text: '最初は低くてもスキルで将来高収入を目指す', scores: { construction: 3, beauty: 2 } },
+    { text: '安定した月収・賞与あり・福利厚生重視', scores: { manufacturing: 2, other: 2, welfare: 1 } },
+    { text: '成果次第でどんどん稼げる環境が良い', scores: { retail: 2, transport: 2 } },
+    { text: 'お金より働きやすさ・やりがいを優先', scores: { welfare: 3, hospitality: 1, beauty: 1 } }
+  ]},
+  { icon: '🌸', text: '休日・ワークライフバランスについては？', hint: 'プライベートをどう大切にするか', options: [
+    { text: '週休2日・年間休日120日以上が必須', scores: { other: 3, manufacturing: 1 } },
+    { text: '多少の休日出勤・残業はOK。成長を優先', scores: { construction: 2, transport: 2, retail: 1 } },
+    { text: '不規則でも充実した内容の仕事がしたい', scores: { hospitality: 3, beauty: 1 } },
+    { text: '人のために働くなら多少の不便も気にならない', scores: { welfare: 3 } }
+  ]},
+  { icon: '😊', text: '自分の性格を一言で表すと？', hint: '自己分析！素直に選んでみて', options: [
+    { text: '真面目・コツコツ・几帳面', scores: { manufacturing: 2, other: 2, welfare: 1 } },
+    { text: '行動力・チャレンジャー・体育会系', scores: { construction: 3, transport: 2 } },
+    { text: '明るい・話好き・人懐っこい', scores: { hospitality: 3, retail: 2, beauty: 1 } },
+    { text: '感受性豊か・思いやりがある・聞き上手', scores: { welfare: 3, beauty: 2 } }
+  ]},
+  { icon: '🔥', text: 'ストレス発散法は？', hint: '仕事中の疲れをどう乗り越えるか', options: [
+    { text: '体を動かす！スポーツ・アウトドア', scores: { construction: 2, welfare: 2, transport: 1 } },
+    { text: 'ものを作る・料理・DIY', scores: { manufacturing: 3, hospitality: 1 } },
+    { text: '人と話す・カラオケ・友達と遊ぶ', scores: { hospitality: 2, retail: 2, beauty: 2 } },
+    { text: 'ゲーム・動画・インドア系で静かにリセット', scores: { other: 3, manufacturing: 1 } }
+  ]},
+  { icon: '🧩', text: '困難にぶつかった時のあなたは？', hint: '問題解決スタイルを教えてね', options: [
+    { text: '計画を立て直してコツコツ続ける', scores: { manufacturing: 2, other: 2, welfare: 1 } },
+    { text: '仲間に相談して一緒に解決する', scores: { construction: 2, welfare: 2, hospitality: 1 } },
+    { text: '直感で動いてから考える・失敗も経験', scores: { transport: 2, retail: 2, construction: 1 } },
+    { text: '感情や直感より丁寧さ・慎重さで対処', scores: { beauty: 3, other: 1 } }
+  ]},
+  { icon: '🤝', text: '「人の役に立つ」と感じる場面は？', hint: 'どんなシーンで生きがいを感じる？', options: [
+    { text: 'お年寄りや困った人を直接サポートした時', scores: { welfare: 3 } },
+    { text: 'お客さんが喜んでくれた瞬間', scores: { hospitality: 3, retail: 2, beauty: 1 } },
+    { text: 'チームで大きなものを完成させた時', scores: { construction: 3, manufacturing: 1 } },
+    { text: '自分のスキルが認められた・仕事が回った時', scores: { transport: 2, other: 2, beauty: 1 } }
+  ]},
+  { icon: '🌟', text: '「かっこいいな」と思う職業は？', hint: '率直な憧れをおしえて！', options: [
+    { text: '大型トラックのドライバー・バス運転士', scores: { transport: 3 } },
+    { text: '美容師・スタイリスト・料理人', scores: { beauty: 3, hospitality: 2 } },
+    { text: '建設・溶接・電気工事士など職人', scores: { construction: 3 } },
+    { text: '介護士・医療・福祉のプロフェッショナル', scores: { welfare: 3 } }
+  ]},
+  { icon: '🎓', text: '最後に！今の自分のイメージに近いのは？', hint: '直感で選んでOK！ここで結果が決まる', options: [
+    { text: '現場派！汗をかいて手を動かしたい', scores: { construction: 2, manufacturing: 2, welfare: 1 } },
+    { text: '接客派！人と関わりながら生き生き働きたい', scores: { hospitality: 2, retail: 2, beauty: 1 } },
+    { text: '技術派！資格・スキルで専門家になりたい', scores: { construction: 2, beauty: 2, transport: 1 } },
+    { text: 'サポート派！縁の下の力持ちで貢献したい', scores: { welfare: 2, other: 2, manufacturing: 1 } }
+  ]}
+];
+
+let currentQ = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+
+function startQuiz() {
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  const card = document.getElementById('q-card');
+  card.style.animation = 'none';
+  void card.offsetWidth;
+  card.style.animation = 'slideIn 0.35s cubic-bezier(0.4,0,0.2,1) both';
+
+  const pct = Math.round((currentQ + 1) / QUESTIONS.length * 100);
+  document.getElementById('q-current').textContent = currentQ + 1;
+  document.getElementById('q-pct').textContent = pct + '%';
+  document.getElementById('q-num-label').textContent = String(currentQ + 1).padStart(2, '0');
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('q-icon').textContent = q.icon;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('q-hint').textContent = q.hint;
+
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (answers[currentQ] === i ? ' selected' : '');
+    btn.innerHTML = `<span class="opt-key">${letters[i]}</span><span>${opt.text}</span>`;
+    btn.onclick = () => selectOption(i);
+    container.appendChild(btn);
+  });
+
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.classList.toggle('active', answers[currentQ] !== null);
+  nextBtn.textContent = currentQ === QUESTIONS.length - 1 ? '結果を見る →' : 'つぎへ →';
+  document.getElementById('btn-back').style.display = currentQ === 0 ? 'none' : '';
+}
+
+function selectOption(idx) {
+  answers[currentQ] = idx;
+  document.querySelectorAll('.option-btn').forEach((b, i) => {
+    b.classList.toggle('selected', i === idx);
+  });
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.classList.add('active');
+  nextBtn.textContent = currentQ === QUESTIONS.length - 1 ? '結果を見る →' : 'つぎへ →';
+}
+
+function nextQuestion() {
+  if (answers[currentQ] === null) return;
+  if (currentQ < QUESTIONS.length - 1) {
+    currentQ++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function prevQuestion() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion();
+  }
+}
+
+function showResult() {
+  const scores = {};
+  Object.keys(CATEGORIES).forEach(k => scores[k] = 0);
+  QUESTIONS.forEach((q, qi) => {
+    const ans = answers[qi];
+    if (ans !== null) {
+      Object.entries(q.options[ans].scores).forEach(([cat, val]) => {
+        scores[cat] = (scores[cat] || 0) + val;
+      });
+    }
+  });
+
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const topKey = sorted[0][0];
+  const cat = CATEGORIES[topKey];
+
+  document.getElementById('quiz-screen').style.display = 'none';
+  const rs = document.getElementById('result-screen');
+  rs.style.display = 'block';
+
+  document.getElementById('r-emoji').textContent = cat.emoji;
+  document.getElementById('r-type-name').textContent = cat.name;
+  document.getElementById('r-desc').textContent = cat.desc;
+
+  document.getElementById('r-stats-grid').innerHTML = cat.stats.map(s => `
+    <div class="stat-r">
+      <div class="stat-r-val">${s.val}</div>
+      <div class="stat-r-lbl">${s.label}</div>
+    </div>
+  `).join('');
+
+  const maxScore = sorted[0][1] || 1;
+  const barColors = ['#d4a017','#e74c3c','#0f9960','#0097b2','#ec4899','#8b5cf6','#14b8a6','#f59e0b'];
+  document.getElementById('score-bars').innerHTML = sorted.map(([key, val], i) => `
+    <div class="score-row">
+      <div class="sc-label">${CATEGORIES[key].name.split('・')[0]}</div>
+      <div class="sc-track">
+        <div class="sc-fill" style="width:${Math.round(val/maxScore*100)}%; background:${barColors[i]}"></div>
+      </div>
+      <div class="sc-val">${val}pt</div>
+    </div>
+  `).join('');
+
+  document.getElementById('r-job-tags').innerHTML = cat.jobs.map(j =>
+    `<span class="job-tag">${j}</span>`
+  ).join('');
+
+  document.getElementById('r-traits').innerHTML = cat.traits.map(t =>
+    `<div class="trait-item"><div class="trait-marker"></div><span>${t}</span></div>`
+  ).join('');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  currentQ = 0;
+  answers = new Array(QUESTIONS.length).fill(null);
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('start-screen').style.display = 'flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
