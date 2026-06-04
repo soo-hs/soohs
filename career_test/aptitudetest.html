@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>曽於高等学校 3年生用 就職・職種適性テスト</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            background: #fff;
+            margin: 30px auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .question-block {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #fafbfc;
+            border-left: 5px solid #3498db;
+            border-radius: 0 8px 8px 0;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option-label:hover {
+            background: #edf2f7;
+            border-color: #cbd5e0;
+        }
+        input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 30px;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        #result-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-header {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid #d4e6f1;
+        }
+        .result-title {
+            font-size: 22px;
+            color: #2980b9;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .result-body {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #34495e;
+            white-space: pre-wrap;
+        }
+        .restart-btn {
+            background: #95a5a6;
+            margin-top: 20px;
+        }
+        .restart-btn:hover {
+            background: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>曽於高等学校<br>未来を拓く 就職・職種適性テスト</h1>
+    <p class="subtitle">あなたの強みや可能性を見つけ、輝かしい未来の第一歩を応援するテストです。</p>
+
+    <form id="quiz-form" onsubmit="event.preventDefault(); calculateResult();">
+        <div id="setup-section">
+            <div class="form-group">
+                <label for="student-name">氏名</label>
+                <input type="text" id="student-name" required placeholder="曽於 太郎">
+            </div>
+            <div class="form-group">
+                <label for="department">学科</label>
+                <select id="department" required>
+                    <option value="" disabled selected>学科を選択してください</option>
+                    <option value="普通科">普通科</option>
+                    <option value="文理科">文理科</option>
+                    <option value="畜産食農科">畜産食農科</option>
+                    <option value="機械電子科">機械電子科</option>
+                    <option value="商業科">商業科</option>
+                </select>
+            </div>
+            <hr style="border: 0; height: 1px; background: #e2e8f0; margin: 40px 0;">
+        </div>
+
+        <div id="questions-container">
+            <div class="question-block">
+                <div class="question-text">Q1. 友達や周囲の人から、よくどんな風に頼りにされますか？</div>
+                <div class="options">
+                    <label class="option-label"><input type="radio" name="q1" value="A" required> 話をじっくり聞いて共感してくれる</label>
+                    <label class="option-label"><input type="radio" name="q1" value="B"> 的確なアドバイスや計画を立ててくれる</label>
+                    <label class="option-label"><input type="radio" name="q1" value="C"> トラブルが起きた時に手際よく動いてくれる</label>
+                    <label class="option-label"><input type="radio" name="q1" value="D"> 新しいアイデアをたくさん出してくれる</label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">Q2. あなたが一番「やりがい」を感じる瞬間はどれですか？</div>
+                <div class="options">
+                    <label class="option-label"><input type="radio" name="q2" value="A" required> 誰かから「ありがとう」と直接感謝されたとき</label>
+                    <label class="option-label"><input type="radio" name="q2" value="B"> 複雑な問題やクイズを解き明かしたとき</label>
+                    <label class="option-label"><input type="radio" name="q2" value="C"> 何かモノを作り上げたり、植物や動物のお世話が実を結んだとき</label>
+                    <label class="option-label"><input type="radio" name="q2" value="D"> 自分の発案でみんなが盛り上がったとき</label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">Q3. 地域のイベントや学校行事で、自分がやってみたい役割は？</div>
+                <div class="options">
+                    <label class="option-label"><input type="radio" name="q3" value="A" required> 受付や案内など、来場者をもてなす係</label>
+                    <label class="option-label"><input type="radio" name="q3" value="B"> 全体のスケジュール管理や会計の係</label>
+                    <label class="option-label"><input type="radio" name="q3" value="C"> 会場設営、機材のセッティング、生産品の準備係</label>
+                    <label class="option-label"><input type="radio" name="q3" value="D"> 企画・宣伝やステージの司会・パフォーマンス係</label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">Q4. 何か新しいことを始めるとき、あなたの行動パターンは？</div>
+                <div class="options">
+                    <label class="option-label"><input type="radio" name="q4" value="A" required> 仲間と一緒に相談しながら楽しく始める</label>
+                    <label class="option-label"><input type="radio" name="q4" value="B"> まず本やネットで調べて、計画を練ってから始める</label>
+                    <label class="option-label"><input type="radio" name="q4" value="C"> とにかく実際に見よう見まねで手を動かしてみる</label>
+                    <label class="option-label"><input type="radio" name="q4" value="D"> 面白そう！と思ったら直感で飛び込んでみる</label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">Q5. あなたが大切にしたい「作業環境」のイメージは？</div>
+                <div class="options">
+                    <label class="option-label"><input type="radio" name="q5" value="A" required> 多くの人と会話を交わす、温かい雰囲気の場所</label>
+                    <label class="option-label"><input type="radio" name="q5" value="B"> 静かで集中できる、整理整頓されたオフィスや空間</label>
+                    <label class="option-label"><input type="radio" name="q5" value="C"> 自然に触れたり、道具や機械に囲まれたアクティブな現場</label>
+                    <label class="option-label"><input type="radio" name="q5" value="D"> 毎日少しずつ変化がある、活気あふれるトレンドの最先端</label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">Q6. あなたが人より「ちょっと得意かも」と思うことは？</div>
+                <div class="options">
+                    <label class="option-label"><input type="radio" name="q6" value="A" required> 人の表情や気持ちの変化に気づくこと</label>
+                    <label class="option-label"><input type="radio" name="q6" value="B"> 細かい数字のチェックや書類の整理</label>
+                    <label class="option-label"><input type="radio" name="q6" value="C"> コツコツと粘り強く作業を続けること</label>
+                    <label class="option-label"><input type="radio" name="q6" value="D"> 新しいトレンドや流行りのものをキャッチすること</label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">Q7. 地元・曽於市や鹿児島の未来に、仕事を通してどう貢献したい？</div>
+                <div class="options">
+                    <label class="option-label"><input type="radio" name="q7" value="A" required> 地域の人々の暮らし、福祉や医療、教育を支えたい</label>
+                    <label class="option-label"><input type="radio" name="q7" value="B"> 地元企業の経営やインフラを仕組みから支えたい</label>
+                    <label class="option-label"><input type="radio" name="q7" value="C"> 曽於の美味しい食、豊かな自然、確かなものづくりを発信したい</label>
+                    <label class="option-label"><input type="radio" name="q7" value="D"> 新しいビジネスや観光・イベントを仕掛けて街を盛り上げたい</label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">Q8. 仕事で行き詰まったとき、どうやって乗り越えたいですか？</div>
+                <div class="options">
+                    <label class="option-label"><input type="radio" name="q8" value="A" required> 同僚や先輩に相談して、チームの絆で乗り越える</label>
+                    <label class="option-label"><input type="radio" name="q8" value="B"> 原因をデータやルールに照らし合わせ、論理的に分析する</label>
+                    <label class="option-label"><input type="radio" name="q8" value="C"> 基本に立ち返り、試行錯誤しながら体を動かして解決策を探す</label>
+                    <label class="option-label"><input type="radio" name="q8" value="D"> 発想をガラッと変えて、今までにない新しいアプローチを試す</label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">Q9. グループワークのとき、あなたのポジションになりやすいのは？</div>
+                <div class="options">
+                    <label class="option-label"><input type="radio" name="q9" value="A" required> みんなの意見をまとめ、雰囲気を和ませる役割</label>
+                    <label class="option-label"><input type="radio" name="q9" value="B"> 記録をとったり、時間配分を気にしたりする役割</label>
+                    <label class="option-label"><input type="radio" name="q9" value="C"> 実際に形にするための具体的な作業を担当する役割</label>
+                    <label class="option-label"><input type="radio" name="q9" value="D"> 「面白そう！」と最初の方向性をバシッと決める役割</label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">Q10. あなたの「集中力」のタイプは？</div>
+                <div class="options">
+                    <label class="option-label"><input type="radio" name="q10" value="A" required> 人と話しているときや、誰かのために動いているときに発揮される</label>
+                    <label class="option-label"><input type="radio" name="q10" value="B"> 一つのテーマについて深く調べたり考えたりするときに発揮される</label>
+                    <label class="option-label"><input type="radio" name="q10" value="C"> 目の前の道具や素材、機械と向き合っているときに発揮される</label>
+                    <label class="option-label"><input type="radio" name="q10" value="D"> 締め切り間近や、ここぞという勝負どころで爆発的に発揮される</label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">Q11. 先輩や先生から褒められて一番嬉しい言葉は？</div>
+                <div class="options">
+                    <label class="option-label"><input type="radio" name="q11" value="A" required> 「あなたがいると、みんなが安心するよ」</label>
+                    <label class="option-label"><input type="radio" name="q11" value="B"> 「いつも正確で、本当にミスがないね」</label>
+                    <label class="option-label"><input type="radio" name="q11" value="C"> 「素晴らしい技術（作品・成果）だね！」</label>
+                    <label class="option-label"><input type="radio" name="q11" value="D"> 「その発想はなかった！面白いね！」</label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">Q12. 将来、社会人になったあなた自身への「一番の願い」は？</div>
+                <div class="options">
+                    <label class="option-label"><input type="radio" name="q12" value="A" required> 多くの人に愛され、頼られる温かい人でありたい</label>
+                    <label class="option-label"><input type="radio" name="q12" value="B"> 専門的な知識を極め、スマートに仕事をこなす人でありたい</label>
+                    <label class="option-label"><input type="radio" name="q12" value="C"> 自分の腕や作ったもので、世の中に確かな価値を届ける人でありたい</label>
+                    <label class="option-label"><input type="radio" name="q12" value="D"> 常に挑戦を続け、自分の可能性をどこまでも広げる人でありたい</label>
+                </div>
+            </div>
+
+            <button type="submit">適性テストの結果を見る</button>
+        </div>
+    </form>
+
+    <div id="result-section">
+        <div class="result-header">
+            <div id="result-user-info" style="font-size: 16px; color: #7f8c8d;"></div>
+            <div class="result-title" id="result-type-title"></div>
+        </div>
+        <div class="result-body" id="result-type-text"></div>
+        <button class="restart-btn" onclick="restartQuiz()">もう一度診断する</button>
+    </div>
+</div>
+
+<script>
+    function calculateResult() {
+        const name = document.getElementById('student-name').value;
+        const dept = document.getElementById('department').value;
+        
+        // 各回答のカウント
+        let counts = { A: 0, B: 0, C: 0, D: 0 };
+        
+        for (let i = 1; i <= 12; i++) {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            if (selected) {
+                counts[selected.value]++;
+            }
+        }
+        
+        // 一番多い回答を見つける
+        let maxKey = 'A';
+        let maxVal = counts.A;
+        for (let key in counts) {
+            if (counts[key] > maxVal) {
+                maxVal = counts[key];
+                maxKey = key;
+            }
+        }
+        
+        // 学科に合わせた特別メッセージ
+        let deptMessage = "";
+        switch(dept) {
+            case "普通科":
+                deptMessage = "普通科で培った幅広い知識と、柔軟な学習能力がこれからの社会で大きな基礎体力となります。";
+                break;
+            case "文理科":
+                deptMessage = "文理科で磨いた深い思考力と、高い目標に向かって努力する力が大きな武器になります。";
+                break;
+            case "畜産食農科":
+                deptMessage = "畜産食農科で身につけた命や食への情熱、現場での確かな実践力は、社会から最も強く求められる価値の一つです。";
+                break;
+            case "機械電子科":
+                deptMessage = "機械電子科で培った専門的な技術や、ものづくりへの論理的アプローチは、未来の産業を支える最強の力です。";
+                break;
+            case "商業科":
+                deptMessage = "商業科で習得したビジネススキルや経済の知識、おもてなしの心は、どの組織にいっても即戦力として重宝されます。";
+                break;
+        }
+
+        // 結果パターン
+        let title = "";
+        let text = "";
+
+        if (maxKey === 'A') {
+            title = "人と心でつながる【コミュニケーション＆サポートのプロフェッショナル】";
+            text = `こんにちは、${name}さん！あなたの最大の強みは「高い共感力」と「周囲を安心させる温かさ」です。\n\n【向いている職種・業界】\n医療・福祉関係、接客・サービス業、公務員、教育、人事・受付など、人と直接関わり、笑顔や安心を届ける仕事であなたの魅力が100%発揮されます。\n\n【未来への希望メッセージ】\n${deptMessage} あなたはチームの中にいるだけで周囲の雰囲気を明るくできる素晴らしい才能を持っています。社会に出ても、持ち前の思いやりの心で多くの人から信頼され、愛されるリーダーやサポーターとして大活躍するでしょう。自信を持って進んでください！`;
+        } else if (maxKey === 'B') {
+            title = "組織をスマートに支える【知性派オフィスマネージャー＆アナリスト】";
+            text = `こんにちは、${name}さん！あなたの最大の強みは「論理的な思考力」と「確実で丁寧な計画性」です。\n\n【向いている職種・業界】\n事務職（総務・人事・経理）、ITエンジニア（データ管理）、金融関係、公務員、品質管理、企画調査など、仕組みを整えたり、物事を正しく管理・分析する仕事で大活躍できます。\n\n【未来への希望メッセージ】\n${deptMessage} 仕事のクオリティを高め、トラブルを未然に防ぐあなたの緻密さは、どんな職場でも「なくてはならない絶対的な信頼の要」となります。あなたのスマートな仕事ぶりが、多くの人の未来を支える土台となるはずです。輝かしい未来が待っています！`;
+        } else if (maxKey === 'C') {
+            title = "未来をカタチにする【職人気質のものづくり＆生産のエキスパート】";
+            text = `こんにちは、${name}さん！あなたの最大の強みは「粘り強い実行力」と「実直に価値を生み出す技術・感性」です。\n\n【向いている職種・業界】\n製造業、エンジニア、農業・畜産業・食品加工、施工・建築、各種専門技術職など、自分の手や体を動かして成果をカタチにし、世の中にダイレクトに届ける仕事が天職です。\n\n【未来への希望メッセージ】\n${deptMessage} コツコツと積み重ねた努力が、大きな成果となって目に見える喜び。それを作り出せるのがあなたの強みです。社会に出ても「あなたの腕、あなたが生み出すものなら間違いない」と、プロとして深く尊敬を集める存在になるでしょう。無限の可能性が広がっています！`;
+        } else {
+            title = "新たな価値を生み出す【アイデアあふれる挑戦者＆クリエイター】";
+            text = `こんにちは、${name}さん！あなたの最大の強みは「抜群の行動力」と「枠にとらわれない柔軟な発想力」です。\n\n【向いている職種・業界】\n営業職、マーケティング・宣伝、販売、デザイン・クリエイティブ関係、イベント企画、観光・サービス業など、新しいアイデアを提案し、人をワクワクさせる仕事で真価を発揮します。\n\n【未来への希望メッセージ】\n${deptMessage} 変化を恐れず、常に一歩前へ進もうとするあなたのエネルギーは、これからの変化の激しい社会に最も必要なものです。あなたのワクワクする気持ちが周りの人を巻き込み、大きなムーブメントを起こしていくでしょう。恐れずに自分の直感を信じて突き進んでください！`;
+        }
+
+        // 画面切り替え
+        document.getElementById('student-name').disabled = true;
+        document.getElementById('department').disabled = true;
+        document.getElementById('questions-container').style.display = 'none';
+        
+        document.getElementById('result-user-info').innerText = `${dept} ３年 ： ${name} さんの診断結果`;
+        document.getElementById('result-type-title').innerText = title;
+        document.getElementById('result-type-text').innerText = text;
+        
+        document.getElementById('result-section').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartQuiz() {
+        document.getElementById('student-name').disabled = false;
+        document.getElementById('department').disabled = false;
+        document.getElementById('quiz-form').reset();
+        
+        document.getElementById('questions-container').style.display = 'block';
+        document.getElementById('result-section').style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
