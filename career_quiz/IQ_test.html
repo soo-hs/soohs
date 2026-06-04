@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ぷちIQテスト ₍ᐢ.ˬ.ᐢ₎</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            background-color: #f7f3ed;
+            color: #5a4f43;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 8px 24px rgba(229, 215, 200, 0.6);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            border: 4px solid #fff5eb;
+        }
+        h1 {
+            color: #ff9e9e;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #a89f91;
+            margin-bottom: 25px;
+        }
+        .progress-bar {
+            height: 10px;
+            background-color: #eee7de;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background-color: #ffccb6;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .question-card {
+            display: none;
+        }
+        .question-card.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .question-text {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .option-btn {
+            background-color: #fff9f5;
+            border: 2px solid #ffe3d1;
+            border-radius: 15px;
+            padding: 14px;
+            font-size: 16px;
+            color: #5a4f43;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        .option-btn:hover {
+            background-color: #ffebe0;
+            border-color: #ffccb6;
+            transform: translateY(-2px);
+        }
+        .result-screen {
+            display: none;
+        }
+        .iq-score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff9e9e;
+            margin: 20px 0;
+        }
+        .restart-btn {
+            background-color: #ffccb6;
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 204, 182, 0.4);
+            margin-top: 20px;
+        }
+        .restart-btn:hover {
+            background-color: #ffb89e;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="test-screen">
+        <h1 id="title-text">ぷちIQテスト</h1>
+        <div class="subtitle" id="q-count">質問 1 / 12</div>
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <div id="questions-container"></div>
+    </div>
+
+    <div id="result-screen" class="result-screen">
+        <h1>診断結果 ₍ᐢ..ᐢ₎⊹</h1>
+        <div class="subtitle">あなたの推定IQは...</div>
+        <div class="iq-score" id="iq-result">IQ 100</div>
+        <p id="iq-comment" style="line-height: 1.6; margin-bottom: 30px;"></p>
+        <button class="restart-btn" onclick="resetTest()">もう一度挑戦する</button>
+    </div>
+</div>
+
+<script>
+    // 問題データ（全12問：論理、図形、法則、数理など）
+    const questions = [
+        { q: "「りんご」「みかん」「ぶどう」の仲間はどれ？", o: ["キャベツ", "バナナ", "トマト", "アサガオ"], a: 1 },
+        { q: "1, 3, 5, 7, ( ? )に入る数字は？", o: ["8", "9", "10", "11"], a: 1 },
+        { q: "「火」は「赤」、「水」は「青」なら、「森」は？", o: ["黄", "白", "緑", "紫"], a: 2 },
+        { q: "車輪が3つある乗り物はどれ？", o: ["自転車", "一輪車", "三輪車", "自動車"], a: 2 },
+        { q: "昼の12時の4時間前は、午前何時？", o: ["7時", "8時", "9時", "10時"], a: 1 },
+        { q: "「タヌキ」から「タ」を抜くと、なんの動物になる？", o: ["イヌ", "ネコ", "ヌキ", "ウサギ"], a: 2 },
+        { q: "AはBより背が高く、BはCより背が高い。一番背が高いのは？", o: ["A", "B", "C", "全員同じ"], a: 0 },
+        { q: "2, 4, 8, 16, ( ? )に入る数字は？", o: ["20", "24", "32", "64"], a: 2 },
+        { q: "「上」の反対は「下」、「左」の反対は？", o: ["前", "右", "奥", "斜め"], a: 1 },
+        { q: "3匹の猫が3分間で3匹のネズミを捕まえます。100分間で100匹のネズミを捕まえるには何匹の猫が必要？", o: ["3匹", "30匹", "100匹", "300匹"], a: 0 },
+        { q: "「お菓子（オカシ）」を逆さまから読むと？", o: ["シカオ", "シカテ", "シカツ", "シカン"], a: 0 },
+        { q: "1から10までの数字を全部足すといくつ？", o: ["45", "50", "55", "60"], a: 2 }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function initTest() {
+        const container = document.getElementById('questions-container');
+        container.innerHTML = '';
+        
+        questions.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = `question-card ${index === 0 ? 'active' : ''}`;
+            card.id = `q-${index}`;
+
+            const qText = document.createElement('div');
+            qText.className = 'question-text';
+            qText.innerText = item.q;
+            card.appendChild(qText);
+
+            const optionsList = document.createElement('div');
+            optionsList.className = 'options-list';
+
+            item.o.forEach((opt, oIndex) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => handleAnswer(index, oIndex);
+                optionsList.appendChild(btn);
+            });
+
+            card.appendChild(optionsList);
+            container.appendChild(card);
+        });
+        updateProgress();
+    }
+
+    function handleAnswer(qIndex, selectedOpt) {
+        if (selectedOpt === questions[qIndex].a) {
+            score++;
+        }
+
+        document.getElementById(`q-${qIndex}`).classList.remove('active');
+        currentQuestion++;
+
+        if (currentQuestion < questions.length) {
+            document.getElementById(`q-${currentQuestion}`).classList.add('active');
+            updateProgress();
+        } else {
+            showResult();
+        }
+    }
+
+    function updateProgress() {
+        document.getElementById('q-count').innerText = `質問 ${currentQuestion + 1} / ${questions.length}`;
+        const percent = ((currentQuestion) / questions.length) * 100;
+        document.getElementById('progress').style.width = `${percent}%`;
+    }
+
+    function showResult() {
+        document.getElementById('test-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+
+        // 簡易IQ計算ロジック（全問正解でIQ130、1問あたり約5アップ）
+        const calculatedIQ = 70 + (score * 5);
+        document.getElementById('iq-result').innerText = `IQ ${calculatedIQ}`;
+
+        let comment = "";
+        if (calculatedIQ >= 120) {
+            comment = "天才かも！？ 素晴らしい論理的思考力の持ち主です。頭の回転がとっても速いです！";
+        } else if (calculatedIQ >= 100) {
+            comment = "平均的でバランスの良い知能を持っています。ひらめき力や日常の判断力もバッチリです！";
+        } else {
+            comment = "直感タイプかも？ じっくり考えるともっとスコアが伸びるポテンシャルを秘めています！";
+        }
+        document.getElementById('iq-comment').innerText = comment;
+    }
+
+    function resetTest() {
+        currentQuestion = 0;
+        score = 0;
+        document.getElementById('test-screen').style.display = 'block';
+        document.getElementById('result-screen').style.display = 'none';
+        initTest();
+    }
+
+    // 初回実行
+    initTest();
+</script>
+
+</body>
+</html>
