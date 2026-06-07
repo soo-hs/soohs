@@ -1,241 +1,672 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ぷちIQテスト ₍ᐢ.ˬ.ᐢ₎</title>
-    <style>
-        body {
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-            background-color: #f7f3ed;
-            color: #5a4f43;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            background-color: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 8px 24px rgba(229, 215, 200, 0.6);
-            padding: 30px;
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
-            border: 4px solid #fff5eb;
-        }
-        h1 {
-            color: #ff9e9e;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            font-size: 14px;
-            color: #a89f91;
-            margin-bottom: 25px;
-        }
-        .progress-bar {
-            height: 10px;
-            background-color: #eee7de;
-            border-radius: 5px;
-            margin-bottom: 30px;
-            overflow: hidden;
-        }
-        .progress {
-            height: 100%;
-            background-color: #ffccb6;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-        .question-card {
-            display: none;
-        }
-        .question-card.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .question-text {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-        .options-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .option-btn {
-            background-color: #fff9f5;
-            border: 2px solid #ffe3d1;
-            border-radius: 15px;
-            padding: 14px;
-            font-size: 16px;
-            color: #5a4f43;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            outline: none;
-        }
-        .option-btn:hover {
-            background-color: #ffebe0;
-            border-color: #ffccb6;
-            transform: translateY(-2px);
-        }
-        .result-screen {
-            display: none;
-        }
-        .iq-score {
-            font-size: 48px;
-            font-weight: bold;
-            color: #ff9e9e;
-            margin: 20px 0;
-        }
-        .restart-btn {
-            background-color: #ffccb6;
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            font-size: 16px;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(255, 204, 182, 0.4);
-            margin-top: 20px;
-        }
-        .restart-btn:hover {
-            background-color: #ffb89e;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✨ IQチャレンジ ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #fff0f8;
+    --pink: #ff7eb3;
+    --pink-light: #ffd6ec;
+    --pink-dark: #d94f8a;
+    --yellow: #ffe066;
+    --yellow-dark: #e6a800;
+    --mint: #7ef0c8;
+    --mint-dark: #2eb88a;
+    --blue: #7ec8ff;
+    --blue-dark: #1e7fc4;
+    --lavender: #c9b8ff;
+    --lavender-dark: #6e4fd4;
+    --white: #ffffff;
+    --text: #3a2060;
+    --text-soft: #9080b8;
+    --card-shadow: 0 8px 0 rgba(180,100,160,0.18);
+    --card-shadow-sm: 0 4px 0 rgba(180,100,160,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--sky);
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(255,214,236,0.8) 0%, transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(198,230,255,0.8) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(255,240,200,0.4) 0%, transparent 60%);
+    min-height: 100vh;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 1rem 3rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Floating deco */
+  .deco { position: fixed; pointer-events: none; z-index: 0; font-size: 22px; animation: float 6s ease-in-out infinite; opacity: 0.55; }
+  .deco:nth-child(1)  { top:5%;  left:4%;  animation-delay:0s; }
+  .deco:nth-child(2)  { top:12%; right:6%; animation-delay:1s; }
+  .deco:nth-child(3)  { top:40%; left:2%;  animation-delay:2s; font-size:16px; }
+  .deco:nth-child(4)  { top:60%; right:3%; animation-delay:0.5s; font-size:18px; }
+  .deco:nth-child(5)  { top:80%; left:5%;  animation-delay:1.5s; font-size:14px; }
+  .deco:nth-child(6)  { top:88%; right:7%; animation-delay:2.5s; }
+  @keyframes float {
+    0%,100% { transform: translateY(0) rotate(-6deg); }
+    50%      { transform: translateY(-12px) rotate(6deg); }
+  }
+
+  /* Stars burst */
+  .burst { position: fixed; pointer-events: none; z-index: 0; }
+  .burst span {
+    position: absolute;
+    font-size: 10px;
+    opacity: 0.25;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: 0.15; transform: scale(1); }
+    50%      { opacity: 0.5;  transform: scale(1.4); }
+  }
+
+  /* Header */
+  .header {
+    position: relative; z-index: 1;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    animation: popIn 0.6s cubic-bezier(.34,1.56,.64,1) both;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--pink);
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    border-radius: 99px;
+    padding: 5px 14px;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 3px 0 var(--pink-dark);
+    letter-spacing: 0.05em;
+  }
+
+  .header h1 {
+    font-family: 'Kaisei Decol', serif;
+    font-size: clamp(30px, 6vw, 46px);
+    font-weight: 700;
+    background: linear-gradient(135deg, #ff7eb3 0%, #b76fff 50%, #7ec8ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 6px;
+    filter: drop-shadow(0 2px 0 rgba(255,126,179,0.15));
+  }
+
+  .header p {
+    color: var(--text-soft);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  /* HP / score bar */
+  .hud {
+    position: relative; z-index: 1;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+    width: 100%;
+    max-width: 520px;
+    animation: popIn 0.6s 0.1s cubic-bezier(.34,1.56,.64,1) both;
+  }
+
+  .hud-box {
+    flex: 1;
+    background: var(--white);
+    border-radius: 14px;
+    padding: 8px 14px;
+    box-shadow: var(--card-shadow-sm);
+    border: 2px solid rgba(255,126,179,0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .hud-label {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--text-soft);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hud-bar-track {
+    height: 10px;
+    background: #f0e8f8;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .hud-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    background: linear-gradient(90deg, #ff7eb3, #ff9de2);
+  }
+
+  .hud-score-val {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--pink);
+    line-height: 1;
+  }
+
+  /* Main card */
+  .quiz-card {
+    position: relative; z-index: 1;
+    background: var(--white);
+    border-radius: 26px;
+    padding: 1.75rem 1.75rem 1.5rem;
+    box-shadow: var(--card-shadow);
+    border: 2.5px solid rgba(255,126,179,0.2);
+    width: 100%;
+    max-width: 520px;
+    animation: popIn 0.6s 0.2s cubic-bezier(.34,1.56,.64,1) both;
+  }
+
+  /* Top pill */
+  .q-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--lavender), var(--blue));
+    color: var(--lavender-dark);
+    border-radius: 99px;
+    padding: 4px 14px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 0 rgba(110,79,212,0.18);
+  }
+
+  .q-emoji {
+    font-size: 38px;
+    display: block;
+    margin-bottom: 0.5rem;
+    animation: bounce 0.5s cubic-bezier(.34,1.56,.64,1) both;
+  }
+
+  @keyframes bounce {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+
+  .q-text {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.55;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Options */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 1rem;
+  }
+
+  .opt-btn {
+    background: var(--white);
+    border: 2.5px solid #f0e0f0;
+    border-radius: 14px;
+    padding: 11px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    transition: all 0.16s cubic-bezier(.34,1.56,.64,1);
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    box-shadow: 0 3px 0 #f0d0e8;
+  }
+
+  .opt-btn:hover:not(:disabled) {
+    border-color: var(--pink);
+    background: var(--pink-light);
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 5px 0 rgba(255,126,179,0.3);
+  }
+
+  .opt-btn:active:not(:disabled) {
+    transform: translateY(1px) scale(0.99);
+    box-shadow: 0 1px 0 rgba(255,126,179,0.2);
+  }
+
+  .opt-label {
+    min-width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    background: #f5e8ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--lavender-dark);
+    transition: all 0.16s;
+  }
+
+  .opt-btn.correct {
+    background: #e8fff4;
+    border-color: var(--mint-dark);
+    color: #1a7a55;
+    box-shadow: 0 4px 0 rgba(46,184,138,0.25);
+    animation: correctPop 0.4s cubic-bezier(.34,1.56,.64,1);
+  }
+  .opt-btn.correct .opt-label { background: var(--mint-dark); color: white; }
+
+  .opt-btn.wrong {
+    background: #fff0f0;
+    border-color: #ff6b6b;
+    color: #cc2222;
+    box-shadow: 0 3px 0 rgba(255,107,107,0.2);
+    animation: shake 0.4s ease;
+  }
+  .opt-btn.wrong .opt-label { background: #ff6b6b; color: white; }
+
+  .opt-btn.reveal {
+    background: #e8fff4;
+    border-color: var(--mint-dark);
+    color: #1a7a55;
+    box-shadow: 0 4px 0 rgba(46,184,138,0.25);
+  }
+  .opt-btn.reveal .opt-label { background: var(--mint-dark); color: white; }
+
+  .opt-btn:disabled { cursor: not-allowed; }
+
+  @keyframes correctPop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    60%      { transform: translateX(5px); }
+  }
+
+  /* Explanation */
+  .explanation {
+    font-size: 13px;
+    font-weight: 700;
+    color: #7a5050;
+    background: linear-gradient(135deg, #fff8e0, #fff4f8);
+    border: 2px dashed var(--yellow-dark);
+    border-radius: 14px;
+    padding: 11px 14px;
+    display: none;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    animation: popIn 0.35s cubic-bezier(.34,1.56,.64,1) both;
+  }
+
+  .explanation::before { content: '💡 '; }
+
+  /* Result pop */
+  .result-pop {
+    font-size: 28px;
+    text-align: center;
+    margin: 0.25rem 0 0.75rem;
+    animation: popIn 0.4s cubic-bezier(.34,1.56,.64,1) both;
+    display: none;
+  }
+
+  .result-pop.show { display: block; }
+
+  /* Next button */
+  .nav-row { display: flex; justify-content: flex-end; }
+
+  .next-btn {
+    background: linear-gradient(135deg, var(--pink), #e060c0);
+    border: none;
+    border-radius: 14px;
+    padding: 11px 26px;
+    font-size: 14px;
+    font-weight: 800;
+    color: white;
+    cursor: pointer;
+    display: none;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    box-shadow: 0 5px 0 var(--pink-dark);
+    transition: all 0.15s cubic-bezier(.34,1.56,.64,1);
+    letter-spacing: 0.02em;
+  }
+
+  .next-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 0 var(--pink-dark);
+  }
+
+  .next-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 var(--pink-dark);
+  }
+
+  /* RESULT SCREEN */
+  .result-screen {
+    position: relative; z-index: 1;
+    text-align: center;
+    width: 100%;
+    max-width: 520px;
+    animation: popIn 0.5s cubic-bezier(.34,1.56,.64,1) both;
+  }
+
+  .result-character {
+    font-size: 72px;
+    margin-bottom: 0.5rem;
+    animation: bounce 0.6s cubic-bezier(.34,1.56,.64,1) both;
+    display: block;
+  }
+
+  .result-grade {
+    font-family: 'Kaisei Decol', serif;
+    font-size: 32px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--pink) 0%, var(--lavender-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+
+  .result-card {
+    background: var(--white);
+    border-radius: 26px;
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+    border: 2.5px solid rgba(255,126,179,0.2);
+    margin-bottom: 1.25rem;
+  }
+
+  .score-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 0.75rem 0 1rem;
+  }
+
+  .score-big {
+    font-family: 'Kaisei Decol', serif;
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--pink), var(--lavender-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .score-slash {
+    font-size: 28px;
+    color: var(--text-soft);
+    font-weight: 800;
+    align-self: flex-end;
+    padding-bottom: 6px;
+  }
+
+  .score-total { font-size: 28px; font-weight: 800; color: var(--text-soft); align-self: flex-end; padding-bottom: 6px; }
+
+  .stars-row {
+    font-size: 26px;
+    letter-spacing: 4px;
+    margin-bottom: 0.75rem;
+  }
+
+  .result-msg {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
+
+  /* XP bar */
+  .xp-section { margin-top: 1.25rem; }
+  .xp-label { font-size: 11px; font-weight: 800; color: var(--text-soft); text-align: left; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .xp-track { height: 14px; background: #f5e8ff; border-radius: 99px; overflow: hidden; border: 2px solid rgba(110,79,212,0.15); }
+  .xp-fill {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--lavender), var(--blue));
+    width: 0%;
+    transition: width 1.2s cubic-bezier(.4,0,.2,1) 0.3s;
+  }
+
+  .restart-btn {
+    background: linear-gradient(135deg, var(--yellow), #ffd000);
+    border: none;
+    border-radius: 16px;
+    padding: 14px 36px;
+    font-size: 16px;
+    font-weight: 800;
+    color: #5a3800;
+    cursor: pointer;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    box-shadow: 0 6px 0 var(--yellow-dark);
+    transition: all 0.15s cubic-bezier(.34,1.56,.64,1);
+    letter-spacing: 0.03em;
+  }
+
+  .restart-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--yellow-dark); }
+  .restart-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--yellow-dark); }
+
+  /* confetti particles */
+  .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 999; overflow: hidden; }
+  .c-piece {
+    position: absolute;
+    top: -20px;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    animation: confettiFall linear forwards;
+  }
+  @keyframes confettiFall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.7); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  @media (max-width: 480px) {
+    .quiz-card { padding: 1.25rem; }
+    .q-text { font-size: 15px; }
+    .opt-btn { font-size: 13px; }
+  }
+</style>
 </head>
 <body>
 
-<div class="container">
-    <div id="test-screen">
-        <h1 id="title-text">ぷちIQテスト</h1>
-        <div class="subtitle" id="q-count">質問 1 / 12</div>
-        <div class="progress-bar">
-            <div class="progress" id="progress"></div>
-        </div>
-        <div id="questions-container"></div>
-    </div>
+<!-- Floating deco -->
+<div class="deco">🌸</div>
+<div class="deco">⭐</div>
+<div class="deco">🌙</div>
+<div class="deco">💫</div>
+<div class="deco">🍭</div>
+<div class="deco">✨</div>
 
-    <div id="result-screen" class="result-screen">
-        <h1>診断結果 ₍ᐢ..ᐢ₎⊹</h1>
-        <div class="subtitle">あなたの推定IQは...</div>
-        <div class="iq-score" id="iq-result">IQ 100</div>
-        <p id="iq-comment" style="line-height: 1.6; margin-bottom: 30px;"></p>
-        <button class="restart-btn" onclick="resetTest()">もう一度挑戦する</button>
-    </div>
+<div class="confetti-wrap" id="confetti"></div>
+
+<header class="header">
+  <div class="badge">🎮 曽於高等学校</div>
+  <h1>IQ チャレンジ！</h1>
+  <p>全12問 — さあ、脳みそをフル回転だ！</p>
+</header>
+
+<div class="hud" id="hud">
+  <div class="hud-box">
+    <div class="hud-label">❤️ 残り問題</div>
+    <div class="hud-bar-track"><div class="hud-bar-fill" id="prog-bar" style="width:100%"></div></div>
+  </div>
+  <div class="hud-box" style="flex:0 0 auto; min-width:90px; text-align:center;">
+    <div class="hud-label">🌟 スコア</div>
+    <div class="hud-score-val" id="score-disp">0</div>
+  </div>
+</div>
+
+<div class="quiz-card" id="quiz-card">
+  <div id="quiz-area"></div>
 </div>
 
 <script>
-    // 問題データ（全12問：論理、図形、法則、数理など）
-    const questions = [
-        { q: "「りんご」「みかん」「ぶどう」の仲間はどれ？", o: ["キャベツ", "バナナ", "トマト", "アサガオ"], a: 1 },
-        { q: "1, 3, 5, 7, ( ? )に入る数字は？", o: ["8", "9", "10", "11"], a: 1 },
-        { q: "「火」は「赤」、「水」は「青」なら、「森」は？", o: ["黄", "白", "緑", "紫"], a: 2 },
-        { q: "車輪が3つある乗り物はどれ？", o: ["自転車", "一輪車", "三輪車", "自動車"], a: 2 },
-        { q: "昼の12時の4時間前は、午前何時？", o: ["7時", "8時", "9時", "10時"], a: 1 },
-        { q: "「タヌキ」から「タ」を抜くと、なんの動物になる？", o: ["イヌ", "ネコ", "ヌキ", "ウサギ"], a: 2 },
-        { q: "AはBより背が高く、BはCより背が高い。一番背が高いのは？", o: ["A", "B", "C", "全員同じ"], a: 0 },
-        { q: "2, 4, 8, 16, ( ? )に入る数字は？", o: ["20", "24", "32", "64"], a: 2 },
-        { q: "「上」の反対は「下」、「左」の反対は？", o: ["前", "右", "奥", "斜め"], a: 1 },
-        { q: "3匹の猫が3分間で3匹のネズミを捕まえます。100分間で100匹のネズミを捕まえるには何匹の猫が必要？", o: ["3匹", "30匹", "100匹", "300匹"], a: 0 },
-        { q: "「お菓子（オカシ）」を逆さまから読むと？", o: ["シカオ", "シカテ", "シカツ", "シカン"], a: 0 },
-        { q: "1から10までの数字を全部足すといくつ？", o: ["45", "50", "55", "60"], a: 2 }
-    ];
+const qs = [
+  { emoji:"🔢", q:"数列を完成させよう：2, 4, 8, 16, ___", opts:["24","32","30","28"], ans:1, exp:"それぞれ2倍になっているので、16×2＝32！等比数列だよ。" },
+  { emoji:"🐟", q:"「魚」が「水」の中にいるように、「鳥」はどこにいる？", opts:["空","森","巣","山"], ans:0, exp:"魚は水の中、鳥は空の中！これを「類推」という思考パターンだよ。" },
+  { emoji:"🍎", q:"仲間外れはどれ？　リンゴ・ミカン・バナナ・ニンジン", opts:["リンゴ","ミカン","バナナ","ニンジン"], ans:3, exp:"ニンジンだけが野菜で、他は果物！カテゴリーの違いを見抜く問題。" },
+  { emoji:"✖️", q:"? に入る数字は？　3 × ? ＝ 3 × 7 ＋ 3 × 3", opts:["7","10","30","3"], ans:1, exp:"分配法則で 3×(7+3)＝3×10。だから ？＝10！" },
+  { emoji:"🪞", q:"「昨日の翌日の翌日」は、何を基準にすると「明日」になる？", opts:["今日","昨日","明後日","おととい"], ans:0, exp:"昨日の翌日＝今日、今日の翌日＝明日。基準は「今日」！" },
+  { emoji:"🔵", q:"円・三角・四角・六角形・ハート。辺の数が偶数（0を含む）のものはいくつ？", opts:["1個","2個","3個","4個"], ans:2, exp:"円(辺0:偶数)・四角(辺4:偶数)・六角形(辺6:偶数)の3つ！" },
+  { emoji:"📏", q:"AはBより背が高い。CはAより背が高い。一番背が低いのは？", opts:["A","B","C","全員同じ"], ans:1, exp:"C > A > B の順なので、一番低いのはB！順序推理の問題だよ。" },
+  { emoji:"⚙️", q:"1台の機械が1分で1個作る。5台同時に動かすと、5個作るのに何分かかる？", opts:["5分","1分","25分","0.5分"], ans:1, exp:"機械は並行して動く！5台なら同時に5個→たった1分で完成！" },
+  { emoji:"🔤", q:"アルファベットのAから数えてGは何番目？", opts:["5番目","6番目","7番目","8番目"], ans:2, exp:"A=1, B=2, C=3, D=4, E=5, F=6, G=7！" },
+  { emoji:"🎲", q:"サイコロを1回振ったとき、偶数の目が出る確率は？", opts:["1/3","1/4","1/2","2/3"], ans:2, exp:"偶数の目は2・4・6の3つ → 3÷6＝1/2！" },
+  { emoji:"🌀", q:"次のうち180°回転させても同じ形に見えるものはどれ？", opts:["正三角形","正方形","正五角形","直角三角形"], ans:1, exp:"正方形は90°ごとに対称！180°回転しても同じ形に見えるよ。" },
+  { emoji:"🧮", q:"1から10まで全部足すといくつ？", opts:["45","50","55","60"], ans:2, exp:"(1+10)×10÷2＝55！ガウスが発見した天才的な計算法だよ。" }
+];
 
-    let currentQuestion = 0;
-    let score = 0;
+let cur = 0, score = 0, answered = false;
 
-    function initTest() {
-        const container = document.getElementById('questions-container');
-        container.innerHTML = '';
-        
-        questions.forEach((item, index) => {
-            const card = document.createElement('div');
-            card.className = `question-card ${index === 0 ? 'active' : ''}`;
-            card.id = `q-${index}`;
+function render() {
+  if (cur >= qs.length) { showResult(); return; }
+  const pct = ((qs.length - cur) / qs.length) * 100;
+  document.getElementById('prog-bar').style.width = pct + '%';
+  document.getElementById('score-disp').textContent = score;
 
-            const qText = document.createElement('div');
-            qText.className = 'question-text';
-            qText.innerText = item.q;
-            card.appendChild(qText);
+  const q = qs[cur];
+  const letters = ['Ａ','Ｂ','Ｃ','Ｄ'];
+  document.getElementById('quiz-area').innerHTML = `
+    <div class="q-pill">問題 ${cur+1} <span style="opacity:.6">/ ${qs.length}</span></div>
+    <span class="q-emoji">${q.emoji}</span>
+    <div class="q-text">${q.q}</div>
+    <div class="options" id="opts">
+      ${q.opts.map((o,i)=>`
+        <button class="opt-btn" id="opt${i}" onclick="pick(${i})">
+          <span class="opt-label">${letters[i]}</span>${o}
+        </button>`).join('')}
+    </div>
+    <div class="result-pop" id="res-pop"></div>
+    <div class="explanation" id="exp">${q.exp}</div>
+    <div class="nav-row">
+      <button class="next-btn" id="nxt" onclick="next()">${cur<qs.length-1?'つぎへ ▶':'けっかを見る 🎉'}</button>
+    </div>
+  `;
+  answered = false;
+}
 
-            const optionsList = document.createElement('div');
-            optionsList.className = 'options-list';
+function pick(i) {
+  if (answered) return;
+  answered = true;
+  const q = qs[cur];
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach((b,idx) => {
+    b.disabled = true;
+    if (idx === q.ans) b.classList.add(idx===i?'correct':'reveal');
+    else if (idx === i) b.classList.add('wrong');
+  });
 
-            item.o.forEach((opt, oIndex) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt;
-                btn.onclick = () => handleAnswer(index, oIndex);
-                optionsList.appendChild(btn);
-            });
+  const pop = document.getElementById('res-pop');
+  if (i === q.ans) {
+    score++;
+    document.getElementById('score-disp').textContent = score;
+    pop.textContent = ['🎉 せいかい！','✨ すごい！','🌟 パーフェクト！','💯 やったね！'][Math.floor(Math.random()*4)];
+  } else {
+    pop.textContent = ['😢 ざんねん…','💦 おしい！','🌧️ 次は頑張ろう！','😅 もう少し！'][Math.floor(Math.random()*4)];
+  }
+  pop.classList.add('show');
+  document.getElementById('exp').style.display = 'block';
+  document.getElementById('nxt').style.display = 'inline-block';
+}
 
-            card.appendChild(optionsList);
-            container.appendChild(card);
-        });
-        updateProgress();
-    }
+function next() { cur++; render(); }
 
-    function handleAnswer(qIndex, selectedOpt) {
-        if (selectedOpt === questions[qIndex].a) {
-            score++;
-        }
+function launchConfetti() {
+  const wrap = document.getElementById('confetti');
+  wrap.innerHTML = '';
+  const colors = ['#ff7eb3','#7ec8ff','#ffe066','#c9b8ff','#7ef0c8','#ff9de2'];
+  for (let i = 0; i < 70; i++) {
+    const el = document.createElement('div');
+    el.className = 'c-piece';
+    el.style.left = Math.random()*100 + 'vw';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.width = (6+Math.random()*8) + 'px';
+    el.style.height = (6+Math.random()*8) + 'px';
+    el.style.animationDuration = (1.5+Math.random()*2) + 's';
+    el.style.animationDelay = Math.random()*1.2 + 's';
+    wrap.appendChild(el);
+  }
+  setTimeout(()=> wrap.innerHTML = '', 4000);
+}
 
-        document.getElementById(`q-${qIndex}`).classList.remove('active');
-        currentQuestion++;
+function showResult() {
+  document.getElementById('hud').style.display = 'none';
+  document.getElementById('quiz-card').style.display = 'none';
 
-        if (currentQuestion < questions.length) {
-            document.getElementById(`q-${currentQuestion}`).classList.add('active');
-            updateProgress();
-        } else {
-            showResult();
-        }
-    }
+  let char, grade, msg, stars;
+  if (score >= 11) { char='🏆'; grade='天才級！'; msg='ほぼ全問正解！論理力・思考力が抜群。さすがだよ！'; stars='★★★★★'; launchConfetti(); }
+  else if (score >= 9) { char='🌟'; grade='優秀！'; msg='高得点！少し惜しかったけど、とても素晴らしい成績だよ。'; stars='★★★★☆'; launchConfetti(); }
+  else if (score >= 7) { char='😊'; grade='なかなか良い！'; msg='平均以上！もう一度挑戦してさらに上を目指そう。'; stars='★★★☆☆'; }
+  else if (score >= 5) { char='😅'; grade='もう一息！'; msg='半分以上正解！解説を読んで苦手なパターンを確認しよう。'; stars='★★☆☆☆'; }
+  else { char='😢'; grade='次は頑張ろう！'; msg='難しかったかな？解説を読んでもう一度チャレンジ！'; stars='★☆☆☆☆'; }
 
-    function updateProgress() {
-        document.getElementById('q-count').innerText = `質問 ${currentQuestion + 1} / ${questions.length}`;
-        const percent = ((currentQuestion) / questions.length) * 100;
-        document.getElementById('progress').style.width = `${percent}%`;
-    }
+  const xpPct = Math.round((score / qs.length) * 100);
 
-    function showResult() {
-        document.getElementById('test-screen').style.display = 'none';
-        document.getElementById('result-screen').style.display = 'block';
+  const div = document.createElement('div');
+  div.className = 'result-screen';
+  div.innerHTML = `
+    <span class="result-character">${char}</span>
+    <div class="result-grade">${grade}</div>
+    <div class="result-card">
+      <div class="score-display">
+        <span class="score-big">${score}</span>
+        <span class="score-slash">/</span>
+        <span class="score-total">${qs.length}</span>
+      </div>
+      <div class="stars-row">${stars}</div>
+      <div class="result-msg">${msg}</div>
+      <div class="xp-section">
+        <div class="xp-label">🔮 正解率 ${xpPct}%</div>
+        <div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div>
+      </div>
+    </div>
+    <button class="restart-btn" onclick="restart()">🔄 もう一度チャレンジ！</button>
+  `;
+  document.body.appendChild(div);
+  setTimeout(()=> {
+    const xp = document.getElementById('xp-fill');
+    if (xp) xp.style.width = xpPct + '%';
+  }, 100);
+}
 
-        // 簡易IQ計算ロジック（全問正解でIQ130、1問あたり約5アップ）
-        const calculatedIQ = 70 + (score * 5);
-        document.getElementById('iq-result').innerText = `IQ ${calculatedIQ}`;
+function restart() {
+  cur = 0; score = 0;
+  document.getElementById('hud').style.display = 'flex';
+  document.getElementById('quiz-card').style.display = 'block';
+  const rs = document.querySelector('.result-screen');
+  if (rs) rs.remove();
+  render();
+}
 
-        let comment = "";
-        if (calculatedIQ >= 120) {
-            comment = "天才かも！？ 素晴らしい論理的思考力の持ち主です。頭の回転がとっても速いです！";
-        } else if (calculatedIQ >= 100) {
-            comment = "平均的でバランスの良い知能を持っています。ひらめき力や日常の判断力もバッチリです！";
-        } else {
-            comment = "直感タイプかも？ じっくり考えるともっとスコアが伸びるポテンシャルを秘めています！";
-        }
-        document.getElementById('iq-comment').innerText = comment;
-    }
-
-    function resetTest() {
-        currentQuestion = 0;
-        score = 0;
-        document.getElementById('test-screen').style.display = 'block';
-        document.getElementById('result-screen').style.display = 'none';
-        initTest();
-    }
-
-    // 初回実行
-    initTest();
+render();
 </script>
-
 </body>
 </html>
