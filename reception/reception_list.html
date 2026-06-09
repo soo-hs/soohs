@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企業訪問受付一覧</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=M+PLUS+1p:wght@400;700&display=swap');
+
+  :root {
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --border: #dde3ec;
+    --header-bg: #1a3a5c;
+    --header-text: #ffffff;
+    --accent-in: #2563a8;
+    --accent-out: #a85225;
+    --badge-in: #dbeafe;
+    --badge-in-text: #1e40af;
+    --badge-out: #fce8dc;
+    --badge-out-text: #92400e;
+    --text: #1e293b;
+    --muted: #64748b;
+    --hover: #f1f5fb;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  header {
+    background: var(--header-bg);
+    color: var(--header-text);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  header h1 {
+    font-family: 'M PLUS 1p', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    flex: 1;
+  }
+
+  .header-sub {
+    font-size: 11px;
+    opacity: 0.75;
+    margin-top: 2px;
+    font-weight: 400;
+  }
+
+  .toolbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 56px;
+    z-index: 90;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+
+  .filter-group { display: flex; align-items: center; gap: 6px; }
+  .filter-label { font-size: 11px; color: var(--muted); font-weight: 500; }
+
+  select, input[type="text"] {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 4px 8px;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  select:focus, input[type="text"]:focus { border-color: var(--accent-in); }
+  input[type="text"] { width: 180px; }
+
+  .stats { margin-left: auto; font-size: 11px; color: var(--muted); white-space: nowrap; }
+  .stats strong { color: var(--text); }
+
+  .container { padding: 16px 24px; }
+
+  /* ── 凡例 ── */
+  .legend { display: flex; gap: 16px; margin-bottom: 14px; font-size: 11px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+
+  .badge {
+    display: inline-flex; align-items: center;
+    padding: 2px 7px; border-radius: 3px;
+    font-size: 11px; font-weight: 700; white-space: nowrap;
+  }
+  .badge-in  { background: var(--badge-in);  color: var(--badge-in-text); }
+  .badge-out { background: var(--badge-out); color: var(--badge-out-text); }
+
+  /* ── テーブル ── */
+  .table-wrap {
+    background: var(--surface);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    overflow: auto;
+    max-height: calc(100vh - 130px);
+  }
+
+  table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    min-width: 900px;
+  }
+
+  /* ヘッダー */
+  thead th {
+    background: var(--header-bg);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    border-right: 1px solid rgba(255,255,255,0.12);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    overflow: hidden;
+    user-select: none;
+    padding: 0;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.18);
+  }
+  thead th:last-child { border-right: none; }
+
+  .th-inner {
+    padding: 9px 16px 9px 10px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  /* 列幅リサイズハンドル */
+  .col-resize-handle {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 6px;
+    cursor: col-resize;
+    z-index: 6;
+    background: transparent;
+    transition: background 0.12s;
+  }
+  .col-resize-handle:hover,
+  .col-resize-handle.dragging {
+    background: rgba(255,255,255,0.4);
+  }
+
+  /* データ行 */
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+    height: 3em; /* 2行分の固定高さ */
+  }
+  tbody tr:hover { background: var(--hover); }
+  tbody tr.hidden { display: none; }
+
+  td {
+    padding: 0;
+    vertical-align: top;
+    border-right: 1px solid var(--border);
+    font-size: 12px;
+    overflow: hidden;
+    height: inherit;
+  }
+  td:last-child { border-right: none; }
+
+  /* セル内コンテンツ：2行分で切り捨て */
+  .cell-inner {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    padding: 4px 8px;
+    overflow: hidden;
+    white-space: normal;
+    word-break: break-all;
+    width: 100%;
+    max-height: 3em;
+    line-height: 1.45;
+  }
+
+  /* 行高さリサイズハンドル（固定高さのため非表示） */
+  .row-resize-handle {
+    display: none;
+  }
+
+  /* 各列の初期幅（最大350px＝全角50文字相当） */
+  .td-no      { width: 36px; }
+  .td-no .cell-inner { text-align:center; color:var(--muted); font-size:11px; }
+  .td-type    { width: 52px; }
+  .td-type .cell-inner { text-align:center; }
+  .td-date    { width: 52px; }
+  .td-date .cell-inner { text-align:center; font-weight:500; }
+  .td-company { width: 13%; min-width: 80px; }
+  .td-company .cell-inner { font-weight:600; }
+  .td-visitor { width: 7%; min-width: 60px; }
+  .td-visitor .cell-inner { color:var(--muted); }
+  .td-work    { width: 7%; min-width: 60px; }
+  .td-area    { width: 68px; }
+  .td-area .cell-inner { text-align:center; }
+  .td-dorm    { width: 34px; }
+  .td-dorm .cell-inner { text-align:center; color:#059669; font-weight:700; }
+  .td-gender  { width: 46px; }
+  .td-gender .cell-inner { text-align:center; }
+  .td-count   { width: 76px; }
+  .td-count .cell-inner { text-align:center; }
+  .td-mark    { width: 28px; }
+  .td-mark .cell-inner { text-align:center; color:#6d28d9; font-size:13px; }
+  .td-staff   { width: 58px; }
+  .td-note    { width: 10%; min-width: 60px; }
+  .td-note .cell-inner { font-size:11px; color:var(--muted); }
+  .td-appeal  { width: 10%; min-width: 60px; }
+  .td-appeal .cell-inner { font-size:11px; }
+  .td-wanted  { width: 10%; min-width: 60px; }
+  .td-wanted .cell-inner { font-size:11px; }
+
+  /* ローディング */
+  #loading { text-align:center; padding:60px; color:var(--muted); font-size:14px; }
+  .spinner {
+    width:32px; height:32px;
+    border:3px solid var(--border);
+    border-top-color:var(--accent-in);
+    border-radius:50%;
+    animation:spin 0.7s linear infinite;
+    margin:0 auto 12px;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  #error-msg {
+    display:none;
+    background:#fee2e2; color:#991b1b;
+    border:1px solid #fca5a5; border-radius:6px;
+    padding:12px 16px; margin-bottom:12px; font-size:12px;
+  }
+  .btn-reload {
+    margin-top:8px; padding:5px 14px;
+    background:var(--accent-in); color:#fff;
+    border:none; border-radius:4px; font-size:12px; cursor:pointer;
+  }
+
+  /* ── ソートインジケーター ── */
+  thead th { cursor: pointer; }
+  thead th:hover .th-inner { background: rgba(255,255,255,0.08); }
+  .th-inner { position: relative; padding-right: 20px !important; }
+  .sort-icon {
+    position: absolute;
+    right: 4px; top: 50%; transform: translateY(-50%);
+    font-size: 10px; opacity: 0.4; line-height: 1;
+  }
+  th.sort-asc  .sort-icon { opacity: 1; }
+  th.sort-desc .sort-icon { opacity: 1; }
+  th.sort-asc  .sort-icon::after { content: '▲'; }
+  th.sort-desc .sort-icon::after { content: '▼'; }
+  th:not(.sort-asc):not(.sort-desc) .sort-icon::after { content: '⇅'; }
+
+  /* ── モーダル ── */
+  #modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 200;
+    backdrop-filter: blur(2px);
+  }
+  #modal-overlay.open { display: block; }
+
+  #modal {
+    position: fixed;
+    top: 64px;
+    left: 24px;
+    width: 420px;
+    max-height: calc(100vh - 80px);
+    background: var(--surface);
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+    z-index: 201;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: modal-in 0.18s ease;
+  }
+  #modal.open { display: flex; }
+  @keyframes modal-in {
+    from { opacity:0; transform: translateY(-10px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  .modal-header {
+    background: var(--header-bg);
+    color: #fff;
+    padding: 14px 16px 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .modal-header-info { flex: 1; min-width: 0; }
+  .modal-title {
+    font-family: 'M PLUS 1p', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+    word-break: break-all;
+  }
+  .modal-subtitle {
+    font-size: 11px;
+    opacity: 0.75;
+    margin-top: 3px;
+  }
+  .modal-close {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.3); }
+
+  .modal-body {
+    overflow-y: auto;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-section {
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .modal-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 5px;
+  }
+  .modal-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 4px 8px;
+    font-size: 12px;
+  }
+  .modal-label {
+    color: var(--muted);
+    font-size: 11px;
+    padding-top: 1px;
+    white-space: nowrap;
+  }
+  .modal-value {
+    color: var(--text);
+    font-weight: 500;
+    word-break: break-all;
+    line-height: 1.5;
+  }
+  .modal-value.long {
+    grid-column: 1 / -1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-weight: 400;
+    font-size: 12px;
+    white-space: pre-wrap;
+    margin-top: 2px;
+  }
+  .modal-marks {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .modal-mark-chip {
+    background: #ede9fe; color: #6d28d9;
+    border-radius: 4px; padding: 2px 8px;
+    font-size: 11px; font-weight: 700;
+  }
+
+  tbody tr { cursor: pointer; }
+
+  @media print {
+    .toolbar, header { position:static; }
+    .table-wrap { box-shadow:none; overflow:visible; }
+    .td-appeal, .td-wanted { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>企業訪問受付一覧</h1>
+    <div class="header-sub">鹿児島県立曽於高等学校　進路指導部</div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="filter-group">
+    <span class="filter-label">種別</span>
+    <select id="f-type">
+      <option value="">すべて</option>
+      <option value="IN">県内（来校）</option>
+      <option value="OUT">県外（訪問）</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">地区</span>
+    <select id="f-area"><option value="">すべて</option></select>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">業務内容</span>
+    <select id="f-work"><option value="">すべて</option></select>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">寮</span>
+    <select id="f-dorm">
+      <option value="">すべて</option>
+      <option value="yes">あり</option>
+      <option value="no">なし</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">企業名/担当者</span>
+    <input type="text" id="f-search" placeholder="キーワード検索…">
+  </div>
+  <span class="stats" id="stats">読込中…</span>
+</div>
+
+<div class="container">
+  <div id="error-msg">
+    <strong>データの読込に失敗しました。</strong><br>
+    ネットワーク接続またはCSVファイルのURLを確認してください。<br>
+    <button class="btn-reload" onclick="loadAll()">再読込</button>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="badge badge-in">県内</span>来校（in.csv）</div>
+    <div class="legend-item"><span class="badge badge-out">県外</span>訪問（out.csv）</div>
+    <div class="legend-item" style="color:var(--muted);font-size:11px;">
+      ※ 列ヘッダークリック→ソート　行クリック→詳細表示　列の境界線をドラッグ→列幅変更
+    </div>
+  </div>
+
+  <div id="loading"><div class="spinner"></div>CSVデータを読込中…</div>
+
+  <div class="table-wrap" id="table-wrap" style="display:none;">
+    <table id="main-table">
+      <thead>
+        <tr id="thead-row"></tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- モーダルオーバーレイ -->
+<div id="modal-overlay"></div>
+
+<!-- 詳細モーダル -->
+<div id="modal">
+  <div class="modal-header">
+    <div class="modal-header-info">
+      <div class="modal-title" id="modal-company">―</div>
+      <div class="modal-subtitle" id="modal-badge-date">―</div>
+    </div>
+    <button class="modal-close" id="modal-close-btn" title="閉じる">✕</button>
+  </div>
+  <div class="modal-body" id="modal-body"></div>
+</div>
+
+<script>
+const CSV_URLS = {
+  IN:  'https://soo-hs.github.io/soohs/reception/in.csv',
+  OUT: 'https://soo-hs.github.io/soohs/reception/out.csv'
+};
+
+// 列定義: [ラベル, CSSクラス]
+const COLS = [
+  ['No.',       'td-no'],
+  ['種別',       'td-type'],
+  ['日付',       'td-date'],
+  ['企業名',     'td-company'],
+  ['訪問者氏名', 'td-visitor'],
+  ['業務内容',   'td-work'],
+  ['地区',       'td-area'],
+  ['寮',         'td-dorm'],
+  ['男女',       'td-gender'],
+  ['人数',       'td-count'],
+  ['Ｇ',         'td-mark'],
+  ['Ａ',         'td-mark'],
+  ['Ｍ',         'td-mark'],
+  ['Ｂ',         'td-mark'],
+  ['見学',       'td-mark'],
+  ['求める人材', 'td-wanted'],
+  ['企業アピール','td-appeal'],
+  ['応対者',     'td-staff'],
+  ['資料等',     'td-note'],
+  ['備考欄',     'td-note'],
+];
+
+let allRows = [];
+
+/* ── CSV パーサ ── */
+function parseCSV(text) {
+  const rows = [];
+  let row = [], cur = '', inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inQ) {
+      if (ch === '"' && text[i+1] === '"') { cur += '"'; i++; }
+      else if (ch === '"') inQ = false;
+      else cur += ch;
+    } else {
+      if (ch === '"') { inQ = true; }
+      else if (ch === ',') { row.push(cur); cur = ''; }
+      else if (ch === '\n') { row.push(cur); cur = ''; rows.push(row); row = []; }
+      else if (ch === '\r') {}
+      else cur += ch;
+    }
+  }
+  row.push(cur); rows.push(row);
+  return rows;
+}
+
+async function fetchCSV(url, type) {
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}: ${url}`);
+  const buf = await resp.arrayBuffer();
+  const text = new TextDecoder('shift-jis').decode(buf);
+  const rows = parseCSV(text);
+  if (rows.length < 2) return [];
+  return rows.slice(1)
+    .filter(r => r.length > 4 && (r[1]||'').trim() && (r[2]||'').trim())
+    .map(r => ({ type, row: r }));
+}
+
+function cell(r, i) { return (r[i] || '').trim().replace(/\n/g, ' '); }
+function mark(v) { return (v==='○'||v==='〇'||v==='●') ? '○' : (v||'').trim(); }
+function escHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ── ソート状態 ── */
+let sortCol = -1, sortDir = 1; // dir: 1=昇順, -1=降順
+
+/* ── ヘッダー行構築（リサイズハンドル＋ソートアイコン付き） ── */
+function buildHeader() {
+  const tr = document.getElementById('thead-row');
+  tr.innerHTML = '';
+  COLS.forEach(([label, cls], ci) => {
+    const th = document.createElement('th');
+    th.className = cls;
+    th.dataset.ci = ci;
+    th.innerHTML = `<span class="th-inner">${label}<span class="sort-icon"></span></span><div class="col-resize-handle" data-ci="${ci}"></div>`;
+    th.addEventListener('click', e => {
+      if (e.target.closest('.col-resize-handle')) return;
+      applySort(ci);
+    });
+    tr.appendChild(th);
+  });
+}
+
+function applySort(ci) {
+  if (sortCol === ci) {
+    sortDir *= -1;
+  } else {
+    sortCol = ci;
+    sortDir = 1;
+  }
+  // ヘッダーのクラス更新
+  document.querySelectorAll('#thead-row th').forEach((th, i) => {
+    th.classList.remove('sort-asc', 'sort-desc');
+    if (i === ci) th.classList.add(sortDir === 1 ? 'sort-asc' : 'sort-desc');
+  });
+  // tbody 行を並び替え
+  const tbody = document.getElementById('tbody');
+  const rows = [...tbody.querySelectorAll('tr')];
+  rows.sort((a, b) => {
+    const aVal = (a.querySelectorAll('td')[ci]?.querySelector('.cell-inner')?.textContent || '').trim();
+    const bVal = (b.querySelectorAll('td')[ci]?.querySelector('.cell-inner')?.textContent || '').trim();
+    // 数値比較を試みる
+    const aNum = parseFloat(aVal), bNum = parseFloat(bVal);
+    if (!isNaN(aNum) && !isNaN(bNum)) return (aNum - bNum) * sortDir;
+    return aVal.localeCompare(bVal, 'ja') * sortDir;
+  });
+  rows.forEach(r => tbody.appendChild(r));
+}
+
+/* ── データ行構築 ── */
+function buildRow(obj, idx) {
+  const { type, row: r } = obj;
+  const tr = document.createElement('tr');
+  tr.dataset.type   = type;
+  tr.dataset.area   = cell(r,5);
+  tr.dataset.work   = cell(r,4);
+  tr.dataset.dorm   = (cell(r,6)==='○'||cell(r,6)==='〇') ? 'yes' : 'no';
+  tr.dataset.search = [cell(r,2), cell(r,3), cell(r,16)].join(' ').toLowerCase();
+  // モーダル用にデータを保持
+  tr.rowData = { type, r, idx };
+
+  const badge = type === 'IN'
+    ? '<span class="badge badge-in">県内</span>'
+    : '<span class="badge badge-out">県外</span>';
+
+  const vals = [
+    cell(r,0)||idx,
+    badge,
+    escHtml(cell(r,1)),
+    escHtml(cell(r,2)),
+    escHtml(cell(r,3)),
+    escHtml(cell(r,4)),
+    escHtml(cell(r,5)),
+    mark(cell(r,6)),
+    escHtml(cell(r,7)),
+    escHtml(cell(r,8)),
+    mark(cell(r,9)),
+    mark(cell(r,10)),
+    mark(cell(r,11)),
+    mark(cell(r,12)),
+    mark(cell(r,13)),
+    escHtml(cell(r,14)),
+    escHtml(cell(r,15)),
+    escHtml(cell(r,16)),
+    escHtml(cell(r,17)),
+    escHtml(cell(r,18)),
+  ];
+
+  COLS.forEach(([, cls], ci) => {
+    const td = document.createElement('td');
+    td.className = cls;
+    td.innerHTML = `<span class="cell-inner">${vals[ci]}</span><span class="row-resize-handle"></span>`;
+    tr.appendChild(td);
+  });
+
+  tr.addEventListener('click', () => openModal(tr.rowData));
+  return tr;
+}
+
+/* ══════════════════════════════════════
+   モーダル詳細表示
+══════════════════════════════════════ */
+const MARK_LABELS = ['Ｇ科','Ａ科','Ｍ科','Ｂ科','見学'];
+
+function openModal({ type, r, idx }) {
+  const company = cell(r,2) || '（企業名なし）';
+  const date    = cell(r,1);
+  const typeBadge = type === 'IN'
+    ? '<span class="badge badge-in">県内</span>'
+    : '<span class="badge badge-out">県外</span>';
+
+  document.getElementById('modal-company').textContent = company;
+  document.getElementById('modal-badge-date').innerHTML = `${typeBadge} &nbsp;${date}`;
+
+  // マーク（9〜13列）
+  const marks = [9,10,11,12,13].map((col, i) => {
+    const v = mark(cell(r, col));
+    return v ? `<span class="modal-mark-chip">${MARK_LABELS[i]}</span>` : '';
+  }).join('');
+
+  const body = document.getElementById('modal-body');
+  body.innerHTML = `
+    <div class="modal-section">
+      <div class="modal-section-title">基本情報</div>
+      <div class="modal-grid">
+        <span class="modal-label">No.</span>      <span class="modal-value">${cell(r,0)||idx}</span>
+        <span class="modal-label">日付</span>      <span class="modal-value">${date}</span>
+        <span class="modal-label">訪問者</span>    <span class="modal-value">${cell(r,3)||'―'}</span>
+        <span class="modal-label">業務内容</span>  <span class="modal-value">${cell(r,4)||'―'}</span>
+        <span class="modal-label">地区</span>      <span class="modal-value">${cell(r,5)||'―'}</span>
+        <span class="modal-label">寮</span>        <span class="modal-value">${mark(cell(r,6))||'―'}</span>
+        <span class="modal-label">男女</span>      <span class="modal-value">${cell(r,7)||'―'}</span>
+        <span class="modal-label">人数</span>      <span class="modal-value">${cell(r,8)||'―'}</span>
+      </div>
+    </div>
+    ${marks ? `
+    <div class="modal-section">
+      <div class="modal-section-title">対象科・見学</div>
+      <div class="modal-marks">${marks}</div>
+    </div>` : ''}
+    <div class="modal-section">
+      <div class="modal-section-title">求める人材</div>
+      <div class="modal-value long">${cell(r,14)||'（記載なし）'}</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">企業アピール</div>
+      <div class="modal-value long">${cell(r,15)||'（記載なし）'}</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">応対・資料・備考</div>
+      <div class="modal-grid">
+        <span class="modal-label">応対者</span>    <span class="modal-value">${cell(r,16)||'―'}</span>
+        <span class="modal-label">資料等</span>    <span class="modal-value">${cell(r,17)||'―'}</span>
+        <span class="modal-label">備考</span>      <span class="modal-value">${cell(r,18)||'―'}</span>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ── フィルター ── */
+function populateFilter(id, values) {
+  const sel = document.getElementById(id);
+  [...new Set(values.filter(Boolean))].sort().forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v; opt.textContent = v;
+    sel.appendChild(opt);
+  });
+}
+
+function applyFilters() {
+  const fType   = document.getElementById('f-type').value;
+  const fArea   = document.getElementById('f-area').value;
+  const fWork   = document.getElementById('f-work').value;
+  const fDorm   = document.getElementById('f-dorm').value;
+  const fSearch = document.getElementById('f-search').value.toLowerCase().trim();
+  let vis = 0;
+  document.querySelectorAll('#tbody tr').forEach(tr => {
+    const ok =
+      (!fType   || tr.dataset.type  === fType)  &&
+      (!fArea   || tr.dataset.area  === fArea)  &&
+      (!fWork   || tr.dataset.work  === fWork)  &&
+      (!fDorm   || tr.dataset.dorm  === fDorm)  &&
+      (!fSearch || tr.dataset.search.includes(fSearch));
+    tr.classList.toggle('hidden', !ok);
+    if (ok) vis++;
+  });
+  document.getElementById('stats').innerHTML =
+    `表示: <strong>${vis}</strong> / ${allRows.length} 件`;
+}
+
+/* ══════════════════════════════════════
+   列幅リサイズ（ヘッダーのハンドルをドラッグ）
+══════════════════════════════════════ */
+function initColResize() {
+  document.getElementById('main-table').addEventListener('mousedown', e => {
+    const handle = e.target.closest('.col-resize-handle');
+    if (!handle) return;
+    e.preventDefault();
+
+    const ci    = parseInt(handle.dataset.ci);
+    const th    = handle.parentElement;
+    const startX = e.clientX;
+    const startW = th.offsetWidth;
+
+    handle.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+
+    function onMove(e) {
+      const newW = Math.max(28, startW + e.clientX - startX);
+      // th の幅を変更
+      th.style.width = newW + 'px';
+      // tbody の同列 td も変更
+      const tds = document.querySelectorAll(`#tbody tr td:nth-child(${ci+1})`);
+      tds.forEach(td => td.style.width = newW + 'px');
+    }
+    function onUp() {
+      handle.classList.remove('dragging');
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    }
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+}
+
+/* ══════════════════════════════════════
+   行高さリサイズ（行下端ハンドルをドラッグ）
+══════════════════════════════════════ */
+function initRowResize() {
+  document.getElementById('tbody').addEventListener('mousedown', e => {
+    const handle = e.target.closest('.row-resize-handle');
+    if (!handle) return;
+    e.preventDefault();
+
+    const tr = handle.closest('tr');
+    const startY = e.clientY;
+    const startH = tr.offsetHeight;
+
+    handle.classList.add('dragging');
+    document.body.style.cursor = 'row-resize';
+    document.body.style.userSelect = 'none';
+
+    function onMove(e) {
+      const newH = Math.max(22, startH + e.clientY - startY);
+      tr.style.height = newH + 'px';
+    }
+    function onUp() {
+      handle.classList.remove('dragging');
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    }
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+}
+
+/* ── メイン読込 ── */
+async function loadAll() {
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('table-wrap').style.display = 'none';
+  document.getElementById('error-msg').style.display = 'none';
+
+  try {
+    const [inRows, outRows] = await Promise.all([
+      fetchCSV(CSV_URLS.IN,  'IN'),
+      fetchCSV(CSV_URLS.OUT, 'OUT')
+    ]);
+    const sortKey = s => {
+      const m = (s||'').match(/(\d+)\/(\d+)/);
+      return m ? parseInt(m[1])*100 + parseInt(m[2]) : 9999;
+    };
+    allRows = [...inRows, ...outRows].sort(
+      (a,b) => sortKey(a.row[1]) - sortKey(b.row[1])
+    );
+
+    buildHeader();
+
+    const tbody = document.getElementById('tbody');
+    tbody.innerHTML = '';
+    allRows.forEach((obj, i) => tbody.appendChild(buildRow(obj, i+1)));
+
+    populateFilter('f-area', allRows.map(o => (o.row[5]||'').trim()));
+    populateFilter('f-work', allRows.map(o => (o.row[4]||'').trim()));
+
+    ['f-type','f-area','f-work','f-dorm'].forEach(id =>
+      document.getElementById(id).addEventListener('change', applyFilters)
+    );
+    document.getElementById('f-search').addEventListener('input', applyFilters);
+
+    initColResize();
+    initRowResize();
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('table-wrap').style.display = 'block';
+    applyFilters();
+
+  } catch(e) {
+    console.error(e);
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error-msg').style.display = 'block';
+    document.getElementById('stats').textContent = '読込エラー';
+  }
+}
+
+loadAll();
+</script>
+</body>
+</html>
