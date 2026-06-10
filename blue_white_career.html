@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ブルーカラー・ホワイトカラー 就職・生涯年収分析 | 曽於高等学校</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --blue: #185FA5;
+  --blue-light: #E6F1FB;
+  --blue-dark: #0C447C;
+  --teal: #0F6E56;
+  --teal-light: #E1F5EE;
+  --amber: #854F0B;
+  --amber-light: #FAEEDA;
+  --coral: #993C1D;
+  --coral-light: #FAECE7;
+  --green: #27500A;
+  --green-light: #EAF3DE;
+  --gray: #5F5E5A;
+  --gray-light: #F3F2EE;
+  --text: #1a1a1a;
+  --text-sub: #555;
+  --border: #ddd;
+  --bg: #f8f7f4;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Hiragino Sans', 'Meiryo', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.7; }
+
+/* HEADER */
+header { background: var(--blue-dark); color: #fff; padding: clamp(1.25rem, 4vw, 2.5rem) clamp(1rem, 4vw, 2rem) clamp(1rem, 3vw, 2rem); }
+header .school { font-size: clamp(11px, 2.8vw, 13px); opacity: .75; margin-bottom: .4rem; letter-spacing: .06em; }
+header h1 { font-size: clamp(1.2rem, 5vw, 2rem); font-weight: 700; line-height: 1.35; margin-bottom: .4rem; }
+header .sub { font-size: clamp(12px, 3vw, 14px); opacity: .8; }
+header .tag-row { margin-top: .85rem; display: flex; flex-wrap: wrap; gap: 6px; }
+header .tag { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); border-radius: 20px; padding: 3px 12px; font-size: clamp(11px, 2.6vw, 12px); }
+
+/* NAV */
+nav {
+  background: var(--blue);
+  position: sticky; top: 0; z-index: 100;
+  display: flex; overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+nav::-webkit-scrollbar { display: none; }
+nav a {
+  color: rgba(255,255,255,.8); text-decoration: none;
+  padding: .65rem clamp(.55rem, 2.5vw, 1.1rem);
+  font-size: clamp(11px, 2.8vw, 13px); white-space: nowrap;
+  border-bottom: 3px solid transparent; transition: .2s;
+  flex-shrink: 0;
+}
+nav a:hover, nav a.active { color: #fff; border-bottom-color: #fff; }
+
+/* LAYOUT */
+.container { max-width: 900px; margin: 0 auto; padding: clamp(1rem, 4vw, 2rem) clamp(.85rem, 4vw, 1.5rem); }
+section { margin-bottom: clamp(2rem, 6vw, 3rem); }
+
+/* TYPOGRAPHY */
+.sec-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; color: var(--blue); text-transform: uppercase; margin-bottom: .4rem; }
+h2 { font-size: clamp(1.05rem, 4.5vw, 1.5rem); font-weight: 700; color: var(--blue-dark); margin-bottom: 1.1rem; border-left: 4px solid var(--blue); padding-left: .75rem; line-height: 1.4; }
+h3 { font-size: clamp(.95rem, 3.5vw, 1.1rem); font-weight: 700; color: var(--text); margin: 1.5rem 0 .8rem; }
+p { font-size: clamp(13.5px, 3.2vw, 15px); }
+
+/* CARDS */
+.card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: clamp(1rem, 3vw, 1.25rem) clamp(1rem, 3.5vw, 1.5rem); margin-bottom: 12px; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+.metric-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: clamp(.9rem, 3vw, 1.1rem); }
+.metric-card .val { font-size: clamp(1.4rem, 5.5vw, 2rem); font-weight: 700; line-height: 1.2; }
+.metric-card .lbl { font-size: clamp(11px, 2.8vw, 12px); color: var(--text-sub); margin-top: 4px; line-height: 1.5; }
+.metric-card.blue .val { color: var(--blue); }
+.metric-card.teal .val { color: var(--teal); }
+.metric-card.amber .val { color: var(--amber); }
+
+/* COLOR BOXES */
+.color-box { border-radius: 10px; padding: clamp(.9rem, 3vw, 1rem) clamp(1rem, 3.5vw, 1.25rem); margin-bottom: 10px; }
+.color-box .cb-title { font-weight: 700; font-size: clamp(13px, 3.2vw, 14px); margin-bottom: 5px; }
+.color-box.blue  { background: var(--blue-light);  } .color-box.blue  .cb-title { color: var(--blue-dark); } .color-box.blue  p { color: #185FA5; font-size: clamp(12px, 3vw, 13px); }
+.color-box.teal  { background: var(--teal-light);  } .color-box.teal  .cb-title { color: #085041; } .color-box.teal  p { color: var(--teal); font-size: clamp(12px, 3vw, 13px); }
+.color-box.amber { background: var(--amber-light); } .color-box.amber .cb-title { color: #633806; } .color-box.amber p { color: var(--amber); font-size: clamp(12px, 3vw, 13px); }
+.color-box.green { background: var(--green-light); } .color-box.green .cb-title { color: var(--green); } .color-box.green p { color: #3B6D11; font-size: clamp(12px, 3vw, 13px); }
+.color-box.coral { background: var(--coral-light); } .color-box.coral .cb-title { color: var(--coral); } .color-box.coral p { color: var(--coral); font-size: clamp(12px, 3vw, 13px); }
+
+/* TABLE */
+.table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1rem; }
+.table-scroll table { margin-bottom: 0; border: none; min-width: 480px; }
+table { width: 100%; border-collapse: collapse; font-size: clamp(12px, 3vw, 13.5px); margin-bottom: 1rem; }
+th { background: var(--blue-dark); color: #fff; padding: clamp(7px, 2vw, 9px) clamp(8px, 2.5vw, 12px); text-align: left; font-weight: 600; font-size: clamp(11px, 2.8vw, 13px); white-space: nowrap; }
+td { padding: clamp(7px, 2vw, 9px) clamp(8px, 2.5vw, 12px); border: 1px solid var(--border); vertical-align: top; font-size: clamp(12px, 3vw, 13.5px); line-height: 1.55; }
+tr:nth-child(even) td { background: #f5f8fc; }
+
+/* BAR CHARTS */
+.bar-wrap { margin-bottom: 14px; }
+.bar-meta { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; font-size: clamp(11.5px, 2.8vw, 13px); color: var(--text-sub); margin-bottom: 4px; flex-wrap: wrap; }
+.bar-meta span:first-child { flex: 1; min-width: 0; }
+.bar-meta span:last-child { flex-shrink: 0; font-weight: 700; }
+.bar-track { height: 12px; background: var(--gray-light); border-radius: 6px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 6px; transition: width .6s ease; }
+
+/* PHASE CARDS */
+.phase-card { border-radius: 10px; padding: clamp(.9rem, 3vw, 1rem) clamp(1rem, 3.5vw, 1.25rem); margin-bottom: 10px; }
+.phase-card .pt { font-weight: 700; font-size: clamp(12.5px, 3.2vw, 14px); margin-bottom: 6px; line-height: 1.4; }
+.phase-card.blue  { background: var(--blue-light);  } .phase-card.blue  .pt { color: var(--blue-dark); } .phase-card.blue  p { color: var(--blue); font-size: clamp(12px, 3vw, 13px); }
+.phase-card.teal  { background: var(--teal-light);  } .phase-card.teal  .pt { color: #085041; } .phase-card.teal  p { color: var(--teal); font-size: clamp(12px, 3vw, 13px); }
+.phase-card.amber { background: var(--amber-light); } .phase-card.amber .pt { color: #633806; } .phase-card.amber p { color: var(--amber); font-size: clamp(12px, 3vw, 13px); }
+.phase-card.green { background: var(--green-light); } .phase-card.green .pt { color: var(--green); } .phase-card.green p { color: #3B6D11; font-size: clamp(12px, 3vw, 13px); }
+
+/* LEGEND */
+.legend { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-bottom: 12px; font-size: clamp(11px, 2.8vw, 12.5px); color: var(--text-sub); }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 24px; height: 4px; border-radius: 2px; flex-shrink: 0; }
+.legend-dot.dashed { background: repeating-linear-gradient(90deg, #993C1D 0 5px, transparent 5px 10px); height: 3px; }
+
+/* HIGHLIGHT */
+.highlight { background: #fff; border: 2px solid var(--blue); border-radius: 10px; padding: clamp(.9rem, 3vw, 1rem) clamp(1rem, 3.5vw, 1.25rem); margin: 1rem 0; font-size: clamp(12.5px, 3.2vw, 15px); }
+.highlight strong { color: var(--blue); }
+
+/* DEPT GRID */
+.dept-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 10px; }
+.dept-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: clamp(.9rem, 3vw, 1rem); }
+.dept-card .dt { font-weight: 700; font-size: clamp(13px, 3.3vw, 14px); color: var(--blue-dark); margin-bottom: 4px; }
+.dept-card .ds { font-size: clamp(11.5px, 2.8vw, 12.5px); color: var(--text-sub); line-height: 1.6; }
+.dept-card .badge { display: inline-block; font-size: 11px; padding: 2px 10px; border-radius: 20px; margin-top: 6px; font-weight: 600; }
+.badge-blue   { background: var(--blue-light);  color: var(--blue-dark); }
+.badge-teal   { background: var(--teal-light);  color: #085041; }
+.badge-amber  { background: var(--amber-light); color: #633806; }
+.badge-coral  { background: var(--coral-light); color: var(--coral); }
+
+/* VS GRID */
+.vs-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: start; }
+.vs-title { font-size: clamp(12px, 3vw, 13px); font-weight: 700; text-align: center; padding-bottom: 6px; border-bottom: 2px solid var(--border); margin-bottom: 8px; }
+.vs-title.blue { color: var(--blue-dark); border-color: var(--blue); }
+.vs-title.amber { color: var(--amber); border-color: var(--amber); }
+.vs-item { font-size: clamp(12px, 3vw, 13px); color: var(--text-sub); padding: 3px 0; }
+.vs-vs { font-weight: 700; color: var(--gray); font-size: 13px; padding-top: 30px; text-align: center; }
+
+/* CHARTS */
+.chart-wrap { position: relative; width: 100%; height: clamp(200px, 48vw, 320px); margin-bottom: .5rem; }
+
+.note { font-size: clamp(11px, 2.7vw, 12px); color: #999; margin-top: 6px; line-height: 1.6; }
+
+/* FOOTER */
+footer { background: var(--blue-dark); color: rgba(255,255,255,.7); text-align: center; padding: 1.5rem; font-size: clamp(11px, 2.6vw, 12px); margin-top: 3rem; line-height: 1.8; }
+footer strong { color: #fff; }
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .vs-grid { grid-template-columns: 1fr; gap: 8px; }
+  .vs-vs { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="school">鹿児島県立曽於高等学校　進路指導資料</div>
+  <h1>ブルーカラー・ホワイトカラー<br>就職・業種・職種と生涯年収の動向分析</h1>
+  <div class="sub">2025〜2026年 最新データに基づく</div>
+  <div class="tag-row">
+    <span class="tag">AI時代の就職</span>
+    <span class="tag">人手不足と賃金上昇</span>
+    <span class="tag">生涯年収シミュレーション</span>
+    <span class="tag">大隅地域</span>
+  </div>
+</header>
+
+<nav>
+  <a href="#ch1">第1章 動向</a>
+  <a href="#ch2">第2章 強さの理由</a>
+  <a href="#ch3">第3章 生涯年収</a>
+  <a href="#ch4">第4章 コスト比較</a>
+  <a href="#ch5">第5章 学科別</a>
+  <a href="#summary">まとめ</a>
+</nav>
+
+<div class="container">
+
+<!-- 第1章 -->
+<section id="ch1">
+  <div class="sec-label">Chapter 1</div>
+  <h2>第1章　いま、仕事の「常識」が変わっている</h2>
+
+  <p style="margin-bottom:1.2rem;">「大学に行ってオフィスで働く＝正解」という昭和・平成の成功モデルが、今、音を立てて崩れ去ろうとしています。AIの普及で事務・営業系の仕事が減り、逆に現場の技能職（ブルーカラー）の価値が急上昇しています。</p>
+
+  <h3>ブルーカラーとホワイトカラーの違い</h3>
+  <div class="card">
+    <div class="vs-grid">
+      <div>
+        <div class="vs-title blue">ブルーカラー（現場職）</div>
+        <div class="vs-item">製造・工場作業</div>
+        <div class="vs-item">建設・土木・電気工事</div>
+        <div class="vs-item">運輸・物流・ドライバー</div>
+        <div class="vs-item">農業・畜産・食品加工</div>
+        <div class="vs-item">機械・電子整備</div>
+        <div class="vs-item">介護・福祉の現場</div>
+        <div class="vs-item">美容・理容師</div>
+      </div>
+      <div class="vs-vs">VS</div>
+      <div>
+        <div class="vs-title amber">ホワイトカラー（オフィス職）</div>
+        <div class="vs-item">一般事務・経理</div>
+        <div class="vs-item">営業・販売</div>
+        <div class="vs-item">銀行・保険</div>
+        <div class="vs-item">IT・プログラマー（一部）</div>
+        <div class="vs-item">医療事務・受付</div>
+        <div class="vs-item">公務員（一般行政）</div>
+        <div class="vs-item">企画・マーケティング</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>注目の最新データ（2025〜2026年）</h3>
+  <div class="card-grid">
+    <div class="metric-card blue">
+      <div class="val">70<span style="font-size:1.1rem">%</span></div>
+      <div class="lbl">オフィス職の7割が「条件次第でブルーカラーへ転職アリ」と回答（2025年調査）</div>
+    </div>
+    <div class="metric-card teal">
+      <div class="val">25<span style="font-size:1.1rem">%</span></div>
+      <div class="lbl">ホワイト→ブルー転職者のうち約4人に1人が年収アップ（20代は約4割）</div>
+    </div>
+    <div class="metric-card amber">
+      <div class="val">51<span style="font-size:1.1rem">%</span></div>
+      <div class="lbl">建設業の人手不足割合（2024年10月、帝国データバンク）</div>
+    </div>
+  </div>
+
+  <h3>求人伸び率ランキング（2025→2026年）</h3>
+  <div class="card">
+    <div class="bar-wrap">
+      <div class="bar-meta"><span>施工管理・技能工</span><span style="color:var(--blue)">+13.2%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--blue)"></div></div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-meta"><span>製造・工場</span><span style="color:var(--blue)">+10.1%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:72%;background:var(--blue)"></div></div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-meta"><span>電気・機械</span><span style="color:var(--blue)">+7.5%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:58%;background:var(--blue)"></div></div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-meta"><span>運輸・物流</span><span style="color:var(--teal)">+5.2%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:45%;background:var(--teal)"></div></div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-meta"><span>営業・事務（ホワイト）</span><span style="color:var(--gray)">+2.1%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:22%;background:#888"></div></div>
+    </div>
+    <p class="note">出典：フロッグ求人ビッグデータ分析（2026年4月）</p>
+  </div>
+</section>
+
+<!-- 第2章 -->
+<section id="ch2">
+  <div class="sec-label">Chapter 2</div>
+  <h2>第2章　AI時代に「現場の仕事」が強い理由</h2>
+
+  <div class="color-box blue">
+    <div class="cb-title">AIに代替されにくい</div>
+    <p>手作業・体を使う仕事・現場判断はロボットやAIが苦手。データ整理や資料作成などの事務仕事は逆にAIに代替されつつある。</p>
+  </div>
+  <div class="color-box teal">
+    <div class="cb-title">賃金が着実に上がっている</div>
+    <p>人手不足が深刻な建設・製造・電気系では、6年間で月給が約1.5倍になった職種も登場。2025年の賃金上昇率上位にブルーカラー4業種がランクイン。</p>
+  </div>
+  <div class="color-box amber">
+    <div class="cb-title">資格でキャリアアップできる</div>
+    <p>電気工事士・施工管理技士・フォークリフトなど、資格を取るほど収入と責任が上がる明確なルートがある。会社が費用を負担するケースも多い。</p>
+  </div>
+  <div class="color-box green">
+    <div class="cb-title">地元で働ける・Uターン需要も増加</div>
+    <p>地方でもブルーカラーの高収入化が進行中。人口減少を背景に企業が好待遇を用意し、大隅地域でも条件の良い求人が増えている。</p>
+  </div>
+
+  <h3>転職者が感じる「ブルーカラーで良かった」理由</h3>
+  <div class="card">
+    <div class="bar-wrap">
+      <div class="bar-meta"><span>ワークライフバランスが取りやすい</span><span style="color:var(--teal)">38.5%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:77%;background:var(--teal)"></div></div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-meta"><span>精神的なストレスが少ない</span><span style="color:var(--teal)">38.2%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:76%;background:var(--teal)"></div></div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-meta"><span>自分の仕事の成果が目に見える</span><span style="color:var(--teal)">29.7%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:59%;background:var(--teal)"></div></div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-meta"><span>社会や生活を支える重要な仕事だと感じる</span><span style="color:var(--teal)">約30%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--teal)"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 第3章 -->
+<section id="ch3">
+  <div class="sec-label">Chapter 3</div>
+  <h2>第3章　生涯年収シミュレーション</h2>
+
+  <p style="margin-bottom:.5rem;">18歳から60歳（42年間）の生涯年収を、キャリア別に推計しました。</p>
+  <p class="note" style="margin-bottom:1.5rem;">※厚生労働省「賃金構造基本統計調査」、JILPT「ユースフル労働統計」等をもとに推計。退職金は含みません。</p>
+
+  <div class="card-grid">
+    <div class="metric-card blue">
+      <div class="val" style="font-size:clamp(1.15rem,4.5vw,1.5rem);">2.3〜2.8億円</div>
+      <div class="lbl">ブルーカラー（技能職・資格あり）<br>18歳スタート・42年間</div>
+    </div>
+    <div class="metric-card teal">
+      <div class="val" style="font-size:clamp(1.15rem,4.5vw,1.5rem);">1.8〜2.2億円</div>
+      <div class="lbl">ブルーカラー（一般現場職）<br>18歳スタート・42年間</div>
+    </div>
+    <div class="metric-card amber">
+      <div class="val" style="font-size:clamp(1.15rem,4.5vw,1.5rem);">2.0〜2.5億円</div>
+      <div class="lbl">ホワイトカラー（一般事務・営業）<br>22歳スタート・38年間 ※大卒</div>
+    </div>
+  </div>
+
+  <h3>年齢別 年収推移グラフ</h3>
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot" style="background:#185FA5"></span>ブルー技能職（資格あり）</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#1D9E75"></span>ブルー一般現場職</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#E8A020"></span>ホワイト一般事務・営業</div>
+    <div class="legend-item"><span class="legend-dot dashed"></span>ホワイト AI代替リスク層（減少予測）</div>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="lineChart" role="img" aria-label="18〜60歳の年収推移グラフ"></canvas>
+  </div>
+  <p class="note">※2035年以降はトレンド推計値。実際の年収は景気・資格・勤務先によって異なります。</p>
+
+  <h3>累積生涯年収の積み上がり</h3>
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot" style="background:#185FA5"></span>ブルー技能職（累積）</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#1D9E75"></span>ブルー一般（累積）</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#E8A020"></span>ホワイト一般（累積・22歳スタート）</div>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="cumulChart" role="img" aria-label="18〜60歳の累積生涯年収グラフ"></canvas>
+  </div>
+  <p class="note">※大卒ホワイトカラーは22歳スタート。在学中の学費（国立約250万・私立約450万円）は別途考慮が必要。</p>
+
+  <h3>キャリアフェーズ別 解説</h3>
+  <div class="phase-card blue">
+    <div class="pt">18〜25歳 ── スタートダッシュ期</div>
+    <p>ブルーカラーが4年先行して稼ぎ始める。この時期に第二種電気工事士・フォークリフト・危険物取扱者などの資格を取得すると年収が早期に跳ね上がる。大卒ホワイトカラーはこの時期まだ在学中または新人。</p>
+  </div>
+  <div class="phase-card teal">
+    <div class="pt">25〜35歳 ── 格差縮小・分岐期</div>
+    <p>大卒ホワイトカラーの昇給が追いつく時期。ただし一般事務・ルーティン系はAIによる代替リスクが顕在化。ブルーカラーは資格・技能の積み重ねで差別化が進む。施工管理技士1級・電気工事施工管理技士などの取得がターニングポイント。</p>
+  </div>
+  <div class="phase-card amber">
+    <div class="pt">35〜50歳 ── 逆転の可能性が生まれる時期</div>
+    <p>技能職ブルーカラーの年収が最高値に達する。人手不足による賃金上昇が続けば、一般事務・ルーティン系ホワイトカラーとの逆転が起きる可能性が高い。関電工などでは高卒技能職が年収1000万円超の事例も出始めている。</p>
+  </div>
+  <div class="phase-card green">
+    <div class="pt">50〜60歳 ── 安定収入・継続雇用期</div>
+    <p>技能は老化しにくく、現場経験が評価される。一方ホワイトカラーは役職定年・早期退職の波にさらされやすい。ブルーカラーは「60歳以降も稼げる仕事」として再評価が進んでいる。</p>
+  </div>
+</section>
+
+<!-- 第4章 -->
+<section id="ch4">
+  <div class="sec-label">Chapter 4</div>
+  <h2>第4章　「大学4年分のコスト」を考えると？</h2>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>項目</th><th>高卒ブルーカラー</th><th>大卒ホワイトカラー</th></tr></thead>
+      <tbody>
+        <tr><td>就業開始年齢</td><td>18歳（即スタート）</td><td>22歳（4年後）</td></tr>
+        <tr><td>大学費用</td><td>ゼロ</td><td>国立約250万円〜私立約500万円</td></tr>
+        <tr><td>18〜22歳の稼ぎ</td><td>約840〜1,000万円</td><td>ゼロ（在学中）</td></tr>
+        <tr><td>資格取得支援</td><td>会社負担ケース多い</td><td>入社後に個人で取得が基本</td></tr>
+        <tr><td style="font-weight:700;">実質アドバンテージ</td><td style="font-weight:700;color:#185FA5;">最大＋2,000万円超</td><td style="color:#888;">スタート時はマイナスから</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight">
+    <p><strong>トータルで見ると：</strong> 技能資格を持つブルーカラーは「大学費用ゼロ＋4年分の早期収入」を合算すると、<strong>最大2,000万円以上の実質的なアドバンテージ</strong>になる可能性がある。ただし、IT系・医療系・専門職系の大卒は依然として高収入のルートが存在するため、職種・業種の内容まで含めた検討が重要。</p>
+  </div>
+</section>
+
+<!-- 第5章 -->
+<section id="ch5">
+  <div class="sec-label">Chapter 5</div>
+  <h2>第5章　学科別おすすめ進路方向</h2>
+
+  <div class="dept-grid">
+    <div class="dept-card">
+      <div class="dt">機械電子科</div>
+      <div class="ds">電気工事士・機械整備士・製造技術職が主な進路。AIに代替されにくい技能職として求人が急増中。<br>関連資格：電気工事士・自動車整備士・電気工事施工管理技士</div>
+      <span class="badge badge-blue">求人増加中</span>
+    </div>
+    <div class="dept-card">
+      <div class="dt">畜産食農科</div>
+      <div class="ds">農業法人・食品製造・畜産業が主な進路。大隅地域に求人が多く、地元就職に直結。<br>関連資格：食品衛生責任者・農業技術士補</div>
+      <span class="badge badge-teal">地元就職</span>
+    </div>
+    <div class="dept-card">
+      <div class="dt">商業科</div>
+      <div class="ds">販売・営業・物流・事務など幅広い選択肢。ブルー・ホワイト両面でのキャリアが可能。<br>関連資格：日商簿記・販売士・物流技術管理士</div>
+      <span class="badge badge-amber">幅広い選択肢</span>
+    </div>
+    <div class="dept-card">
+      <div class="dt">文理科・普通科</div>
+      <div class="ds">進学・公務員・福祉・看護など多様なルート。進学後に専門資格取得も可能。<br>進学先で専門性を高めることが収入アップの鍵。</div>
+      <span class="badge badge-coral">進路多様</span>
+    </div>
+  </div>
+</section>
+
+<!-- まとめ -->
+<section id="summary">
+  <div class="sec-label">Summary</div>
+  <h2>まとめ　高卒で就職することの「今の意味」</h2>
+
+  <div class="color-box blue">
+    <div class="cb-title">早く現場に入ることが強みになる</div>
+    <p>大卒者がAI就職氷河期に苦しむ中、技能職は高卒でも即戦力として評価される時代になっている。</p>
+  </div>
+  <div class="color-box teal">
+    <div class="cb-title">資格・経験で収入を伸ばせる</div>
+    <p>学歴よりも「何ができるか」が評価基準。資格取得・現場経験の積み重ねでキャリアを作りやすい。</p>
+  </div>
+  <div class="color-box amber">
+    <div class="cb-title">地元・大隅でも十分に稼げる環境へ</div>
+    <p>人手不足を背景に地方の待遇が改善中。必ずしも都市に出なくても、充実したキャリアが描ける。</p>
+  </div>
+  <div class="color-box coral">
+    <div class="cb-title">生涯年収の逆転が現実味を帯びてきた</div>
+    <p>技能資格ありのブルーカラーは、大学コストを考慮すると一般事務ホワイトカラーと比較して見劣りしない水準に達しつつある。</p>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <strong>鹿児島県立曽於高等学校　進路指導部</strong><br>
+  参考：厚生労働省・JILPT・リクルートワークス研究所・帝国データバンク・フロッグ求人データ 各種2025〜2026年調査
+</footer>
+
+<script>
+const ages = [18,20,22,25,28,30,33,35,38,40,43,45,48,50,53,55,58,60];
+const labels = ages.map(a => a + '歳');
+const blueSkill   = [260,285,300,340,380,420,450,470,490,510,530,550,560,570,580,575,565,555];
+const blueGeneral = [210,225,240,260,280,295,310,320,330,340,350,355,360,358,355,350,345,340];
+const whiteNormal = [null,null,235,270,310,345,375,390,410,425,435,440,445,440,435,425,415,405];
+const whiteRisk   = [null,null,235,265,295,310,315,305,290,275,260,250,245,240,240,238,235,230];
+
+const gc = '#e5e5e5';
+const tc = '#999';
+const fs = window.innerWidth < 480 ? 9 : 10;
+
+new Chart(document.getElementById('lineChart'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [
+      { label:'ブルー技能職',      data: blueSkill,   borderColor:'#185FA5', backgroundColor:'transparent', borderWidth:2.5, pointRadius:2, tension:.4 },
+      { label:'ブルー一般',        data: blueGeneral, borderColor:'#1D9E75', backgroundColor:'transparent', borderWidth:2,   pointRadius:2, tension:.4 },
+      { label:'ホワイト一般',      data: whiteNormal, borderColor:'#E8A020', backgroundColor:'transparent', borderWidth:2,   pointRadius:2, tension:.4 },
+      { label:'ホワイト代替リスク',data: whiteRisk,   borderColor:'#993C1D', backgroundColor:'transparent', borderWidth:1.5, borderDash:[5,4], pointRadius:2, tension:.4 },
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c=>' '+c.dataset.label+': 約'+c.parsed.y+'万円' } } },
+    scales:{
+      x:{ grid:{color:gc}, ticks:{color:tc,font:{size:fs},maxRotation:0} },
+      y:{ grid:{color:gc}, ticks:{color:tc,font:{size:fs},callback:v=>v+'万'} }
+    }
+  }
+});
+
+function cumul(arr, from) {
+  let s=0; return arr.map((v,i)=>{ if(i<from){return null;} s+=v; return Math.round(s); });
+}
+const wi = ages.indexOf(22);
+new Chart(document.getElementById('cumulChart'), {
+  type:'line',
+  data:{
+    labels,
+    datasets:[
+      { label:'ブルー技能職（累積）', data:cumul(blueSkill,0),   borderColor:'#185FA5', backgroundColor:'rgba(24,95,165,.07)', fill:true, borderWidth:2.5, pointRadius:2, tension:.4 },
+      { label:'ブルー一般（累積）',   data:cumul(blueGeneral,0), borderColor:'#1D9E75', backgroundColor:'transparent',           borderWidth:2,   pointRadius:2, tension:.4 },
+      { label:'ホワイト一般（累積）', data:cumul(whiteNormal.map(v=>v||0),wi), borderColor:'#E8A020', backgroundColor:'transparent', borderDash:[4,3], borderWidth:2, pointRadius:2, tension:.4 },
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:c=>' '+c.dataset.label+': 約'+Math.round(c.parsed.y/100)+'00万円' } } },
+    scales:{
+      x:{ grid:{color:gc}, ticks:{color:tc,font:{size:fs},maxRotation:0} },
+      y:{ grid:{color:gc}, ticks:{color:tc,font:{size:fs},callback:v=>(v/100).toFixed(0)+'00万'} }
+    }
+  }
+});
+
+// Active nav highlight on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#'+e.target.id);
+      });
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
