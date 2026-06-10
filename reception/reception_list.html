@@ -555,7 +555,7 @@ async function fetchCSV(url, type) {
   const resp = await fetch(url);
   if (!resp.ok) throw new Error(`HTTP ${resp.status}: ${url}`);
   const buf = await resp.arrayBuffer();
-  const text = new TextDecoder('shift-jis').decode(buf);
+  const text = new TextDecoder('UTF-8').decode(buf);
   const rows = parseCSV(text);
   if (rows.length < 2) return [];
   return rows.slice(1)
