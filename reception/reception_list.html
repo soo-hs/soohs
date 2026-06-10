@@ -38,7 +38,7 @@
   header {
     background: var(--header-bg);
     color: var(--header-text);
-    padding: 16px 24px;
+    padding: 7px 24px;
     display: flex;
     align-items: center;
     gap: 16px;
@@ -50,7 +50,7 @@
 
   header h1 {
     font-family: 'M PLUS 1p', sans-serif;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
     letter-spacing: 0.05em;
     flex: 1;
@@ -72,7 +72,7 @@
     gap: 12px;
     flex-wrap: wrap;
     position: sticky;
-    top: 56px;
+    top: 38px;
     z-index: 90;
     box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   }
@@ -97,7 +97,7 @@
   .stats { margin-left: auto; font-size: 11px; color: var(--muted); white-space: nowrap; }
   .stats strong { color: var(--text); }
 
-  .container { padding: 16px 24px; }
+  .container { padding: 7px 24px; }
 
   /* ── 凡例 ── */
   .legend { display: flex; gap: 16px; margin-bottom: 14px; font-size: 11px; }
@@ -412,14 +412,125 @@
     .table-wrap { box-shadow:none; overflow:visible; }
     .td-appeal, .td-wanted { display:none; }
   }
+
+  /* ── ビュー切替ボタン ── */
+  .view-toggle {
+    display: flex;
+    gap: 4px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 6px;
+    padding: 3px;
+  }
+  .view-btn {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  .view-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+  .view-btn.active { background: rgba(255,255,255,0.25); color: #fff; }
+
+  /* ── 帳票ビュー ── */
+  #card-view { display: none; }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .card {
+    background: var(--surface);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow 0.15s, transform 0.1s;
+    border: 1px solid var(--border);
+  }
+  .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.13); transform: translateY(-1px); }
+  .card.hidden { display: none; }
+  .card-head {
+    padding: 9px 12px 7px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-head-in  { background: #eef4fb; }
+  .card-head-out { background: #fdf3ee; }
+  .card-company {
+    font-family: 'M PLUS 1p', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text);
+  }
+  .card-date {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+  .card-body {
+    padding: 8px 12px 10px;
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 3px 6px;
+    font-size: 11px;
+  }
+  .card-label { color: var(--muted); white-space: nowrap; }
+  .card-value { color: var(--text); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .card-marks {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+    padding-top: 5px;
+    border-top: 1px solid var(--border);
+  }
+  .card-mark-chip {
+    background: #ede9fe; color: #6d28d9;
+    border-radius: 3px; padding: 1px 6px;
+    font-size: 10px; font-weight: 700;
+  }
+  .card-note {
+    grid-column: 1 / -1;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <div>
+  <div style="flex:1;">
     <h1>企業訪問受付一覧</h1>
     <div class="header-sub">鹿児島県立曽於高等学校　進路指導部</div>
+  </div>
+  <div class="view-toggle">
+    <button class="view-btn active" id="btn-list" onclick="setView('list')" title="一覧表示">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:4px"><rect x="0" y="1" width="14" height="2" rx="1" fill="currentColor"/><rect x="0" y="6" width="14" height="2" rx="1" fill="currentColor"/><rect x="0" y="11" width="14" height="2" rx="1" fill="currentColor"/></svg>一覧
+    </button>
+    <button class="view-btn" id="btn-card" onclick="setView('card')" title="帳票表示">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:4px"><rect x="0" y="0" width="6" height="6" rx="1" fill="currentColor"/><rect x="8" y="0" width="6" height="6" rx="1" fill="currentColor"/><rect x="0" y="8" width="6" height="6" rx="1" fill="currentColor"/><rect x="8" y="8" width="6" height="6" rx="1" fill="currentColor"/></svg>帳票
+    </button>
   </div>
 </header>
 
@@ -463,8 +574,8 @@
   </div>
 
   <div class="legend">
-    <div class="legend-item"><span class="badge badge-in">県内</span>来校（in.csv）</div>
-    <div class="legend-item"><span class="badge badge-out">県外</span>訪問（out.csv）</div>
+    <div class="legend-item"><span class="badge badge-in" id="legend-in" style="cursor:pointer;user-select:none;" title="クリックで県内のみ表示">県内</span>（in.csv）</div>
+    <div class="legend-item"><span class="badge badge-out" id="legend-out" style="cursor:pointer;user-select:none;" title="クリックで県外のみ表示">県外</span>（out.csv）</div>
     <div class="legend-item" style="color:var(--muted);font-size:11px;">
       ※ 列ヘッダークリック→ソート　行クリック→詳細表示　列の境界線をドラッグ→列幅変更
     </div>
@@ -479,6 +590,10 @@
       </thead>
       <tbody id="tbody"></tbody>
     </table>
+  </div>
+
+  <div id="card-view">
+    <div class="card-grid" id="card-grid"></div>
   </div>
 </div>
 
@@ -658,6 +773,14 @@ function buildRow(obj, idx) {
     const td = document.createElement('td');
     td.className = cls;
     td.innerHTML = `<span class="cell-inner">${vals[ci]}</span><span class="row-resize-handle"></span>`;
+    if (ci === 3) {
+      td.addEventListener('contextmenu', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        const q = cell(r, 2);
+        if (q) window.open('https://www.google.com/search?q=' + encodeURIComponent(q), '_blank');
+      });
+    }
     tr.appendChild(td);
   });
 
@@ -754,6 +877,8 @@ function applyFilters() {
   const fDorm   = document.getElementById('f-dorm').value;
   const fSearch = document.getElementById('f-search').value.toLowerCase().trim();
   let vis = 0;
+
+  // 一覧行
   document.querySelectorAll('#tbody tr').forEach(tr => {
     const ok =
       (!fType   || tr.dataset.type  === fType)  &&
@@ -764,6 +889,18 @@ function applyFilters() {
     tr.classList.toggle('hidden', !ok);
     if (ok) vis++;
   });
+
+  // カード行
+  document.querySelectorAll('#card-grid .card').forEach(card => {
+    const ok =
+      (!fType   || card.dataset.type  === fType)  &&
+      (!fArea   || card.dataset.area  === fArea)  &&
+      (!fWork   || card.dataset.work  === fWork)  &&
+      (!fDorm   || card.dataset.dorm  === fDorm)  &&
+      (!fSearch || card.dataset.search.includes(fSearch));
+    card.classList.toggle('hidden', !ok);
+  });
+
   document.getElementById('stats').innerHTML =
     `表示: <strong>${vis}</strong> / ${allRows.length} 件`;
 }
@@ -839,6 +976,87 @@ function initRowResize() {
   });
 }
 
+
+/* ══════════════════════════════════════
+   ビュー切替
+══════════════════════════════════════ */
+let currentView = 'list';
+
+function setView(v) {
+  currentView = v;
+  document.getElementById('btn-list').classList.toggle('active', v === 'list');
+  document.getElementById('btn-card').classList.toggle('active', v === 'card');
+  const tableWrap = document.getElementById('table-wrap');
+  const cardView  = document.getElementById('card-view');
+  if (v === 'list') {
+    tableWrap.style.display = allRows.length ? 'block' : 'none';
+    cardView.style.display  = 'none';
+  } else {
+    tableWrap.style.display = 'none';
+    cardView.style.display  = allRows.length ? 'block' : 'none';
+    buildCardView();
+  }
+  applyFilters();
+}
+
+/* ── カード構築 ── */
+function buildCard(obj, idx) {
+  const { type, row: r } = obj;
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.type   = type;
+  card.dataset.area   = cell(r,5);
+  card.dataset.work   = cell(r,4);
+  card.dataset.dorm   = (cell(r,6)==='○'||cell(r,6)==='〇') ? 'yes' : 'no';
+  card.dataset.search = [cell(r,2), cell(r,3), cell(r,16)].join(' ').toLowerCase();
+
+  const headCls = type === 'IN' ? 'card-head-in' : 'card-head-out';
+  const badge   = type === 'IN'
+    ? '<span class="badge badge-in">県内</span>'
+    : '<span class="badge badge-out">県外</span>';
+
+  const markLabels = ['Ｇ科','Ａ科','Ｍ科','Ｂ科','見学'];
+  const marks = [9,10,11,12,13].map((col, i) => {
+    const v = mark(cell(r, col));
+    return v ? `<span class="card-mark-chip">${markLabels[i]}</span>` : '';
+  }).join('');
+
+  const noteText = [cell(r,16), cell(r,17), cell(r,18)].filter(Boolean).join('　');
+
+  card.innerHTML = `
+    <div class="card-head ${headCls}">
+      <div style="flex:1;min-width:0;">
+        <div class="card-company">${escHtml(cell(r,2)) || '（企業名なし）'}</div>
+        <div class="card-date">${badge} &nbsp;${escHtml(cell(r,1))}</div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);white-space:nowrap;">No.${cell(r,0)||idx}</div>
+    </div>
+    <div class="card-body">
+      <span class="card-label">訪問者</span><span class="card-value">${escHtml(cell(r,3))||'―'}</span>
+      <span class="card-label">業務内容</span><span class="card-value">${escHtml(cell(r,4))||'―'}</span>
+      <span class="card-label">地区</span><span class="card-value">${escHtml(cell(r,5))||'―'}</span>
+      <span class="card-label">寮 / 男女 / 人数</span><span class="card-value">${mark(cell(r,6))||'―'} / ${escHtml(cell(r,7))||'―'} / ${escHtml(cell(r,8))||'―'}</span>
+      ${marks ? `<div class="card-marks">${marks}</div>` : ''}
+      ${noteText ? `<div class="card-note">📝 ${escHtml(noteText)}</div>` : ''}
+    </div>
+  `;
+
+  card.addEventListener('click', () => openModal({ type, r, idx }));
+  card.querySelector('.card-company').addEventListener('contextmenu', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    const q = cell(r, 2);
+    if (q) window.open('https://www.google.com/search?q=' + encodeURIComponent(q), '_blank');
+  });
+  return card;
+}
+
+function buildCardView() {
+  const grid = document.getElementById('card-grid');
+  grid.innerHTML = '';
+  allRows.forEach((obj, i) => grid.appendChild(buildCard(obj, i+1)));
+}
+
 /* ── メイン読込 ── */
 async function loadAll() {
   document.getElementById('loading').style.display = 'block';
@@ -888,6 +1106,22 @@ async function loadAll() {
 }
 
 loadAll();
+
+/* ── 凡例バッジ トグルフィルター ── */
+['in','out'].forEach(type => {
+  document.getElementById('legend-' + type).addEventListener('click', () => {
+    const sel = document.getElementById('f-type');
+    const val = type === 'in' ? 'IN' : 'OUT';
+    sel.value = sel.value === val ? '' : val;
+    ['in','out'].forEach(t => {
+      const badge = document.getElementById('legend-' + t);
+      const active = sel.value === (t === 'in' ? 'IN' : 'OUT');
+      badge.style.outline = active ? '2px solid currentColor' : '';
+      badge.style.opacity = (!sel.value || active) ? '1' : '0.4';
+    });
+    applyFilters();
+  });
+});
 </script>
 </body>
 </html>
