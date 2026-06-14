@@ -406,6 +406,11 @@
   .table-wrap {
     overflow: auto;
     flex: 1;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+  .table-wrap::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
   }
   .main-content {
     display: flex;
