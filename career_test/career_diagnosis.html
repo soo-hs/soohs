@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>職種・適性＆性格診断 | 曽於高等学校</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap');
+
+  :root {
+    --ink: #1a1a2e;
+    --paper: #f7f5f0;
+    --accent: #2e7d5e;
+    --accent-light: #e8f5f0;
+    --accent2: #d4700a;
+    --accent2-light: #fdf1e3;
+    --line: #d8d4cc;
+    --muted: #6b6760;
+    --white: #ffffff;
+    --card-shadow: 0 2px 16px rgba(26,26,46,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: var(--ink);
+    padding: 20px 24px 18px;
+    text-align: center;
+  }
+  header .label {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: #8fa8d0;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  header h1 {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: clamp(20px, 5vw, 30px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.25;
+  }
+  header h1 span {
+    color: #6fcf97;
+  }
+  header .sub {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #8fa8d0;
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  #progress-wrap {
+    background: var(--ink);
+    padding: 0 24px 16px;
+  }
+  #progress-bar-outer {
+    background: rgba(255,255,255,0.1);
+    border-radius: 99px;
+    height: 6px;
+    overflow: hidden;
+  }
+  #progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, #6fcf97, #27ae60);
+    border-radius: 99px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  #progress-text {
+    margin-top: 6px;
+    font-size: 11px;
+    color: #8fa8d0;
+    text-align: right;
+  }
+
+  /* ─── MAIN CONTAINER ─── */
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+  }
+
+  /* ─── INTRO SCREEN ─── */
+  #intro {
+    text-align: center;
+    padding: 24px 0 12px;
+  }
+  #intro .big-q {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: clamp(36px, 10vw, 72px);
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  #intro h2 {
+    font-size: clamp(18px, 4vw, 24px);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  #intro p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+  .intro-badges {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .badge {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 99px;
+    border: 1.5px solid var(--accent);
+  }
+  .btn-start {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    padding: 16px 48px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 16px rgba(46,125,94,0.3);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-start:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(46,125,94,0.4); }
+  .btn-start:active { transform: translateY(0); }
+
+  /* ─── QUESTION CARD ─── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  #quiz-section {
+    animation: fadeUp 0.35s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-num {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+  .q-text {
+    font-size: clamp(16px, 3.5vw, 20px);
+    font-weight: 700;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    color: var(--ink);
+  }
+
+  .options {
+    display: grid;
+    gap: 10px;
+  }
+  .opt-btn {
+    background: var(--white);
+    border: 2px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.12s;
+    line-height: 1.5;
+    box-shadow: var(--card-shadow);
+  }
+  .opt-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+    transform: translateX(4px);
+  }
+  .opt-btn.selected {
+    border-color: var(--accent);
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .opt-btn .opt-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--line);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 24px;
+    margin-right: 10px;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+  .opt-btn.selected .opt-icon {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .nav-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    align-items: center;
+  }
+  .btn-back {
+    background: none;
+    border: 2px solid var(--line);
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .btn-back:hover { border-color: var(--muted); color: var(--ink); }
+  .btn-next {
+    flex: 1;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0.4;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .btn-next.enabled {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .btn-next.enabled:hover { transform: translateY(-2px); }
+
+  /* ─── RESULT ─── */
+  #result-section {
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .result-hero {
+    background: var(--ink);
+    border-radius: 16px;
+    padding: 32px 28px;
+    text-align: center;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .result-hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    background: rgba(111,207,151,0.08);
+    border-radius: 50%;
+  }
+  .result-label {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: #8fa8d0;
+    margin-bottom: 12px;
+  }
+  .result-type-name {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: clamp(28px, 7vw, 48px);
+    font-weight: 900;
+    color: #6fcf97;
+    margin-bottom: 8px;
+    line-height: 1.15;
+  }
+  .result-type-sub {
+    font-size: 14px;
+    color: #c5c2ba;
+    line-height: 1.7;
+  }
+  .result-emoji {
+    font-size: 56px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .result-cards {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .r-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+  }
+  .r-card-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .r-card-body {
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.8;
+  }
+  .trait-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .trait {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 99px;
+  }
+  .job-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .job-item {
+    background: var(--accent2-light);
+    border-left: 4px solid var(--accent2);
+    padding: 10px 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* score bars */
+  .score-section {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 16px;
+  }
+  .score-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .score-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .score-name {
+    font-size: 13px;
+    font-weight: 500;
+    width: 90px;
+    flex-shrink: 0;
+    color: var(--ink);
+  }
+  .score-bar-outer {
+    flex: 1;
+    background: var(--line);
+    border-radius: 99px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .score-bar-inner {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--accent), #27ae60);
+    width: 0%;
+    transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .score-pct {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    width: 36px;
+    text-align: right;
+  }
+
+  .advice-box {
+    background: linear-gradient(135deg, var(--accent-light), #fff);
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .advice-box p {
+    font-size: 14px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+  .advice-box strong { color: var(--accent); }
+
+  /* ─── JOB MATCH (求人情報) ─── */
+  .job-match-section {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 20px;
+  }
+  .job-match-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .job-match-loading {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    padding: 16px 0;
+  }
+  .job-match-group {
+    margin-bottom: 18px;
+  }
+  .job-match-group:last-child { margin-bottom: 0; }
+  .job-match-group-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--line);
+  }
+  .job-match-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .job-match-filter-row label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .job-match-filter {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--white);
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+  .job-match-filter:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .job-match-list {
+    display: grid;
+    gap: 10px;
+  }
+  .job-match-item {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+  }
+  .job-match-office {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.5;
+  }
+  .job-match-meta {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    line-height: 1.6;
+  }
+  .job-match-keywords {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 2;
+  }
+  .kw-tag {
+    display: inline-block;
+    background: var(--accent2-light);
+    color: var(--accent2);
+    border-radius: 99px;
+    padding: 2px 10px;
+    margin: 2px 4px 2px 0;
+    font-weight: 700;
+    font-size: 11px;
+  }
+  .job-match-none {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 6px 0 2px;
+  }
+
+  .btn-retry {
+    display: block;
+    width: 100%;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: opacity 0.2s;
+  }
+  .btn-retry:hover { opacity: 0.85; }
+
+  @media (max-width: 480px) {
+    .opt-btn { font-size: 13px; padding: 14px 16px; }
+    .result-hero { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="label">曽於高等学校 進路支援ツール</div>
+  <h1>職種・適性 &amp; <span>性格診断</span></h1>
+  <div class="sub">21問で分かる、あなたの強みと向いている仕事</div>
+</header>
+
+<div id="progress-wrap">
+  <div id="progress-bar-outer"><div id="progress-bar-inner"></div></div>
+  <div id="progress-text">0 / 21</div>
+</div>
+
+<main>
+
+  <!-- INTRO -->
+  <div id="intro" class="screen active">
+    <div class="big-q">?</div>
+    <h2>自分に合った仕事、見つけよう</h2>
+    <p>この診断は、高校生の就職データと企業からの声をもとに作られています。<br>21問に正直に答えるだけで、あなたの性格タイプと向いている職種・職業がわかります。</p>
+    <div class="intro-badges">
+      <span class="badge">約5分で完了</span>
+      <span class="badge">21問</span>
+      <span class="badge">6つの職業タイプ</span>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">診断をはじめる →</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz-section" class="screen">
+    <div class="q-num" id="q-num">Q1 / 21</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options" id="options"></div>
+    <div class="nav-row">
+      <button class="btn-back" id="btn-back" onclick="prevQ()">← 戻る</button>
+      <button class="btn-next" id="btn-next" onclick="nextQ()">次へ →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result-section" class="screen">
+    <div class="result-hero">
+      <div class="result-label">あなたの診断結果</div>
+      <span class="result-emoji" id="r-emoji"></span>
+      <div class="result-type-name" id="r-type-name"></div>
+      <div class="result-type-sub" id="r-type-sub"></div>
+    </div>
+
+    <div class="score-section">
+      <div class="score-label">タイプ別スコア</div>
+      <div id="score-bars"></div>
+    </div>
+
+    <div class="result-cards" id="result-cards"></div>
+
+    <div class="advice-box" id="advice-box"></div>
+
+    <div class="job-match-section" id="job-match-section" style="display:none;">
+      <div class="job-match-title">🔎 関連する求人情報</div>
+      <div class="job-match-loading" id="job-match-loading">求人情報を確認しています…</div>
+      <div id="job-match-results"></div>
+    </div>
+
+    <button class="btn-retry" onclick="retryQuiz()">もう一度診断する</button>
+  </div>
+
+</main>
+
+<script>
+// ─── 6 CAREER TYPES ───────────────────────────────────────────
+const TYPES = {
+  craft: {
+    name: "ものづくり職人タイプ",
+    emoji: "🔧",
+    sub: "手と技術で価値を生み出す。現場でどんどん成長できる人。",
+    traits: ["丁寧・慎重","集中力が高い","責任感が強い","コツコツ努力","物事を具体的に考える"],
+    jobs: ["製造業・生産ライン","機械・設備メンテナンス","電気工事士","自動車整備士","溶接・板金加工","建設・土木工事"],
+    advice: "<strong>あなたの強み</strong>は、丁寧さと集中力です。技術や資格を積み上げることで、現場のリーダーや技術の専門家として活躍できます。機械電子科で学んだスキルや危険物・溶接の資格は、企業から高く評価されます。夜勤やシフトがある職場も多いので、<strong>勤務形態の確認</strong>を忘れずに！"
+  },
+  nature: {
+    name: "自然・いのちタイプ",
+    emoji: "🌿",
+    sub: "生き物や食・大地とつながる仕事に本当のやりがいを感じる人。",
+    traits: ["粘り強い","責任感が強い","現場を楽しめる","生き物好き","チームで動ける"],
+    jobs: ["農業法人・農業経営","食肉・食品加工","JA（農業協同組合）","飼料・農薬メーカー","畜産農家","食品品質管理"],
+    advice: "<strong>あなたの強み</strong>は、粘り強さと現場適応力です。生き物を扱う仕事は体力と責任感が必要ですが、実習で現場を体験している畜産食農科の生徒は、入社後のギャップが少なく<strong>定着率が高い</strong>のが特徴です。地域の農業・食品産業はあなたを必要としています。"
+  },
+  office: {
+    name: "サポート事務タイプ",
+    emoji: "📋",
+    sub: "人を支え、組織を整える縁の下の力持ち。確実さが武器。",
+    traits: ["几帳面・正確","計画的に動ける","人の役に立ちたい","落ち着いた環境が好き","コツコツと継続できる"],
+    jobs: ["一般事務・経理","銀行・金融機関","JA・農業関連事務","医療事務・病院受付","公務員（一般行政）","営業事務・総務"],
+    advice: "<strong>あなたの強み</strong>は、正確さと計画性です。商業科で取得した簿記・情報処理の資格は事務職採用で非常に有利です。女子に人気の「事務職」は競争率が高いですが、<strong>職場見学で雰囲気を確かめる</strong>ことが満足度アップのカギ。手取り額と休日体系は事前にしっかり確認しましょう。"
+  },
+  people: {
+    name: "対人コミュ力タイプ",
+    emoji: "🤝",
+    sub: "人と話し、つながり、信頼を積み上げることが自然にできる人。",
+    traits: ["話すのが得意","人の気持ちがわかる","場の空気を読める","チームをまとめられる","前向きで行動力がある"],
+    jobs: ["営業・販売職","接客・サービス業","医療・介護・福祉","観光・ホテル","保育補助・教育サポート","カスタマーサービス"],
+    advice: "<strong>あなたの強み</strong>は、コミュニケーション力と共感力です。「社風・職場の雰囲気」を重視する高校生が多い中、あなたはどんな職場でも人間関係を築ける力があります。サービス業はシフト制が多いので、<strong>休日パターン</strong>を事前に確認しておきましょう。"
+  },
+  leader: {
+    name: "リーダー・企画タイプ",
+    emoji: "🚀",
+    sub: "全体を見渡し、率先して動く。将来の幹部候補タイプ。",
+    traits: ["主体的に動ける","アイデアが豊富","チームを引っ張る","失敗を恐れない","目標に向かって突き進む"],
+    jobs: ["総合職・幹部候補","営業企画・マーケティング","公務員（管理・行政）","店長・マネージャー候補","地域おこし・まちづくり","スタートアップ・新規事業"],
+    advice: "<strong>あなたの強み</strong>は、主体性と行動力です。企業が最も求めているのが「分からないことを質問できる力」と「失敗を恐れない姿勢」で、あなたはまさにその資質を持っています。地域の中小企業で<strong>若いうちから裁量を持って</strong>働くことが、キャリアを大きく飛躍させる近道です。"
+  },
+  expert: {
+    name: "専門スペシャリストタイプ",
+    emoji: "🎓",
+    sub: "一つのことを深く極める。専門知識や資格で勝負する人。",
+    traits: ["探究心が強い","論理的に考える","集中して学べる","独立心がある","努力を惜しまない"],
+    jobs: ["IT・情報処理・SE","医療技術職","建築・設計","公認会計士・税理士補助","研究・開発","資格活用専門職（危険物・電気等）"],
+    advice: "<strong>あなたの強み</strong>は、専門性を深める力と論理思考です。資格取得を通じて「自分の役割が明確」になることで満足度も高くなります。在学中に取れる資格を最大限に活かし、専門職として着実にキャリアを積みましょう。<strong>IT・情報系</strong>への潜在的な関心も伸ばしていけます。"
+  }
+};
+
+// ─── 21 QUESTIONS ─────────────────────────────────────────────
+// Each option has scores: {craft, nature, office, people, leader, expert}
+const QUESTIONS = [
+  {
+    text: "休日に一番「楽しい」と感じることは？",
+    opts: [
+      { label: "DIYや料理など、何かを手作りする",         scores: {craft:3,nature:1,office:0,people:0,leader:0,expert:1} },
+      { label: "自然の中（農作業・釣り・ハイキング）で過ごす", scores: {craft:1,nature:3,office:0,people:0,leader:0,expert:0} },
+      { label: "家でゆっくり、好きなことを計画して過ごす",   scores: {craft:0,nature:0,office:2,people:0,leader:1,expert:2} },
+      { label: "友達と遊んだり、おしゃべりしたりする",      scores: {craft:0,nature:0,office:0,people:3,leader:1,expert:0} }
+    ]
+  },
+  {
+    text: "学校の授業で、一番好きな科目・活動は？",
+    opts: [
+      { label: "実習・実技（溶接・農業・調理など）",        scores: {craft:3,nature:2,office:0,people:0,leader:0,expert:1} },
+      { label: "簿記・情報処理・PC操作",                  scores: {craft:0,nature:0,office:3,people:0,leader:0,expert:2} },
+      { label: "体育・部活動・学校行事の運営",              scores: {craft:0,nature:0,office:0,people:2,leader:3,expert:0} },
+      { label: "理科・数学・論理的に考える科目",            scores: {craft:1,nature:1,office:1,people:0,leader:0,expert:3} }
+    ]
+  },
+  {
+    text: "将来、働く上で「一番大切にしたいこと」は？",
+    opts: [
+      { label: "しっかり稼いで、自分で生活できる力をつけたい", scores: {craft:2,nature:1,office:1,people:1,leader:2,expert:1} },
+      { label: "毎日同じペースで、安定して働きたい",         scores: {craft:2,nature:1,office:3,people:0,leader:0,expert:1} },
+      { label: "人に感謝される仕事・誰かの役に立ちたい",     scores: {craft:0,nature:1,office:1,people:3,leader:1,expert:0} },
+      { label: "自分の専門スキルを高めて、頼られる存在になりたい", scores: {craft:2,nature:1,office:0,people:0,leader:1,expert:3} }
+    ]
+  },
+  {
+    text: "求人票を見たとき、最初に気になるのは？",
+    opts: [
+      { label: "給与・基本給の金額",                     scores: {craft:2,nature:1,office:1,people:1,leader:2,expert:1} },
+      { label: "年間休日・休日の取り方",                  scores: {craft:0,nature:0,office:3,people:2,leader:0,expert:1} },
+      { label: "仕事の内容・どんな作業をするか",           scores: {craft:2,nature:2,office:1,people:1,leader:1,expert:2} },
+      { label: "会社の雰囲気・職場の人間関係",             scores: {craft:0,nature:0,office:1,people:3,leader:1,expert:0} }
+    ]
+  },
+  {
+    text: "グループ活動のとき、あなたはどんな役割が多い？",
+    opts: [
+      { label: "黙々と作業をしてチームを支える",            scores: {craft:2,nature:2,office:2,people:0,leader:0,expert:1} },
+      { label: "みんなの話を聞いてまとめる",               scores: {craft:0,nature:0,office:2,people:2,leader:2,expert:0} },
+      { label: "自分からアイデアを出してリードする",         scores: {craft:0,nature:0,office:0,people:1,leader:3,expert:1} },
+      { label: "調べ物・情報収集・専門的な部分を担当する",   scores: {craft:1,nature:1,office:1,people:0,leader:0,expert:3} }
+    ]
+  },
+  {
+    text: "どんな職場環境で働きたい？",
+    opts: [
+      { label: "工場・農場・現場など屋外や体を動かせる場所",  scores: {craft:3,nature:3,office:0,people:0,leader:0,expert:0} },
+      { label: "オフィス・デスクで落ち着いて仕事できる場所",  scores: {craft:0,nature:0,office:3,people:1,leader:1,expert:2} },
+      { label: "お客さんや人と関わる店頭・窓口",            scores: {craft:0,nature:0,office:0,people:3,leader:1,expert:0} },
+      { label: "チームで動きながら、変化がある環境",          scores: {craft:1,nature:1,office:0,people:1,leader:3,expert:1} }
+    ]
+  },
+  {
+    text: "自分の得意なことは何だと思う？",
+    opts: [
+      { label: "手先が器用・作業が丁寧",                  scores: {craft:3,nature:1,office:1,people:0,leader:0,expert:1} },
+      { label: "人の話を聞くのが得意・共感できる",           scores: {craft:0,nature:0,office:1,people:3,leader:1,expert:0} },
+      { label: "計画を立てて、コツコツ続けられる",           scores: {craft:1,nature:1,office:3,people:0,leader:1,expert:2} },
+      { label: "物事の仕組みを考えたり、分析したりすること",  scores: {craft:1,nature:0,office:1,people:0,leader:1,expert:3} }
+    ]
+  },
+  {
+    text: "「仕事を覚える」ときに、自分に合うのは？",
+    opts: [
+      { label: "実際にやってみて、体で覚える",              scores: {craft:3,nature:3,office:0,people:1,leader:1,expert:0} },
+      { label: "マニュアルや手順書を読んでから取り組む",     scores: {craft:1,nature:0,office:3,people:0,leader:0,expert:2} },
+      { label: "先輩に教えてもらいながらやってみる",         scores: {craft:1,nature:1,office:1,people:2,leader:1,expert:1} },
+      { label: "仕組みや理由を理解してから取り組む",         scores: {craft:0,nature:0,office:1,people:0,leader:1,expert:3} }
+    ]
+  },
+  {
+    text: "放課後・週末のアルバイトで、やってみたいのは？",
+    opts: [
+      { label: "飲食・コンビニなど接客バイト",              scores: {craft:0,nature:0,office:0,people:3,leader:1,expert:0} },
+      { label: "工場・農場・倉庫の軽作業",                 scores: {craft:3,nature:2,office:0,people:0,leader:0,expert:1} },
+      { label: "事務補助・データ入力",                    scores: {craft:0,nature:0,office:3,people:0,leader:0,expert:2} },
+      { label: "塾講師・家庭教師など教える系",              scores: {craft:0,nature:0,office:1,people:1,leader:1,expert:3} }
+    ]
+  },
+  {
+    text: "失敗したとき、あなたはどうする？",
+    opts: [
+      { label: "次から同じミスをしないよう、ひたすら練習する", scores: {craft:3,nature:2,office:1,people:0,leader:0,expert:2} },
+      { label: "すぐ誰かに相談して一緒に考える",            scores: {craft:0,nature:0,office:1,people:3,leader:1,expert:0} },
+      { label: "原因を分析して改善策を考える",              scores: {craft:1,nature:0,office:2,people:0,leader:2,expert:3} },
+      { label: "気持ちを切り替えて次に進む",               scores: {craft:0,nature:1,office:0,people:1,leader:3,expert:0} }
+    ]
+  },
+  {
+    text: "「自分に向いていない」と感じるのは？",
+    opts: [
+      { label: "ずっと座ってデスクで作業すること",           scores: {craft:3,nature:3,office:0,people:2,leader:2,expert:0} },
+      { label: "知らない人に声をかけたり、接客したりすること", scores: {craft:2,nature:2,office:2,people:0,leader:0,expert:2} },
+      { label: "自分で判断せず、言われたことだけやること",    scores: {craft:0,nature:0,office:0,people:1,leader:3,expert:1} },
+      { label: "細かいデータや数字をずっと扱うこと",         scores: {craft:1,nature:2,office:0,people:2,leader:1,expert:0} }
+    ]
+  },
+  {
+    text: "高校生活で一番誇れる経験は？",
+    opts: [
+      { label: "実習・専門教科での技術習得",                scores: {craft:3,nature:3,office:0,people:0,leader:0,expert:1} },
+      { label: "部活動や委員会でのリーダー経験",             scores: {craft:0,nature:0,office:0,people:1,leader:3,expert:0} },
+      { label: "資格・検定の合格（簿記・情報など）",         scores: {craft:1,nature:0,office:3,people:0,leader:0,expert:3} },
+      { label: "友達や後輩の相談に乗ってきたこと",           scores: {craft:0,nature:0,office:1,people:3,leader:1,expert:0} }
+    ]
+  },
+  {
+    text: "5年後の自分に一番近いのは？",
+    opts: [
+      { label: "現場のプロとして、技術を武器に働いている",    scores: {craft:3,nature:2,office:0,people:0,leader:0,expert:2} },
+      { label: "職場でも家庭でも、バランスよく安定している",  scores: {craft:1,nature:1,office:3,people:1,leader:0,expert:1} },
+      { label: "チームや後輩をまとめるポジションにいる",      scores: {craft:0,nature:0,office:0,people:2,leader:3,expert:0} },
+      { label: "専門資格を取って、頼られる存在になっている",  scores: {craft:1,nature:1,office:1,people:0,leader:1,expert:3} }
+    ]
+  },
+  {
+    text: "「いい会社」だと思う条件は？",
+    opts: [
+      { label: "しっかり技術を教えてくれる・育ててくれる",    scores: {craft:2,nature:2,office:1,people:1,leader:1,expert:2} },
+      { label: "年間休日が多く、残業が少ない",              scores: {craft:0,nature:0,office:3,people:2,leader:0,expert:1} },
+      { label: "若いうちから任せてもらえる・成長できる",      scores: {craft:1,nature:0,office:0,people:1,leader:3,expert:2} },
+      { label: "職場の雰囲気がよく、人間関係が良い",         scores: {craft:0,nature:1,office:1,people:3,leader:0,expert:0} }
+    ]
+  },
+  {
+    text: "「働く上での不安」で一番大きいのは？",
+    opts: [
+      { label: "仕事がうまくできるか・技術についていけるか",   scores: {craft:2,nature:2,office:1,people:0,leader:0,expert:2} },
+      { label: "職場の人間関係がうまくいくか",              scores: {craft:0,nature:0,office:1,people:2,leader:0,expert:0} },
+      { label: "給料・手取りが思ったより少ないかも",         scores: {craft:1,nature:1,office:2,people:1,leader:1,expert:1} },
+      { label: "自分がどんな仕事に向いているかまだわからない", scores: {craft:0,nature:1,office:1,people:1,leader:2,expert:1} }
+    ]
+  },
+  {
+    text: "職場見学に行くとき、一番確認したいことは？",
+    opts: [
+      { label: "実際の作業内容・どんな技術を使うか",          scores: {craft:3,nature:2,office:1,people:0,leader:0,expert:2} },
+      { label: "先輩社員の雰囲気・話しやすいかどうか",        scores: {craft:0,nature:1,office:1,people:3,leader:1,expert:0} },
+      { label: "休憩室・設備など働く環境",                  scores: {craft:1,nature:1,office:2,people:1,leader:0,expert:1} },
+      { label: "どんな仕事を任せてもらえるか・成長できるか",  scores: {craft:0,nature:0,office:0,people:0,leader:3,expert:2} }
+    ]
+  },
+  {
+    text: "「資格・スキル」について、あなたに近いのは？",
+    opts: [
+      { label: "危険物・溶接・電気など現場系資格を取りたい",   scores: {craft:3,nature:1,office:0,people:0,leader:0,expert:2} },
+      { label: "簿記・ITパスポートなど事務系資格が得意・好き", scores: {craft:0,nature:0,office:3,people:0,leader:0,expert:2} },
+      { label: "資格よりもコミュ力や経験を積みたい",          scores: {craft:0,nature:0,office:0,people:3,leader:2,expert:0} },
+      { label: "農業・食品系の専門知識・技術を伸ばしたい",     scores: {craft:1,nature:3,office:0,people:0,leader:0,expert:2} }
+    ]
+  },
+  {
+    text: "「お金（給与）」について、あなたの考えに近いのは？",
+    opts: [
+      { label: "残業・手当含めてもいいので稼ぎたい",          scores: {craft:2,nature:1,office:0,people:1,leader:2,expert:1} },
+      { label: "基本給がしっかりしていて安定した収入がほしい", scores: {craft:1,nature:1,office:3,people:1,leader:0,expert:2} },
+      { label: "最初は少なくても、成長につれて上がればいい",   scores: {craft:1,nature:1,office:0,people:0,leader:3,expert:2} },
+      { label: "給料より「やりがい」のほうが大切",            scores: {craft:1,nature:2,office:0,people:2,leader:1,expert:1} }
+    ]
+  },
+  {
+    text: "「保護者（親）」に仕事を選ぶ理由を説明するとしたら？",
+    opts: [
+      { label: "「この仕事は技術や資格が身につくから」",       scores: {craft:3,nature:2,office:1,people:0,leader:0,expert:3} },
+      { label: "「職場見学して雰囲気が良かったから」",         scores: {craft:0,nature:1,office:1,people:3,leader:1,expert:0} },
+      { label: "「休日が多く、地元で安定して働けるから」",     scores: {craft:0,nature:0,office:3,people:1,leader:0,expert:0} },
+      { label: "「若いうちから責任ある仕事を任せてくれるから」", scores: {craft:0,nature:0,office:0,people:0,leader:3,expert:2} }
+    ]
+  },
+  {
+    text: "入社1年目に「一番心がけたいこと」は？",
+    opts: [
+      { label: "まず基礎をしっかり身につける",               scores: {craft:3,nature:2,office:2,people:0,leader:0,expert:3} },
+      { label: "先輩・上司に積極的に質問する",               scores: {craft:1,nature:1,office:1,people:2,leader:2,expert:1} },
+      { label: "職場の人とうまくコミュニケーションを取る",     scores: {craft:0,nature:0,office:1,people:3,leader:1,expert:0} },
+      { label: "なるべく早く戦力になれるよう自主的に行動する", scores: {craft:1,nature:1,office:0,people:0,leader:3,expert:1} }
+    ]
+  },
+  {
+    text: "10年後、どんな自分でいたい？",
+    opts: [
+      { label: "特定の技術やスキルで「この人に任せれば大丈夫」と言われる存在", scores: {craft:2,nature:2,office:0,people:0,leader:0,expert:3} },
+      { label: "職場でも家庭でも充実した毎日を送れている",     scores: {craft:1,nature:1,office:3,people:2,leader:0,expert:0} },
+      { label: "チームや後輩を引っ張るリーダーになっている",   scores: {craft:0,nature:0,office:0,people:1,leader:3,expert:1} },
+      { label: "地域や社会に必要とされる仕事をしている",       scores: {craft:1,nature:3,office:1,people:2,leader:1,expert:1} }
+    ]
+  }
+];
+
+// ─── STATE ────────────────────────────────────────────────────
+let current = 0;
+let answers = new Array(21).fill(null); // selected option index per question
+let scores = {};
+
+function resetScores() {
+  scores = {craft:0, nature:0, office:0, people:0, leader:0, expert:0};
+}
+
+// ─── NAVIGATION ───────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startQuiz() {
+  current = 0;
+  answers = new Array(21).fill(null);
+  resetScores();
+  showScreen('quiz-section');
+  renderQuestion();
+}
+
+function retryQuiz() {
+  showScreen('intro');
+}
+
+function updateProgress() {
+  const answered = answers.filter(a => a !== null).length;
+  const pct = Math.round((current / 21) * 100);
+  document.getElementById('progress-bar-inner').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `${current} / 21`;
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[current];
+  document.getElementById('q-num').textContent = `Q${current+1} / 21`;
+  document.getElementById('q-text').textContent = q.text;
+
+  const labels = ['A','B','C','D'];
+  const container = document.getElementById('options');
+  container.innerHTML = '';
+
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn' + (answers[current] === i ? ' selected' : '');
+    btn.innerHTML = `<span class="opt-icon">${labels[i]}</span>${opt.label}`;
+    btn.onclick = () => selectOption(i);
+    container.appendChild(btn);
+  });
+
+  // nav
+  document.getElementById('btn-back').style.display = current === 0 ? 'none' : 'block';
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.textContent = current === 20 ? '結果を見る →' : '次へ →';
+  nextBtn.classList.toggle('enabled', answers[current] !== null);
+
+  updateProgress();
+
+  // re-animate
+  const qs = document.getElementById('quiz-section');
+  qs.style.animation = 'none';
+  qs.offsetHeight;
+  qs.style.animation = '';
+}
+
+function selectOption(i) {
+  answers[current] = i;
+  document.querySelectorAll('.opt-btn').forEach((b, idx) => {
+    b.classList.toggle('selected', idx === i);
+    const icon = b.querySelector('.opt-icon');
+    icon.style.background = idx === i ? 'var(--accent)' : '';
+    icon.style.color = idx === i ? '#fff' : '';
+  });
+  document.getElementById('btn-next').classList.add('enabled');
+}
+
+function nextQ() {
+  if (answers[current] === null) return;
+  current++;
+  if (current >= 21) { showResult(); return; }
+  renderQuestion();
+}
+
+function prevQ() {
+  if (current === 0) return;
+  current--;
+  renderQuestion();
+}
+
+// ─── CALCULATE RESULT ─────────────────────────────────────────
+function showResult() {
+  resetScores();
+  answers.forEach((ans, qi) => {
+    if (ans === null) return;
+    const s = QUESTIONS[qi].opts[ans].scores;
+    Object.keys(s).forEach(k => scores[k] += s[k]);
+  });
+
+  // find winner
+  const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]);
+  const winner = sorted[0][0];
+  const maxScore = sorted[0][1];
+  const t = TYPES[winner];
+
+  // hero
+  document.getElementById('r-emoji').textContent = t.emoji;
+  document.getElementById('r-type-name').textContent = t.name;
+  document.getElementById('r-type-sub').textContent = t.sub;
+
+  // score bars
+  const typeNames = {craft:'ものづくり',nature:'自然・農業',office:'事務サポート',people:'対人コミュ',leader:'リーダー',expert:'専門スペシャリスト'};
+  const barHTML = sorted.map(([key, val]) => {
+    const pct = Math.round((val / maxScore) * 100);
+    return `<div class="score-row">
+      <div class="score-name">${typeNames[key]}</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" data-pct="${pct}"></div></div>
+      <div class="score-pct">${pct}%</div>
+    </div>`;
+  }).join('');
+  document.getElementById('score-bars').innerHTML = barHTML;
+
+  // cards
+  const cards = `
+    <div class="r-card">
+      <div class="r-card-title">🌟 あなたの性格特徴</div>
+      <div class="r-card-body">
+        <div class="trait-list">${t.traits.map(tr=>`<span class="trait">${tr}</span>`).join('')}</div>
+      </div>
+    </div>
+    <div class="r-card">
+      <div class="r-card-title">💼 向いている職種・職業</div>
+      <div class="r-card-body">
+        <div class="job-list">${t.jobs.map(j=>`<div class="job-item">▶ ${j}</div>`).join('')}</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('result-cards').innerHTML = cards;
+
+  // advice
+  document.getElementById('advice-box').innerHTML = `<p>📝 <strong>進路アドバイス</strong><br><br>${t.advice}</p>`;
+
+  // 求人情報マッチング（向いている職種・職業をキーワード化してCSVから検索）
+  loadJobMatches(t.jobs);
+
+  document.getElementById('progress-bar-inner').style.width = '100%';
+  document.getElementById('progress-text').textContent = '21 / 21';
+
+  showScreen('result-section');
+
+  // animate bars after paint
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      document.querySelectorAll('.score-bar-inner').forEach(bar => {
+        bar.style.width = bar.dataset.pct + '%';
+      });
+    }, 100);
+  });
+}
+
+// ─── 求人情報マッチング ────────────────────────────────────────
+const KYUJIN_CSV_URL = 'https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv';
+
+// 検索対象の項目（求人票の各列）
+const SEARCH_COLUMNS = [
+  '求人番号',
+  '事業所名',
+  '職種',
+  '仕事の内容',
+  '補足事項',
+  '職業分類（ハローワーク）大分類',
+  '職業分類（ハローワーク）中分類',
+  '職業分類（ハローワーク）小分類',
+  '職業分類2（ハローワーク）大分類',
+  '職業分類2（ハローワーク）中分類',
+  '職業分類2（ハローワーク）小分類'
+];
+
+// CSVから読み込む項目（検索対象 + 表示用に追加する項目）
+const KYUJIN_COLUMNS = [
+  ...SEARCH_COLUMNS,
+  '就業場所住所（市区町村）'
+];
+
+let KYUJIN_DATA_CACHE = null; // 一度読み込んだCSVをキャッシュ（非表示で読込）
+
+// CSVテキストを2次元配列にパース（引用符・改行・カンマを含むフィールドに対応）
+function parseCSVText(text) {
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1); // BOM除去
+  const rows = [];
+  let row = [];
+  let field = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; }
+        else { inQuotes = false; }
+      } else {
+        field += c;
+      }
+    } else {
+      if (c === '"') {
+        inQuotes = true;
+      } else if (c === ',') {
+        row.push(field); field = '';
+      } else if (c === '\r') {
+        // 無視
+      } else if (c === '\n') {
+        row.push(field); field = '';
+        rows.push(row); row = [];
+      } else {
+        field += c;
+      }
+    }
+  }
+  if (field.length > 0 || row.length > 0) {
+    row.push(field);
+    rows.push(row);
+  }
+  return rows;
+}
+
+// CSVを取得して、必要な項目だけのオブジェクト配列に変換（一時的に非表示で読込）
+async function fetchKyujinData() {
+  if (KYUJIN_DATA_CACHE) return KYUJIN_DATA_CACHE;
+
+  const res = await fetch(KYUJIN_CSV_URL);
+  if (!res.ok) throw new Error('CSV取得に失敗しました: ' + res.status);
+  const text = await res.text();
+  const rows = parseCSVText(text);
+  if (rows.length === 0) { KYUJIN_DATA_CACHE = []; return KYUJIN_DATA_CACHE; }
+
+  const header = rows[0].map(h => h.trim());
+  const colIndex = {};
+  header.forEach((h, i) => { colIndex[h] = i; });
+
+  const data = [];
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (r.length < 2) continue; // 空行スキップ
+    const obj = {};
+    KYUJIN_COLUMNS.forEach(col => {
+      const idx = colIndex[col];
+      obj[col] = (idx !== undefined && r[idx] !== undefined) ? r[idx] : '';
+    });
+    data.push(obj);
+  }
+  KYUJIN_DATA_CACHE = data;
+  return data;
+}
+
+// 「向いている職種・職業」の1項目をキーワード化
+// 例: "JA（農業協同組合）" → ["農業協同組合", "JA"]
+//     "製造業・生産ライン" → ["製造業", "生産ライン"]
+function extractKeywords(jobLabel) {
+  const keywords = [];
+
+  // 括弧内の語句を取り出してキーワード化
+  const main = jobLabel.replace(/[（(]([^）)]*)[）)]/g, (m, inner) => {
+    inner.split(/[・,、\s]+/).forEach(part => {
+      let k = part.trim().replace(/(等|など)$/u, '');
+      if (k) keywords.push(k);
+    });
+    return '';
+  });
+
+  // 残りの本文を「・」で分割してキーワード化
+  main.split(/[・]/).forEach(part => {
+    const k = part.trim();
+    if (k) keywords.push(k);
+  });
+
+  // 重複除去・空要素除去
+  return [...new Set(keywords.filter(k => k.length > 0))];
+}
+
+// HTMLエスケープ
+function escapeHTML(str) {
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// 「向いている職種・職業」をキーワード化し、CSVの全項目から一致するものを抽出して表示
+async function loadJobMatches(jobs) {
+  const section = document.getElementById('job-match-section');
+  const loadingEl = document.getElementById('job-match-loading');
+  const resultsEl = document.getElementById('job-match-results');
+
+  section.style.display = 'block';
+  loadingEl.style.display = 'block';
+  loadingEl.textContent = '求人情報を確認しています…';
+  resultsEl.innerHTML = '';
+
+  try {
+    const data = await fetchKyujinData(); // 一時的に非表示で読込済み
+
+    let html = '';
+    const seenJobNo = new Set(); // 「向いている職種・職業」全体で求人番号の重複を防ぐ
+
+    jobs.forEach((job, groupIndex) => {
+      const keywords = extractKeywords(job);
+      const matches = [];
+
+      data.forEach(row => {
+        // 指定された全項目を結合して全検索の対象とする
+        const searchText = SEARCH_COLUMNS.map(col => row[col] || '').join('\n');
+        const matchedKeywords = keywords.filter(kw => kw && searchText.includes(kw));
+
+        if (matchedKeywords.length > 0) {
+          const jobNo = row['求人番号'];
+          if (seenJobNo.has(jobNo)) return; // 重複した求人番号は表示しない
+          seenJobNo.add(jobNo);
+          matches.push({
+            office: row['事業所名'],
+            jobNo: jobNo,
+            shokushu: row['職種'],
+            location: row['就業場所住所（市区町村）'] || '未設定',
+            keywords: matchedKeywords
+          });
+        }
+      });
+
+      const groupId = `job-match-group-${groupIndex}`;
+
+      html += `<div class="job-match-group">
+        <div class="job-match-group-title">▶ ${escapeHTML(job)}</div>`;
+
+      if (matches.length > 0) {
+        // 30件以上ある場合は「就業場所」で絞り込めるようにする
+        if (matches.length >= 30) {
+          const locations = [...new Set(matches.map(m => m.location))].sort((a, b) => a.localeCompare(b, 'ja'));
+          html += `<div class="job-match-filter-row">
+            <label for="${groupId}-filter">就業場所で絞り込み：</label>
+            <select id="${groupId}-filter" class="job-match-filter" onchange="filterJobMatches('${groupId}', this.value)">
+              <option value="">すべて表示（${matches.length}件）</option>
+              ${locations.map(loc => `<option value="${escapeHTML(loc)}">${escapeHTML(loc)}</option>`).join('')}
+            </select>
+          </div>`;
+        }
+
+        html += `<div class="job-match-list" id="${groupId}-list">${matches.map(m => `
+          <div class="job-match-item" data-location="${escapeHTML(m.location)}">
+            <div class="job-match-office">${escapeHTML(m.office)}</div>
+            <div class="job-match-meta">求人番号：${escapeHTML(m.jobNo)} ／ 職種：${escapeHTML(m.shokushu)}</div>
+            <div class="job-match-meta">就業場所：${escapeHTML(m.location)}</div>
+            <div class="job-match-keywords">一致キーワード：${m.keywords.map(k => `<span class="kw-tag">${escapeHTML(k)}</span>`).join('')}</div>
+          </div>
+        `).join('')}</div>`;
+      } else {
+        html += `<div class="job-match-none">一致する求人情報が見つかりませんでした</div>`;
+      }
+
+      html += `</div>`;
+    });
+
+    loadingEl.style.display = 'none';
+    resultsEl.innerHTML = html;
+  } catch (err) {
+    console.error(err);
+    loadingEl.textContent = '求人情報の取得に失敗しました。時間をおいて再度お試しください。';
+  }
+}
+
+// 就業場所の絞り込み（検索結果が30件以上のグループに表示されるセレクトボックス用）
+function filterJobMatches(groupId, location) {
+  const list = document.getElementById(groupId + '-list');
+  if (!list) return;
+  list.querySelectorAll('.job-match-item').forEach(item => {
+    item.style.display = (!location || item.dataset.location === location) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
