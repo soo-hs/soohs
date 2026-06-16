@@ -1296,7 +1296,7 @@ const INDUSTRY_CSV_MAP = {
 async function loadMatchedCompanies(industryKey, industryFullKey) {
   const companyList = document.getElementById('company-list');
   try {
-    const res = await fetch('https://soo-hs.github.io/soohs/kyujin/kyujin.csv');
+    const res = await fetch('https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv');
     const text = await res.text();
     const rows = parseCSV(text);
 
