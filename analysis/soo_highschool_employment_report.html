@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>鹿児島県立曽於高等学校 就職統計資料</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;700&display=swap');
+
+    :root {
+      --navy: #1a2744;
+      --indigo: #2d4075;
+      --sky: #4a7fb5;
+      --gold: #c9960a;
+      --gold-light: #f5d97a;
+      --cream: #f8f6f0;
+      --gray-light: #eef1f6;
+      --gray-mid: #b0bac8;
+      --gray-dark: #4a5568;
+      --white: #ffffff;
+      --red: #c0392b;
+      --green: #1e7e5e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--cream);
+      color: var(--navy);
+      line-height: 1.75;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--indigo) 60%, #3a5a9f 100%);
+      color: var(--white);
+      padding: 52px 40px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      right: -60px; top: -60px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: rgba(201,150,10,0.18);
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      right: 60px; bottom: -80px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(74,127,181,0.25);
+    }
+    .header-inner { max-width: 1000px; margin: 0 auto; position: relative; z-index: 1; }
+    .header-label {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      padding: 4px 14px;
+      border-radius: 2px;
+      margin-bottom: 18px;
+    }
+    header h1 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+    header .subtitle {
+      font-size: 14px;
+      color: var(--gray-mid);
+      margin-bottom: 28px;
+    }
+    .header-meta {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .header-meta span {
+      font-size: 12px;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .header-meta span::before { content: '◆'; font-size: 8px; }
+
+    /* ── LAYOUT ── */
+    main { max-width: 1000px; margin: 0 auto; padding: 48px 20px; }
+
+    /* ── SCHOOL INFO CARD ── */
+    .school-card {
+      background: var(--white);
+      border-left: 5px solid var(--gold);
+      border-radius: 4px;
+      padding: 28px 32px;
+      margin-bottom: 40px;
+      box-shadow: 0 2px 12px rgba(26,39,68,0.07);
+    }
+    .school-card h2 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 18px;
+      color: var(--navy);
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .info-item {
+      background: var(--gray-light);
+      border-radius: 4px;
+      padding: 12px 16px;
+    }
+    .info-item dt {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--sky);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .info-item dd { font-size: 13px; color: var(--navy); font-weight: 500; }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 48px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .section-num {
+      width: 38px; height: 38px;
+      background: var(--navy);
+      color: var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .section-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 20px;
+      color: var(--navy);
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 4px;
+    }
+
+    /* ── STAT CARDS ── */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--white);
+      border-radius: 6px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(26,39,68,0.07);
+      border-top: 3px solid var(--sky);
+    }
+    .stat-card.gold { border-top-color: var(--gold); }
+    .stat-card.green { border-top-color: var(--green); }
+    .stat-card.red { border-top-color: var(--red); }
+    .stat-num {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-unit { font-size: 14px; font-weight: 400; color: var(--gray-dark); }
+    .stat-label { font-size: 12px; color: var(--gray-dark); margin-top: 8px; }
+
+    /* ── TABLE ── */
+    .table-wrap { overflow-x: auto; margin-bottom: 20px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: var(--white);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(26,39,68,0.07);
+    }
+    thead tr { background: var(--navy); color: var(--white); }
+    thead th {
+      padding: 12px 14px;
+      text-align: left;
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+    tbody tr { border-bottom: 1px solid var(--gray-light); }
+    tbody tr:nth-child(even) { background: var(--gray-light); }
+    tbody td { padding: 11px 14px; color: var(--navy); }
+    .highlight-row { background: #fff8e8 !important; font-weight: 600; }
+    .bar-cell { display: flex; align-items: center; gap: 10px; }
+    .bar {
+      height: 10px;
+      border-radius: 5px;
+      background: var(--sky);
+    }
+    .bar.gold { background: var(--gold); }
+    .bar.green { background: var(--green); }
+
+    /* ── COMPARISON BLOCK ── */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media(max-width: 640px) { .compare-grid { grid-template-columns: 1fr; } }
+    .compare-card {
+      background: var(--white);
+      border-radius: 6px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(26,39,68,0.07);
+    }
+    .compare-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--sky);
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .compare-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px dashed var(--gray-light);
+      font-size: 13px;
+    }
+    .compare-item:last-child { border-bottom: none; }
+    .compare-val { font-weight: 700; color: var(--navy); }
+    .compare-val.plus { color: var(--green); }
+    .compare-val.minus { color: var(--red); }
+
+    /* ── COMMENTARY BOX ── */
+    .commentary {
+      background: linear-gradient(135deg, #e8edf7 0%, #f0f4fb 100%);
+      border-left: 4px solid var(--sky);
+      border-radius: 4px;
+      padding: 22px 26px;
+      margin-top: 20px;
+    }
+    .commentary h4 {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--sky);
+      margin-bottom: 10px;
+    }
+    .commentary p { font-size: 13px; color: var(--gray-dark); line-height: 1.85; }
+    .commentary p + p { margin-top: 10px; }
+
+    /* ── OPINION BOX ── */
+    .opinion {
+      background: #fffbea;
+      border: 1.5px solid var(--gold);
+      border-radius: 6px;
+      padding: 22px 26px;
+      margin-top: 22px;
+    }
+    .opinion h4 {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .opinion p { font-size: 13px; color: var(--gray-dark); line-height: 1.85; }
+
+    /* ── CHART BAR (CSS only) ── */
+    .chart-bars { display: flex; flex-direction: column; gap: 12px; }
+    .chart-row { display: flex; align-items: center; gap: 12px; font-size: 12px; }
+    .chart-label { width: 90px; text-align: right; color: var(--gray-dark); flex-shrink: 0; }
+    .chart-track {
+      flex: 1;
+      background: var(--gray-light);
+      border-radius: 4px;
+      height: 22px;
+      overflow: hidden;
+    }
+    .chart-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: var(--sky);
+      display: flex;
+      align-items: center;
+      padding-left: 8px;
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 700;
+      transition: width 0.6s ease;
+    }
+    .chart-fill.gold { background: var(--gold); }
+    .chart-fill.navy { background: var(--navy); }
+    .chart-fill.green { background: var(--green); }
+    .chart-fill.red-c { background: var(--red); }
+
+    /* ── SOURCES ── */
+    .sources-box {
+      background: var(--white);
+      border-radius: 6px;
+      padding: 24px 28px;
+      box-shadow: 0 2px 10px rgba(26,39,68,0.07);
+      margin-top: 48px;
+    }
+    .sources-box h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .sources-box ol { padding-left: 18px; }
+    .sources-box li {
+      font-size: 12px;
+      color: var(--gray-dark);
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+    .sources-box a { color: var(--sky); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      color: var(--gray-mid);
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 11px;
+      margin-top: 0;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      height: 1px;
+      background: var(--gray-light);
+      margin: 36px 0;
+    }
+
+    /* BADGE */
+    .badge {
+      display: inline-block;
+      background: var(--sky);
+      color: var(--white);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+    .badge.gold { background: var(--gold); color: var(--navy); }
+    .badge.red { background: var(--red); }
+
+    /* NOTE */
+    .note {
+      font-size: 11px;
+      color: var(--gray-dark);
+      margin-top: 10px;
+      padding-left: 14px;
+      border-left: 2px solid var(--gray-mid);
+    }
+
+    @media(max-width: 500px) {
+      header { padding: 36px 20px 28px; }
+      .stat-row { grid-template-columns: 1fr 1fr; }
+      .stat-num { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="header-label">就職統計調査資料</div>
+    <h1>鹿児島県立曽於高等学校<br>就職状況分析レポート</h1>
+    <p class="subtitle">令和5年度（2023年3月卒業）を中心とした就職統計の総合分析</p>
+    <div class="header-meta">
+      <span>文部科学省「学校基本調査」令和5年度</span>
+      <span>鹿児島県「卒業後の状況調査」令和5年度</span>
+      <span>資料作成：2026年6月</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── 学校概要 ── -->
+  <div class="school-card">
+    <h2>学校概要</h2>
+    <div class="info-grid">
+      <dl class="info-item"><dt>正式名称</dt><dd>鹿児島県立曽於高等学校</dd></dl>
+      <dl class="info-item"><dt>所在地</dt><dd>鹿児島県曽於市末吉町二之方6080</dd></dl>
+      <dl class="info-item"><dt>設置者</dt><dd>鹿児島県教育委員会（公立）</dd></dl>
+      <dl class="info-item"><dt>開校年</dt><dd>2014年（平成26年）4月1日</dd></dl>
+      <dl class="info-item"><dt>定員</dt><dd>各学科40名×5学科＝計200名</dd></dl>
+      <dl class="info-item"><dt>課程</dt><dd>全日制</dd></dl>
+    </div>
+    <div class="commentary" style="margin-top:20px;">
+      <h4>▶ 学校の特長</h4>
+      <p>曽於高等学校は2014年、鹿児島県立財部高等学校・末吉高等学校・岩川高等学校の3校統合により開校した。<strong>県内で唯一、普通科・農業科・工業科・商業科の4種の学科を一校に集めた</strong>総合型高校であり、隣接する宮崎県都城市からの入学も認められている。文理科・普通科・畜産食農科・機械電子科・商業科の5学科11コースで構成され、就職に特化した「キャリア探究コース」（普通科内）など、多様な進路ニーズに対応する体制を整えている。</p>
+    </div>
+  </div>
+
+  <!-- ── SECTION 1 ── -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2 class="section-title">学校の進路状況（全体）</h2>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-num">5<span class="stat-unit">学科</span></div>
+        <div class="stat-label">文理・普通・畜産食農<br>機械電子・商業</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-num">約<span class="stat-unit">30</span><br style="display:none"><span style="font-size:26px">〜40</span><span class="stat-unit">%</span></div>
+        <div class="stat-label">推定就職希望者割合<br>（専門学科系中心）</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-num">98<span class="stat-unit">%</span></div>
+        <div class="stat-label">全国高校生就職率<br>（R7年3月・文科省）</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-num">23.7<span class="stat-unit">%</span></div>
+        <div class="stat-label">鹿児島県全体の就職率<br>（R5年度・県統計）</div>
+      </div>
+    </div>
+
+    <div class="commentary">
+      <h4>▶ 解説</h4>
+      <p>曽於高等学校の個別就職データは、鹿児島県や文部科学省の統計において学校別に公開されていないため、鹿児島県全体の統計および文部科学省の学科別・全国データをもとに状況を推計・分析する。</p>
+      <p>曽於高校は機械電子科・畜産食農科・商業科という職業系専門学科を有しているため、普通科中心の高校と比較して就職希望者の割合が相対的に高い傾向にある。専門高校（職業科）の卒業生は、文部科学省の学科別統計でも就職率が90〜99%台後半に達しており、求人とのマッチング精度が高い。</p>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2 ── -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2 class="section-title">全国・学科別就職率（文部科学省データ）</h2>
+    </div>
+
+    <p style="font-size:13px; color:var(--gray-dark); margin-bottom:18px;">出典：文部科学省「令和7年3月高等学校卒業者の就職状況調査」（就職希望者に対する就職者の割合）</p>
+
+    <div class="chart-bars">
+      <div class="chart-row">
+        <span class="chart-label">工業科</span>
+        <div class="chart-track"><div class="chart-fill navy" style="width:99.4%">99.4%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">水産科</span>
+        <div class="chart-track"><div class="chart-fill navy" style="width:98.9%">98.9%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">看護科</span>
+        <div class="chart-track"><div class="chart-fill navy" style="width:98.8%">98.8%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">商業科</span>
+        <div class="chart-track"><div class="chart-fill green" style="width:98.8%">98.8%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">福祉科</span>
+        <div class="chart-track"><div class="chart-fill navy" style="width:98.6%">98.6%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">農業科</span>
+        <div class="chart-track"><div class="chart-fill green" style="width:98.6%">98.6%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">情報科</span>
+        <div class="chart-track"><div class="chart-fill navy" style="width:98.5%">98.5%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">総合学科</span>
+        <div class="chart-track"><div class="chart-fill gold" style="width:97.8%">97.8%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">家庭科</span>
+        <div class="chart-track"><div class="chart-fill navy" style="width:97.3%">97.3%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">普通科</span>
+        <div class="chart-track"><div class="chart-fill red-c" style="width:96.2%">96.2%</div></div>
+      </div>
+    </div>
+
+    <p class="note">※就職希望者に対する就職者の割合。曽於高校が有する工業科（機械電子科）・農業科（畜産食農科）・商業科は学科全国平均で98〜99%台と極めて高い就職率を示す。</p>
+
+    <div class="opinion">
+      <h4>▶ 主観・考察</h4>
+      <p>全国の学科別就職率データを見ると、職業系専門学科（工業・農業・商業）は普通科より明らかに高い就職率を誇る。曽於高校はこれら3つの専門学科を擁しており、<strong>就職指導の受け皿として非常に恵まれた学科構成</strong>であると言える。特に工業系（機械電子科）は全国的に求人倍率が高く、地方の製造業・建設業への就職において強みを発揮する傾向がある。</p>
+      <p>一方、普通科（文理科を含む）については進学志向が強く、就職率は全体の引き下げ要因となりうる。ただし曽於高校普通科内の「キャリア探究コース」は就職に有利な資格取得を軸に設計されており、専門科目との親和性を保つ工夫がなされている。</p>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3 ── -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2 class="section-title">鹿児島県全体の就職統計（令和5年度）</h2>
+    </div>
+
+    <p style="font-size:13px; color:var(--gray-dark); margin-bottom:18px;">出典：鹿児島県「令和5年度 卒業後の状況調査及び同付帯調査結果」（文部科学省学校基本調査より鹿児島県が集計）</p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-num">13,328<span class="stat-unit">人</span></div>
+        <div class="stat-label">令和5年3月高校卒業者（県全体）</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-num">3,165<span class="stat-unit">人</span></div>
+        <div class="stat-label">就職者総数</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-num">23.7<span class="stat-unit">%</span></div>
+        <div class="stat-label">就職率（前年比+0.5pt）</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-num">46.4<span class="stat-unit">%</span></div>
+        <div class="stat-label">大学等進学率</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>学科</th>
+            <th>就職者数（人）</th>
+            <th>就職率（%）</th>
+            <th>進学率（%）</th>
+            <th>主な就職産業</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row">
+            <td>工業科</td>
+            <td>1,257</td>
+            <td>63.9</td>
+            <td>11.5</td>
+            <td>製造業、建設業</td>
+          </tr>
+          <tr>
+            <td>農業科</td>
+            <td>213</td>
+            <td>61.4</td>
+            <td>7.2</td>
+            <td>製造業、農林漁業</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>商業科</td>
+            <td>691</td>
+            <td>36.8</td>
+            <td>21.5</td>
+            <td>卸売・小売業、製造業</td>
+          </tr>
+          <tr>
+            <td>普通科</td>
+            <td>354</td>
+            <td>5.6</td>
+            <td>65.7</td>
+            <td>公務、卸売・小売業</td>
+          </tr>
+          <tr>
+            <td>福祉科</td>
+            <td>64</td>
+            <td>55.2</td>
+            <td>15.5</td>
+            <td>医療・福祉</td>
+          </tr>
+          <tr>
+            <td>家庭科</td>
+            <td>177</td>
+            <td>31.4</td>
+            <td>28.1</td>
+            <td>宿泊・飲食、製造業</td>
+          </tr>
+          <tr>
+            <td>総合学科</td>
+            <td>149</td>
+            <td>37.6</td>
+            <td>26.0</td>
+            <td>製造業、建設業</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">※鹿児島県全体（令和5年3月）の学科別就職状況。曽於高等学校固有の数値ではなく県全体の参考値。出典：鹿児島県「令和5年度卒業後の状況調査付帯調査結果報告」</p>
+
+    <div class="commentary">
+      <h4>▶ 解説</h4>
+      <p>鹿児島県内の高校生全体では就職率23.7%であるが、これは大学等進学率46.4%・専修学校進学23.7%が増加したことによる相対的な低下であり、就職希望者に対する内定率は依然98%台を維持している。</p>
+      <p>学科別に見ると、工業科（63.9%）・農業科（61.4%）の就職率が非常に高く、曽於高校が同様の学科構成を持つことから、<strong>専門学科生の就職支援機能は県全体と同水準かそれ以上に機能している</strong>と推察される。特に機械電子科（工業系）の就職率は全国・県ともに最上位グループに位置する。</p>
+    </div>
+  </div>
+
+  <!-- ── SECTION 4 ── -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2 class="section-title">産業別就職先の構成（鹿児島県・令和5年度）</h2>
+    </div>
+
+    <p style="font-size:13px; color:var(--gray-dark); margin-bottom:18px;">出典：鹿児島県「令和5年度 卒業後の状況調査及び同付帯調査結果報告」産業別就職者数より</p>
+
+    <div class="chart-bars">
+      <div class="chart-row">
+        <span class="chart-label">製造業</span>
+        <div class="chart-track"><div class="chart-fill navy" style="width:33.1%">33.1%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">建設業</span>
+        <div class="chart-track"><div class="chart-fill navy" style="width:11.1%">11.1%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">公務</span>
+        <div class="chart-track"><div class="chart-fill green" style="width:10.0%">10.0%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">卸売・小売業</span>
+        <div class="chart-track"><div class="chart-fill gold" style="width:9.4%">9.4%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">生活関連ｻｰﾋﾞｽ</span>
+        <div class="chart-track"><div class="chart-fill navy" style="width:5.6%">5.6%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">医療・福祉</span>
+        <div class="chart-track"><div class="chart-fill navy" style="width:6.7%">6.7%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">宿泊・飲食</span>
+        <div class="chart-track"><div class="chart-fill red-c" style="width:5.6%">5.6%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">運輸・郵便</span>
+        <div class="chart-track"><div class="chart-fill navy" style="width:3.7%">3.7%</div></div>
+      </div>
+      <div class="chart-row">
+        <span class="chart-label">その他</span>
+        <div class="chart-track"><div class="chart-fill navy" style="width:14.8%">14.8%</div></div>
+      </div>
+    </div>
+
+    <p class="note">※鹿児島県内の高校卒業者（全学科）の産業別就職構成比（令和5年3月）</p>
+
+    <div class="opinion">
+      <h4>▶ 主観・考察</h4>
+      <p>鹿児島県全体で「製造業」が就職先の3人に1人を占めるのは、製造業が地方における高卒就職の最大の受け皿であることを示す。曽於市・大隅地域は農業・食品加工・建設業の集積があり、曽於高校の機械電子科・畜産食農科はこの地域産業と直結した実践的な教育を行っている。</p>
+      <p>公務（10.0%）が第3位に入っていることは注目に値する。地方では公務員は安定した就職先として人気が高く、普通科・商業科を中心に公務員試験対策が行われているとみられる。曽於高校の商業科「会計コース」などは、こうした公務員・金融系就職ルートとの親和性も持つ。</p>
+    </div>
+  </div>
+
+  <!-- ── SECTION 5 ── -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2 class="section-title">県内就職 vs 県外就職（鹿児島県・令和5年度）</h2>
+    </div>
+
+    <p style="font-size:13px; color:var(--gray-dark); margin-bottom:18px;">出典：鹿児島県「令和5年度 卒業後の状況調査及び同付帯調査結果報告」</p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h4>県内就職（63.2%）</h4>
+        <div class="compare-item"><span>就職者数</span><span class="compare-val">1,999人</span></div>
+        <div class="compare-item"><span>男子県内率</span><span class="compare-val">57.2%</span></div>
+        <div class="compare-item"><span>女子県内率</span><span class="compare-val plus">73.8%</span></div>
+        <div class="compare-item"><span>前年比</span><span class="compare-val minus">▲1.3pt</span></div>
+      </div>
+      <div class="compare-card">
+        <h4>県外就職（36.8%）</h4>
+        <div class="compare-item"><span>就職者数</span><span class="compare-val">1,166人</span></div>
+        <div class="compare-item"><span>第1位</span><span class="compare-val">福岡県 266人</span></div>
+        <div class="compare-item"><span>第2位</span><span class="compare-val">東京都 198人</span></div>
+        <div class="compare-item"><span>第3位</span><span class="compare-val">愛知県 131人</span></div>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="margin-top:20px;">
+      <table>
+        <thead>
+          <tr>
+            <th>県外就職の理由</th>
+            <th>人数</th>
+            <th>割合</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row">
+            <td>大都市で働きたい</td>
+            <td>472人</td>
+            <td>
+              <div class="bar-cell">
+                <span>40.5%</span>
+                <div class="bar" style="width:81px; background:var(--navy);"></div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>居住地域内に就職先がない</td>
+            <td>206人</td>
+            <td>
+              <div class="bar-cell">
+                <span>17.7%</span>
+                <div class="bar" style="width:35px;"></div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>県外は賃金が高い</td>
+            <td>126人</td>
+            <td>
+              <div class="bar-cell">
+                <span>10.8%</span>
+                <div class="bar" style="width:22px;"></div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>その他（兄弟・知人等）</td>
+            <td>96人</td>
+            <td>
+              <div class="bar-cell">
+                <span>8.2%</span>
+                <div class="bar gold" style="width:16px;"></div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="commentary">
+      <h4>▶ 解説</h4>
+      <p>鹿児島県全体の県内就職率は63.2%で、女子（73.8%）の方が男子（57.2%）より高い傾向にある。県外就職先として福岡・東京・愛知が上位を占め、大都市志向が強い。曽於市は鹿児島市から約100km離れた内陸部に位置するが、宮崎県都城市（隣接）への就職も含め、地元大隅地区の雇用吸収力が就職者の地域定着に影響する。</p>
+    </div>
+
+    <div class="opinion">
+      <h4>▶ 主観・考察</h4>
+      <p>曽於高校が位置する曽於市は人口減少の続く地域（2024年時点で約3.2万人）であり、県外就職理由の第2位「居住地域内に就職先がない」という状況は、曽於市・大隅地区の高校生にも該当しうる。しかし、曽於高校の学科（機械電子科・畜産食農科）は大隅地区の農業・製造業と密接に連携しており、<strong>地元定着型就職において他校より有利な立場にある</strong>と考えられる。曽於市が高校支援制度（授業料助成・奨学金等）を設けて在校生を支援していることも、地域人材育成・定着への強い意欲を示す。</p>
+    </div>
+  </div>
+
+  <!-- ── SECTION 6 ── -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2 class="section-title">全国・鹿児島県の高卒就職率推移</h2>
+    </div>
+
+    <p style="font-size:13px; color:var(--gray-dark); margin-bottom:18px;">出典：鹿児島県「令和5年度卒業後の状況調査」・文部科学省「学校基本調査」各年度</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>年度</th>
+            <th>鹿児島県 就職率</th>
+            <th>鹿児島県 就職者数</th>
+            <th>鹿児島県 大学等進学率</th>
+            <th>全国 高校生就職率<br>（希望者比）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>平成25年度</td>
+            <td>26.5%</td>
+            <td>4,363人</td>
+            <td>41.4%</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>令和元年度</td>
+            <td>27.6%</td>
+            <td>4,034人</td>
+            <td>43.3%</td>
+            <td>98.5%</td>
+          </tr>
+          <tr>
+            <td>令和2年度</td>
+            <td>27.5%</td>
+            <td>3,971人</td>
+            <td>43.5%</td>
+            <td>97.5%</td>
+          </tr>
+          <tr>
+            <td>令和3年度</td>
+            <td>24.6%</td>
+            <td>3,427人</td>
+            <td>45.1%</td>
+            <td>97.9%</td>
+          </tr>
+          <tr>
+            <td>令和4年度</td>
+            <td>23.2%</td>
+            <td>3,194人</td>
+            <td>46.5%</td>
+            <td>97.9%</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>令和5年度</td>
+            <td>23.7%</td>
+            <td>3,165人</td>
+            <td>46.4%</td>
+            <td>98.0%</td>
+          </tr>
+          <tr>
+            <td>令和7年3月</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+            <td>98.0%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="commentary">
+      <h4>▶ 解説</h4>
+      <p>鹿児島県の「就職率（卒業者全体に対する就職者の割合）」は平成25年度の26.5%から令和5年度には23.7%へと低下している。この主因は<strong>大学等進学率の上昇（41.4%→46.4%）</strong>であり、就職を希望する者に対する内定率（就職希望者比）は全国水準と同様に98%台を維持している。就職市場そのものが縮んだのではなく、進学志向の高まりにより就職選択者が減少したと解釈すべきである。</p>
+      <p>令和2年度（コロナ禍初年度）においても就職率が大きく落ち込まなかった点は、高校新卒者向けの求人が堅調であったことを示す。特に製造業・建設業は「学校ルート」による採用が主流であり、経済変動の影響を受けにくい。</p>
+    </div>
+  </div>
+
+  <!-- ── SECTION 7 ── -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2 class="section-title">曽於高校・各学科の就職特性と総合評価</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>学科（コース）</th>
+            <th>主な就職先業種</th>
+            <th>県・全国就職率水準</th>
+            <th>地域との連携</th>
+            <th>評価</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>機械電子科</strong></td>
+            <td>製造業・建設業・電気業</td>
+            <td class="compare-val plus">◎ 99%台</td>
+            <td>大隅地区製造業・農機メーカー</td>
+            <td><span class="badge">最強</span></td>
+          </tr>
+          <tr>
+            <td><strong>畜産食農科</strong></td>
+            <td>農業・食品製造・農協系</td>
+            <td class="compare-val plus">○ 98%台</td>
+            <td>黒牛・豚産地・食品加工業</td>
+            <td><span class="badge gold">地域密着</span></td>
+          </tr>
+          <tr>
+            <td><strong>商業科</strong></td>
+            <td>卸売・小売・金融・公務</td>
+            <td class="compare-val plus">○ 98%台</td>
+            <td>地方金融機関・流通業</td>
+            <td><span class="badge">安定</span></td>
+          </tr>
+          <tr>
+            <td>普通科（キャリア探究）</td>
+            <td>公務・サービス業</td>
+            <td>△ 96%台</td>
+            <td>地域公務員・消防警察</td>
+            <td><span class="badge" style="background:var(--gray-dark);">資格志向</span></td>
+          </tr>
+          <tr>
+            <td>文理科・普通科（進学）</td>
+            <td>大学等進学後に就職</td>
+            <td>—（進学主体）</td>
+            <td>—</td>
+            <td><span class="badge red">進学志向</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="opinion">
+      <h4>▶ 総合評価と主観</h4>
+      <p>曽於高等学校は、就職という観点から見ると<strong>地方総合高校として非常に恵まれた学科構成</strong>を持つ。機械電子科・畜産食農科は国内で需要が絶えない製造・農業セクターへのアクセスを持ち、商業科は地域経済開発コース・会計コースによる実践的なビジネス教育を提供している。</p>
+      <p>ただし、学校の口コミにも見られるように「進学校ではなく就職校」というイメージが強く、進学を志す生徒（特に文理科）にとっては塾などの補完的学習が必要になる場面もある。就職と進学の二つのルートを同一校で支援するという構造上の難しさは、こうした総合高校の宿命でもある。</p>
+      <p>地域の人口減少・産業衰退という課題に対して、曽於高校が担う「<strong>地域の若者を地元産業に接続する</strong>」という役割は非常に重要であり、就職支援の質が地域経済の持続可能性に直結していると言える。曽於市の財政的支援（授業料・奨学金等）もこの認識を示すものである。</p>
+    </div>
+  </div>
+
+  <!-- ── SOURCES ── -->
+  <div class="sources-box">
+    <h3>情報元・参考文献</h3>
+    <ol>
+      <li>
+        <strong>文部科学省「令和7年3月高等学校卒業者の就職状況調査」</strong>（令和7年5月公表）<br>
+        学科別就職率（工業99.4%・商業98.8%・農業98.6%等）の出典。<br>
+        URL: <a href="https://www.mext.go.jp/b_menu/toukei/chousa01/kousotsu/kekka/k_detail/mext_00039.html" target="_blank">https://www.mext.go.jp/</a>
+      </li>
+      <li>
+        <strong>文部科学省「令和5年度 学校基本統計（学校基本調査報告書）」</strong><br>
+        都道府県別・学科別の進路状況。高等学校卒業者の学科別進路状況データの出典。<br>
+        URL: <a href="https://www.mext.go.jp/a_menu/shotou/shinkou/genjyo/021203.htm" target="_blank">https://www.mext.go.jp/</a>
+      </li>
+      <li>
+        <strong>鹿児島県「令和5年度 卒業後の状況調査及び同付帯調査結果報告」</strong>（令和6年12月公表）<br>
+        令和5年3月鹿児島県内高校卒業者の就職率・産業別・県内外別就職データの出典。<br>
+        URL: <a href="https://www.pref.kagoshima.jp/ac09/tokei/bunya/kyoiku/toukeihutaigai/r5toukeihutai.html" target="_blank">https://www.pref.kagoshima.jp/</a>
+      </li>
+      <li>
+        <strong>曽於市「曽於高等学校について」</strong>（曽於市公式サイト）<br>
+        学科・コース構成、曽於市による高校支援制度の概要。<br>
+        URL: <a href="https://www.city.soo.kagoshima.jp/kurashi/kosodatekyouiku/gakkoukyouiku/sookoukou.html" target="_blank">https://www.city.soo.kagoshima.jp/</a>
+      </li>
+      <li>
+        <strong>鹿児島県立曽於高等学校 公式ウェブサイト</strong><br>
+        学校情報・ブログ等の一次情報。<br>
+        URL: <a href="https://soo.edu.pref.kagoshima.jp/" target="_blank">https://soo.edu.pref.kagoshima.jp/</a>
+      </li>
+      <li>
+        <strong>Wikipedia「鹿児島県立曽於高等学校」</strong><br>
+        学校の設立経緯・統合校の情報。<br>
+        URL: <a href="https://ja.wikipedia.org/wiki/%E9%B9%BF%E5%85%90%E5%B3%B6%E7%9C%8C%E7%AB%8B%E6%9B%BD%E6%96%BC%E9%AB%98%E7%AD%89%E5%AD%A6%E6%A0%A1" target="_blank">https://ja.wikipedia.org/</a>
+      </li>
+      <li>
+        <strong>政府統計の総合窓口（e-Stat）「学校基本調査」</strong><br>
+        文部科学省の統計原データへのアクセス先。<br>
+        URL: <a href="https://www.e-stat.go.jp/" target="_blank">https://www.e-stat.go.jp/</a>
+      </li>
+    </ol>
+    <p class="note" style="margin-top:14px;">
+      ※本資料は公開統計データ（文部科学省・鹿児島県）をもとに作成。曽於高等学校固有の学校別就職統計は現在非公開であるため、鹿児島県全体および全国の学科別統計を参照・比較することにより間接的に推計・分析を行っている。数値は2026年6月時点で入手可能な最新公表データを使用。
+    </p>
+  </div>
+
+</main>
+
+<footer>
+  <p>本資料は文部科学省・鹿児島県教育委員会等の公開統計をもとに作成した参考資料です。</p>
+  <p style="margin-top:6px;">曽於高等学校の最新情報は公式サイト（<a href="https://soo.edu.pref.kagoshima.jp/" style="color:var(--gold-light);" target="_blank">https://soo.edu.pref.kagoshima.jp/</a>）をご確認ください。</p>
+</footer>
+
+</body>
+</html>
