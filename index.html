@@ -307,6 +307,50 @@
     .link-card.wide-lg { grid-column: span 2; }
     /* 07だけ残り幅を埋める（4列で01〜06 = 6セル, 07 = 2セル → 合計8 = 2行） */
 
+    /* ══ 12番目以降：罫線＋折りたたみ ══ */
+    .links-grid-extra {
+      display: none;
+      grid-template-columns: repeat(2, 1fr);
+      width: 100%;
+      gap: 1px;
+      background: rgba(200,169,110,0.08);
+      border: 1px solid rgba(200,169,110,0.1);
+      border-top: none;
+      overflow: visible;
+      align-content: start;
+    }
+    .links-grid-extra.open { display: grid; }
+
+    .extra-divider {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.3rem 0.7rem;
+      border-top: 1px solid rgba(200,169,110,0.25);
+      background: var(--navy);
+      cursor: pointer;
+      user-select: none;
+    }
+    .extra-divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(200,169,110,0.4), transparent);
+    }
+    .extra-divider-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(0.48rem, 0.9vh, 0.62rem);
+      letter-spacing: 0.35em;
+      color: rgba(200,169,110,0.5);
+      white-space: nowrap;
+    }
+    .extra-divider-arrow {
+      font-size: 0.6rem;
+      color: rgba(200,169,110,0.45);
+      transition: transform 0.3s ease;
+    }
+    .extra-divider.open .extra-divider-arrow { transform: rotate(180deg); }
+
     /* ══ FOOTER ══ */
     footer {
       padding: 0.3rem 5vw;
@@ -434,7 +478,20 @@
           <p class="link-title-ja">ぷちIQテスト</p>
           <span class="link-title-en">IQ TEST</span>
         </a>
- <!-- Info -->
+
+      </div><!-- /links-grid -->
+
+      <!-- 罫線トグル -->
+      <div class="extra-divider" id="extra-toggle" onclick="toggleExtra()">
+        <div class="extra-divider-line"></div>
+        <span class="extra-divider-label">MORE CONTENTS</span>
+        <span class="extra-divider-arrow" id="extra-arrow">▼</span>
+        <div class="extra-divider-line" style="background:linear-gradient(270deg,rgba(200,169,110,0.4),transparent);"></div>
+      </div>
+
+      <!-- 13番目以降（初期非表示） -->
+      <div class="links-grid-extra" id="extra-grid">
+
         <a class="link-card" href="analysis/School-info.html" target="_blank">
           <span class="link-number">13</span>
           <p class="link-title-ja">進路ガイド・学校紹介<br>在校生・保護者向け</p>
@@ -446,12 +503,13 @@
           <p class="link-title-ja">卒業生進路分析レポート</p>
           <span class="link-title-en">ANALYSIS REPORT</span>
         </a>
- <!-- Info -->
+
         <a class="link-card" href="career_quiz/career_quiz_soo.html" target="_blank">
           <span class="link-number">15</span>
           <p class="link-title-ja">あなたにピッタリの仕事は？</p>
           <span class="link-title-en">JOB TYPE DIAGNOSIS</span>
         </a>
+
         <a class="link-card" href="test.html" target="_blank">
           <span class="link-number">16</span>
           <p class="link-title-ja">知能指数評価テスト</p>
@@ -463,8 +521,9 @@
           <p class="link-title-ja" style="color:var(--mist);">串良商業高等学校<br>（令和4〜7年度 進路状況）</p>
           <span class="link-title-en">KUSHIRA COMMERCIAL H.S.</span>
         </a>
-      </div>
-    </div>
+
+      </div><!-- /links-grid-extra -->
+    </div><!-- /links-panel -->
   </main>
 
   <!-- FOOTER -->
@@ -476,6 +535,13 @@
 </div>
 
 <script>
+  function toggleExtra() {
+    const grid = document.getElementById('extra-grid');
+    const toggle = document.getElementById('extra-toggle');
+    grid.classList.toggle('open');
+    toggle.classList.toggle('open');
+  }
+
   function setView(mode) {
     const btnPc = document.getElementById('btn-pc');
     const btnSp = document.getElementById('btn-sp');
