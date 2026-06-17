@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>有利職種 エリア別ランキング 2025年一次募集</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Oswald:wght@500;700&display=swap');
+
+  :root {
+    --deep-green: #1a3a2a;
+    --mid-green: #2d6a4f;
+    --light-green: #52b788;
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --cream: #f8f4ec;
+    --charcoal: #1e1e1e;
+    --gray: #6b7280;
+    --rank1: #c9a84c;
+    --rank2: #9ca3af;
+    --rank3: #b45309;
+    --rank4: #374151;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--deep-green);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-band {
+    background: var(--gold);
+    height: 4px;
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 40px;
+  }
+  .school-crest {
+    width: 56px;
+    height: 56px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .school-crest svg { width: 36px; height: 36px; }
+  .header-text h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    color: #fff;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+  }
+  .header-text p {
+    font-size: 11px;
+    color: var(--gold-light);
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+  }
+  .header-right {
+    margin-left: auto;
+    text-align: right;
+  }
+  .header-right .label {
+    font-size: 10px;
+    color: var(--gold-light);
+    letter-spacing: 0.15em;
+  }
+  .header-right .year {
+    font-family: 'Oswald', sans-serif;
+    font-size: 28px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* ── LEGEND ── */
+  .criteria-strip {
+    background: var(--mid-green);
+    padding: 10px 40px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .criteria-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.1em;
+    margin-right: 6px;
+  }
+  .criteria-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--gold-light);
+  }
+  .criteria-pct {
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 36px 24px 60px;
+  }
+
+  .section-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--mid-green);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--deep-green);
+    margin-bottom: 4px;
+  }
+  .section-sub {
+    font-size: 12px;
+    color: var(--gray);
+    margin-bottom: 36px;
+  }
+
+  /* ── AREA GRID ── */
+  .area-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+  }
+
+  .area-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .area-card-header {
+    background: var(--deep-green);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .area-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .area-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.05em;
+  }
+  .area-count {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--gold-light);
+    background: rgba(255,255,255,0.08);
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+
+  /* ── RANK ROWS ── */
+  .rank-list { padding: 12px 16px 16px; }
+
+  .rank-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .rank-row:last-child { border-bottom: none; }
+
+  .rank-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .rank-1 { background: var(--gold); color: #fff; }
+  .rank-2 { background: #9ca3af; color: #fff; }
+  .rank-3 { background: #b45309; color: #fff; }
+  .rank-4 { background: #d1d5db; color: #6b7280; }
+
+  .rank-content { flex: 1; }
+  .rank-job {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 5px;
+  }
+  .rank-stats {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .stat-chip {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .stat-wage { background: #ecfdf5; color: #065f46; }
+  .stat-holiday { background: #eff6ff; color: #1e40af; }
+  .stat-bonus { background: #fefce8; color: #854d0e; }
+  .stat-chip .stat-val { font-weight: 700; }
+
+  .rank-score-bar {
+    margin-top: 5px;
+    background: #f3f4f6;
+    border-radius: 4px;
+    height: 4px;
+    overflow: hidden;
+  }
+  .rank-score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--mid-green), var(--light-green));
+    border-radius: 4px;
+    transition: width 0.8s ease;
+  }
+
+  /* ── CHART SECTION ── */
+  .chart-section {
+    margin-top: 56px;
+  }
+  .chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .chart-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .chart-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--deep-green);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chart-card-title .area-tag {
+    font-size: 10px;
+    background: var(--deep-green);
+    color: var(--gold-light);
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+  canvas { max-height: 200px; }
+
+  /* ── WAGE COMPARISON ── */
+  .wage-section {
+    margin-top: 56px;
+  }
+  .wage-bar-chart {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    border: 1px solid rgba(0,0,0,0.06);
+    margin-top: 24px;
+  }
+  .wage-rows { display: flex; flex-direction: column; gap: 14px; }
+  .wage-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .wage-area {
+    width: 80px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--charcoal);
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .wage-bar-wrap {
+    flex: 1;
+    background: #f3f4f6;
+    border-radius: 4px;
+    height: 24px;
+    overflow: hidden;
+    position: relative;
+  }
+  .wage-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    min-width: 80px;
+    transition: width 1s ease;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--deep-green);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 20px;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+  footer span { color: var(--gold); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .header-inner { padding: 16px 20px; }
+    .criteria-strip { padding: 10px 20px; }
+    .main { padding: 24px 16px 40px; }
+    .area-grid { grid-template-columns: 1fr; }
+    .chart-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Animate on load */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .area-card {
+    animation: fadeUp 0.4s ease both;
+  }
+  .area-card:nth-child(1) { animation-delay: 0.05s; }
+  .area-card:nth-child(2) { animation-delay: 0.10s; }
+  .area-card:nth-child(3) { animation-delay: 0.15s; }
+  .area-card:nth-child(4) { animation-delay: 0.20s; }
+  .area-card:nth-child(5) { animation-delay: 0.25s; }
+  .area-card:nth-child(6) { animation-delay: 0.30s; }
+  .area-card:nth-child(7) { animation-delay: 0.35s; }
+  .area-card:nth-child(8) { animation-delay: 0.40s; }
+  .area-card:nth-child(9) { animation-delay: 0.45s; }
+  .area-card:nth-child(10) { animation-delay: 0.50s; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-band"></div>
+  <div class="header-inner">
+    <div class="school-crest">
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="18" r="16" stroke="#c9a84c" stroke-width="1.5"/>
+        <text x="18" y="23" text-anchor="middle" font-size="12" fill="#c9a84c" font-family="serif" font-weight="bold">曽於</text>
+      </svg>
+    </div>
+    <div class="header-text">
+      <h1>鹿児島県立曽於高等学校</h1>
+      <p>KAGOSHIMA PREFECTURAL SOO HIGH SCHOOL — CAREER GUIDANCE MATERIALS</p>
+    </div>
+    <div class="header-right">
+      <div class="label">一次募集</div>
+      <div class="year">2025</div>
+    </div>
+  </div>
+</header>
+
+<div class="criteria-strip">
+  <span class="criteria-label">▶ 評価基準</span>
+  <div class="criteria-item"><span class="criteria-pct">35%</span> 月額賃金</div>
+  <div class="criteria-item"><span class="criteria-pct">30%</span> 年間休日数</div>
+  <div class="criteria-item"><span class="criteria-pct">15%</span> 賞与の有無</div>
+  <div class="criteria-item"><span class="criteria-pct">10%</span> 資本金</div>
+  <div class="criteria-item"><span class="criteria-pct">10%</span> 社員数</div>
+</div>
+
+<main class="main">
+
+  <div class="section-eyebrow">エリア別 有利職種ランキング</div>
+  <h2 class="section-title">各エリア TOP 4 職種</h2>
+  <p class="section-sub">職業分類別に集計・スコアリングし、各エリアで上位4職種を抽出しました。賃金・休日・待遇を総合評価。</p>
+
+  <div class="area-grid" id="areaGrid">
+    <!-- JS で生成 -->
+  </div>
+
+  <!-- RADAR CHARTS -->
+  <div class="chart-section">
+    <div class="section-eyebrow">多角的分析</div>
+    <h2 class="section-title">エリア別 TOP1職種 — 5指標レーダー</h2>
+    <p class="section-sub">各エリアの1位職種について、5つの評価指標を視覚化したレーダーチャートです。</p>
+    <div class="chart-grid" id="chartGrid">
+      <!-- JS で生成 -->
+    </div>
+  </div>
+
+  <!-- WAGE BAR CHART -->
+  <div class="wage-section">
+    <div class="section-eyebrow">賃金比較</div>
+    <h2 class="section-title">エリア別 平均月額賃金（TOP1職種）</h2>
+    <p class="section-sub">各エリア1位職種の平均月額賃金を比較。地域格差の把握に活用してください。</p>
+    <div class="wage-bar-chart">
+      <div class="wage-rows" id="wageRows"></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>鹿児島県立曽於高等学校 就職支援資料 ／ <span>2025年度 一次募集データ</span> ／ 評価基準: 月額賃金35% ・ 年間休日30% ・ 賞与15% ・ 資本金10% ・ 社員数10%</p>
+  <p style="margin-top:4px;">※ 本資料は求人票データに基づく統計情報です。個別企業の条件については求人票を必ずご確認ください。</p>
+</footer>
+
+<script>
+// ── DATA ──
+const areaData = {
+  "曽於市": {
+    icon: "🏔️",
+    count: 43,
+    top4: [
+      { job: "販売・営業の職業", score: 42.7, wage: 189000, holiday: 125, bonusRate: 1.0, n: 1 },
+      { job: "建設・土木・電気工事の職業", score: 40.6, wage: 207333, holiday: 102, bonusRate: 1.0, n: 3 },
+      { job: "福祉・介護の職業", score: 39.2, wage: 192140, holiday: 107, bonusRate: 1.0, n: 5 },
+      { job: "製造・修理・塗装・製図等の職業", score: 39.0, wage: 174600, holiday: 118, bonusRate: 1.0, n: 4 }
+    ]
+  },
+  "都城市": {
+    icon: "🌾",
+    count: 93,
+    top4: [
+      { job: "運搬・清掃・包装・選別等の職業", score: 39.4, wage: 186267, holiday: 111, bonusRate: 1.0, n: 3 },
+      { job: "管理的職業", score: 38.6, wage: 190000, holiday: 105, bonusRate: 1.0, n: 2 },
+      { job: "販売・営業の職業", score: 38.4, wage: 188719, holiday: 105, bonusRate: 1.0, n: 2 },
+      { job: "研究・技術の職業", score: 38.4, wage: 179400, holiday: 112, bonusRate: 1.0, n: 5 }
+    ]
+  },
+  "鹿児島": {
+    icon: "🌋",
+    count: 601,
+    top4: [
+      { job: "研究・技術の職業", score: 39.9, wage: 191563, holiday: 111, bonusRate: 0.98, n: 58 },
+      { job: "警備・保安の職業", score: 39.3, wage: 190071, holiday: 105, bonusRate: 1.0, n: 6 },
+      { job: "建設・土木・電気工事の職業", score: 39.2, wage: 193431, holiday: 111, bonusRate: 0.91, n: 35 },
+      { job: "農林漁業の職業", score: 38.9, wage: 201613, holiday: 98, bonusRate: 1.0, n: 18 }
+    ]
+  },
+  "宮崎": {
+    icon: "🌊",
+    count: 59,
+    top4: [
+      { job: "建設・土木・電気工事の職業", score: 44.5, wage: 189667, holiday: 133, bonusRate: 1.0, n: 6 },
+      { job: "配送・輸送・機械運転の職業", score: 43.4, wage: 214000, holiday: 110, bonusRate: 1.0, n: 1 },
+      { job: "製造・修理・塗装・製図等の職業", score: 40.4, wage: 192088, holiday: 112, bonusRate: 1.0, n: 8 },
+      { job: "サービスの職業", score: 40.0, wage: 200500, holiday: 103, bonusRate: 1.0, n: 5 }
+    ]
+  },
+  "福岡": {
+    icon: "🏙️",
+    count: 378,
+    top4: [
+      { job: "販売・営業の職業", score: 43.3, wage: 210138, holiday: 111, bonusRate: 1.0, n: 14 },
+      { job: "研究・技術の職業", score: 42.5, wage: 207381, holiday: 111, bonusRate: 1.0, n: 20 },
+      { job: "製造・修理・塗装・製図等の職業", score: 42.2, wage: 211800, holiday: 110, bonusRate: 0.94, n: 48 },
+      { job: "建設・土木・電気工事の職業", score: 41.7, wage: 211797, holiday: 112, bonusRate: 0.89, n: 54 }
+    ]
+  },
+  "九州(その他)": {
+    icon: "🗾",
+    count: 104,
+    top4: [
+      { job: "配送・輸送・機械運転の職業", score: 65.5, wage: 214100, holiday: 120, bonusRate: 1.0, n: 1 },
+      { job: "農林漁業の職業", score: 46.8, wage: 211610, holiday: 128, bonusRate: 1.0, n: 1 },
+      { job: "研究・技術の職業", score: 44.4, wage: 212167, holiday: 116, bonusRate: 1.0, n: 6 },
+      { job: "建設・土木・電気工事の職業", score: 43.6, wage: 215081, holiday: 110, bonusRate: 1.0, n: 8 }
+    ]
+  },
+  "関西": {
+    icon: "🦌",
+    count: 431,
+    top4: [
+      { job: "研究・技術の職業", score: 48.3, wage: 238924, holiday: 119, bonusRate: 0.94, n: 17 },
+      { job: "警備・保安の職業", score: 47.2, wage: 227712, holiday: 117, bonusRate: 1.0, n: 6 },
+      { job: "建設・土木・電気工事の職業", score: 46.7, wage: 234764, holiday: 115, bonusRate: 0.94, n: 49 },
+      { job: "配送・輸送・機械運転の職業", score: 46.1, wage: 224920, holiday: 115, bonusRate: 1.0, n: 20 }
+    ]
+  },
+  "中京": {
+    icon: "🏭",
+    count: 160,
+    top4: [
+      { job: "建設・土木・電気工事の職業", score: 47.4, wage: 237260, holiday: 112, bonusRate: 1.0, n: 9 },
+      { job: "研究・技術の職業", score: 45.1, wage: 216726, holiday: 116, bonusRate: 1.0, n: 5 },
+      { job: "福祉・介護の職業", score: 44.7, wage: 215064, holiday: 116, bonusRate: 1.0, n: 7 },
+      { job: "配送・輸送・機械運転の職業", score: 43.4, wage: 205000, holiday: 117, bonusRate: 1.0, n: 3 }
+    ]
+  },
+  "関東": {
+    icon: "🗼",
+    count: 887,
+    top4: [
+      { job: "農林漁業の職業", score: 50.0, wage: 242800, holiday: 120, bonusRate: 1.0, n: 3 },
+      { job: "建設・土木・電気工事の職業", score: 47.4, wage: 237200, holiday: 117, bonusRate: 0.93, n: 116 },
+      { job: "研究・技術の職業", score: 46.4, wage: 223720, holiday: 120, bonusRate: 0.95, n: 75 },
+      { job: "製造・修理・塗装・製図等の職業", score: 45.7, wage: 219023, holiday: 117, bonusRate: 0.99, n: 101 }
+    ]
+  },
+  "他": {
+    icon: "🌐",
+    count: 193,
+    top4: [
+      { job: "研究・技術の職業", score: 44.9, wage: 216246, holiday: 118, bonusRate: 0.94, n: 17 },
+      { job: "建設・土木・電気工事の職業", score: 44.6, wage: 229400, holiday: 114, bonusRate: 0.82, n: 17 },
+      { job: "製造・修理・塗装・製図等の職業", score: 44.6, wage: 214881, holiday: 117, bonusRate: 0.92, n: 25 },
+      { job: "事務的職業", score: 40.9, wage: 199028, holiday: 112, bonusRate: 0.83, n: 6 }
+    ]
+  }
+};
+
+// ── BUILD RANKING CARDS ──
+const grid = document.getElementById('areaGrid');
+const rankLabels = ['1','2','3','4'];
+
+Object.entries(areaData).forEach(([area, info]) => {
+  // max score for bar scaling
+  const maxScore = Math.max(...info.top4.map(r => r.score));
+
+  const card = document.createElement('div');
+  card.className = 'area-card';
+
+  let rankRows = info.top4.map((r, i) => {
+    const barPct = Math.round((r.score / 70) * 100);
+    const bonus = r.bonusRate >= 1 ? '賞与あり' : `賞与${Math.round(r.bonusRate*100)}%`;
+    const bonusCls = r.bonusRate >= 1 ? 'stat-bonus' : '';
+    return `
+      <div class="rank-row">
+        <div class="rank-badge rank-${i+1}">${rankLabels[i]}</div>
+        <div class="rank-content">
+          <div class="rank-job">${r.job}</div>
+          <div class="rank-stats">
+            <span class="stat-chip stat-wage">💴 <span class="stat-val">${(r.wage/10000).toFixed(1)}万円</span>/月</span>
+            <span class="stat-chip stat-holiday">📅 <span class="stat-val">${r.holiday}</span>日</span>
+            <span class="stat-chip ${bonusCls ? bonusCls : 'stat-bonus'}">${r.bonusRate >= 1 ? '🎁 賞与あり' : `🎁 賞与${Math.round(r.bonusRate*100)}%`}</span>
+          </div>
+          <div class="rank-score-bar">
+            <div class="rank-score-fill" style="width:${barPct}%"></div>
+          </div>
+        </div>
+        <div style="font-family:'Oswald',sans-serif;font-size:18px;color:var(--mid-green);font-weight:700;flex-shrink:0;">${r.score.toFixed(1)}</div>
+      </div>`;
+  }).join('');
+
+  card.innerHTML = `
+    <div class="area-card-header">
+      <div class="area-icon">${info.icon}</div>
+      <div class="area-name">${area}</div>
+      <div class="area-count">${info.count}件</div>
+    </div>
+    <div class="rank-list">${rankRows}</div>`;
+
+  grid.appendChild(card);
+});
+
+// ── RADAR CHARTS ──
+const chartGrid = document.getElementById('chartGrid');
+const GREEN = '#2d6a4f';
+const GOLD  = '#c9a84c';
+
+// For normalization: global max values (approximate from data)
+const globalMaxWage    = 300000;
+const globalMaxHoliday = 160;
+
+Object.entries(areaData).forEach(([area, info]) => {
+  const top = info.top4[0];
+  const wageNorm    = Math.min(top.wage / globalMaxWage * 100, 100);
+  const holidayNorm = Math.min(top.holiday / globalMaxHoliday * 100, 100);
+  const bonusNorm   = top.bonusRate * 100;
+  // Score (out of 100 scaled)
+  const scoreNorm   = Math.min(top.score / 70 * 100, 100);
+  // count as proxy for reliability
+  const countNorm   = Math.min(top.n / 20 * 100, 100);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'chart-card';
+  const cid = 'radar_' + area.replace(/[()]/g,'');
+  wrap.innerHTML = `
+    <div class="chart-card-title">
+      <span>${info.icon} ${top.job}</span>
+      <span class="area-tag">${area}</span>
+    </div>
+    <canvas id="${cid}"></canvas>`;
+  chartGrid.appendChild(wrap);
+
+  new Chart(document.getElementById(cid), {
+    type: 'radar',
+    data: {
+      labels: ['月額賃金','年間休日','賞与','総合スコア','件数規模'],
+      datasets: [{
+        data: [wageNorm, holidayNorm, bonusNorm, scoreNorm, countNorm],
+        backgroundColor: 'rgba(45,106,79,0.18)',
+        borderColor: GREEN,
+        borderWidth: 2,
+        pointBackgroundColor: GOLD,
+        pointRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        r: {
+          min: 0, max: 100,
+          ticks: { display: false, stepSize: 25 },
+          grid: { color: '#e5e7eb' },
+          angleLines: { color: '#e5e7eb' },
+          pointLabels: { font: { size: 10, family: "'Noto Sans JP'" }, color: '#374151' }
+        }
+      }
+    }
+  });
+});
+
+// ── WAGE BARS ──
+const wageRows = document.getElementById('wageRows');
+const wages = Object.entries(areaData).map(([area, info]) => ({
+  area, wage: info.top4[0].wage
+}));
+const maxWage = Math.max(...wages.map(w => w.wage));
+
+const colors = [
+  '#1a3a2a','#2d6a4f','#52b788','#74c69d','#b7e4c7',
+  '#c9a84c','#e9c46a','#f4a261','#e76f51','#264653'
+];
+
+wages.forEach(({ area, wage }, i) => {
+  const pct = (wage / maxWage * 100).toFixed(1);
+  const row = document.createElement('div');
+  row.className = 'wage-row';
+  row.innerHTML = `
+    <div class="wage-area">${area}</div>
+    <div class="wage-bar-wrap">
+      <div class="wage-bar-fill" style="width:${pct}%;background:${colors[i % colors.length]}">
+        ${(wage/10000).toFixed(1)}万円
+      </div>
+    </div>`;
+  wageRows.appendChild(row);
+});
+</script>
+</body>
+</html>

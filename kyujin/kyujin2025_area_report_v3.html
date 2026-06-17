@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>エリア別 有利職種 Top3 | 曽於高等学校 求人データ分析 2025</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2230;
+    --border: #2d3748;
+    --gold: #f0c040;
+    --gold2: #e8a020;
+    --green: #1a7a4a;
+    --green-light: #22a85f;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --rank1: #f0c040;
+    --rank2: #b0b8c4;
+    --rank3: #cd7f32;
+    --accent-kagoshima: #4a9eff;
+    --accent-soo: #22a85f;
+    --accent-miyazaki: #ff7b54;
+    --accent-miyakonojo: #a78bfa;
+    --accent-fukuoka: #f472b6;
+    --accent-kyushu: #34d399;
+    --accent-kansai: #fb923c;
+    --accent-chukyo: #60a5fa;
+    --accent-kanto: #f87171;
+    --accent-other: #94a3b8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', 'Yu Gothic', sans-serif;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #0a1628 0%, #0d2040 50%, #0a1628 100%);
+    border-bottom: 2px solid var(--gold);
+    padding: 40px 24px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(240,192,64,0.08) 0%, transparent 70%);
+  }
+  .school-label {
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.9;
+  }
+  header h1 {
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  header h1 span {
+    color: var(--gold);
+  }
+  .subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+  .data-summary {
+    display: inline-flex;
+    gap: 32px;
+    margin-top: 20px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(240,192,64,0.2);
+    border-radius: 8px;
+    padding: 12px 28px;
+  }
+  .data-summary span {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .data-summary strong {
+    color: var(--gold);
+    font-size: 18px;
+    display: block;
+    font-weight: 800;
+  }
+
+  /* ── SCORING ── */
+  .scoring-section {
+    max-width: 960px;
+    margin: 32px auto;
+    padding: 0 20px;
+  }
+  .scoring-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+  .scoring-card h3 {
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+  .scoring-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .scoring-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface2);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+  .scoring-item .weight {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  /* ── NAV ── */
+  .area-nav {
+    max-width: 960px;
+    margin: 0 auto 32px;
+    padding: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .area-nav a {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    text-decoration: none;
+    border: 1px solid;
+    transition: all 0.2s;
+    font-weight: 600;
+  }
+  .area-nav a:hover { filter: brightness(1.3); }
+
+  /* ── AREA SECTION ── */
+  .area-section {
+    max-width: 960px;
+    margin: 0 auto 48px;
+    padding: 0 20px;
+  }
+  .area-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .area-badge {
+    width: 10px;
+    height: 48px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .area-title {
+    font-size: clamp(18px, 3vw, 24px);
+    font-weight: 800;
+    color: #fff;
+  }
+  .area-count {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* ── CARDS ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 700px) {
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+  @media (min-width: 701px) and (max-width: 900px) {
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .job-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .job-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .job-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .job-card.rank-1::before { background: var(--rank1); }
+  .job-card.rank-2::before { background: var(--rank2); }
+  .job-card.rank-3::before { background: var(--rank3); }
+
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 900;
+    margin-bottom: 12px;
+  }
+  .rank-1 .rank-badge { background: var(--rank1); color: #000; }
+  .rank-2 .rank-badge { background: var(--rank2); color: #000; }
+  .rank-3 .rank-badge { background: var(--rank3); color: #fff; }
+
+  .job-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 6px;
+    line-height: 1.4;
+    min-height: 42px;
+  }
+  .company-name {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .score-bar-wrap {
+    margin-bottom: 14px;
+  }
+  .score-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .score-label strong {
+    color: var(--gold);
+    font-size: 14px;
+  }
+  .score-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.8s ease;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .stat-item {
+    background: var(--surface2);
+    border-radius: 6px;
+    padding: 8px 10px;
+  }
+  .stat-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+  .stat-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .stat-value.highlight { color: var(--green-light); }
+
+  .bonus-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-top: 8px;
+  }
+  .bonus-yes { background: rgba(34,168,95,0.15); color: var(--green-light); border: 1px solid rgba(34,168,95,0.3); }
+  .bonus-no  { background: rgba(255,100,100,0.1); color: #f87171; border: 1px solid rgba(255,100,100,0.2); }
+
+  /* ── TABLE ── */
+  .table-section {
+    max-width: 960px;
+    margin: 0 auto 64px;
+    padding: 0 20px;
+  }
+  .table-section h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--gold);
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
+  }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .data-table th {
+    background: var(--surface2);
+    color: var(--gold);
+    font-weight: 700;
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 2px solid var(--gold);
+    white-space: nowrap;
+  }
+  .data-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: middle;
+  }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .area-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .rank-chip {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 900;
+    text-align: center;
+    line-height: 20px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 32px;
+    color: var(--text-muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-divider {
+    max-width: 960px;
+    margin: 0 auto 48px;
+    padding: 0 20px;
+    border: none;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="school-label">鹿児島県立曽於高等学校 ｜ 進路指導資料 2025</div>
+  <h1>エリア別 <span>有利職種</span> Top 3</h1>
+  <p class="subtitle">一次募集求人データ 2,949件を賃金・賞与・休日・企業規模で総合スコアリング</p>
+  <div class="data-summary">
+    <div><strong>2,949</strong><span>総求人数</span></div>
+    <div><strong>10</strong><span>分析エリア</span></div>
+    <div><strong>6</strong><span>評価指標</span></div>
+  </div>
+</header>
+
+<div style="height:32px"></div>
+
+<!-- スコアリング説明 -->
+<div class="scoring-section">
+  <div class="scoring-card">
+    <h3>▶ スコアリング基準（総合スコア 100点満点）</h3>
+    <div class="scoring-items">
+      <div class="scoring-item"><span class="weight">35%</span>月額賃金</div>
+      <div class="scoring-item"><span class="weight">25%</span>賞与（有無）</div>
+      <div class="scoring-item"><span class="weight">20%</span>年間休日数</div>
+      <div class="scoring-item"><span class="weight">10%</span>資本金</div>
+      <div class="scoring-item"><span class="weight">10%</span>全社員数</div>
+    </div>
+  </div>
+</div>
+
+<!-- エリアナビ -->
+<nav class="area-nav">
+  <a href="#kagoshima"  style="color:var(--accent-kagoshima);border-color:var(--accent-kagoshima)">🌋 鹿児島</a>
+  <a href="#soo"        style="color:var(--accent-soo);border-color:var(--accent-soo)">🌿 曽於市</a>
+  <a href="#miyazaki"   style="color:var(--accent-miyazaki);border-color:var(--accent-miyazaki)">🏯 宮崎</a>
+  <a href="#miyakonojo" style="color:var(--accent-miyakonojo);border-color:var(--accent-miyakonojo)">🌸 都城市</a>
+  <a href="#fukuoka"    style="color:var(--accent-fukuoka);border-color:var(--accent-fukuoka)">🏙 福岡</a>
+  <a href="#kyushu"     style="color:var(--accent-kyushu);border-color:var(--accent-kyushu)">🗾 九州</a>
+  <a href="#kansai"     style="color:var(--accent-kansai);border-color:var(--accent-kansai)">⛩ 関西</a>
+  <a href="#chukyo"     style="color:var(--accent-chukyo);border-color:var(--accent-chukyo)">🏭 中京</a>
+  <a href="#kanto"      style="color:var(--accent-kanto);border-color:var(--accent-kanto)">🗼 関東</a>
+  <a href="#other"      style="color:var(--accent-other);border-color:var(--accent-other)">🌐 その他</a>
+</nav>
+
+<!-- ===== 鹿児島 ===== -->
+<section class="area-section" id="kagoshima">
+  <div class="area-header">
+    <div class="area-badge" style="background:var(--accent-kagoshima)"></div>
+    <div>
+      <div class="area-title">🌋 鹿児島エリア</div>
+      <div class="area-count">対象求人数：591件</div>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="job-card rank-1">
+      <div class="rank-badge">1</div>
+      <div class="job-title">飲食店店長</div>
+      <div class="company-name">例：株式会社資さん ほか</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>63.9</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:63.9%;background:var(--rank1)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">253,800円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">106日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">7,500万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">28,525名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-2">
+      <div class="rank-badge">2</div>
+      <div class="job-title">半導体製品製造工</div>
+      <div class="company-name">例：株式会社フジワーク鹿児島事業所</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>61.6</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:61.6%;background:var(--rank2)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">165,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value highlight">185日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">5,000万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">5,500名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-3">
+      <div class="rank-badge">3</div>
+      <div class="job-title">建築技術者（施工管理）</div>
+      <div class="company-name">例：今別府産業株式会社</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>61.6</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:61.6%;background:var(--rank3)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">236,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">118日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">9,550万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">110名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 曽於市 ===== -->
+<section class="area-section" id="soo">
+  <div class="area-header">
+    <div class="area-badge" style="background:var(--accent-soo)"></div>
+    <div>
+      <div class="area-title">🌿 曽於市エリア</div>
+      <div class="area-count">対象求人数：53件</div>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="job-card rank-1">
+      <div class="rank-badge">1</div>
+      <div class="job-title">自動車営業員</div>
+      <div class="company-name">例：株式会社スズキアリーナ大隅</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>57.5</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:57.5%;background:var(--rank1)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">189,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">125日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">1,000万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">32名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-2">
+      <div class="rank-badge">2</div>
+      <div class="job-title">建設・土木作業員</div>
+      <div class="company-name">例：株式会社久木野組</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>57.3</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:57.3%;background:var(--rank2)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">200,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">112日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">2,000万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">16名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-3">
+      <div class="rank-badge">3</div>
+      <div class="job-title">総務事務員</div>
+      <div class="company-name">例：株式会社ナンチクファーム</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>57.1</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:57.1%;background:var(--rank3)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">192,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">118日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">1億円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">126名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 宮崎 ===== -->
+<section class="area-section" id="miyazaki">
+  <div class="area-header">
+    <div class="area-badge" style="background:var(--accent-miyazaki)"></div>
+    <div>
+      <div class="area-title">🏯 宮崎エリア</div>
+      <div class="area-count">対象求人数：56件</div>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="job-card rank-1">
+      <div class="rank-badge">1</div>
+      <div class="job-title">電気・電子・電気通信製造技術者</div>
+      <div class="company-name">例：株式会社九電工</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>61.8</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:61.8%;background:var(--rank1)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">220,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value highlight">131日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">—</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">7,241名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-2">
+      <div class="rank-badge">2</div>
+      <div class="job-title">窯業・土石製品製造工</div>
+      <div class="company-name">例：有限会社責工務店</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>60.7</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:60.7%;background:var(--rank2)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">220,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">125日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">300万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">22名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-3">
+      <div class="rank-badge">3</div>
+      <div class="job-title">電気機器販売店員</div>
+      <div class="company-name">例：株式会社ヤマダデンキ</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>60.6</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:60.6%;background:var(--rank3)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">219,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">115日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">1億円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">18,072名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 都城市 ===== -->
+<section class="area-section" id="miyakonojo">
+  <div class="area-header">
+    <div class="area-badge" style="background:var(--accent-miyakonojo)"></div>
+    <div>
+      <div class="area-title">🌸 都城市エリア</div>
+      <div class="area-count">対象求人数：96件</div>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="job-card rank-1">
+      <div class="rank-badge">1</div>
+      <div class="job-title">発電員・変電員</div>
+      <div class="company-name">例：MTエナジー株式会社</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>66.1</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:66.1%;background:var(--rank1)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">215,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value highlight">182日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">6億円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">17名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-2">
+      <div class="rank-badge">2</div>
+      <div class="job-title">自動車整備・修理工</div>
+      <div class="company-name">例：有限会社カードックサービス</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>63.3</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:63.3%;background:var(--rank2)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">250,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">120日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">3,000万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">40名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-3">
+      <div class="rank-badge">3</div>
+      <div class="job-title">送電線架線・敷設作業員</div>
+      <div class="company-name">例：株式会社九南</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>60.5</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:60.5%;background:var(--rank3)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">208,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value highlight">135日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">6,500万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">253名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 福岡 ===== -->
+<section class="area-section" id="fukuoka">
+  <div class="area-header">
+    <div class="area-badge" style="background:var(--accent-fukuoka)"></div>
+    <div>
+      <div class="area-title">🏙 福岡エリア</div>
+      <div class="area-count">対象求人数：406件</div>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="job-card rank-1">
+      <div class="rank-badge">1</div>
+      <div class="job-title">土木技術者（施工管理）</div>
+      <div class="company-name">例：尾園建設株式会社</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>65.9</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:65.9%;background:var(--rank1)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">270,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">125日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">1億円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">125名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-2">
+      <div class="rank-badge">2</div>
+      <div class="job-title">送電線架線・敷設作業員</div>
+      <div class="company-name">例：株式会社天禄商会（8件）</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>64.3</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:64.3%;background:var(--rank2)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">258,704円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">122日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">5,125万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">69名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-3">
+      <div class="rank-badge">3</div>
+      <div class="job-title">金融・保険営業員</div>
+      <div class="company-name">例：株式会社ジャパン保険サポート</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>63.9</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:63.9%;background:var(--rank3)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">250,730円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">125日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">1,000万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">9名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 九州 ===== -->
+<section class="area-section" id="kyushu">
+  <div class="area-header">
+    <div class="area-badge" style="background:var(--accent-kyushu)"></div>
+    <div>
+      <div class="area-title">🗾 九州エリア（熊本・大分・長崎・佐賀等）</div>
+      <div class="area-count">対象求人数：93件</div>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="job-card rank-1">
+      <div class="rank-badge">1</div>
+      <div class="job-title">郵便集配員・電報配達員</div>
+      <div class="company-name">日本郵便株式会社九州支社</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>79.6</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:79.6%;background:var(--rank1)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">214,100円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">120日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value highlight">7,000億円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">169,961名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-2">
+      <div class="rank-badge">2</div>
+      <div class="job-title">郵便事務員</div>
+      <div class="company-name">日本郵便株式会社九州支社</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>69.6</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:69.6%;background:var(--rank2)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">214,100円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">120日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">—</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">169,961名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-3">
+      <div class="rank-badge">3</div>
+      <div class="job-title">施設機械設備操作・建設機械運転</div>
+      <div class="company-name">例：有限会社岩崎海事</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>66.9</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:66.9%;background:var(--rank3)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">300,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">105日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">300万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">10名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 関西 ===== -->
+<section class="area-section" id="kansai">
+  <div class="area-header">
+    <div class="area-badge" style="background:var(--accent-kansai)"></div>
+    <div>
+      <div class="area-title">⛩ 関西エリア</div>
+      <div class="area-count">対象求人数：871件</div>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="job-card rank-1">
+      <div class="rank-badge">1</div>
+      <div class="job-title">送電線架線・敷設作業員</div>
+      <div class="company-name">例：株式会社スカイテック</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>67.6</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:67.6%;background:var(--rank1)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">291,800円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">120日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">4,500万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">92名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-2">
+      <div class="rank-badge">2</div>
+      <div class="job-title">預・貯金窓口事務員</div>
+      <div class="company-name">例：株式会社ショウテック堺営業所</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>64.8</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:64.8%;background:var(--rank2)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">264,600円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">120日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">2,000万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">48名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-3">
+      <div class="rank-badge">3</div>
+      <div class="job-title">他の電気機械器具組立工</div>
+      <div class="company-name">例：アチハ株式会社</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>64.7</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:64.7%;background:var(--rank3)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">262,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">122日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">9,300万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">189名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 中京 ===== -->
+<section class="area-section" id="chukyo">
+  <div class="area-header">
+    <div class="area-badge" style="background:var(--accent-chukyo)"></div>
+    <div>
+      <div class="area-title">🏭 中京エリア（愛知・岐阜・三重・静岡）</div>
+      <div class="area-count">対象求人数：183件</div>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="job-card rank-1">
+      <div class="rank-badge">1</div>
+      <div class="job-title">生産現場事務員</div>
+      <div class="company-name">例：井の上建設株式会社</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>64.5</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:64.5%;background:var(--rank1)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">267,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">115日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">1,000万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">13名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-2">
+      <div class="rank-badge">2</div>
+      <div class="job-title">建設機械運転工</div>
+      <div class="company-name">例：日本ロックエンジニアリング（2件）</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>64.0</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:64.0%;background:var(--rank2)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">256,500円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">120日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">1,250万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">47名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-3">
+      <div class="rank-badge">3</div>
+      <div class="job-title">清掃・洗浄作業員</div>
+      <div class="company-name">例：株式会社マルホウ（2件）</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>63.8</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:63.8%;background:var(--rank3)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">255,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">120日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">2,000万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">101名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 関東 ===== -->
+<section class="area-section" id="kanto">
+  <div class="area-header">
+    <div class="area-badge" style="background:var(--accent-kanto)"></div>
+    <div>
+      <div class="area-title">🗼 関東エリア</div>
+      <div class="area-count">対象求人数：446件</div>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="job-card rank-1">
+      <div class="rank-badge">1</div>
+      <div class="job-title">左官</div>
+      <div class="company-name">例：株式会社Yisstyle（2件）</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>65.9</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:65.9%;background:var(--rank1)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">270,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">125日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">500万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">7名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-2">
+      <div class="rank-badge">2</div>
+      <div class="job-title">印刷・製本設備オペレーター</div>
+      <div class="company-name">例：TOPPANパッケージプロダクツ（3件）</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>64.6</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:64.6%;background:var(--rank2)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">232,832円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value highlight">149日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">6,667万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">1,614名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-3">
+      <div class="rank-badge">3</div>
+      <div class="job-title">建設工事営業員</div>
+      <div class="company-name">例：株式会社飯田興業</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>64.3</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:64.3%;background:var(--rank3)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">270,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">110日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">500万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">18名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== その他 ===== -->
+<section class="area-section" id="other">
+  <div class="area-header">
+    <div class="area-badge" style="background:var(--accent-other)"></div>
+    <div>
+      <div class="area-title">🌐 その他エリア（北海道・東北・北信越・中国・四国等）</div>
+      <div class="area-count">対象求人数：154件</div>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="job-card rank-1">
+      <div class="rank-badge">1</div>
+      <div class="job-title">鉄道運転士</div>
+      <div class="company-name">東日本旅客鉄道株式会社</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>66.4</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:66.4%;background:var(--rank1)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">232,865円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">114日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value highlight">2,000億円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">44,790名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-2">
+      <div class="rank-badge">2</div>
+      <div class="job-title">ハウスクリーニング作業員</div>
+      <div class="company-name">例：加濃建設株式会社</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>66.0</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:66.0%;background:var(--rank2)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">286,000円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">110日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">5,000万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">54名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+    <div class="job-card rank-3">
+      <div class="rank-badge">3</div>
+      <div class="job-title">木製品製造工</div>
+      <div class="company-name">例：ポラテック東北株式会社</div>
+      <div class="score-bar-wrap">
+        <div class="score-label"><span>総合スコア</span><strong>63.3</strong></div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:63.3%;background:var(--rank3)"></div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-label">月額賃金</div><div class="stat-value highlight">249,800円</div></div>
+        <div class="stat-item"><div class="stat-label">年間休日</div><div class="stat-value">120日</div></div>
+        <div class="stat-item"><div class="stat-label">資本金</div><div class="stat-value">1,000万円</div></div>
+        <div class="stat-item"><div class="stat-label">社員数</div><div class="stat-value">67名</div></div>
+      </div>
+      <span class="bonus-tag bonus-yes">賞与あり</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 一覧表 ===== -->
+<div class="table-section">
+  <h2>📊 エリア別 Top3 一覧表</h2>
+  <div style="overflow-x:auto">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>順位</th>
+        <th>エリア</th>
+        <th>職種</th>
+        <th>月額賃金</th>
+        <th>年間休日</th>
+        <th>賞与</th>
+        <th>総合スコア</th>
+        <th>代表企業例</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="rank-chip" style="background:var(--rank1);color:#000">1</span></td><td><span class="area-dot" style="background:var(--accent-kagoshima)"></span>鹿児島</td><td>飲食店店長</td><td>253,800円</td><td>106日</td><td>✅</td><td style="color:var(--gold)">63.9</td><td>株式会社資さん</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank2);color:#000">2</span></td><td><span class="area-dot" style="background:var(--accent-kagoshima)"></span>鹿児島</td><td>半導体製品製造工</td><td>165,000円</td><td>185日</td><td>✅</td><td style="color:var(--gold)">61.6</td><td>株式会社フジワーク鹿児島</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank3);color:#fff">3</span></td><td><span class="area-dot" style="background:var(--accent-kagoshima)"></span>鹿児島</td><td>建築技術者（施工管理）</td><td>236,000円</td><td>118日</td><td>✅</td><td style="color:var(--gold)">61.6</td><td>今別府産業株式会社</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank1);color:#000">1</span></td><td><span class="area-dot" style="background:var(--accent-soo)"></span>曽於市</td><td>自動車営業員</td><td>189,000円</td><td>125日</td><td>✅</td><td style="color:var(--gold)">57.5</td><td>スズキアリーナ大隅</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank2);color:#000">2</span></td><td><span class="area-dot" style="background:var(--accent-soo)"></span>曽於市</td><td>建設・土木作業員</td><td>200,000円</td><td>112日</td><td>✅</td><td style="color:var(--gold)">57.3</td><td>株式会社久木野組</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank3);color:#fff">3</span></td><td><span class="area-dot" style="background:var(--accent-soo)"></span>曽於市</td><td>総務事務員</td><td>192,000円</td><td>118日</td><td>✅</td><td style="color:var(--gold)">57.1</td><td>株式会社ナンチクファーム</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank1);color:#000">1</span></td><td><span class="area-dot" style="background:var(--accent-miyazaki)"></span>宮崎</td><td>電気・電子・電気通信製造技術者</td><td>220,000円</td><td>131日</td><td>✅</td><td style="color:var(--gold)">61.8</td><td>株式会社九電工</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank2);color:#000">2</span></td><td><span class="area-dot" style="background:var(--accent-miyazaki)"></span>宮崎</td><td>窯業・土石製品製造工</td><td>220,000円</td><td>125日</td><td>✅</td><td style="color:var(--gold)">60.7</td><td>有限会社責工務店</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank3);color:#fff">3</span></td><td><span class="area-dot" style="background:var(--accent-miyazaki)"></span>宮崎</td><td>電気機器販売店員</td><td>219,000円</td><td>115日</td><td>✅</td><td style="color:var(--gold)">60.6</td><td>株式会社ヤマダデンキ</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank1);color:#000">1</span></td><td><span class="area-dot" style="background:var(--accent-miyakonojo)"></span>都城市</td><td>発電員・変電員</td><td>215,000円</td><td>182日</td><td>✅</td><td style="color:var(--gold)">66.1</td><td>MTエナジー株式会社</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank2);color:#000">2</span></td><td><span class="area-dot" style="background:var(--accent-miyakonojo)"></span>都城市</td><td>自動車整備・修理工</td><td>250,000円</td><td>120日</td><td>✅</td><td style="color:var(--gold)">63.3</td><td>有限会社カードックサービス</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank3);color:#fff">3</span></td><td><span class="area-dot" style="background:var(--accent-miyakonojo)"></span>都城市</td><td>送電線架線・敷設作業員</td><td>208,000円</td><td>135日</td><td>✅</td><td style="color:var(--gold)">60.5</td><td>株式会社九南</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank1);color:#000">1</span></td><td><span class="area-dot" style="background:var(--accent-fukuoka)"></span>福岡</td><td>土木技術者（施工管理）</td><td>270,000円</td><td>125日</td><td>✅</td><td style="color:var(--gold)">65.9</td><td>尾園建設株式会社</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank2);color:#000">2</span></td><td><span class="area-dot" style="background:var(--accent-fukuoka)"></span>福岡</td><td>送電線架線・敷設作業員</td><td>258,704円</td><td>122日</td><td>✅</td><td style="color:var(--gold)">64.3</td><td>株式会社天禄商会</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank3);color:#fff">3</span></td><td><span class="area-dot" style="background:var(--accent-fukuoka)"></span>福岡</td><td>金融・保険営業員</td><td>250,730円</td><td>125日</td><td>✅</td><td style="color:var(--gold)">63.9</td><td>株式会社ジャパン保険サポート</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank1);color:#000">1</span></td><td><span class="area-dot" style="background:var(--accent-kyushu)"></span>九州</td><td>郵便集配員・電報配達員</td><td>214,100円</td><td>120日</td><td>✅</td><td style="color:var(--gold)">79.6</td><td>日本郵便（九州支社）</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank2);color:#000">2</span></td><td><span class="area-dot" style="background:var(--accent-kyushu)"></span>九州</td><td>郵便事務員</td><td>214,100円</td><td>120日</td><td>✅</td><td style="color:var(--gold)">69.6</td><td>日本郵便（九州支社）</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank3);color:#fff">3</span></td><td><span class="area-dot" style="background:var(--accent-kyushu)"></span>九州</td><td>施設機械設備操作</td><td>300,000円</td><td>105日</td><td>✅</td><td style="color:var(--gold)">66.9</td><td>有限会社岩崎海事</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank1);color:#000">1</span></td><td><span class="area-dot" style="background:var(--accent-kansai)"></span>関西</td><td>送電線架線・敷設作業員</td><td>291,800円</td><td>120日</td><td>✅</td><td style="color:var(--gold)">67.6</td><td>株式会社スカイテック</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank2);color:#000">2</span></td><td><span class="area-dot" style="background:var(--accent-kansai)"></span>関西</td><td>預・貯金窓口事務員</td><td>264,600円</td><td>120日</td><td>✅</td><td style="color:var(--gold)">64.8</td><td>株式会社ショウテック堺</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank3);color:#fff">3</span></td><td><span class="area-dot" style="background:var(--accent-kansai)"></span>関西</td><td>電気機械器具組立工</td><td>262,000円</td><td>122日</td><td>✅</td><td style="color:var(--gold)">64.7</td><td>アチハ株式会社</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank1);color:#000">1</span></td><td><span class="area-dot" style="background:var(--accent-chukyo)"></span>中京</td><td>生産現場事務員</td><td>267,000円</td><td>115日</td><td>✅</td><td style="color:var(--gold)">64.5</td><td>井の上建設株式会社</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank2);color:#000">2</span></td><td><span class="area-dot" style="background:var(--accent-chukyo)"></span>中京</td><td>建設機械運転工</td><td>256,500円</td><td>120日</td><td>✅</td><td style="color:var(--gold)">64.0</td><td>日本ロックエンジニアリング</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank3);color:#fff">3</span></td><td><span class="area-dot" style="background:var(--accent-chukyo)"></span>中京</td><td>清掃・洗浄作業員</td><td>255,000円</td><td>120日</td><td>✅</td><td style="color:var(--gold)">63.8</td><td>株式会社マルホウ</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank1);color:#000">1</span></td><td><span class="area-dot" style="background:var(--accent-kanto)"></span>関東</td><td>左官</td><td>270,000円</td><td>125日</td><td>✅</td><td style="color:var(--gold)">65.9</td><td>株式会社Yisstyle</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank2);color:#000">2</span></td><td><span class="area-dot" style="background:var(--accent-kanto)"></span>関東</td><td>印刷・製本設備オペレーター</td><td>232,832円</td><td>149日</td><td>✅</td><td style="color:var(--gold)">64.6</td><td>TOPPANパッケージプロダクツ</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank3);color:#fff">3</span></td><td><span class="area-dot" style="background:var(--accent-kanto)"></span>関東</td><td>建設工事営業員</td><td>270,000円</td><td>110日</td><td>✅</td><td style="color:var(--gold)">64.3</td><td>株式会社飯田興業</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank1);color:#000">1</span></td><td><span class="area-dot" style="background:var(--accent-other)"></span>その他</td><td>鉄道運転士</td><td>232,865円</td><td>114日</td><td>✅</td><td style="color:var(--gold)">66.4</td><td>東日本旅客鉄道（JR東日本）</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank2);color:#000">2</span></td><td><span class="area-dot" style="background:var(--accent-other)"></span>その他</td><td>ハウスクリーニング作業員</td><td>286,000円</td><td>110日</td><td>✅</td><td style="color:var(--gold)">66.0</td><td>加濃建設株式会社</td></tr>
+      <tr><td><span class="rank-chip" style="background:var(--rank3);color:#fff">3</span></td><td><span class="area-dot" style="background:var(--accent-other)"></span>その他</td><td>木製品製造工</td><td>249,800円</td><td>120日</td><td>✅</td><td style="color:var(--gold)">63.3</td><td>ポラテック東北株式会社</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<footer>
+  <p>鹿児島県立曽於高等学校 進路指導室 ｜ データ出典：一次募集求人票データ 2025年版 ｜ 総求人数 2,949件</p>
+  <p style="margin-top:6px">スコアリング：月額賃金35% ＋ 賞与25% ＋ 年間休日20% ＋ 資本金10% ＋ 社員数10%（各指標を全データ最大値で正規化）</p>
+</footer>
+
+</body>
+</html>
