@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>有利な職業・職種分析レポート 2025｜曽於高校 進路指導</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;900&family=Noto+Sans+JP:wght@300;400;700&display=swap');
+
+  :root {
+    --green-dark: #1a3d2b;
+    --green-mid: #2d6a4f;
+    --green-light: #40916c;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f9f6ef;
+    --ink: #1a1a1a;
+    --muted: #5c6b5e;
+    --border: #d4c9a0;
+    --rank1: #c9a84c;
+    --rank2: #8a9ba0;
+    --rank3: #b07d52;
+    --rank4: #4a7c59;
+    --bg-area: #f4f0e6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: var(--green-dark);
+    color: #fff;
+    padding: 0;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 40px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .school-emblem {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+  }
+  .header-text-group { flex: 1; }
+  .school-name {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+  }
+  .report-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 0.04em;
+    margin-top: 3px;
+  }
+  .report-subtitle {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 2px;
+    letter-spacing: 0.1em;
+  }
+  .header-badge {
+    background: var(--gold);
+    color: var(--green-dark);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+  }
+
+  /* NAV TABS */
+  .area-nav {
+    background: var(--green-mid);
+    padding: 0 40px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .area-nav::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.65);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 12px 18px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .nav-tab:hover { color: #fff; }
+  .nav-tab.active {
+    color: var(--gold-light);
+    border-bottom-color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* MAIN */
+  .main-content { padding: 36px 40px 60px; max-width: 1200px; margin: 0 auto; }
+
+  /* METHODOLOGY */
+  .method-panel {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    border-radius: 0 6px 6px 0;
+  }
+  .method-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green-dark);
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+  .method-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+  .method-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .method-bar {
+    width: 60px;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .method-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: var(--green-mid);
+  }
+  .method-pct {
+    font-weight: 700;
+    color: var(--green-dark);
+    font-size: 13px;
+    min-width: 36px;
+  }
+
+  /* AREA SECTION */
+  .area-section { display: none; }
+  .area-section.active { display: block; }
+
+  .area-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .area-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .area-name {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--green-dark);
+    letter-spacing: 0.02em;
+  }
+  .area-count {
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: auto;
+  }
+  .area-divider {
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+    margin-bottom: 28px;
+  }
+
+  /* CARDS GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+
+  .job-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    transition: box-shadow 0.2s;
+  }
+  .job-card:hover { box-shadow: 0 4px 20px rgba(26,61,43,0.1); }
+
+  .card-rank-strip {
+    height: 5px;
+    width: 100%;
+  }
+  .rank-1 { background: var(--rank1); }
+  .rank-2 { background: var(--rank2); }
+  .rank-3 { background: var(--rank3); }
+  .rank-4 { background: var(--rank4); }
+
+  .card-inner { padding: 18px 20px; }
+
+  .card-rank-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
+  }
+  .rank-1 .card-rank-badge { color: var(--rank1); }
+  .rank-2 .card-rank-badge { color: var(--rank2); }
+  .rank-3 .card-rank-badge { color: var(--rank3); }
+  .rank-4 .card-rank-badge { color: var(--rank4); }
+
+  .card-job-name {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--green-dark);
+    line-height: 1.4;
+    margin-bottom: 14px;
+  }
+
+  .card-score-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .score-label { font-size: 10px; color: var(--muted); width: 48px; flex-shrink: 0; }
+  .score-track {
+    flex: 1;
+    height: 6px;
+    background: var(--bg-area);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .score-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--green-light);
+  }
+  .score-val {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green-dark);
+    width: 32px;
+    text-align: right;
+  }
+
+  .card-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--bg-area);
+  }
+  .stat-cell { text-align: center; }
+  .stat-num {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--green-dark);
+    display: block;
+  }
+  .stat-lbl {
+    font-size: 9px;
+    color: var(--muted);
+    display: block;
+    margin-top: 1px;
+  }
+  .stat-bonus-yes { color: var(--green-light); }
+  .stat-bonus-no { color: #c0392b; }
+
+  .card-count {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 10px;
+    text-align: right;
+  }
+
+  /* COMPOSITE RING */
+  .composite-ring {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 52px;
+    height: 52px;
+  }
+  .ring-bg { fill: none; stroke: var(--bg-area); stroke-width: 4; }
+  .ring-fill { fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dasharray 0.6s; }
+  .ring-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 11px;
+    font-weight: 700;
+    fill: var(--green-dark);
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+
+  /* DATA TABLE */
+  .data-section { margin-top: 32px; }
+  .data-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  thead th {
+    background: var(--green-dark);
+    color: rgba(255,255,255,0.85);
+    padding: 10px 14px;
+    text-align: right;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  thead th:first-child { text-align: left; }
+  tbody tr:nth-child(even) { background: var(--bg-area); }
+  tbody td {
+    padding: 10px 14px;
+    text-align: right;
+    color: var(--ink);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody td:first-child { text-align: left; font-weight: 400; }
+  tbody tr:first-child td { font-weight: 700; }
+  .rank-chip {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-right: 6px;
+  }
+  .chip-1 { background: var(--gold); color: var(--green-dark); }
+  .chip-2 { background: var(--rank2); color: #fff; }
+  .chip-3 { background: var(--rank3); color: #fff; }
+  .chip-4 { background: var(--rank4); color: #fff; }
+
+  /* FOOTER */
+  footer {
+    background: var(--green-dark);
+    color: rgba(255,255,255,0.45);
+    font-size: 10px;
+    text-align: center;
+    padding: 20px 40px;
+    letter-spacing: 0.08em;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 700px) {
+    .header-top { padding: 14px 16px; }
+    .main-content { padding: 20px 16px 40px; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .area-nav { padding: 0 8px; }
+    .nav-tab { padding: 10px 12px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-top">
+    <!-- School emblem SVG -->
+    <svg class="school-emblem" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="27" cy="27" r="25" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+      <circle cx="27" cy="27" r="21" fill="none" stroke="#c9a84c" stroke-width="0.5"/>
+      <text x="27" y="21" text-anchor="middle" fill="#c9a84c" font-size="7" font-family="serif" letter-spacing="1">曽於</text>
+      <text x="27" y="32" text-anchor="middle" fill="#c9a84c" font-size="7" font-family="serif" letter-spacing="1">高校</text>
+      <text x="27" y="42" text-anchor="middle" fill="#c9a84c" font-size="5" font-family="serif" letter-spacing="0.5">進路指導</text>
+    </svg>
+    <div class="header-text-group">
+      <div class="school-name">鹿児島県立曽於高等学校　笑顔輝き夢かなう曽於高校</div>
+      <div class="report-title">有利な職業・職種 エリア別分析レポート</div>
+      <div class="report-subtitle">令和7年度 一次募集求人データ（2,949件）をもとに集計</div>
+    </div>
+    <div class="header-badge">2025年度版</div>
+  </div>
+
+  <nav class="area-nav" id="areaTabs">
+    <button class="nav-tab active" onclick="showArea('kagoshima', this)">鹿児島</button>
+    <button class="nav-tab" onclick="showArea('soo', this)">曽於市</button>
+    <button class="nav-tab" onclick="showArea('miyazaki', this)">宮崎</button>
+    <button class="nav-tab" onclick="showArea('miyakonojo', this)">都城市</button>
+    <button class="nav-tab" onclick="showArea('fukuoka', this)">福岡</button>
+    <button class="nav-tab" onclick="showArea('kyushu', this)">九州</button>
+    <button class="nav-tab" onclick="showArea('kansai', this)">関西</button>
+    <button class="nav-tab" onclick="showArea('chukyo', this)">中京</button>
+    <button class="nav-tab" onclick="showArea('kanto', this)">関東</button>
+    <button class="nav-tab" onclick="showArea('other', this)">その他</button>
+  </nav>
+</header>
+
+<main class="main-content">
+
+  <!-- METHODOLOGY -->
+  <div class="method-panel">
+    <div class="method-title">▍評価基準（スコアリング方式）</div>
+    <div class="method-items">
+      <div class="method-item">
+        <span class="method-pct">35%</span>
+        <div class="method-bar"><div class="method-bar-fill" style="width:100%"></div></div>
+        <span>月額賃金</span>
+      </div>
+      <div class="method-item">
+        <span class="method-pct">30%</span>
+        <div class="method-bar"><div class="method-bar-fill" style="width:86%"></div></div>
+        <span>年間休日数</span>
+      </div>
+      <div class="method-item">
+        <span class="method-pct">10%</span>
+        <div class="method-bar"><div class="method-bar-fill" style="width:29%"></div></div>
+        <span>資本金</span>
+      </div>
+      <div class="method-item">
+        <span class="method-pct">10%</span>
+        <div class="method-bar"><div class="method-bar-fill" style="width:29%"></div></div>
+        <span>社員数</span>
+      </div>
+      <div class="method-item">
+        <span class="method-pct">10%</span>
+        <div class="method-bar"><div class="method-bar-fill" style="width:29%"></div></div>
+        <span>賞与の有無</span>
+      </div>
+      <div class="method-item">
+        <span class="method-pct">5%</span>
+        <div class="method-bar"><div class="method-bar-fill" style="width:14%"></div></div>
+        <span>時間外（少ない順）</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 鹿児島 ===== -->
+  <section class="area-section active" id="area-kagoshima">
+    <div class="area-header">
+      <span class="area-label">Area 01</span>
+      <h2 class="area-name">鹿児島</h2>
+      <span class="area-count">集計件数：648件</span>
+    </div>
+    <div class="area-divider"></div>
+    <div class="cards-grid">
+      <!-- RANK 1 -->
+      <div class="job-card rank-1">
+        <div class="card-rank-strip rank-1"></div>
+        <div class="card-inner">
+          <svg class="composite-ring" viewBox="0 0 52 52">
+            <circle class="ring-bg" cx="26" cy="26" r="22"/>
+            <circle class="ring-fill" cx="26" cy="26" r="22" stroke="#c9a84c"
+              stroke-dasharray="80 138" stroke-dashoffset="34"/>
+            <text class="ring-text" x="26" y="26">57.5</text>
+          </svg>
+          <div class="card-rank-badge">🥇 RANK 1</div>
+          <div class="card-job-name">警備・保安の職業</div>
+          <div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:57.5%"></div></div><span class="score-val">57.5</span></div>
+          <div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:19.1%"></div></div><span class="score-val">19.1</span></div>
+          <div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:95.6%"></div></div><span class="score-val">95.6</span></div>
+          <div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:95.5%"></div></div><span class="score-val">95.5</span></div>
+          <div class="card-stats">
+            <div class="stat-cell"><span class="stat-num">214,142</span><span class="stat-lbl">平均月給（円）</span></div>
+            <div class="stat-cell"><span class="stat-num">105日</span><span class="stat-lbl">年間休日</span></div>
+            <div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div>
+          </div>
+          <div class="card-count">求人3件の平均値　時間外 15h/月</div>
+        </div>
+      </div>
+      <!-- RANK 2 -->
+      <div class="job-card rank-2">
+        <div class="card-rank-strip rank-2"></div>
+        <div class="card-inner">
+          <svg class="composite-ring" viewBox="0 0 52 52">
+            <circle class="ring-bg" cx="26" cy="26" r="22"/>
+            <circle class="ring-fill" cx="26" cy="26" r="22" stroke="#8a9ba0"
+              stroke-dasharray="63 138" stroke-dashoffset="34"/>
+            <text class="ring-text" x="26" y="26">45.8</text>
+          </svg>
+          <div class="card-rank-badge">🥈 RANK 2</div>
+          <div class="card-job-name">研究・技術の職業</div>
+          <div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:27.3%"></div></div><span class="score-val">27.3</span></div>
+          <div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:51%"></div></div><span class="score-val">51.0</span></div>
+          <div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:48.5%"></div></div><span class="score-val">48.5</span></div>
+          <div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:31.8%"></div></div><span class="score-val">31.8</span></div>
+          <div class="card-stats">
+            <div class="stat-cell"><span class="stat-num">191,666</span><span class="stat-lbl">平均月給（円）</span></div>
+            <div class="stat-cell"><span class="stat-num">111.7日</span><span class="stat-lbl">年間休日</span></div>
+            <div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（98%）</span></div>
+          </div>
+          <div class="card-count">求人51件の平均値　時間外 11.9h/月</div>
+        </div>
+      </div>
+      <!-- RANK 3 -->
+      <div class="job-card rank-3">
+        <div class="card-rank-strip rank-3"></div>
+        <div class="card-inner">
+          <svg class="composite-ring" viewBox="0 0 52 52">
+            <circle class="ring-bg" cx="26" cy="26" r="22"/>
+            <circle class="ring-fill" cx="26" cy="26" r="22" stroke="#b07d52"
+              stroke-dasharray="61 138" stroke-dashoffset="34"/>
+            <text class="ring-text" x="26" y="26">44.5</text>
+          </svg>
+          <div class="card-rank-badge">🥉 RANK 3</div>
+          <div class="card-job-name">配送・輸送・機械運転の職業</div>
+          <div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:30.1%"></div></div><span class="score-val">30.1</span></div>
+          <div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:46%"></div></div><span class="score-val">46.0</span></div>
+          <div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:51.9%"></div></div><span class="score-val">51.9</span></div>
+          <div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:32.2%"></div></div><span class="score-val">32.2</span></div>
+          <div class="card-stats">
+            <div class="stat-cell"><span class="stat-num">194,839</span><span class="stat-lbl">平均月給（円）</span></div>
+            <div class="stat-cell"><span class="stat-num">109.8日</span><span class="stat-lbl">年間休日</span></div>
+            <div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（88%）</span></div>
+          </div>
+          <div class="card-count">求人17件の平均値　時間外 13.4h/月</div>
+        </div>
+      </div>
+      <!-- RANK 4 -->
+      <div class="job-card rank-4">
+        <div class="card-rank-strip rank-4"></div>
+        <div class="card-inner">
+          <svg class="composite-ring" viewBox="0 0 52 52">
+            <circle class="ring-bg" cx="26" cy="26" r="22"/>
+            <circle class="ring-fill" cx="26" cy="26" r="22" stroke="#4a7c59"
+              stroke-dasharray="60 138" stroke-dashoffset="34"/>
+            <text class="ring-text" x="26" y="26">43.5</text>
+          </svg>
+          <div class="card-rank-badge">4位</div>
+          <div class="card-job-name">建設・土木・電気工事の職業</div>
+          <div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:28.6%"></div></div><span class="score-val">28.6</span></div>
+          <div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:48.2%"></div></div><span class="score-val">48.2</span></div>
+          <div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:41.8%"></div></div><span class="score-val">41.8</span></div>
+          <div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:25.4%"></div></div><span class="score-val">25.4</span></div>
+          <div class="card-stats">
+            <div class="stat-cell"><span class="stat-num">193,390</span><span class="stat-lbl">平均月給（円）</span></div>
+            <div class="stat-cell"><span class="stat-num">111.9日</span><span class="stat-lbl">年間休日</span></div>
+            <div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（90%）</span></div>
+          </div>
+          <div class="card-count">求人31件の平均値　時間外 11.2h/月</div>
+        </div>
+      </div>
+    </div>
+    <div class="data-section">
+      <div class="data-section-title">詳細データ一覧</div>
+      <table>
+        <thead><tr>
+          <th>職業分類</th><th>件数</th><th>総合<br>スコア</th><th>月額賃金</th><th>年間休日</th><th>時間外<br>（月）</th><th>賞与率</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><span class="rank-chip chip-1">1</span>警備・保安の職業</td><td>3</td><td>57.5</td><td>214,142円</td><td>105日</td><td>15.0h</td><td>100%</td></tr>
+          <tr><td><span class="rank-chip chip-2">2</span>研究・技術の職業</td><td>51</td><td>45.8</td><td>191,666円</td><td>112日</td><td>11.9h</td><td>98%</td></tr>
+          <tr><td><span class="rank-chip chip-3">3</span>配送・輸送・機械運転の職業</td><td>17</td><td>44.5</td><td>194,839円</td><td>110日</td><td>13.4h</td><td>88%</td></tr>
+          <tr><td><span class="rank-chip chip-4">4</span>建設・土木・電気工事の職業</td><td>31</td><td>43.5</td><td>193,390円</td><td>112日</td><td>11.2h</td><td>90%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 曽於市 ===== -->
+  <section class="area-section" id="area-soo">
+    <div class="area-header">
+      <span class="area-label">Area 02</span>
+      <h2 class="area-name">曽於市（大隅エリア）</h2>
+      <span class="area-count">集計件数：101件</span>
+    </div>
+    <div class="area-divider"></div>
+    <div class="cards-grid">
+      <div class="job-card rank-1">
+        <div class="card-rank-strip rank-1"></div>
+        <div class="card-inner">
+          <svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#c9a84c" stroke-dasharray="68 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">49.7</text></svg>
+          <div class="card-rank-badge">🥇 RANK 1</div>
+          <div class="card-job-name">販売・営業の職業</div>
+          <div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:12.4%"></div></div><span class="score-val">12.4</span></div>
+          <div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:93%"></div></div><span class="score-val">93.0</span></div>
+          <div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:26.8%"></div></div><span class="score-val">26.8</span></div>
+          <div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:28.9%"></div></div><span class="score-val">28.9</span></div>
+          <div class="card-stats">
+            <div class="stat-cell"><span class="stat-num">181,000</span><span class="stat-lbl">平均月給（円）</span></div>
+            <div class="stat-cell"><span class="stat-num">125日</span><span class="stat-lbl">年間休日</span></div>
+            <div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div>
+          </div>
+          <div class="card-count">求人2件の平均値　時間外 19.0h/月</div>
+        </div>
+      </div>
+      <div class="job-card rank-2">
+        <div class="card-rank-strip rank-2"></div>
+        <div class="card-inner">
+          <svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#8a9ba0" stroke-dasharray="66 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">47.6</text></svg>
+          <div class="card-rank-badge">🥈 RANK 2</div>
+          <div class="card-job-name">事務的職業</div>
+          <div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:5.6%"></div></div><span class="score-val">5.6</span></div>
+          <div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:66.8%"></div></div><span class="score-val">66.8</span></div>
+          <div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:54.1%"></div></div><span class="score-val">54.1</span></div>
+          <div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:46.5%"></div></div><span class="score-val">46.5</span></div>
+          <div class="card-stats">
+            <div class="stat-cell"><span class="stat-num">170,617</span><span class="stat-lbl">平均月給（円）</span></div>
+            <div class="stat-cell"><span class="stat-num">116.2日</span><span class="stat-lbl">年間休日</span></div>
+            <div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div>
+          </div>
+          <div class="card-count">求人11件の平均値　時間外 11.5h/月</div>
+        </div>
+      </div>
+      <div class="job-card rank-3">
+        <div class="card-rank-strip rank-3"></div>
+        <div class="card-inner">
+          <svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#b07d52" stroke-dasharray="63 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">45.7</text></svg>
+          <div class="card-rank-badge">🥉 RANK 3</div>
+          <div class="card-job-name">製造・修理・塗装・製図等の職業</div>
+          <div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:15.4%"></div></div><span class="score-val">15.4</span></div>
+          <div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:56.3%"></div></div><span class="score-val">56.3</span></div>
+          <div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:65.6%"></div></div><span class="score-val">65.6</span></div>
+          <div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:49.3%"></div></div><span class="score-val">49.3</span></div>
+          <div class="card-stats">
+            <div class="stat-cell"><span class="stat-num">181,999</span><span class="stat-lbl">平均月給（円）</span></div>
+            <div class="stat-cell"><span class="stat-num">114.6日</span><span class="stat-lbl">年間休日</span></div>
+            <div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div>
+          </div>
+          <div class="card-count">求人17件の平均値　時間外 14.1h/月</div>
+        </div>
+      </div>
+      <div class="job-card rank-4">
+        <div class="card-rank-strip rank-4"></div>
+        <div class="card-inner">
+          <svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#4a7c59" stroke-dasharray="54 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">39.4</text></svg>
+          <div class="card-rank-badge">4位</div>
+          <div class="card-job-name">建設・土木・電気工事の職業</div>
+          <div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:35.5%"></div></div><span class="score-val">35.5</span></div>
+          <div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:35.4%"></div></div><span class="score-val">35.4</span></div>
+          <div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:35.9%"></div></div><span class="score-val">35.9</span></div>
+          <div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:12.8%"></div></div><span class="score-val">12.8</span></div>
+          <div class="card-stats">
+            <div class="stat-cell"><span class="stat-num">199,571</span><span class="stat-lbl">平均月給（円）</span></div>
+            <div class="stat-cell"><span class="stat-num">105.6日</span><span class="stat-lbl">年間休日</span></div>
+            <div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div>
+          </div>
+          <div class="card-count">求人6件の平均値　時間外 9.7h/月</div>
+        </div>
+      </div>
+    </div>
+    <div class="data-section">
+      <div class="data-section-title">詳細データ一覧</div>
+      <table>
+        <thead><tr><th>職業分類</th><th>件数</th><th>総合スコア</th><th>月額賃金</th><th>年間休日</th><th>時間外（月）</th><th>賞与率</th></tr></thead>
+        <tbody>
+          <tr><td><span class="rank-chip chip-1">1</span>販売・営業の職業</td><td>2</td><td>49.7</td><td>181,000円</td><td>125日</td><td>19.0h</td><td>100%</td></tr>
+          <tr><td><span class="rank-chip chip-2">2</span>事務的職業</td><td>11</td><td>47.6</td><td>170,617円</td><td>116日</td><td>11.5h</td><td>100%</td></tr>
+          <tr><td><span class="rank-chip chip-3">3</span>製造・修理・塗装・製図等の職業</td><td>17</td><td>45.7</td><td>181,999円</td><td>115日</td><td>14.1h</td><td>100%</td></tr>
+          <tr><td><span class="rank-chip chip-4">4</span>建設・土木・電気工事の職業</td><td>6</td><td>39.4</td><td>199,571円</td><td>106日</td><td>9.7h</td><td>100%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 宮崎 ===== -->
+  <section class="area-section" id="area-miyazaki">
+    <div class="area-header">
+      <span class="area-label">Area 03</span>
+      <h2 class="area-name">宮崎</h2>
+      <span class="area-count">集計件数：56件</span>
+    </div>
+    <div class="area-divider"></div>
+    <div class="cards-grid">
+      <div class="job-card rank-1"><div class="card-rank-strip rank-1"></div><div class="card-inner">
+        <svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#c9a84c" stroke-dasharray="73 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">53.2</text></svg>
+        <div class="card-rank-badge">🥇 RANK 1</div><div class="card-job-name">サービスの職業</div>
+        <div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:41.4%"></div></div><span class="score-val">41.4</span></div>
+        <div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:27.9%"></div></div><span class="score-val">27.9</span></div>
+        <div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:48.9%"></div></div><span class="score-val">48.9</span></div>
+        <div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:70.4%"></div></div><span class="score-val">70.4</span></div>
+        <div class="card-stats"><div class="stat-cell"><span class="stat-num">200,500</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">103.2日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div>
+        <div class="card-count">求人4件の平均値　時間外 16.2h/月</div>
+      </div></div>
+      <div class="job-card rank-2"><div class="card-rank-strip rank-2"></div><div class="card-inner">
+        <svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#8a9ba0" stroke-dasharray="66 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">47.9</text></svg>
+        <div class="card-rank-badge">🥈 RANK 2</div><div class="card-job-name">建設・土木・電気工事の職業</div>
+        <div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:27.2%"></div></div><span class="score-val">27.2</span></div>
+        <div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:70.5%"></div></div><span class="score-val">70.5</span></div>
+        <div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:29.5%"></div></div><span class="score-val">29.5</span></div>
+        <div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:23.8%"></div></div><span class="score-val">23.8</span></div>
+        <div class="card-stats"><div class="stat-cell"><span class="stat-num">186,600</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">128日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div>
+        <div class="card-count">求人4件の平均値　時間外 15.8h/月</div>
+      </div></div>
+      <div class="job-card rank-3"><div class="card-rank-strip rank-3"></div><div class="card-inner">
+        <svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#b07d52" stroke-dasharray="56 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">41.0</text></svg>
+        <div class="card-rank-badge">🥉 RANK 3</div><div class="card-job-name">製造・修理・塗装・製図等の職業</div>
+        <div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:16.1%"></div></div><span class="score-val">16.1</span></div>
+        <div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:42.1%"></div></div><span class="score-val">42.1</span></div>
+        <div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:50.8%"></div></div><span class="score-val">50.8</span></div>
+        <div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:48.8%"></div></div><span class="score-val">48.8</span></div>
+        <div class="card-stats"><div class="stat-cell"><span class="stat-num">183,814</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">110.6日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div>
+        <div class="card-count">求人7件の平均値　時間外 13.6h/月</div>
+      </div></div>
+      <div class="job-card rank-4"><div class="card-rank-strip rank-4"></div><div class="card-inner">
+        <svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#4a7c59" stroke-dasharray="53 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">38.3</text></svg>
+        <div class="card-rank-badge">4位</div><div class="card-job-name">運搬・清掃・包装・選別等の職業</div>
+        <div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:18%"></div></div><span class="score-val">18.0</span></div>
+        <div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:30.3%"></div></div><span class="score-val">30.3</span></div>
+        <div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:34.6%"></div></div><span class="score-val">34.6</span></div>
+        <div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:64.5%"></div></div><span class="score-val">64.5</span></div>
+        <div class="card-stats"><div class="stat-cell"><span class="stat-num">182,750</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">107日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div>
+        <div class="card-count">求人4件の平均値　時間外 12.5h/月</div>
+      </div></div>
+    </div>
+    <div class="data-section"><div class="data-section-title">詳細データ一覧</div>
+      <table><thead><tr><th>職業分類</th><th>件数</th><th>総合スコア</th><th>月額賃金</th><th>年間休日</th><th>時間外（月）</th><th>賞与率</th></tr></thead><tbody>
+        <tr><td><span class="rank-chip chip-1">1</span>サービスの職業</td><td>4</td><td>53.2</td><td>200,500円</td><td>103日</td><td>16.2h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-2">2</span>建設・土木・電気工事の職業</td><td>4</td><td>47.9</td><td>186,600円</td><td>128日</td><td>15.8h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-3">3</span>製造・修理・塗装・製図等の職業</td><td>7</td><td>41.0</td><td>183,814円</td><td>111日</td><td>13.6h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-4">4</span>運搬・清掃・包装・選別等の職業</td><td>4</td><td>38.3</td><td>182,750円</td><td>107日</td><td>12.5h</td><td>100%</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ===== 都城市 ===== -->
+  <section class="area-section" id="area-miyakonojo">
+    <div class="area-header"><span class="area-label">Area 04</span><h2 class="area-name">都城市</h2><span class="area-count">集計件数：90件</span></div>
+    <div class="area-divider"></div>
+    <div class="cards-grid">
+      <div class="job-card rank-1"><div class="card-rank-strip rank-1"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#c9a84c" stroke-dasharray="65 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">47.2</text></svg><div class="card-rank-badge">🥇 RANK 1</div><div class="card-job-name">運搬・清掃・包装・選別等の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:17.7%"></div></div><span class="score-val">17.7</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:54.2%"></div></div><span class="score-val">54.2</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:46.6%"></div></div><span class="score-val">46.6</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:62.7%"></div></div><span class="score-val">62.7</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">185,950</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">114日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人4件の平均値　時間外 8.2h/月</div></div></div>
+      <div class="job-card rank-2"><div class="card-rank-strip rank-2"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#8a9ba0" stroke-dasharray="64 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">46.6</text></svg><div class="card-rank-badge">🥈 RANK 2</div><div class="card-job-name">建設・土木・電気工事の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:36.1%"></div></div><span class="score-val">36.1</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:41.8%"></div></div><span class="score-val">41.8</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:47.5%"></div></div><span class="score-val">47.5</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:24%"></div></div><span class="score-val">24.0</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">196,903</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">109.3日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人6件の平均値　時間外 5.0h/月</div></div></div>
+      <div class="job-card rank-3"><div class="card-rank-strip rank-3"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#b07d52" stroke-dasharray="62 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">45.1</text></svg><div class="card-rank-badge">🥉 RANK 3</div><div class="card-job-name">事務的職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:5.1%"></div></div><span class="score-val">5.1</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:48.1%"></div></div><span class="score-val">48.1</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:38.7%"></div></div><span class="score-val">38.7</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:46.5%"></div></div><span class="score-val">46.5</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">170,027</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">109.5日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人5件の平均値　時間外 12.0h/月</div></div></div>
+      <div class="job-card rank-4"><div class="card-rank-strip rank-4"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#4a7c59" stroke-dasharray="54 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">39.4</text></svg><div class="card-rank-badge">4位</div><div class="card-job-name">製造・修理・塗装・製図等の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:11.3%"></div></div><span class="score-val">11.3</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:45%"></div></div><span class="score-val">45.0</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:49.1%"></div></div><span class="score-val">49.1</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:38.9%"></div></div><span class="score-val">38.9</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">178,024</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">111.7日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人27件の平均値　時間外 11.4h/月</div></div></div>
+    </div>
+    <div class="data-section"><div class="data-section-title">詳細データ一覧</div>
+      <table><thead><tr><th>職業分類</th><th>件数</th><th>総合スコア</th><th>月額賃金</th><th>年間休日</th><th>時間外（月）</th><th>賞与率</th></tr></thead><tbody>
+        <tr><td><span class="rank-chip chip-1">1</span>運搬・清掃・包装・選別等の職業</td><td>4</td><td>47.2</td><td>185,950円</td><td>114日</td><td>8.2h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-2">2</span>建設・土木・電気工事の職業</td><td>6</td><td>46.6</td><td>196,903円</td><td>109日</td><td>5.0h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-3">3</span>事務的職業</td><td>5</td><td>45.1</td><td>170,027円</td><td>110日</td><td>12.0h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-4">4</span>製造・修理・塗装・製図等の職業</td><td>27</td><td>39.4</td><td>178,024円</td><td>112日</td><td>11.4h</td><td>100%</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ===== 福岡 ===== -->
+  <section class="area-section" id="area-fukuoka">
+    <div class="area-header"><span class="area-label">Area 05</span><h2 class="area-name">福岡</h2><span class="area-count">集計件数：377件</span></div>
+    <div class="area-divider"></div>
+    <div class="cards-grid">
+      <div class="job-card rank-1"><div class="card-rank-strip rank-1"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#c9a84c" stroke-dasharray="76 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">55.4</text></svg><div class="card-rank-badge">🥇 RANK 1</div><div class="card-job-name">販売・営業の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:50.2%"></div></div><span class="score-val">50.2</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:43.5%"></div></div><span class="score-val">43.5</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:44.8%"></div></div><span class="score-val">44.8</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:48.9%"></div></div><span class="score-val">48.9</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">210,138</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">111日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人11件の平均値　時間外 12.5h/月</div></div></div>
+      <div class="job-card rank-2"><div class="card-rank-strip rank-2"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#8a9ba0" stroke-dasharray="70 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">51.1</text></svg><div class="card-rank-badge">🥈 RANK 2</div><div class="card-job-name">製造・修理・塗装・製図等の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:50.5%"></div></div><span class="score-val">50.5</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:42.1%"></div></div><span class="score-val">42.1</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:48.7%"></div></div><span class="score-val">48.7</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:41.3%"></div></div><span class="score-val">41.3</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">211,800</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">110.2日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（94%）</span></div></div><div class="card-count">求人47件の平均値　時間外 16.1h/月</div></div></div>
+      <div class="job-card rank-3"><div class="card-rank-strip rank-3"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#b07d52" stroke-dasharray="70 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">51.1</text></svg><div class="card-rank-badge">🥉 RANK 3</div><div class="card-job-name">配送・輸送・機械運転の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:35.3%"></div></div><span class="score-val">35.3</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:48.2%"></div></div><span class="score-val">48.2</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:55.8%"></div></div><span class="score-val">55.8</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:56.8%"></div></div><span class="score-val">56.8</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">197,642</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">112.7日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人6件の平均値　時間外 14.7h/月</div></div></div>
+      <div class="job-card rank-4"><div class="card-rank-strip rank-4"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#4a7c59" stroke-dasharray="68 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">49.5</text></svg><div class="card-rank-badge">4位</div><div class="card-job-name">建設・土木・電気工事の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:53%"></div></div><span class="score-val">53.0</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:47.8%"></div></div><span class="score-val">47.8</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:34.4%"></div></div><span class="score-val">34.4</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:19.2%"></div></div><span class="score-val">19.2</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">211,797</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">111.8日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（89%）</span></div></div><div class="card-count">求人51件の平均値　時間外 13.7h/月</div></div></div>
+    </div>
+    <div class="data-section"><div class="data-section-title">詳細データ一覧</div>
+      <table><thead><tr><th>職業分類</th><th>件数</th><th>総合スコア</th><th>月額賃金</th><th>年間休日</th><th>時間外（月）</th><th>賞与率</th></tr></thead><tbody>
+        <tr><td><span class="rank-chip chip-1">1</span>販売・営業の職業</td><td>11</td><td>55.4</td><td>210,138円</td><td>111日</td><td>12.5h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-2">2</span>製造・修理・塗装・製図等の職業</td><td>47</td><td>51.1</td><td>211,800円</td><td>110日</td><td>16.1h</td><td>94%</td></tr>
+        <tr><td><span class="rank-chip chip-3">3</span>配送・輸送・機械運転の職業</td><td>6</td><td>51.1</td><td>197,642円</td><td>113日</td><td>14.7h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-4">4</span>建設・土木・電気工事の職業</td><td>51</td><td>49.5</td><td>211,797円</td><td>112日</td><td>13.7h</td><td>89%</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ===== 九州 ===== -->
+  <section class="area-section" id="area-kyushu">
+    <div class="area-header"><span class="area-label">Area 06</span><h2 class="area-name">九州（福岡除く）</h2><span class="area-count">集計件数：104件</span></div>
+    <div class="area-divider"></div>
+    <div class="cards-grid">
+      <div class="job-card rank-1"><div class="card-rank-strip rank-1"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#c9a84c" stroke-dasharray="83 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">60.7</text></svg><div class="card-rank-badge">🥇 RANK 1</div><div class="card-job-name">研究・技術の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:52.9%"></div></div><span class="score-val">52.9</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:66.4%"></div></div><span class="score-val">66.4</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:61.8%"></div></div><span class="score-val">61.8</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:44.1%"></div></div><span class="score-val">44.1</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">212,167</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">116日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人6件の平均値　時間外 19.8h/月</div></div></div>
+      <div class="job-card rank-2"><div class="card-rank-strip rank-2"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#8a9ba0" stroke-dasharray="81 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">58.8</text></svg><div class="card-rank-badge">🥈 RANK 2</div><div class="card-job-name">事務的職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:34.3%"></div></div><span class="score-val">34.3</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:67.8%"></div></div><span class="score-val">67.8</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:66.6%"></div></div><span class="score-val">66.6</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:74.3%"></div></div><span class="score-val">74.3</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">194,747</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">118.7日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人7件の平均値　時間外 16.0h/月</div></div></div>
+      <div class="job-card rank-3"><div class="card-rank-strip rank-3"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#b07d52" stroke-dasharray="77 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">56.0</text></svg><div class="card-rank-badge">🥉 RANK 3</div><div class="card-job-name">製造・修理・塗装・製図等の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:35.6%"></div></div><span class="score-val">35.6</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:62.8%"></div></div><span class="score-val">62.8</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:61.8%"></div></div><span class="score-val">61.8</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:71.6%"></div></div><span class="score-val">71.6</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">196,532</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">122.5日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人21件の平均値　時間外 34.1h/月</div></div></div>
+      <div class="job-card rank-4"><div class="card-rank-strip rank-4"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#4a7c59" stroke-dasharray="70 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">51.1</text></svg><div class="card-rank-badge">4位</div><div class="card-job-name">建設・土木・電気工事の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:54.8%"></div></div><span class="score-val">54.8</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:46.1%"></div></div><span class="score-val">46.1</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:32.7%"></div></div><span class="score-val">32.7</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:28.1%"></div></div><span class="score-val">28.1</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">215,081</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">110.4日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人8件の平均値　時間外 17.6h/月</div></div></div>
+    </div>
+    <div class="data-section"><div class="data-section-title">詳細データ一覧</div>
+      <table><thead><tr><th>職業分類</th><th>件数</th><th>総合スコア</th><th>月額賃金</th><th>年間休日</th><th>時間外（月）</th><th>賞与率</th></tr></thead><tbody>
+        <tr><td><span class="rank-chip chip-1">1</span>研究・技術の職業</td><td>6</td><td>60.7</td><td>212,167円</td><td>116日</td><td>19.8h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-2">2</span>事務的職業</td><td>7</td><td>58.8</td><td>194,747円</td><td>119日</td><td>16.0h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-3">3</span>製造・修理・塗装・製図等の職業</td><td>21</td><td>56.0</td><td>196,532円</td><td>123日</td><td>34.1h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-4">4</span>建設・土木・電気工事の職業</td><td>8</td><td>51.1</td><td>215,081円</td><td>110日</td><td>17.6h</td><td>100%</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ===== 関西 ===== -->
+  <section class="area-section" id="area-kansai">
+    <div class="area-header"><span class="area-label">Area 07</span><h2 class="area-name">関西</h2><span class="area-count">集計件数：431件</span></div>
+    <div class="area-divider"></div>
+    <div class="cards-grid">
+      <div class="job-card rank-1"><div class="card-rank-strip rank-1"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#c9a84c" stroke-dasharray="97 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">70.8</text></svg><div class="card-rank-badge">🥇 RANK 1</div><div class="card-job-name">警備・保安の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:73.7%"></div></div><span class="score-val">73.7</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:64%"></div></div><span class="score-val">64.0</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:62.3%"></div></div><span class="score-val">62.3</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:75%"></div></div><span class="score-val">75.0</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">227,712</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">117.3日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人6件の平均値　時間外 17.7h/月</div></div></div>
+      <div class="job-card rank-2"><div class="card-rank-strip rank-2"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#8a9ba0" stroke-dasharray="93 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">67.4</text></svg><div class="card-rank-badge">🥈 RANK 2</div><div class="card-job-name">研究・技術の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:76.7%"></div></div><span class="score-val">76.7</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:70.7%"></div></div><span class="score-val">70.7</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:40.1%"></div></div><span class="score-val">40.1</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:22.7%"></div></div><span class="score-val">22.7</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">238,924</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">119.2日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（94%）</span></div></div><div class="card-count">求人16件の平均値　時間外 12.7h/月</div></div></div>
+      <div class="job-card rank-3"><div class="card-rank-strip rank-3"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#b07d52" stroke-dasharray="87 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">63.0</text></svg><div class="card-rank-badge">🥉 RANK 3</div><div class="card-job-name">配送・輸送・機械運転の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:65.4%"></div></div><span class="score-val">65.4</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:57.9%"></div></div><span class="score-val">57.9</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:60.2%"></div></div><span class="score-val">60.2</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:45.9%"></div></div><span class="score-val">45.9</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">224,921</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">115日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人19件の平均値　時間外 20.4h/月</div></div></div>
+      <div class="job-card rank-4"><div class="card-rank-strip rank-4"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#4a7c59" stroke-dasharray="87 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">62.9</text></svg><div class="card-rank-badge">4位</div><div class="card-job-name">建設・土木・電気工事の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:77.5%"></div></div><span class="score-val">77.5</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:59.5%"></div></div><span class="score-val">59.5</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:31.8%"></div></div><span class="score-val">31.8</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:14.3%"></div></div><span class="score-val">14.3</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">234,764</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">115.5日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（94%）</span></div></div><div class="card-count">求人43件の平均値　時間外 13.4h/月</div></div></div>
+    </div>
+    <div class="data-section"><div class="data-section-title">詳細データ一覧</div>
+      <table><thead><tr><th>職業分類</th><th>件数</th><th>総合スコア</th><th>月額賃金</th><th>年間休日</th><th>時間外（月）</th><th>賞与率</th></tr></thead><tbody>
+        <tr><td><span class="rank-chip chip-1">1</span>警備・保安の職業</td><td>6</td><td>70.8</td><td>227,712円</td><td>117日</td><td>17.7h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-2">2</span>研究・技術の職業</td><td>16</td><td>67.4</td><td>238,924円</td><td>119日</td><td>12.7h</td><td>94%</td></tr>
+        <tr><td><span class="rank-chip chip-3">3</span>配送・輸送・機械運転の職業</td><td>19</td><td>63.0</td><td>224,921円</td><td>115日</td><td>20.4h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-4">4</span>建設・土木・電気工事の職業</td><td>43</td><td>62.9</td><td>234,764円</td><td>116日</td><td>13.4h</td><td>94%</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ===== 中京 ===== -->
+  <section class="area-section" id="area-chukyo">
+    <div class="area-header"><span class="area-label">Area 08</span><h2 class="area-name">中京（愛知・岐阜・三重）</h2><span class="area-count">集計件数：160件</span></div>
+    <div class="area-divider"></div>
+    <div class="cards-grid">
+      <div class="job-card rank-1"><div class="card-rank-strip rank-1"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#c9a84c" stroke-dasharray="88 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">64.3</text></svg><div class="card-rank-badge">🥇 RANK 1</div><div class="card-job-name">医療・看護・保健の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:42.4%"></div></div><span class="score-val">42.4</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:54.4%"></div></div><span class="score-val">54.4</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:20%"></div></div><span class="score-val">20.0</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:73.8%"></div></div><span class="score-val">73.8</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">196,963</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">114.8日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人3件の平均値　時間外 5.0h/月</div></div></div>
+      <div class="job-card rank-2"><div class="card-rank-strip rank-2"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#8a9ba0" stroke-dasharray="83 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">60.3</text></svg><div class="card-rank-badge">🥈 RANK 2</div><div class="card-job-name">福祉・介護の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:61.6%"></div></div><span class="score-val">61.6</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:56.6%"></div></div><span class="score-val">56.6</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:4.3%"></div></div><span class="score-val">4.3</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:70.4%"></div></div><span class="score-val">70.4</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">215,064</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">115.6日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人6件の平均値　時間外 4.5h/月</div></div></div>
+      <div class="job-card rank-3"><div class="card-rank-strip rank-3"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#b07d52" stroke-dasharray="83 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">60.1</text></svg><div class="card-rank-badge">🥉 RANK 3</div><div class="card-job-name">建設・土木・電気工事の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:81.9%"></div></div><span class="score-val">81.9</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:47%"></div></div><span class="score-val">47.0</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:27.1%"></div></div><span class="score-val">27.1</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:16.4%"></div></div><span class="score-val">16.4</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">237,260</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">112.3日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人9件の平均値　時間外 13.0h/月</div></div></div>
+      <div class="job-card rank-4"><div class="card-rank-strip rank-4"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#4a7c59" stroke-dasharray="82 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">59.4</text></svg><div class="card-rank-badge">4位</div><div class="card-job-name">配送・輸送・機械運転の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:45.9%"></div></div><span class="score-val">45.9</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:60.7%"></div></div><span class="score-val">60.7</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:78%"></div></div><span class="score-val">78.0</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:64.9%"></div></div><span class="score-val">64.9</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">205,000</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">116.7日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人3件の平均値　時間外 25.7h/月</div></div></div>
+    </div>
+    <div class="data-section"><div class="data-section-title">詳細データ一覧</div>
+      <table><thead><tr><th>職業分類</th><th>件数</th><th>総合スコア</th><th>月額賃金</th><th>年間休日</th><th>時間外（月）</th><th>賞与率</th></tr></thead><tbody>
+        <tr><td><span class="rank-chip chip-1">1</span>医療・看護・保健の職業</td><td>3</td><td>64.3</td><td>196,963円</td><td>115日</td><td>5.0h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-2">2</span>福祉・介護の職業</td><td>6</td><td>60.3</td><td>215,064円</td><td>116日</td><td>4.5h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-3">3</span>建設・土木・電気工事の職業</td><td>9</td><td>60.1</td><td>237,260円</td><td>112日</td><td>13.0h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-4">4</span>配送・輸送・機械運転の職業</td><td>3</td><td>59.4</td><td>205,000円</td><td>117日</td><td>25.7h</td><td>100%</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ===== 関東 ===== -->
+  <section class="area-section" id="area-kanto">
+    <div class="area-header"><span class="area-label">Area 09</span><h2 class="area-name">関東</h2><span class="area-count">集計件数：887件</span></div>
+    <div class="area-divider"></div>
+    <div class="cards-grid">
+      <div class="job-card rank-1"><div class="card-rank-strip rank-1"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#c9a84c" stroke-dasharray="103 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">75.3</text></svg><div class="card-rank-badge">🥇 RANK 1</div><div class="card-job-name">農林漁業の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:86.7%"></div></div><span class="score-val">86.7</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:75.9%"></div></div><span class="score-val">75.9</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:63%"></div></div><span class="score-val">63.0</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:47.2%"></div></div><span class="score-val">47.2</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">242,800</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">120.3日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（100%）</span></div></div><div class="card-count">求人3件の平均値　時間外 23.3h/月</div></div></div>
+      <div class="job-card rank-2"><div class="card-rank-strip rank-2"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#8a9ba0" stroke-dasharray="95 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">69.2</text></svg><div class="card-rank-badge">🥈 RANK 2</div><div class="card-job-name">研究・技術の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:66%"></div></div><span class="score-val">66.0</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:73.7%"></div></div><span class="score-val">73.7</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:68.3%"></div></div><span class="score-val">68.3</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:53.1%"></div></div><span class="score-val">53.1</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">223,720</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">120.1日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（95%）</span></div></div><div class="card-count">求人73件の平均値　時間外 20.5h/月</div></div></div>
+      <div class="job-card rank-3"><div class="card-rank-strip rank-3"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#b07d52" stroke-dasharray="92 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">66.5</text></svg><div class="card-rank-badge">🥉 RANK 3</div><div class="card-job-name">建設・土木・電気工事の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:76.2%"></div></div><span class="score-val">76.2</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:63.4%"></div></div><span class="score-val">63.4</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:47.8%"></div></div><span class="score-val">47.8</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:33.9%"></div></div><span class="score-val">33.9</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">237,201</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">117.1日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（93%）</span></div></div><div class="card-count">求人107件の平均値　時間外 14.0h/月</div></div></div>
+      <div class="job-card rank-4"><div class="card-rank-strip rank-4"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#4a7c59" stroke-dasharray="91 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">66.3</text></svg><div class="card-rank-badge">4位</div><div class="card-job-name">製造・修理・塗装・製図等の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:63.2%"></div></div><span class="score-val">63.2</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:63%"></div></div><span class="score-val">63.0</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:71.7%"></div></div><span class="score-val">71.7</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:62.1%"></div></div><span class="score-val">62.1</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">219,023</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">117.4日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（99%）</span></div></div><div class="card-count">求人100件の平均値　時間外 18.6h/月</div></div></div>
+    </div>
+    <div class="data-section"><div class="data-section-title">詳細データ一覧</div>
+      <table><thead><tr><th>職業分類</th><th>件数</th><th>総合スコア</th><th>月額賃金</th><th>年間休日</th><th>時間外（月）</th><th>賞与率</th></tr></thead><tbody>
+        <tr><td><span class="rank-chip chip-1">1</span>農林漁業の職業</td><td>3</td><td>75.3</td><td>242,800円</td><td>120日</td><td>23.3h</td><td>100%</td></tr>
+        <tr><td><span class="rank-chip chip-2">2</span>研究・技術の職業</td><td>73</td><td>69.2</td><td>223,720円</td><td>120日</td><td>20.5h</td><td>95%</td></tr>
+        <tr><td><span class="rank-chip chip-3">3</span>建設・土木・電気工事の職業</td><td>107</td><td>66.5</td><td>237,201円</td><td>117日</td><td>14.0h</td><td>93%</td></tr>
+        <tr><td><span class="rank-chip chip-4">4</span>製造・修理・塗装・製図等の職業</td><td>100</td><td>66.3</td><td>219,023円</td><td>117日</td><td>18.6h</td><td>99%</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ===== 他 ===== -->
+  <section class="area-section" id="area-other">
+    <div class="area-header"><span class="area-label">Area 10</span><h2 class="area-name">その他（北海道・東北・中国・四国等）</h2><span class="area-count">集計件数：195件</span></div>
+    <div class="area-divider"></div>
+    <div class="cards-grid">
+      <div class="job-card rank-1"><div class="card-rank-strip rank-1"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#c9a84c" stroke-dasharray="92 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">66.9</text></svg><div class="card-rank-badge">🥇 RANK 1</div><div class="card-job-name">研究・技術の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:59.1%"></div></div><span class="score-val">59.1</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:68.2%"></div></div><span class="score-val">68.2</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:78.1%"></div></div><span class="score-val">78.1</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:63.7%"></div></div><span class="score-val">63.7</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">216,246</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">118.4日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（94%）</span></div></div><div class="card-count">求人17件の平均値　時間外 17.5h/月</div></div></div>
+      <div class="job-card rank-2"><div class="card-rank-strip rank-2"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#8a9ba0" stroke-dasharray="92 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">66.6</text></svg><div class="card-rank-badge">🥈 RANK 2</div><div class="card-job-name">製造・修理・塗装・製図等の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:58.3%"></div></div><span class="score-val">58.3</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:64.7%"></div></div><span class="score-val">64.7</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:77.5%"></div></div><span class="score-val">77.5</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:68%"></div></div><span class="score-val">68.0</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">214,881</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">117.4日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（92%）</span></div></div><div class="card-count">求人24件の平均値　時間外 18.6h/月</div></div></div>
+      <div class="job-card rank-3"><div class="card-rank-strip rank-3"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#b07d52" stroke-dasharray="87 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">63.5</text></svg><div class="card-rank-badge">🥉 RANK 3</div><div class="card-job-name">建設・土木・電気工事の職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:69.7%"></div></div><span class="score-val">69.7</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:52%"></div></div><span class="score-val">52.0</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:65.5%"></div></div><span class="score-val">65.5</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:55.3%"></div></div><span class="score-val">55.3</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">229,400</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">113.6日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（82%）</span></div></div><div class="card-count">求人17件の平均値　時間外 11.2h/月</div></div></div>
+      <div class="job-card rank-4"><div class="card-rank-strip rank-4"></div><div class="card-inner"><svg class="composite-ring" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke="#4a7c59" stroke-dasharray="76 138" stroke-dashoffset="34"/><text class="ring-text" x="26" y="26">55.4</text></svg><div class="card-rank-badge">4位</div><div class="card-job-name">事務的職業</div><div class="card-score-row"><span class="score-label">月額賃金</span><div class="score-track"><div class="score-fill" style="width:37.7%"></div></div><span class="score-val">37.7</span></div><div class="card-score-row"><span class="score-label">年間休日</span><div class="score-track"><div class="score-fill" style="width:49.1%"></div></div><span class="score-val">49.1</span></div><div class="card-score-row"><span class="score-label">資本金</span><div class="score-track"><div class="score-fill" style="width:87.1%"></div></div><span class="score-val">87.1</span></div><div class="card-score-row"><span class="score-label">社員数</span><div class="score-track"><div class="score-fill" style="width:78.6%"></div></div><span class="score-val">78.6</span></div><div class="card-stats"><div class="stat-cell"><span class="stat-num">199,028</span><span class="stat-lbl">平均月給（円）</span></div><div class="stat-cell"><span class="stat-num">111.5日</span><span class="stat-lbl">年間休日</span></div><div class="stat-cell"><span class="stat-num stat-bonus-yes">あり</span><span class="stat-lbl">賞与（83%）</span></div></div><div class="card-count">求人6件の平均値　時間外 15.0h/月</div></div></div>
+    </div>
+    <div class="data-section"><div class="data-section-title">詳細データ一覧</div>
+      <table><thead><tr><th>職業分類</th><th>件数</th><th>総合スコア</th><th>月額賃金</th><th>年間休日</th><th>時間外（月）</th><th>賞与率</th></tr></thead><tbody>
+        <tr><td><span class="rank-chip chip-1">1</span>研究・技術の職業</td><td>17</td><td>66.9</td><td>216,246円</td><td>118日</td><td>17.5h</td><td>94%</td></tr>
+        <tr><td><span class="rank-chip chip-2">2</span>製造・修理・塗装・製図等の職業</td><td>24</td><td>66.6</td><td>214,881円</td><td>117日</td><td>18.6h</td><td>92%</td></tr>
+        <tr><td><span class="rank-chip chip-3">3</span>建設・土木・電気工事の職業</td><td>17</td><td>63.5</td><td>229,400円</td><td>114日</td><td>11.2h</td><td>82%</td></tr>
+        <tr><td><span class="rank-chip chip-4">4</span>事務的職業</td><td>6</td><td>55.4</td><td>199,028円</td><td>112日</td><td>15.0h</td><td>83%</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>出典：令和7年度 一次募集求人データ（2,949件）｜スコアは全求人内パーセンタイル順位による標準化値（0〜100）</p>
+  <p style="margin-top:6px">鹿児島県立曽於高等学校 進路指導部　― 笑顔輝き夢かなう曽於高校 ―</p>
+</footer>
+
+<script>
+function showArea(key, btn) {
+  document.querySelectorAll('.area-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('area-' + key).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
