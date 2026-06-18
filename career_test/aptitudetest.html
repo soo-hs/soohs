@@ -139,6 +139,17 @@
         .restart-btn:hover {
             background: #7f8c8d;
         }
+        .save-btn {
+            background: #27ae60;
+            margin-top: 15px;
+        }
+        .save-btn:hover {
+            background: #219a52;
+        }
+        .save-btn:disabled {
+            background: #a9cfc0;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -298,11 +309,69 @@
             <div class="result-title" id="result-type-title"></div>
         </div>
         <div class="result-body" id="result-type-text"></div>
+        <button class="save-btn" id="save-btn" onclick="saveResult()">💾 診断結果をテキストで保存する</button>
         <button class="restart-btn" onclick="restartQuiz()">もう一度診断する</button>
     </div>
 </div>
 
 <script>
+    // 診断結果の保存用データを格納
+    let _saveData = null;
+
+    // IPアドレス取得＋TXTダウンロード
+    async function saveResult() {
+        if (!_saveData) return;
+        const btn = document.getElementById('save-btn');
+        btn.disabled = true;
+        btn.textContent = '⏳ IPアドレスを取得中...';
+
+        let ipAddress = "取得できませんでした";
+        try {
+            const res = await fetch("https://api.ipify.org?format=json");
+            const data = await res.json();
+            ipAddress = data.ip;
+        } catch (e) {
+            console.warn("IP取得失敗:", e);
+        }
+
+        const { name, dept, title, text } = _saveData;
+        const now = new Date();
+        const dateStr = now.toLocaleString('ja-JP', {
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: '2-digit', minute: '2-digit', second: '2-digit'
+        });
+
+        const txtContent =
+`===================================================
+  曽於高等学校 就職・職種適性テスト　診断結果
+===================================================
+診断日時　：${dateStr}
+IPアドレス：${ipAddress}
+
+【生徒情報】
+氏　名　：${name}
+学　科　：${dept}
+
+【診断結果】
+${title}
+
+${text.replace(/\n/g, '\r\n')}
+===================================================`;
+
+        const blob = new Blob([txtContent], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        const safeName = name.replace(/[\\/:*?"<>|]/g, "_");
+        a.href = url;
+        a.download = `診断結果_${dept}_${safeName}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        btn.textContent = '✅ 保存しました';
+    }
+
     function calculateResult() {
         const name = document.getElementById('student-name').value;
         const dept = document.getElementById('department').value;
@@ -376,6 +445,12 @@
         
         document.getElementById('result-section').style.display = 'block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // 保存用データをセット・ボタンをリセット
+        _saveData = { name, dept, title, text };
+        const btn = document.getElementById('save-btn');
+        btn.disabled = false;
+        btn.textContent = '💾 診断結果をテキストで保存する';
     }
 
     function restartQuiz() {
@@ -385,6 +460,7 @@
         
         document.getElementById('questions-container').style.display = 'block';
         document.getElementById('result-section').style.display = 'none';
+        _saveData = null;
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 </script>
