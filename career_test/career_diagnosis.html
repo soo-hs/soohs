@@ -1209,6 +1209,7 @@ async function loadJobMatches(jobs) {
 
     let html = '';
     const seenJobNo = new Set(); // 「向いている職種・職業」全体で求人番号の重複を防ぐ
+    const jobMatchGroups = []; // TXT出力用
 
     jobs.forEach((job, groupIndex) => {
       const keywords = extractKeywords(job);
@@ -1232,6 +1233,9 @@ async function loadJobMatches(jobs) {
           });
         }
       });
+
+      // TXT用データ蓄積
+      jobMatchGroups.push({ job, matches });
 
       const groupId = `job-match-group-${groupIndex}`;
 
@@ -1268,9 +1272,14 @@ async function loadJobMatches(jobs) {
 
     loadingEl.style.display = 'none';
     resultsEl.innerHTML = html;
+
+    // TXTダウンロード用にマッチング結果を保存
+    window._jobMatchGroups = jobMatchGroups;
+
   } catch (err) {
     console.error(err);
     loadingEl.textContent = '求人情報の取得に失敗しました。時間をおいて再度お試しください。';
+    window._jobMatchGroups = null;
   }
 }
 
@@ -1355,11 +1364,46 @@ async function downloadResultTxt() {
     '----------------------------------------------------------------',
     adviceText.split('。').filter(s => s.trim()).map(s => `  ${s.trim()}。`).join('\n'),
     '',
-    '================================================================',
-    '　※この結果はあくまで参考です。先生や保護者と相談しながら',
-    '　　自分に合った進路を選択してください。',
-    '================================================================',
   ];
+
+  // 求人情報マッチング結果
+  const groups = window._jobMatchGroups;
+  if (groups && groups.length > 0) {
+    lines.push('----------------------------------------------------------------');
+    lines.push('【関連する求人情報】');
+    lines.push('----------------------------------------------------------------');
+    groups.forEach(g => {
+      lines.push(`▶ ${g.job}`);
+      if (g.matches.length === 0) {
+        lines.push('  一致する求人情報が見つかりませんでした');
+      } else {
+        g.matches.forEach((m, idx) => {
+          lines.push(`  [${idx + 1}] ${m.office}`);
+          lines.push(`      求人番号：${m.jobNo}　職種：${m.shokushu}`);
+          lines.push(`      就業場所：${m.location}`);
+          lines.push(`      一致キーワード：${m.keywords.join('・')}`);
+        });
+      }
+      lines.push('');
+    });
+  } else if (groups === null) {
+    lines.push('----------------------------------------------------------------');
+    lines.push('【関連する求人情報】');
+    lines.push('----------------------------------------------------------------');
+    lines.push('  求人情報の取得に失敗しました。');
+    lines.push('');
+  } else {
+    lines.push('----------------------------------------------------------------');
+    lines.push('【関連する求人情報】');
+    lines.push('----------------------------------------------------------------');
+    lines.push('  求人情報を読み込み中です。少し待ってから再度保存してください。');
+    lines.push('');
+  }
+
+  lines.push('================================================================');
+  lines.push('　※この結果はあくまで参考です。先生や保護者と相談しながら');
+  lines.push('　　自分に合った進路を選択してください。');
+  lines.push('================================================================');
 
   const text = lines.join('\n');
   const blob = new Blob(['\uFEFF' + text], { type: 'text/plain;charset=utf-8' });
