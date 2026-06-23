@@ -751,6 +751,73 @@
     color: var(--text-muted);
     font-size: 14px;
   }
+
+  /* ========== スマホ対応 ========== */
+  @media (max-width: 600px) {
+    /* モーダル：左上基準・全画面 */
+    .modal-overlay {
+      padding: 0;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+    .modal {
+      border-radius: 0;
+      max-width: 100vw;
+      width: 100vw;
+      max-height: 100dvh;
+      height: 100dvh;
+      border: none;
+    }
+    .modal-header {
+      padding: 10px 12px;
+    }
+    .modal-title {
+      font-size: 13px;
+    }
+    .modal-body {
+      padding: 10px 10px;
+    }
+
+    /* カード：1カラム・全幅 */
+    .single-card,
+    .modal-body .single-card {
+      grid-template-columns: 1fr;
+      max-width: 100%;
+      gap: 6px;
+    }
+    .single-card .detail-item.full,
+    .modal-body .single-card .detail-item.full {
+      grid-column: 1 / -1;
+    }
+
+    /* 項目の文字折り返し */
+    .detail-label,
+    .detail-orig {
+      white-space: normal;
+      word-break: break-all;
+    }
+    .detail-value {
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+    .detail-item {
+      padding: 7px 10px;
+    }
+
+    /* 単票ビュー */
+    .single-body {
+      padding: 10px 10px;
+    }
+    .single-nav {
+      padding: 6px 10px;
+      gap: 6px;
+    }
+    .single-nav-title {
+      font-size: 12px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -1580,7 +1647,7 @@ function renderTable() {
   let tbHtml = '';
   pageRows.forEach((row, ri) => {
     const globalIdx = start + ri;
-    tbHtml += `<tr class="clickable-row" ondblclick="openDetailFromRow(event,${globalIdx})" title="ダブルクリックで詳細表示">`;
+    tbHtml += `<tr class="clickable-row" ondblclick="openDetailFromRow(event,${globalIdx})" ontouchend="handleRowTouch(event,${globalIdx})" title="ダブルタップ／ダブルクリックで詳細表示">`;
     tbHtml += `<td class="row-num">${start + ri + 1}</td>`;
     colDefs.forEach(def => {
       if (def.type === 'virtual') {
@@ -1794,6 +1861,22 @@ function openColPanel() {
 function closeColPanel(e) {
   if (!e || e.target === document.getElementById('colPanelOverlay')) {
     document.getElementById('colPanelOverlay').classList.remove('open');
+  }
+}
+
+// ========== タッチ：ダブルタップで詳細表示（スマホ対応） ==========
+let _lastTouchTime = 0;
+let _lastTouchIdx  = -1;
+function handleRowTouch(event, globalIdx) {
+  const now = Date.now();
+  if (now - _lastTouchTime < 400 && _lastTouchIdx === globalIdx) {
+    event.preventDefault();
+    openDetailFromRow(event, globalIdx);
+    _lastTouchTime = 0;
+    _lastTouchIdx  = -1;
+  } else {
+    _lastTouchTime = now;
+    _lastTouchIdx  = globalIdx;
   }
 }
 
