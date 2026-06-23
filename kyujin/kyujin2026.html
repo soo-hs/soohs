@@ -555,7 +555,7 @@
     z-index: 300;
     padding: 20px;
   }
-  .modal-overlay.open { display: flex; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; align-items: flex-start; justify-content: flex-start; }
   .modal {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -741,7 +741,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 0;
   }
   .single-card .detail-item { min-width: 0; }
   .single-card .detail-item.full { grid-column: 1 / -1; min-width: 0; }
