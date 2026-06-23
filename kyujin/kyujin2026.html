@@ -590,8 +590,9 @@
     padding: 8px 12px;
   }
   .detail-item.full { grid-column: 1 / -1; }
-  .detail-label { font-size: 10px; color: var(--accent); font-weight: 600; letter-spacing: 0.05em; margin-bottom: 3px; }
-  .detail-orig { font-size: 10px; color: var(--text-dim); margin-bottom: 4px; }
+  .detail-label-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; }
+  .detail-label { font-size: 10px; color: var(--accent); font-weight: 600; letter-spacing: 0.05em; white-space: nowrap; }
+  .detail-orig { font-size: 10px; color: var(--text-dim); white-space: nowrap; }
   .detail-value { font-size: 12px; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
   .detail-value.empty { color: var(--text-dim); font-style: italic; }
   .detail-item.focus-target {
@@ -1826,8 +1827,10 @@ function openDetail(globalIdx, focusColIdx) {
     return escaped.replace(re, m => `<mark class="hit">${m}</mark>`);
   }
 
+  const MODAL_HIDDEN_FIELDS = new Set(['求人年度']);
   let html = '';
   headers.forEach((orig, i) => {
+    if (MODAL_HIDDEN_FIELDS.has(orig)) return;
     const short = FIELD_MAP[orig] || orig;
     const val = row[i] !== undefined ? row[i] : '';
     const clean = val.replace(/\\r\\n/g, '\n');
@@ -1835,8 +1838,7 @@ function openDetail(globalIdx, focusColIdx) {
     const isLong = longFields.has(orig) || clean.length > 60;
     const isFocus = (focusColIdx !== undefined && i === focusColIdx);
     html += `<div class="detail-item ${isLong ? 'full' : ''}" data-ci="${i}">
-      <div class="detail-label">${short}</div>
-      <div class="detail-orig">${orig}</div>
+      <div class="detail-label-row"><div class="detail-label">${short}</div><div class="detail-orig">${orig}</div></div>
       <div class="detail-value ${isEmpty ? 'empty' : ''}">${isEmpty ? '（なし）' : highlightVal(clean)}</div>
     </div>`;
   });
@@ -1949,8 +1951,7 @@ function renderSingle() {
     const isEmpty = !clean || clean.trim() === '' || clean === 'NaN' || clean === 'nan';
     const isLong  = longFields.has(orig) || clean.length > 60;
     html += `<div class="detail-item ${isLong ? 'full' : ''}">
-      <div class="detail-label">${short}</div>
-      <div class="detail-orig">${orig}</div>
+      <div class="detail-label-row"><div class="detail-label">${short}</div><div class="detail-orig">${orig}</div></div>
       <div class="detail-value ${isEmpty ? 'empty' : ''}">${isEmpty ? '（なし）' : escH(clean)}</div>
     </div>`;
   });
