@@ -1272,8 +1272,7 @@ function processCSV(text) {
   });
   if (visibleCols.size === 0) headers.forEach((_, i) => visibleCols.add(i));
 
-  const kanriNumIdx = headers.findIndex(h => h.trim() === '管理番号');
-  sortCol = kanriNumIdx >= 0 ? kanriNumIdx : -1; sortDir = -1; searchQ = ''; currentPage = 1;
+  sortCol = -1; sortDir = 1; searchQ = ''; currentPage = 1;
   qsJobNum = ''; qsOffice = ''; qsPlace = ''; qsSalary = ''; qsBonus = '';
   document.getElementById('searchInput').value = '';
   ['qsJobNum','qsOffice','qsPlace'].forEach(id => {
