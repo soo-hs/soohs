@@ -848,9 +848,9 @@
         <input class="qs-input" id="qsJobNum" type="text" placeholder="例）241100…" oninput="onQsInput('qsJobNum')">
         <button class="qs-clear" id="qsJobNumClear" onclick="clearQs('qsJobNum')" title="クリア">✕</button>
       </div>
-      <!-- 事業所(ｶﾅ)：部分一致 -->
+      <!-- 事業所・事業所カナ：部分一致 -->
       <div class="qs-group">
-        <span class="qs-label"><span class="qs-badge partial">部分</span>事業所(ｶﾅ)</span>
+        <span class="qs-label"><span class="qs-badge partial">部分</span>事業所・事業所カナ</span>
         <input class="qs-input" id="qsOffice" type="text" placeholder="事業所名…" oninput="onQsInput('qsOffice')">
         <button class="qs-clear" id="qsOfficeClear" onclick="clearQs('qsOffice')" title="クリア">✕</button>
       </div>
@@ -1109,7 +1109,7 @@ const DISPLAY_ORDER = [
   '全体従業員数',
   '資本金',
   '雇用形態',
-  '標準職業分類',  // 標準職業分類 & '/' & 標準職業2分類 の結合仮想列
+  '標準職業分類',  // 標準職業分類 & '/' & 標準職業分類2 の結合仮想列
   '職種',
   '求人数',        // 通勤求人数+住込求人数+不問求人数 の合算仮想列
   '月給',
@@ -1121,7 +1121,7 @@ const DISPLAY_ORDER = [
 // 仮想列「求人数」のソース列（簡易名称）
 const KYUJINSU_COLS = ['通勤求人数', '住込求人数', '不問求人数'];
 // 仮想列「標準職業分類」のソース列（簡易名称）
-const SHOKUGYO_COLS = ['標準職業分類', '標準職業2分類'];
+const SHOKUGYO_COLS = ['標準職業分類', '標準職業分類2'];
 
 // ========== 状態 ==========
 let allRows = [];
@@ -1682,7 +1682,7 @@ function renderTable() {
       if (def.key === '求人数') {
         thHtml += `<th data-colidx="${idx}" title="通勤求人数＋住込求人数＋不問求人数"${wStyle} ${dragAttrs}>求人数 <span class="sort-icon">-</span><span class="col-resizer" draggable="false" onmousedown="startResize(event,${idx})"></span></th>`;
       } else if (def.key === '標準職業分類') {
-        thHtml += `<th data-colidx="${idx}" title="標準職業分類／標準職業2分類"${wStyle} ${dragAttrs}>標準職業分類 <span class="sort-icon">-</span><span class="col-resizer" draggable="false" onmousedown="startResize(event,${idx})"></span></th>`;
+        thHtml += `<th data-colidx="${idx}" title="標準職業分類／標準職業分類2"${wStyle} ${dragAttrs}>標準職業分類 <span class="sort-icon">-</span><span class="col-resizer" draggable="false" onmousedown="startResize(event,${idx})"></span></th>`;
       }
     } else {
       const sortIcon = sortCol === def.ci ? (sortDir === 1 ? '▲' : '▼') : '⇅';
