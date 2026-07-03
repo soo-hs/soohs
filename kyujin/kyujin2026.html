@@ -1195,38 +1195,56 @@ function colKey(def) {
 
 // ========== CSV パーサ ==========
 function parseCSV(text) {
-  const lines = text.split(/\r?\n/);
   const result = [];
-  let inQuote = false;
+  let row = [];
   let field = '';
-  const fields = [];
+  let inQuote = false;
+  let fieldStart = true; // このフィールドの先頭文字をこれから読むか
 
   function pushField() {
-    fields.push(field);
+    row.push(field);
     field = '';
+    fieldStart = true;
+  }
+  function pushRow() {
+    pushField();
+    result.push(row);
+    row = [];
   }
 
-  for (let li = 0; li < lines.length; li++) {
-    const line = lines[li];
-    if (li > 0 && !inQuote) { result.push(fields.splice(0)); }
-    for (let ci = 0; ci < line.length; ci++) {
-      const ch = line[ci];
-      if (inQuote) {
-        if (ch === '"') {
-          if (line[ci+1] === '"') { field += '"'; ci++; }
-          else { inQuote = false; }
-        } else { field += ch; }
+  const len = text.length;
+  for (let i = 0; i < len; i++) {
+    const ch = text[i];
+    if (inQuote) {
+      if (ch === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; }
+        else { inQuote = false; }
       } else {
-        if (ch === '"') { inQuote = true; }
-        else if (ch === ',') { pushField(); }
-        else { field += ch; }
+        field += ch;
       }
+      continue;
     }
-    if (inQuote) field += '\n';
-    else if (li === lines.length - 1) pushField();
+    if (ch === '"' && fieldStart) {
+      // フィールド先頭の「"」のみをクォート開始とみなす（RFC4180準拠）
+      inQuote = true;
+      fieldStart = false;
+    } else if (ch === '"') {
+      // フィールド途中に現れた「"」は読み込まず除去する
+    } else if (ch === ',') {
+      pushField();
+    } else if (ch === '\r') {
+      // 無視（\r\n の \r 部分）
+    } else if (ch === '\n') {
+      pushRow();
+    } else {
+      field += ch;
+      fieldStart = false;
+    }
   }
-  if (fields.length > 0) result.push(fields);
-  return result;
+  // 最終行（末尾に改行が無い場合）を処理
+  if (field !== '' || row.length > 0) { pushRow(); }
+  // 空行を除去
+  return result.filter(r => !(r.length === 1 && r[0] === ''));
 }
 
 // ========== ファイル読み込み ==========
