@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>都道府県別 求人分類 集計</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: "Noto Sans CJK JP","Yu Gothic","Meiryo",sans-serif;
+    background: #e8eaee;
+    color: #1f1f1f;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  /* A4サイズに固定：210mm × 297mm */
+  .sheet {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid #c9c9c9;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 10mm 12mm 8mm;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    border-top: 2px solid #4472C4;
+    border-bottom: 2px solid #4472C4;
+    padding: 6px 0;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+  h1.title {
+    text-align: left;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+  }
+  .summary {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 22px;
+    flex-wrap: wrap;
+  }
+  .summary .item {
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .summary .item .label {
+    color: #333;
+  }
+  .summary .item .value {
+    color: #1f4e9c;
+    font-size: 14px;
+    margin-left: 5px;
+  }
+  .summary .sub {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .summary .sub .box {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .summary .sub .box .num {
+    font-size: 13px;
+    color: #1f1f1f;
+    display: block;
+  }
+  .tables {
+    display: flex;
+    gap: 10mm;
+    justify-content: space-between;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .tables table {
+    flex: 1 1 0;
+    align-self: flex-start;
+  }
+  table {
+    border-collapse: collapse;
+    font-size: 9.5px;
+    table-layout: fixed;
+    width: 100%;
+  }
+  thead th {
+    background: #ffffff;
+    color: #000000;
+    font-weight: 900;
+    padding: 10.6px 2px;
+    text-align: center;
+    border: 2px solid #000000;
+    font-size: 9.5px;
+  }
+  tbody td {
+    border: 2px solid #000000;
+    padding: 7.1px 4px;
+    text-align: center;
+  }
+  td.c-no { width: 13%; color: #333; font-size: 12px; }
+  td.c-pref { width: 22%; font-weight: 700; font-size: 12px; }
+  td.c-cls { width: 28%; }
+  td.c-ichi {
+    width: 20%;
+    text-align: right;
+    font-size: 13px;
+    font-weight: 400;
+    padding-right: 6px;
+  }
+  td.c-ni {
+    width: 17%;
+    text-align: right;
+    font-size: 12px;
+    color: #555;
+    padding-right: 6px;
+  }
+  tbody tr:nth-child(even) {
+    background: #f7f9fc;
+  }
+  .updated {
+    text-align: right;
+    font-size: 8.5px;
+    color: #888;
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+  .status {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+    padding: 30px 0;
+  }
+  .status.error {
+    color: #b3261e;
+    font-weight: 700;
+    white-space: pre-wrap;
+  }
+  @media print {
+    body {
+      background: #fff;
+    }
+    .sheet {
+      box-shadow: none;
+      border: none;
+      margin: 0;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="header-row">
+      <h1 class="title">都道府県別 求人分類</h1>
+      <div class="summary">
+        <div class="item"><span class="label">求人票総数:</span><span class="value" id="totalRecords">-</span></div>
+        <div class="item"><span class="label">求人総数:</span><span class="value" id="totalJobs">-</span></div>
+        <div class="sub">
+          <div class="box">一次募集<span class="num" id="totalIchiji">-</span></div>
+          <div class="box">二次募集<span class="num" id="totalNiji">0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="statusArea" class="status">データを読み込み中です…</div>
+
+    <div class="tables" id="tablesArea" style="display:none;">
+      <table>
+        <thead>
+          <tr><th>番号</th><th>都道府県</th><th>地域分類</th><th>一次募集</th><th>二次募集</th></tr>
+        </thead>
+        <tbody id="leftBody"></tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr><th>番号</th><th>都道府県</th><th>地域分類</th><th>一次募集</th><th>二次募集</th></tr>
+        </thead>
+        <tbody id="rightBody"></tbody>
+      </table>
+    </div>
+
+    <div class="updated" id="updatedNote"></div>
+  </div>
+
+<script>
+const CSV_URL = 'https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv';
+
+// 左表：地域分類が個別に設定されている都道府県（都道府県分類表.xlsx より）
+const LEFT_ROWS = [
+  [46,'鹿児島','【鹿児島Ａ】','鹿児島A'],
+  [46,'鹿児島','【鹿児島Ｂ】','鹿児島B'],
+  [45,'宮崎','宮崎','宮崎'],
+  [44,'大分','九州','大分'],
+  [43,'熊本','九州','熊本'],
+  [42,'長崎','九州','長崎'],
+  [41,'佐賀','九州','佐賀'],
+  [40,'福岡','九州','福岡'],
+  [27,'大阪','関西Ａ','大阪'],
+  [25,'滋賀','関西Ｂ','滋賀'],
+  [26,'京都','関西Ｂ','京都'],
+  [28,'兵庫','関西Ｃ','兵庫'],
+  [29,'奈良','関西Ｃ','奈良'],
+  [23,'愛知','中京Ａ','愛知'],
+  [24,'三重','中京Ｂ','三重'],
+  [22,'静岡','中京Ｂ','静岡'],
+  [21,'岐阜','中京Ｂ','岐阜'],
+  [13,'東京','関東Ａ','東京'],
+  [14,'神奈川','関東Ｂ','神奈川'],
+  [12,'千葉','関東Ｂ','千葉'],
+  [11,'埼玉','関東Ｂ','埼玉'],
+  [10,'群馬','関東Ｂ','群馬'],
+  [9,'栃木','関東Ｂ','栃木'],
+  [8,'茨城','関東Ｂ','茨城'],
+];
+
+// 右表：地域分類が「その他」に一括される都道府県
+const RIGHT_ROWS = [
+  [1,'北海道'],[2,'青森'],[3,'岩手'],[4,'宮城'],[5,'秋田'],[6,'山形'],[7,'福島'],
+  [15,'新潟'],[16,'富山'],[17,'石川'],[18,'福井'],[19,'山梨'],[20,'長野'],
+  [30,'和歌山'],[31,'鳥取'],[32,'島根'],[33,'岡山'],[34,'広島'],[35,'山口'],
+  [36,'徳島'],[37,'香川'],[38,'愛媛'],[39,'高知'],[47,'沖縄'],
+];
+
+const PREFS = ['北海道','青森','岩手','宮城','秋田','山形','福島','茨城','栃木','群馬','埼玉','千葉','東京','神奈川',
+'新潟','富山','石川','福井','山梨','長野','岐阜','静岡','愛知','三重','滋賀','京都','大阪','兵庫','奈良','和歌山',
+'鳥取','島根','岡山','広島','山口','徳島','香川','愛媛','高知','福岡','佐賀','長崎','熊本','大分','宮崎','鹿児島','沖縄'];
+
+const KAGOSHIMA_A_CITIES = new Set(['曽於市','志布志市','曽於郡大崎町']);
+
+function suffixFor(pref) {
+  if (pref === '東京') return '都';
+  if (pref === '大阪' || pref === '京都') return '府';
+  return '県';
+}
+
+function parsePrefCity(addr) {
+  if (!addr) return [null, ''];
+  if (addr.startsWith('北海道')) return ['北海道', addr.slice(3)];
+  for (const p of PREFS) {
+    if (p === '北海道') continue;
+    const full = p + suffixFor(p);
+    if (addr.startsWith(full)) return [p, addr.slice(full.length)];
+  }
+  return [null, addr];
+}
+
+function classify(pref, city) {
+  if (pref === '鹿児島') {
+    return KAGOSHIMA_A_CITIES.has(city) ? '鹿児島A' : '鹿児島B';
+  }
+  return pref;
+}
+
+// RFC4180 準拠の簡易CSVパーサー（引用符・改行・カンマ対応）
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let field = '';
+  let inQuotes = false;
+  let i = 0;
+  const n = text.length;
+  while (i < n) {
+    const ch = text[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (text[i + 1] === '"') { field += '"'; i += 2; continue; }
+        inQuotes = false; i++; continue;
+      }
+      field += ch; i++; continue;
+    } else {
+      if (ch === '"') { inQuotes = true; i++; continue; }
+      if (ch === ',') { row.push(field); field = ''; i++; continue; }
+      if (ch === '\r') { i++; continue; }
+      if (ch === '\n') { row.push(field); rows.push(row); row = []; field = ''; i++; continue; }
+      field += ch; i++; continue;
+    }
+  }
+  if (field.length > 0 || row.length > 0) { row.push(field); rows.push(row); }
+  return rows.filter(r => r.length > 1 || (r.length === 1 && r[0] !== ''));
+}
+
+function fmt(n) { return n.toLocaleString('ja-JP'); }
+
+async function main() {
+  const statusArea = document.getElementById('statusArea');
+  try {
+    const res = await fetch(CSV_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTPエラー: ${res.status}`);
+    const text = await res.text();
+    const rows = parseCSV(text);
+    if (rows.length < 2) throw new Error('CSVにデータがありません');
+
+    // BOM除去
+    const header = rows[0].map(h => h.replace(/^\uFEFF/, ''));
+    const idxAddr = header.indexOf('就業場所住所（市区町村）');
+    const idxTsukin = header.indexOf('求人数（通勤）');
+    const idxSumikomi = header.indexOf('求人数（住込）');
+    const idxFumon = header.indexOf('求人数（不問）');
+    if (idxAddr === -1 || idxTsukin === -1 || idxSumikomi === -1 || idxFumon === -1) {
+      throw new Error('必要な列が見つかりません（列構成が変更された可能性があります）');
+    }
+
+    const dataRows = rows.slice(1).filter(r => r.some(v => v !== ''));
+    const agg = {};
+    let totalJobs = 0;
+
+    for (const r of dataRows) {
+      const addr = (r[idxAddr] || '').trim();
+      const t = parseInt(r[idxTsukin], 10) || 0;
+      const s = parseInt(r[idxSumikomi], 10) || 0;
+      const f = parseInt(r[idxFumon], 10) || 0;
+      const cnt = t + s + f;
+      const [pref, city] = parsePrefCity(addr);
+      if (!pref) continue;
+      const group = classify(pref, city);
+      agg[group] = (agg[group] || 0) + cnt;
+      totalJobs += cnt;
+    }
+
+    const leftBody = document.getElementById('leftBody');
+    const rightBody = document.getElementById('rightBody');
+    leftBody.innerHTML = '';
+    rightBody.innerHTML = '';
+
+    for (const [no, pref, cls, key] of LEFT_ROWS) {
+      const val = agg[key] || 0;
+      leftBody.insertAdjacentHTML('beforeend', `
+      <tr>
+        <td class="c-no">${no}</td>
+        <td class="c-pref">${pref}</td>
+        <td class="c-cls">${cls}</td>
+        <td class="c-ichi">${fmt(val)}</td>
+        <td class="c-ni">0</td>
+      </tr>`);
+    }
+
+    for (const [no, pref] of RIGHT_ROWS) {
+      const val = agg[pref] || 0;
+      rightBody.insertAdjacentHTML('beforeend', `
+      <tr>
+        <td class="c-no">${no}</td>
+        <td class="c-pref">${pref}</td>
+        <td class="c-cls">その他</td>
+        <td class="c-ichi">${fmt(val)}</td>
+        <td class="c-ni">0</td>
+      </tr>`);
+    }
+
+    document.getElementById('totalRecords').textContent = fmt(dataRows.length);
+    document.getElementById('totalJobs').textContent = fmt(totalJobs);
+    document.getElementById('totalIchiji').textContent = fmt(totalJobs);
+    document.getElementById('totalNiji').textContent = '0';
+
+    const now = new Date();
+    document.getElementById('updatedNote').textContent =
+      `データ取得元: ${CSV_URL}（令和8年度一次募集）／集計対象求人票数: ${dataRows.length}件／取得日時: ${now.toLocaleString('ja-JP')}`;
+
+    statusArea.style.display = 'none';
+    document.getElementById('tablesArea').style.display = 'flex';
+  } catch (err) {
+    statusArea.textContent = 'データの読み込みに失敗しました。\n' + err.message +
+      '\n\n※ このファイルをローカルで直接開いた場合（file://）は、ブラウザのセキュリティ制限により外部CSVを取得できないことがあります。\nWebサーバー経由（http/https）で開くか、CORSが許可された環境でお試しください。';
+    statusArea.classList.add('error');
+  }
+}
+
+main();
+</script>
+</body>
+</html>
