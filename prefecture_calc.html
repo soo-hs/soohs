@@ -101,7 +101,7 @@
   }
   table {
     border-collapse: collapse;
-    font-size: 9.5px;
+    font-size: 11px;
     table-layout: fixed;
     width: 100%;
   }
@@ -112,27 +112,28 @@
     padding: 10.6px 2px;
     text-align: center;
     border: 2px solid #000000;
-    font-size: 9.5px;
+    font-size: 14px;
   }
   tbody td {
     border: 2px solid #000000;
-    padding: 7.1px 4px;
+    padding: 3.7px 4px;
     text-align: center;
   }
-  td.c-no { width: 13%; color: #333; font-size: 12px; }
-  td.c-pref { width: 22%; font-weight: 700; font-size: 12px; }
-  td.c-cls { width: 28%; }
+  td.c-no { width: 13%; color: #333; font-size: 14px; }
+  td.c-pref { width: 22%; font-weight: 700; font-size: 14px; }
+  td.c-cls { width: 28%; font-size: 12px; }
+  td.c-cls.c-cls-small { font-size: 10px; font-weight: 700; }
   td.c-ichi {
     width: 20%;
     text-align: right;
-    font-size: 13px;
-    font-weight: 400;
+    font-size: 18px;
+    font-weight: 700;
     padding-right: 6px;
   }
   td.c-ni {
     width: 17%;
     text-align: right;
-    font-size: 12px;
+    font-size: 17px;
     color: #555;
     padding-right: 6px;
   }
@@ -346,11 +347,13 @@ async function main() {
 
     for (const [no, pref, cls, key] of LEFT_ROWS) {
       const val = agg[key] || 0;
+      const isKagoshimaLabel = (cls === '【鹿児島Ａ】' || cls === '【鹿児島Ｂ】');
+      const clsClass = isKagoshimaLabel ? 'c-cls c-cls-small' : 'c-cls';
       leftBody.insertAdjacentHTML('beforeend', `
       <tr>
         <td class="c-no">${no}</td>
         <td class="c-pref">${pref}</td>
-        <td class="c-cls">${cls}</td>
+        <td class="${clsClass}">${cls}</td>
         <td class="c-ichi">${fmt(val)}</td>
         <td class="c-ni">0</td>
       </tr>`);
