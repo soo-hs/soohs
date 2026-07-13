@@ -1164,7 +1164,7 @@ const PREFECTURES = [
 
 (function initFilterSelects() {
   const prefSelect = document.getElementById('filter-pref');
-  prefSelect.innerHTML = PREFECTURES.map(p =>
+  prefSelect.innerHTML = '<option value="">－－－</option>' + PREFECTURES.map(p =>
     `<option value="${p}"${p === '鹿児島県' ? ' selected' : ''}>${p}</option>`
   ).join('');
 })();
