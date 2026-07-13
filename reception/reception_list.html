@@ -227,11 +227,11 @@
   /* 各列の初期幅（最大350px＝全角50文字相当） */
   .td-no      { width: 36px; }
   .td-no .cell-inner { text-align:center; color:var(--muted); font-size:11px; }
-  .td-type    { width: 52px; }
+  .td-type    { width: 90px; }
   .td-type .cell-inner { text-align:center; }
-  .td-date    { width: 52px; }
+  .td-date    { width: 84px; }
   .td-date .cell-inner { text-align:center; font-weight:500; }
-  .td-company { width: 13%; min-width: 80px; }
+  .td-company { width: 18%; min-width: 140px; }
   .td-company .cell-inner { font-weight:600; }
   .td-visitor { width: 7%; min-width: 60px; }
   .td-visitor .cell-inner { color:var(--muted); }
@@ -704,6 +704,21 @@ async function fetchCSV(url, type) {
 
 function cell(r, i) { return (r[i] || '').trim().replace(/\n/g, ' '); }
 function mark(v) { return (v==='○'||v==='〇'||v==='●') ? '○' : (v||'').trim(); }
+function fmtDate(s) {
+  s = (s || '').trim();
+  if (!s) return s;
+  const pad = n => String(n).padStart(2, '0');
+  // 「4月16日」「4月16」のような日本語表記
+  let m = s.match(/(\d+)\s*月\s*(\d+)\s*日?/);
+  if (m) return `${pad(m[1])}/${pad(m[2])}`;
+  // 「4/16」「2026/4/16」のようなスラッシュ区切り（末尾2つを月/日とみなす）
+  m = s.match(/(\d+)\s*\/\s*(\d+)(?:\s*\/\s*(\d+))?/);
+  if (m) {
+    if (m[3] !== undefined) return `${pad(m[2])}/${pad(m[3])}`;
+    return `${pad(m[1])}/${pad(m[2])}`;
+  }
+  return s;
+}
 function escHtml(s) {
   return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
@@ -773,7 +788,7 @@ function buildRow(obj, idx) {
   const vals = [
     cell(r,0)||idx,
     badge,
-    escHtml(cell(r,1)),
+    escHtml(fmtDate(cell(r,1))),
     escHtml(cell(r,2)),
     escHtml(cell(r,3)),
     escHtml(cell(r,4)),
@@ -819,7 +834,7 @@ const MARK_LABELS = ['Ｇ科','Ａ科','Ｍ科','Ｂ科','見学'];
 
 function openModal({ type, r, idx }) {
   const company = cell(r,2) || '（企業名なし）';
-  const date    = cell(r,1);
+  const date    = fmtDate(cell(r,1));
   const typeBadge = type === 'IN'
     ? '<span class="badge badge-in">県内</span>'
     : '<span class="badge badge-out">県外</span>';
@@ -911,7 +926,7 @@ function exportCSV() {
     const vals = [
       cell(r,0) || idx,
       typeLabel,
-      cell(r,1),
+      fmtDate(cell(r,1)),
       cell(r,2),
       cell(r,3),
       cell(r,4),
@@ -1117,7 +1132,7 @@ function buildCard(obj, idx) {
     <div class="card-head ${headCls}">
       <div style="flex:1;min-width:0;">
         <div class="card-company">${escHtml(cell(r,2)) || '（企業名なし）'}</div>
-        <div class="card-date">${badge} &nbsp;${escHtml(cell(r,1))}</div>
+        <div class="card-date">${badge} &nbsp;${escHtml(fmtDate(cell(r,1)))}</div>
       </div>
       <div style="font-size:10px;color:var(--muted);white-space:nowrap;">No.${cell(r,0)||idx}</div>
     </div>
@@ -1159,7 +1174,9 @@ async function loadAll() {
       fetchCSV(CSV_URLS.OUT, 'OUT')
     ]);
     const sortKey = s => {
-      const m = (s||'').match(/(\d+)\/(\d+)/);
+      s = s || '';
+      let m = s.match(/(\d+)\s*月\s*(\d+)/);
+      if (!m) m = s.match(/(\d+)\s*\/\s*(\d+)/);
       return m ? parseInt(m[1])*100 + parseInt(m[2]) : 9999;
     };
     allRows = [...inRows, ...outRows].sort(
@@ -1182,6 +1199,14 @@ async function loadAll() {
 
     initColResize();
     initRowResize();
+
+    // 初期表示は日付順（昇順）でソート済みのため、日付列にソート状態を反映
+    sortCol = 2;
+    sortDir = 1;
+    document.querySelectorAll('#thead-row th').forEach((th, i) => {
+      th.classList.remove('sort-asc', 'sort-desc');
+      if (i === sortCol) th.classList.add('sort-asc');
+    });
 
     document.getElementById('loading').style.display = 'none';
     document.getElementById('table-wrap').style.display = 'block';
