@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>職業適性診断｜曽於高等学校 進路指導室</title>
+<style>
+  :root{
+    --forest: #1b4332;
+    --forest-deep: #0e2b21;
+    --forest-soft: #2d6a4f;
+    --gold: #c9a227;
+    --gold-light: #e8c766;
+    --cream: #faf5e6;
+    --paper: #fffdf8;
+    --ink: #2b2b26;
+    --ink-soft: #5c574a;
+    --line: #e4dcc4;
+    --good: #3a7d5c;
+    --shadow: 0 10px 30px rgba(27,77,50,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family: "Hiragino Maru Gothic ProN","Yu Gothic","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    background:
+      radial-gradient(circle at 8% 6%, rgba(201,162,39,0.10), transparent 40%),
+      radial-gradient(circle at 92% 92%, rgba(45,106,79,0.12), transparent 40%),
+      var(--cream);
+    color:var(--ink);
+    min-height:100vh;
+    line-height:1.7;
+  }
+  .wrap{ max-width:760px; margin:0 auto; padding:0 18px 60px; }
+
+  /* ---------- header ---------- */
+  header.top{
+    background: linear-gradient(135deg, var(--forest) 0%, var(--forest-deep) 100%);
+    color:#fff;
+    padding:26px 18px 22px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  header.top::before{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(232,199,102,0.18), transparent 35%),
+      radial-gradient(circle at 85% 80%, rgba(232,199,102,0.14), transparent 35%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12.5px; letter-spacing:.14em;
+    color: var(--gold-light);
+    background: rgba(255,255,255,0.08);
+    border:1px solid rgba(232,199,102,0.35);
+    padding:5px 14px; border-radius:999px;
+    margin-bottom:12px;
+  }
+  header.top h1{
+    margin:0; font-size: clamp(22px, 5.4vw, 30px);
+    font-weight:800; letter-spacing:.02em;
+    position:relative;
+  }
+  header.top p.sub{
+    margin:8px 0 0; font-size:13.5px; color:rgba(255,255,255,0.78);
+    position:relative;
+  }
+  .leaf-divider{
+    height:4px; width:64px; margin:14px auto 0;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius:4px;
+  }
+
+  main{ padding-top:26px; }
+
+  /* ---------- generic card ---------- */
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    padding:26px 22px;
+  }
+
+  /* ---------- start screen ---------- */
+  .start-illust{
+    font-size:44px; text-align:center; margin-bottom:6px;
+  }
+  #screen-start h2{
+    text-align:center; margin:0 0 6px; font-size:20px; color:var(--forest);
+  }
+  #screen-start .lead{
+    text-align:center; color:var(--ink-soft); font-size:14.5px; margin:0 0 20px;
+  }
+  .info-grid{
+    display:grid; grid-template-columns: 1fr 1fr; gap:10px;
+    margin:18px 0 22px;
+  }
+  .info-chip{
+    background: rgba(45,106,79,0.06);
+    border:1px solid rgba(45,106,79,0.16);
+    border-radius:14px;
+    padding:12px 12px;
+    font-size:12.8px;
+    color:var(--forest);
+    display:flex; align-items:flex-start; gap:8px;
+  }
+  .info-chip .n{ font-size:18px; line-height:1; }
+  .filter-grid{
+    display:grid; grid-template-columns: 1fr 1fr; gap:10px;
+    margin:0 0 16px;
+  }
+  .filter-item{ display:flex; flex-direction:column; gap:5px; }
+  .filter-item label{
+    font-size:11.5px; font-weight:700; color:var(--forest);
+    display:flex; align-items:center; gap:4px;
+  }
+  .filter-item select{
+    width:100%; appearance:none; -webkit-appearance:none;
+    background:
+      linear-gradient(45deg, transparent 50%, var(--forest-soft) 50%),
+      linear-gradient(135deg, var(--forest-soft) 50%, transparent 50%),
+      var(--paper);
+    background-position: right 16px center, right 10px center;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat:no-repeat;
+    border:1.5px solid var(--line);
+    border-radius:12px;
+    padding:11px 30px 11px 12px;
+    font-size:13.5px; color:var(--ink);
+    font-family:inherit;
+    cursor:pointer;
+  }
+  .filter-item select:focus{ outline:none; border-color:var(--forest-soft); }
+
+  .cta-btn{
+    display:block; width:100%;
+    background: linear-gradient(135deg, var(--forest-soft), var(--forest));
+    color:#fff; border:none; border-radius:16px;
+    padding:16px 20px; font-size:16.5px; font-weight:700;
+    letter-spacing:.02em;
+    cursor:pointer;
+    box-shadow: 0 8px 20px rgba(27,77,50,0.28);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .cta-btn:hover{ transform: translateY(-2px); box-shadow: 0 12px 26px rgba(27,77,50,0.34); }
+  .cta-btn:active{ transform: translateY(0); }
+  .note{ text-align:center; font-size:12px; color:var(--ink-soft); margin-top:10px; }
+
+  /* ---------- quiz screen ---------- */
+  #screen-quiz{ display:none; }
+  .progress-wrap{ margin-bottom:18px; }
+  .progress-row{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; }
+  .progress-row .qn{ font-size:13px; font-weight:700; color:var(--forest); }
+  .progress-row .qtotal{ font-size:12px; color:var(--ink-soft); }
+  .progress-bar{
+    height:10px; border-radius:999px; background:#ece4c8; overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .progress-bar > div{
+    height:100%; border-radius:999px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    transition: width .35s ease;
+  }
+  .q-card{
+    background:var(--paper); border:1px solid var(--line); border-radius:20px;
+    box-shadow:var(--shadow); padding:26px 22px; min-height:auto;
+  }
+  .q-icon{ font-size:26px; margin-bottom:8px; }
+  .q-text{
+    font-size:18px; font-weight:800; color:var(--forest); margin:0 0 18px;
+    line-height:1.55;
+  }
+  .options{ display:flex; flex-direction:column; gap:10px; }
+  .opt-btn{
+    text-align:left;
+    display:flex; align-items:center; gap:12px;
+    background: var(--cream);
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    padding:14px 16px;
+    font-size:14.8px;
+    color:var(--ink);
+    cursor:pointer;
+    transition: all .15s ease;
+  }
+  .opt-btn .badge{
+    flex:0 0 auto;
+    width:26px; height:26px; border-radius:8px;
+    background:#fff; border:1.5px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-size:12.5px; font-weight:800; color:var(--forest-soft);
+  }
+  .opt-btn:hover{
+    border-color: var(--gold);
+    background: #fffaf0;
+    transform: translateX(2px);
+  }
+  .opt-btn:active{ transform: scale(0.99); }
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    margin-top:16px; font-size:13px; color:var(--ink-soft);
+    background:none; border:none; cursor:pointer; padding:4px 0;
+  }
+  .back-link:hover{ color:var(--forest); }
+
+  /* ---------- loading ---------- */
+  #screen-loading{ display:none; text-align:center; padding:60px 10px; }
+  .spinner{
+    width:52px; height:52px; margin:0 auto 18px;
+    border-radius:50%;
+    border:5px solid rgba(45,106,79,0.15);
+    border-top-color: var(--forest-soft);
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+  #screen-loading p{ color:var(--ink-soft); font-size:14px; }
+
+  /* ---------- results ---------- */
+  #screen-result{ display:none; }
+  .result-hero{
+    text-align:center; padding:8px 6px 4px;
+  }
+  .result-hero .icon{ font-size:52px; }
+  .result-hero h2{
+    margin:6px 0 4px; color:var(--forest); font-size:22px;
+  }
+  .result-hero .type-name{
+    display:inline-block; margin:6px 0 10px;
+    font-size:20px; font-weight:900; color:#fff;
+    background: linear-gradient(135deg, var(--gold), #b8901f);
+    padding:7px 18px; border-radius:999px;
+    box-shadow: 0 6px 16px rgba(201,162,39,0.35);
+  }
+  .result-hero .type-desc{
+    color:var(--ink-soft); font-size:14px; max-width:520px; margin:0 auto;
+  }
+
+  .score-bars{ margin:22px 0 6px; }
+  .score-row{ display:flex; align-items:center; gap:10px; margin-bottom:9px; }
+  .score-row .label{ flex:0 0 108px; font-size:12px; color:var(--ink-soft); text-align:right; }
+  .score-row .track{ flex:1; height:9px; background:#ece4c8; border-radius:999px; overflow:hidden; }
+  .score-row .fill{ height:100%; background: linear-gradient(90deg, var(--forest-soft), var(--forest)); border-radius:999px; }
+  .score-row.top .fill{ background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+  .score-row.top .label{ color:var(--forest); font-weight:800; }
+
+  .section-title{
+    display:flex; align-items:center; gap:10px;
+    margin:34px 0 14px;
+  }
+  .section-title h3{ font-size:15.5px; color:var(--forest); margin:0; }
+  .section-title .line{ flex:1; height:1px; background:var(--line); }
+
+  .company-card{
+    background:var(--paper); border:1px solid var(--line); border-radius:16px;
+    padding:18px 18px; margin-bottom:14px; box-shadow: 0 4px 14px rgba(27,77,50,0.06);
+    position:relative;
+  }
+  .company-card .rank{
+    position:absolute; top:-10px; left:16px;
+    background: var(--forest); color:#fff; font-size:11.5px; font-weight:800;
+    padding:3px 10px; border-radius:999px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+  }
+  .company-card h4{
+    margin:6px 0 2px; font-size:16.5px; color:var(--forest); font-weight:800;
+  }
+  .company-card .jobtype{
+    font-size:13.5px; color:var(--ink); font-weight:700; margin-bottom:10px;
+  }
+  .meta-grid{
+    display:grid; grid-template-columns: 1fr 1fr; gap:8px 14px;
+    font-size:12.5px; color:var(--ink-soft); margin-bottom:10px;
+  }
+  .meta-grid .mi b{ display:block; color:var(--ink); font-size:12px; font-weight:700; margin-bottom:1px; }
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+  .chip{
+    font-size:11.5px; padding:4px 10px; border-radius:999px;
+    background: rgba(45,106,79,0.08); color:var(--forest-soft); border:1px solid rgba(45,106,79,0.16);
+    font-weight:700;
+  }
+  .chip.gold{ background: rgba(201,162,39,0.12); color:#8a6c14; border-color: rgba(201,162,39,0.3); }
+  .desc-snip{
+    font-size:12.6px; color:var(--ink-soft); line-height:1.6;
+    background: var(--cream); border-radius:10px; padding:10px 12px;
+    white-space:pre-line;
+  }
+  .id-row{
+    display:flex; gap:16px; margin-top:10px; font-size:11.5px; color:#9a917a;
+  }
+
+  .empty-note{
+    text-align:center; color:var(--ink-soft); font-size:13.5px;
+    padding:24px 10px;
+  }
+
+  .footer-actions{ margin-top:30px; display:flex; flex-direction:column; gap:10px; }
+  .secondary-btn{
+    background:#fff; border:1.5px solid var(--forest); color:var(--forest);
+    border-radius:14px; padding:13px; font-size:14.5px; font-weight:700; cursor:pointer;
+  }
+  .secondary-btn:hover{ background: rgba(45,106,79,0.06); }
+
+  footer.page-foot{
+    text-align:center; color:#a79f88; font-size:11.5px; margin-top:36px;
+  }
+
+  @media (max-width:420px){
+    .info-grid{ grid-template-columns: 1fr; }
+    .filter-grid{ grid-template-columns: 1fr; }
+    .score-row .label{ flex-basis:88px; font-size:11px; }
+    .meta-grid{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap" style="padding:0;">
+    <span class="eyebrow">🌿 曽於高等学校 進路指導室</span>
+    <h1>職業適性診断</h1>
+    <p class="sub">21の質問にこたえて、あなたに合いそうなお仕事＆企業をさがしてみよう</p>
+    <div class="leaf-divider"></div>
+  </div>
+</header>
+
+<div class="wrap">
+<main>
+
+  <!-- ============ スタート画面 ============ -->
+  <section id="screen-start" class="card">
+    <div class="start-illust">🧭🌱🤝</div>
+    <h2>あなたにぴったりの仕事、見つけよう</br>【ＡＩが求人票よりあなたに合った企業を検索して提案します。】</h2>
+    <p class="lead">かんたんな質問に答えるだけで、あなたのタイプを診断し、実際の求人情報の中からおすすめの企業を紹介します。</p>
+
+    <div class="info-grid">
+      <div class="info-chip"><span class="n">📝</span><span>全部で21問。直感で選んでOK！所要時間は約3分です。</span></div>
+      <div class="info-chip"><span class="n">🏢</span><span>診断結果をもとに、最新の求人データから会社を自動でピックアップします。</span></div>
+      <div class="info-chip"><span class="n">✅</span><span>正解・不正解はありません。今の気持ちで気軽に答えてください。</span></div>
+      <div class="info-chip"><span class="n">🔄</span><span>結果はいつでも診断し直せます。何度でもチャレンジOK！</span></div>
+    </div>
+
+    <div class="filter-grid">
+      <div class="filter-item">
+        <label>📍 都道府県</label>
+        <select id="sel-pref">
+          <option value="北海道">北海道</option>
+          <option value="青森県">青森県</option>
+          <option value="岩手県">岩手県</option>
+          <option value="宮城県">宮城県</option>
+          <option value="秋田県">秋田県</option>
+          <option value="山形県">山形県</option>
+          <option value="福島県">福島県</option>
+          <option value="茨城県">茨城県</option>
+          <option value="栃木県">栃木県</option>
+          <option value="群馬県">群馬県</option>
+          <option value="埼玉県">埼玉県</option>
+          <option value="千葉県">千葉県</option>
+          <option value="東京都">東京都</option>
+          <option value="神奈川県">神奈川県</option>
+          <option value="新潟県">新潟県</option>
+          <option value="富山県">富山県</option>
+          <option value="石川県">石川県</option>
+          <option value="福井県">福井県</option>
+          <option value="山梨県">山梨県</option>
+          <option value="長野県">長野県</option>
+          <option value="岐阜県">岐阜県</option>
+          <option value="静岡県">静岡県</option>
+          <option value="愛知県">愛知県</option>
+          <option value="三重県">三重県</option>
+          <option value="滋賀県">滋賀県</option>
+          <option value="京都府">京都府</option>
+          <option value="大阪府">大阪府</option>
+          <option value="兵庫県">兵庫県</option>
+          <option value="奈良県">奈良県</option>
+          <option value="和歌山県">和歌山県</option>
+          <option value="鳥取県">鳥取県</option>
+          <option value="島根県">島根県</option>
+          <option value="岡山県">岡山県</option>
+          <option value="広島県">広島県</option>
+          <option value="山口県">山口県</option>
+          <option value="徳島県">徳島県</option>
+          <option value="香川県">香川県</option>
+          <option value="愛媛県">愛媛県</option>
+          <option value="高知県">高知県</option>
+          <option value="福岡県">福岡県</option>
+          <option value="佐賀県">佐賀県</option>
+          <option value="長崎県">長崎県</option>
+          <option value="熊本県">熊本県</option>
+          <option value="大分県">大分県</option>
+          <option value="宮崎県">宮崎県</option>
+          <option value="鹿児島県" selected>鹿児島県</option>
+          <option value="沖縄県">沖縄県</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label>💰 月給</label>
+        <select id="sel-salary">
+          <option value="" selected>指定なし</option>
+          <option value=",200000">20万円以下</option>
+          <option value="200000,230000">20万円～23万円</option>
+          <option value="230000,250000">23万円～25万円</option>
+          <option value="250000,300000">25万円～30万円</option>
+          <option value="300000,">30万円以上</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label>📅 年間休日</label>
+        <select id="sel-holiday">
+          <option value="" selected>指定なし</option>
+          <option value=",100">100日以下</option>
+          <option value="100,110">100日～110日</option>
+          <option value="110,115">110日～115日</option>
+          <option value="115,120">115日～120日</option>
+          <option value="120,">120日以上</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label>🎁 賞与</label>
+        <select id="sel-bonus">
+          <option value="" selected>指定なし</option>
+          <option value="なし">なし</option>
+          <option value="あり">あり</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="cta-btn" id="btn-start">診断をはじめる ▶</button>
+    <p class="note">※ 診断結果はあくまで参考です。進路については先生とも相談しましょう。</p>
+  </section>
+
+  <!-- ============ 質問画面 ============ -->
+  <section id="screen-quiz">
+    <div class="progress-wrap">
+      <div class="progress-row">
+        <span class="qn" id="qn-label">質問 1 / 21</span>
+        <span class="qtotal" id="qn-percent">5%</span>
+      </div>
+      <div class="progress-bar"><div id="progress-fill" style="width:0%;"></div></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-icon" id="q-icon">🌟</div>
+      <p class="q-text" id="q-text">質問がここに表示されます</p>
+      <div class="options" id="q-options"></div>
+    </div>
+
+    <button class="back-link" id="btn-back">← ひとつ前の質問にもどる</button>
+  </section>
+
+  <!-- ============ 読み込み中 ============ -->
+  <section id="screen-loading">
+    <div class="spinner"></div>
+    <p id="loading-text">求人データを取得しています…</p>
+  </section>
+
+  <!-- ============ 結果画面 ============ -->
+  <section id="screen-result">
+    <div class="card">
+      <div class="result-hero">
+        <div class="icon" id="res-icon">🏆</div>
+        <h2>あなたの適性タイプは…</h2>
+        <div class="type-name" id="res-type">-</div>
+        <p class="type-desc" id="res-desc">-</p>
+      </div>
+
+      <div class="score-bars" id="score-bars"></div>
+    </div>
+
+    <div class="section-title"><h3>💼 あなたにおすすめの求人</h3><div class="line"></div></div>
+    <div id="company-list"></div>
+
+    <div class="footer-actions">
+      <button class="secondary-btn" id="btn-retry">🔁 もう一度診断する</button>
+    </div>
+  </section>
+
+  <footer class="page-foot">鹿児島県立曽於高等学校 進路指導室 ／ 求人データ: kyujin2026.csv（自動取得）</footer>
+</main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var CSV_URL = "https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv";
+
+  /* ---------------------------------------------------------
+     カテゴリ定義（ハローワーク職業分類の大分類に対応）
+  --------------------------------------------------------- */
+  var CATS = {
+    kensetsu: { name:"建設・現場系", icon:"🏗️", major:"建設・土木・電気工事の職業",
+      desc:"自分の手で建物や道路、電気設備などを作り上げていく仕事に向いています。チームで大きなものを完成させる達成感を味わえます。" },
+    gijutsu:  { name:"技術・エンジニア系", icon:"⚙️", major:"研究・技術の職業",
+      desc:"専門知識や技術をコツコツ磨いて、ものづくりや設計を支える仕事に向いています。手に職をつけたい人にぴったりです。" },
+    seizo:    { name:"ものづくり・製造系", icon:"🔩", major:"製造・修理・塗装・製図等の職業",
+      desc:"部品の組み立てや製品の加工など、丁寧で正確な作業が得意なあなたに向いています。工場でチームと協力しながら製品を仕上げます。" },
+    haiso:    { name:"運転・物流系", icon:"🚚", major:"配送・輸送・機械運転の職業",
+      desc:"運転や機械の操作が好きで、いろいろな場所に行く仕事にワクワクするタイプです。人やモノを届ける縁の下の力持ちです。" },
+    unpan:    { name:"体力・現場作業系", icon:"💪", major:"運搬・清掃・包装・選別等の職業",
+      desc:"体を動かすことが好きで、チームで協力しながら現場をこなすのが得意なタイプです。体力を活かして活躍できます。" },
+    hanbai:   { name:"営業・販売系", icon:"🤝", major:"販売・営業の職業",
+      desc:"人と話すのが好きで、商品やサービスをおすすめするのが得意なタイプです。お客様の「ありがとう」がやりがいになります。" },
+    service:  { name:"接客・サービス系", icon:"🍽️", major:"サービスの職業",
+      desc:"お客様と直接ふれあい、笑顔をつくる仕事に向いています。ホテルや飲食店などでおもてなしの心を発揮できます。" },
+    jimu:     { name:"事務・オフィス系", icon:"💻", major:"事務的職業",
+      desc:"正確でコツコツとした作業が得意で、パソコンを使った事務や管理業務に向いています。会社を裏から支える存在です。" },
+    keibi:    { name:"警備・安全管理系", icon:"🛡️", major:"警備・保安の職業",
+      desc:"責任感が強く、人や施設の安全を守る仕事に向いています。まじめでしっかり者のあなたにぴったりです。" },
+    fukushi:  { name:"福祉・介護系", icon:"🤲", major:"福祉・介護の職業",
+      desc:"人にやさしく、誰かを支えることにやりがいを感じるタイプです。福祉・介護の現場で頼れる存在になれます。" },
+    nourin:   { name:"農業・自然系", icon:"🌱", major:"農林漁業の職業",
+      desc:"自然や生き物が好きで、体を動かしながら働くことが好きなタイプです。農林水産の現場で活躍できます。" }
+  };
+
+  /* ---------------------------------------------------------
+     21問の質問データ（各選択肢が1カテゴリに1ポイント加算）
+  --------------------------------------------------------- */
+  var QUESTIONS = [
+    { icon:"🌤️", text:"休みの日、どんな過ごし方が好き？",
+      opts:[
+        {t:"体を動かしてスッキリしたい", c:"unpan"},
+        {t:"何かをコツコツ組み立てたり作ったりしたい", c:"seizo"},
+        {t:"友達や家族とおしゃべりしていたい", c:"service"},
+        {t:"家でじっくり本を読んだり計画を立てたりしたい", c:"jimu"} ] },
+    { icon:"📚", text:"得意な教科・科目は？",
+      opts:[
+        {t:"数学・物理などの理系科目", c:"gijutsu"},
+        {t:"家庭科・調理実習", c:"service"},
+        {t:"商業・簿記", c:"jimu"},
+        {t:"農業・生物", c:"nourin"} ] },
+    { icon:"🎪", text:"文化祭で担当したい係は？",
+      opts:[
+        {t:"大道具づくり（木工・電気配線など）", c:"kensetsu"},
+        {t:"模擬店での調理・接客", c:"service"},
+        {t:"会計・受付・チラシ作成", c:"jimu"},
+        {t:"来場者の誘導・警備係", c:"keibi"} ] },
+    { icon:"✨", text:"自分の得意なことは？",
+      opts:[
+        {t:"手先が器用で細かい作業が好き", c:"seizo"},
+        {t:"人の話をじっくり聞くのが得意", c:"fukushi"},
+        {t:"運転や乗り物が好き", c:"haiso"},
+        {t:"植物や動物の世話が好き", c:"nourin"} ] },
+    { icon:"🏢", text:"理想の職場環境は？",
+      opts:[
+        {t:"屋外で体を動かせる現場", c:"kensetsu"},
+        {t:"室内でコツコツ作業する工場", c:"seizo"},
+        {t:"お客様と接するお店やホテル", c:"service"},
+        {t:"パソコンに向かって仕事をするオフィス", c:"jimu"} ] },
+    { icon:"🔧", text:"興味がある道具・機械は？",
+      opts:[
+        {t:"クレーンや重機", c:"kensetsu"},
+        {t:"パソコンや測定機器", c:"gijutsu"},
+        {t:"トラックや車両", c:"haiso"},
+        {t:"調理器具・厨房機器", c:"service"} ] },
+    { icon:"💬", text:"よく人から言われることは？",
+      opts:[
+        {t:"「まじめでコツコツ頑張るね」", c:"seizo"},
+        {t:"「面倒見がいいね」", c:"fukushi"},
+        {t:"「話しやすくて接客向いてそう」", c:"hanbai"},
+        {t:"「几帳面で正確だね」", c:"jimu"} ] },
+    { icon:"🚀", text:"将来なりたい自分に近いのは？",
+      opts:[
+        {t:"資格を取って専門技術者になりたい", c:"gijutsu"},
+        {t:"チームで大きな建物や設備を作りたい", c:"kensetsu"},
+        {t:"お年寄りや困っている人を支えたい", c:"fukushi"},
+        {t:"安全を守るプロになりたい", c:"keibi"} ] },
+    { icon:"🎽", text:"好きな部活動・委員会は？",
+      opts:[
+        {t:"運動部でチームプレーをするタイプ", c:"unpan"},
+        {t:"美術部・技術系の部活でものづくり", c:"seizo"},
+        {t:"生徒会・図書委員会などの管理・事務系", c:"jimu"},
+        {t:"農業・園芸系の活動", c:"nourin"} ] },
+    { icon:"🛠️", text:"得意な作業スタイルは？",
+      opts:[
+        {t:"マニュアル通り正確に作業する", c:"seizo"},
+        {t:"臨機応変にお客様対応する", c:"service"},
+        {t:"計画を立てて管理する", c:"jimu"},
+        {t:"体力を活かして頑張る", c:"unpan"} ] },
+    { icon:"🌐", text:"興味のある業界は？",
+      opts:[
+        {t:"建設・不動産", c:"kensetsu"},
+        {t:"製造・ものづくり", c:"seizo"},
+        {t:"運送・物流", c:"haiso"},
+        {t:"飲食・ホテル", c:"service"} ] },
+    { icon:"📖", text:"好きな授業のタイプは？",
+      opts:[
+        {t:"実習・実技系の授業", c:"seizo"},
+        {t:"じっくり考える座学系の授業", c:"gijutsu"},
+        {t:"英語などコミュニケーション系の授業", c:"hanbai"},
+        {t:"体育・保健の授業", c:"unpan"} ] },
+    { icon:"💎", text:"自分の強みだと思うのは？",
+      opts:[
+        {t:"責任感が強く最後までやり遂げる", c:"kensetsu"},
+        {t:"やさしくて人を思いやれる", c:"fukushi"},
+        {t:"正確・丁寧に作業ができる", c:"jimu"},
+        {t:"体力・持久力がある", c:"unpan"} ] },
+    { icon:"🌞", text:"働くうえで一番重視したいことは？",
+      opts:[
+        {t:"達成感のあるものづくり", c:"seizo"},
+        {t:"人の役に立っている実感", c:"fukushi"},
+        {t:"安定した屋内でのデスクワーク", c:"jimu"},
+        {t:"いろいろな場所に行ける動きのある仕事", c:"haiso"} ] },
+    { icon:"🎉", text:"好きな学校行事は？",
+      opts:[
+        {t:"体育祭など体を動かす行事", c:"unpan"},
+        {t:"農業実習・飼育体験", c:"nourin"},
+        {t:"職業体験・インターンシップ", c:"gijutsu"},
+        {t:"校内美化・環境整備活動", c:"kensetsu"} ] },
+    { icon:"👥", text:"どんな人と一緒に働きたい？",
+      opts:[
+        {t:"職人気質の先輩から技術を学びたい", c:"seizo"},
+        {t:"お客様の笑顔が見られる仲間と", c:"service"},
+        {t:"チームで安全を守る仲間と", c:"keibi"},
+        {t:"事務作業を正確にこなす仲間と", c:"jimu"} ] },
+    { icon:"📜", text:"興味のある資格は？",
+      opts:[
+        {t:"電気工事士・溶接など技術系資格", c:"kensetsu"},
+        {t:"介護福祉士・社会福祉士", c:"fukushi"},
+        {t:"簿記・パソコン検定", c:"jimu"},
+        {t:"大型免許・フォークリフト", c:"haiso"} ] },
+    { icon:"🍃", text:"好きな作業環境は？",
+      opts:[
+        {t:"自然の中で体を動かす環境", c:"nourin"},
+        {t:"工場でチームと協力する環境", c:"seizo"},
+        {t:"お店やホテルでお客様と接する環境", c:"service"},
+        {t:"警備室やパトロールで安全確認する環境", c:"keibi"} ] },
+    { icon:"🎯", text:"目標達成のために大事にしたいことは？",
+      opts:[
+        {t:"技術を磨き続けること", c:"gijutsu"},
+        {t:"お客様に信頼されること", c:"hanbai"},
+        {t:"仲間と協力すること", c:"unpan"},
+        {t:"誰かを支えること", c:"fukushi"} ] },
+    { icon:"🌈", text:"就職後にやってみたい働き方は？",
+      opts:[
+        {t:"現場で汗を流しながら成長する", c:"kensetsu"},
+        {t:"資格を活かして専門性を高める", c:"gijutsu"},
+        {t:"事務所で正確な仕事をする", c:"jimu"},
+        {t:"全国各地を飛び回る", c:"haiso"} ] },
+    { icon:"🏁", text:"最後に、一番ワクワクするのは？",
+      opts:[
+        {t:"大きな建物や設備を作り上げること", c:"kensetsu"},
+        {t:"お客様に「ありがとう」と言われること", c:"service"},
+        {t:"誰かの生活を支える仕事をすること", c:"fukushi"},
+        {t:"自分の手で製品を仕上げること", c:"seizo"} ] }
+  ];
+
+  /* ---------------------------------------------------------
+     状態管理
+  --------------------------------------------------------- */
+  var state = {
+    idx: 0,
+    scores: {},
+    history: [],
+    filters: { pref:"", salaryMin:null, salaryMax:null, holidayMin:null, holidayMax:null, bonus:"" }
+  };
+  Object.keys(CATS).forEach(function(k){ state.scores[k] = 0; });
+
+  var $ = function(id){ return document.getElementById(id); };
+
+  var screenStart = $("screen-start");
+  var screenQuiz  = $("screen-quiz");
+  var screenLoading = $("screen-loading");
+  var screenResult  = $("screen-result");
+
+  $("btn-start").addEventListener("click", function(){
+    state.filters.pref = $("sel-pref").value;
+
+    var salaryRange = $("sel-salary").value.split(",");
+    state.filters.salaryMin = salaryRange[0] ? parseInt(salaryRange[0],10) : null;
+    state.filters.salaryMax = salaryRange[1] ? parseInt(salaryRange[1],10) : null;
+
+    var holidayRange = $("sel-holiday").value.split(",");
+    state.filters.holidayMin = holidayRange[0] ? parseInt(holidayRange[0],10) : null;
+    state.filters.holidayMax = holidayRange[1] ? parseInt(holidayRange[1],10) : null;
+
+    state.filters.bonus = $("sel-bonus").value;
+
+    screenStart.style.display = "none";
+    screenQuiz.style.display = "block";
+    renderQuestion();
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+  $("btn-back").addEventListener("click", function(){
+    if(state.idx > 0){
+      state.idx -= 1;
+      var lastCat = state.history.pop();
+      if(lastCat) state.scores[lastCat] -= 1;
+      renderQuestion();
+    }
+  });
+
+  $("btn-retry").addEventListener("click", function(){
+    state.idx = 0;
+    state.history = [];
+    Object.keys(CATS).forEach(function(k){ state.scores[k] = 0; });
+    screenResult.style.display = "none";
+    screenStart.style.display = "block";
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+  function renderQuestion(){
+    var total = QUESTIONS.length;
+    var q = QUESTIONS[state.idx];
+    $("qn-label").textContent = "質問 " + (state.idx+1) + " / " + total;
+    $("qn-percent").textContent = Math.round(((state.idx)/total)*100) + "%";
+    $("progress-fill").style.width = ((state.idx)/total*100) + "%";
+    $("q-icon").textContent = q.icon;
+    $("q-text").textContent = q.text;
+
+    var lettersJP = ["A","B","C","D"];
+    var wrap = $("q-options");
+    wrap.innerHTML = "";
+    q.opts.forEach(function(opt, i){
+      var btn = document.createElement("button");
+      btn.className = "opt-btn";
+      btn.innerHTML = '<span class="badge">' + lettersJP[i] + '</span><span>' + opt.t + '</span>';
+      btn.addEventListener("click", function(){ answerQuestion(opt.c); });
+      wrap.appendChild(btn);
+    });
+
+    $("btn-back").style.visibility = state.idx === 0 ? "hidden" : "visible";
+  }
+
+  function answerQuestion(cat){
+    state.scores[cat] = (state.scores[cat]||0) + 1;
+    state.history.push(cat);
+    state.idx += 1;
+    if(state.idx >= QUESTIONS.length){
+      finishQuiz();
+    } else {
+      renderQuestion();
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+  }
+
+  function finishQuiz(){
+    screenQuiz.style.display = "none";
+    screenLoading.style.display = "block";
+    window.scrollTo({top:0, behavior:"smooth"});
+
+    fetch(CSV_URL)
+      .then(function(res){
+        if(!res.ok) throw new Error("CSV取得に失敗しました");
+        return res.text();
+      })
+      .then(function(text){
+        var rows = parseCSVtoObjects(text);
+        showResult(rows);
+      })
+      .catch(function(err){
+        screenLoading.style.display = "none";
+        screenResult.style.display = "block";
+        $("company-list").innerHTML =
+          '<div class="empty-note">⚠️ 求人データの取得に失敗しました。通信環境をご確認のうえ、もう一度お試しください。<br><span style="color:#b33;font-size:11px;">(' + escapeHtml(String(err.message||err)) + ')</span></div>';
+      });
+  }
+
+  /* ---------------------------------------------------------
+     RFC4180準拠 CSVパーサー（ダブルクォート内の改行・カンマに対応）
+  --------------------------------------------------------- */
+  function parseCSVraw(text){
+    text = text.replace(/^\uFEFF/, "");
+    var rows = [];
+    var row = [];
+    var field = "";
+    var inQuotes = false;
+    for(var i=0;i<text.length;i++){
+      var c = text[i];
+      if(inQuotes){
+        if(c === '"'){
+          if(text[i+1] === '"'){ field += '"'; i++; }
+          else { inQuotes = false; }
+        } else {
+          field += c;
+        }
+      } else {
+        if(c === '"'){ inQuotes = true; }
+        else if(c === ','){ row.push(field); field = ""; }
+        else if(c === '\n'){ row.push(field); rows.push(row); row = []; field = ""; }
+        else if(c === '\r'){ /* skip, \r\n handled by \n */ }
+        else { field += c; }
+      }
+    }
+    if(field.length > 0 || row.length > 0){ row.push(field); rows.push(row); }
+    return rows;
+  }
+
+  function parseCSVtoObjects(text){
+    var rows = parseCSVraw(text);
+    if(rows.length === 0) return [];
+    var header = rows[0];
+    var out = [];
+    for(var r=1; r<rows.length; r++){
+      var row = rows[r];
+      if(row.length === 1 && row[0] === "") continue; // 空行スキップ
+      var obj = {};
+      for(var c=0; c<header.length; c++){
+        obj[header[c]] = row[c] !== undefined ? row[c] : "";
+      }
+      out.push(obj);
+    }
+    return out;
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, function(m){
+      return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[m];
+    });
+  }
+
+  /* ---------------------------------------------------------
+     結果表示 & 求人マッチング
+  --------------------------------------------------------- */
+  function showResult(rows){
+    screenLoading.style.display = "none";
+    screenResult.style.display = "block";
+
+    // スコア降順に並べたカテゴリ一覧
+    var sorted = Object.keys(state.scores).sort(function(a,b){
+      return state.scores[b] - state.scores[a];
+    });
+    var top1 = sorted[0];
+    var top2 = sorted[1];
+    var maxScore = state.scores[top1] || 1;
+
+    $("res-icon").textContent = CATS[top1].icon;
+    $("res-type").textContent = CATS[top1].icon + " " + CATS[top1].name;
+    $("res-desc").textContent = CATS[top1].desc;
+
+    // スコアバー（上位6カテゴリを表示）
+    var barsHtml = "";
+    sorted.slice(0,6).forEach(function(key){
+      var pct = Math.round((state.scores[key] / maxScore) * 100);
+      var isTop = key === top1;
+      barsHtml += '<div class="score-row' + (isTop ? ' top' : '') + '">' +
+        '<div class="label">' + CATS[key].icon + ' ' + CATS[key].name + '</div>' +
+        '<div class="track"><div class="fill" style="width:' + Math.max(pct,6) + '%;"></div></div>' +
+        '</div>';
+    });
+    $("score-bars").innerHTML = barsHtml;
+
+    // ---- 求人マッチング ----
+    var majorTop1 = CATS[top1].major;
+    var majorTop2 = top2 ? CATS[top2].major : null;
+
+    function rowMajor1(row){ return (row["職業分類（ハローワーク）大分類"]||"").trim(); }
+    function rowMajor2(row){ return (row["職業分類2（ハローワーク）大分類"]||"").trim(); }
+
+    function passesFilters(row){
+      var f = state.filters;
+      if(f.pref && (row["就業場所住所（市区町村）"]||"").indexOf(f.pref) === -1) return false;
+
+      var salary = parseInt((row["月給（基本給+手当+残業代）"]||"0").replace(/[^0-9]/g,""), 10) || 0;
+      if(f.salaryMin !== null && salary < f.salaryMin) return false;
+      if(f.salaryMax !== null && salary > f.salaryMax) return false;
+
+      var holidays = parseInt((row["年間休日数"]||"0").replace(/[^0-9]/g,""), 10) || 0;
+      if(f.holidayMin !== null && holidays < f.holidayMin) return false;
+      if(f.holidayMax !== null && holidays > f.holidayMax) return false;
+
+      if(f.bonus){
+        var hasBonus = (row["賞与有無（新卒）"]||"").indexOf("あり") !== -1;
+        if(f.bonus === "あり" && !hasBonus) return false;
+        if(f.bonus === "なし" && hasBonus) return false;
+      }
+      return true;
+    }
+
+    var scored = [];
+    rows.forEach(function(row){
+      var name = (row["事業所名"]||"").trim();
+      if(!name) return;
+      if(!passesFilters(row)) return;
+      var m1 = rowMajor1(row);
+      var m2 = rowMajor2(row);
+      var matchScore = 0;
+      if(m1 === majorTop1) matchScore += 5;
+      else if(m1 === majorTop2) matchScore += 3;
+      if(m2 === majorTop1) matchScore += 3;
+      else if(m2 === majorTop2) matchScore += 2;
+      if(matchScore === 0) return;
+
+      // 参考情報による加点（月給・賞与・年間休日）
+      var salary = parseInt((row["月給（基本給+手当+残業代）"]||"0").replace(/[^0-9]/g,""), 10) || 0;
+      var bonus = (row["賞与有無（新卒）"]||"").indexOf("あり") !== -1;
+      var holidays = parseInt((row["年間休日数"]||"0").replace(/[^0-9]/g,""), 10) || 0;
+      var qualityScore = 0;
+      if(salary >= 220000) qualityScore += 1.5;
+      else if(salary >= 195000) qualityScore += 0.8;
+      if(bonus) qualityScore += 0.6;
+      if(holidays >= 115) qualityScore += 0.6;
+
+      scored.push({
+        row: row,
+        total: matchScore + qualityScore,
+        salary: salary
+      });
+    });
+
+    scored.sort(function(a,b){
+      if(b.total !== a.total) return b.total - a.total;
+      return b.salary - a.salary;
+    });
+
+    var top = scored.slice(0, 9);
+
+    var listEl = $("company-list");
+    if(top.length === 0){
+      listEl.innerHTML = '<div class="empty-note">😢 今回は条件に合う求人が見つかりませんでした。診断をやり直すか、進路指導の先生に相談してみてください。</div>';
+      return;
+    }
+
+    var html = "";
+    top.forEach(function(item, i){
+      var row = item.row;
+      var name = escapeHtml(row["事業所名"]||"");
+      var jobType = escapeHtml(row["職種"]||"");
+      var place = escapeHtml(row["就業場所住所（市区町村）"]||"");
+      var mgmtNo = escapeHtml(row["管理番号"]||"");
+      var jobNo = escapeHtml(row["求人番号"]||"");
+      var salary = row["月給（基本給+手当+残業代）"] ? row["月給（基本給+手当+残業代）"] + "円" : "-";
+      var bonusYesNo = (row["賞与有無（新卒）"]||"").indexOf("あり") !== -1 ? "賞与あり" : "賞与情報なし";
+      var holidays = row["年間休日数"] ? row["年間休日数"] + "日" : "-";
+      var content = (row["仕事の内容"]||"").replace(/\s+\n/g,"\n").trim();
+      if(content.length > 110) content = content.slice(0,110) + "…";
+
+      html += '<div class="company-card">' +
+        '<span class="rank">MATCH ' + (i+1) + '</span>' +
+        '<h4>🏢 ' + name + '</h4>' +
+        '<div class="jobtype">' + jobType + '</div>' +
+        '<div class="chips">' +
+          '<span class="chip gold">💰 月給 ' + escapeHtml(salary) + '</span>' +
+          '<span class="chip">🎁 ' + bonusYesNo + '</span>' +
+          '<span class="chip">📅 年間休日 ' + escapeHtml(holidays) + '</span>' +
+        '</div>' +
+        '<div class="meta-grid">' +
+          '<div class="mi"><b>📍 就業場所</b>' + (place || "情報なし") + '</div>' +
+          '<div class="mi"><b>🗂️ 管理番号</b>' + (mgmtNo || "-") + '</div>' +
+        '</div>' +
+        (content ? '<div class="desc-snip">' + escapeHtml(content) + '</div>' : "") +
+        '<div class="id-row"><span>求人番号：' + jobNo + '</span></div>' +
+      '</div>';
+    });
+    listEl.innerHTML = html;
+  }
+
+})();
+</script>
+</body>
+</html>
