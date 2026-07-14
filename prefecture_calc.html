@@ -65,6 +65,12 @@
   .summary .item {
     font-size: 14px;
     font-weight: 700;
+    text-align: right;
+  }
+  .item-caption {
+    font-size: 8.5px;
+    color: #888;
+    font-weight: 400;
   }
   .summary .item .label {
     color: #333;
@@ -179,8 +185,14 @@
     <div class="header-row">
       <h1 class="title">都道府県別 求人分類</h1>
       <div class="summary">
-        <div class="item" style="position:relative; right:4px;"><span class="label">求人総数:</span><span class="value" id="totalJobs">-</span></div>
-        <div class="item" style="position:relative; right:2px;"><span class="label">求人票総数:</span><span class="value" id="totalRecords">-</span></div>
+        <div class="item" style="position:relative; right:4px;">
+          <div><span class="label">求人総数:</span><span class="value" id="totalJobs">-</span></div>
+          <div class="item-caption">(通勤+住込+不問)の合計</div>
+        </div>
+        <div class="item" style="position:relative; right:2px;">
+          <div><span class="label">求人票総数:</span><span class="value" id="totalRecords">-</span></div>
+          <div class="item-caption">(一次 + 二次募集)の合計</div>
+        </div>
         <div class="sub">
           <div class="box">一次募集<span class="num" id="totalIchiji">-</span></div>
           <div class="box">二次募集<span class="num" id="totalNiji">0</span></div>
