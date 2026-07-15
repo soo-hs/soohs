@@ -1517,6 +1517,21 @@ function loadFromFile(input) {
   };
 }
 
+// データの「求人年度」列からタイトル末尾の年度表記を更新する
+function updateAppTitleYear() {
+  const titleEl = document.getElementById('appTitle');
+  if (!titleEl) return;
+  const yearIdx = headers.findIndex(h => h.trim() === '求人年度');
+  let year = '';
+  if (yearIdx >= 0) {
+    for (const r of allRows) {
+      const v = (r[yearIdx] || '').trim();
+      if (v && v !== 'NaN') { year = v; break; }
+    }
+  }
+  titleEl.textContent = year ? `受付求人票 ${year}` : '受付求人票';
+}
+
 function processCSV(text) {
   const rows = parseCSV(text);
   if (rows.length < 2) { setErr('データが見つかりません'); return; }
@@ -1557,6 +1572,7 @@ function processCSV(text) {
     if (el) el.value = '';
   });
   document.getElementById('totalCount').textContent = allRows.length.toLocaleString();
+  updateAppTitleYear();
   applyFilter();
   buildColPanel();
   document.getElementById('emptyState').style.display = 'none';
