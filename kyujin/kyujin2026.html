@@ -1319,14 +1319,14 @@ const FIELD_MAP = {
   '職業分類2（日本標準職業分類への変換）': '標準職業分類2'
 };
 
-// 表示列の順序定義（簡易名称 or '求人数'=合算仮想列）
+// 表示列の順序定義（簡易名称または仮想列）
 const DISPLAY_ORDER = [
   '管理No',
   '求人番号',
   '事業所',
   '所在地住所',
-  '全社員数',
   '資本金',
+  '全社員数',
   '雇用形態',
   '標準職業分類',  // 標準職業分類 & '/' & 標準職業分類2 の結合仮想列
   '職種',
@@ -1335,12 +1335,15 @@ const DISPLAY_ORDER = [
   '賞与',
   '年間休日',
   '就業市区町村',
+  '就業市区町村2･3',
   '来校',
 ];
 // 仮想列「求人数」のソース列（簡易名称）
 const KYUJINSU_COLS = ['通勤求人数', '住込求人数', '不問求人数'];
 // 仮想列「標準職業分類」のソース列（簡易名称）
 const SHOKUGYO_COLS = ['標準職業分類', '標準職業分類2'];
+// 仮想列「就業市区町村2･3」のソース列（簡易名称）
+const WORKPLACE_CITY_23_COLS = ['就業市区町村2', '就業市区町村3'];
 
 // ========== グループ表示（事業所No単位ドリルダウン） ==========
 // 親（事業所）一覧の列
@@ -1605,10 +1608,10 @@ function processCSV(text) {
 
   // 表示列を DISPLAY_ORDER 順に初期化
   // 仮想列のソース実列はvisibleColsに入れない（末尾に流れるのを防ぐ）
-  const VIRTUAL_SRC_COLS = new Set([...KYUJINSU_COLS, ...SHOKUGYO_COLS]);
+  const VIRTUAL_SRC_COLS = new Set([...KYUJINSU_COLS, ...SHOKUGYO_COLS, ...WORKPLACE_CITY_23_COLS]);
   visibleCols = new Set();
   DISPLAY_ORDER.forEach(short => {
-    if (short === '求人数' || short === '標準職業分類') return; // 仮想列はSet管理不要
+    if (short === '求人数' || short === '標準職業分類' || short === '就業市区町村2･3') return; // 仮想列はSet管理不要
     const idx = headers.findIndex(h => (FIELD_MAP[h] || h) === short);
     if (idx >= 0) visibleCols.add(idx);
   });
@@ -1951,6 +1954,12 @@ function sortBy(colIdx) {
 // ========== テーブル描画 ==========
 // 表示列定義を DISPLAY_ORDER 順に構築して返す
 // 戻り値: [{type:'real', ci, short, orig} | {type:'virtual', key, short, srcIdx:[...]}]
+function keepRaikoLast(defs) {
+  const raikoIdx = defs.findIndex(def => def.type === 'real' && def.short === '来校');
+  if (raikoIdx >= 0) defs.push(defs.splice(raikoIdx, 1)[0]);
+  return defs;
+}
+
 function buildVisColDefs() {
   const defs = [];
   DISPLAY_ORDER.forEach(short => {
@@ -1960,13 +1969,16 @@ function buildVisColDefs() {
     } else if (short === '標準職業分類') {
       const src = SHOKUGYO_COLS.map(s => headers.findIndex(h => (FIELD_MAP[h]||h) === s));
       if (src.some(i => i >= 0)) defs.push({ type:'virtual', key:'標準職業分類', short:'標準職業分類', srcIdx:src });
+    } else if (short === '就業市区町村2･3') {
+      const src = WORKPLACE_CITY_23_COLS.map(s => headers.findIndex(h => (FIELD_MAP[h]||h) === s));
+      if (src.some(i => i >= 0)) defs.push({ type:'virtual', key:'就業市区町村2･3', short:'就業市区町村2･3', srcIdx:src });
     } else {
       const ci = headers.findIndex(h => (FIELD_MAP[h]||h) === short);
       if (ci >= 0 && visibleCols.has(ci)) defs.push({ type:'real', ci, short, orig: headers[ci] });
     }
   });
   // DISPLAY_ORDER 外で visibleCols にある列を末尾に追加（仮想列ソースは除外）
-  const virtualSrcSet = new Set([...KYUJINSU_COLS, ...SHOKUGYO_COLS]
+  const virtualSrcSet = new Set([...KYUJINSU_COLS, ...SHOKUGYO_COLS, ...WORKPLACE_CITY_23_COLS]
     .map(s => headers.findIndex(h => (FIELD_MAP[h]||h) === s)).filter(i => i >= 0));
   const orderedCi = new Set(defs.filter(d=>d.type==='real').map(d=>d.ci));
   [...visibleCols].sort((a,b)=>a-b).forEach(ci => {
@@ -1985,9 +1997,9 @@ function buildVisColDefs() {
     });
     // colOrder に含まれない新規列は元の順序のまま末尾に追加
     defs.forEach(d => { if (keyToDef.has(colKey(d))) ordered.push(d); });
-    return ordered;
+    return keepRaikoLast(ordered);
   }
-  return defs;
+  return keepRaikoLast(defs);
 }
 
 function renderTable() {
@@ -2007,6 +2019,8 @@ function renderTable() {
         thHtml += `<th data-colidx="${idx}" title="通勤求人数＋住込求人数＋不問求人数"${wStyle} ${dragAttrs}>求人数 <span class="sort-icon">-</span><span class="col-resizer" draggable="false" onmousedown="startResize(event,${idx})"></span></th>`;
       } else if (def.key === '標準職業分類') {
         thHtml += `<th data-colidx="${idx}" title="標準職業分類／標準職業分類2"${wStyle} ${dragAttrs}>標準職業分類 <span class="sort-icon">-</span><span class="col-resizer" draggable="false" onmousedown="startResize(event,${idx})"></span></th>`;
+      } else if (def.key === '就業市区町村2･3') {
+        thHtml += `<th data-colidx="${idx}" title="就業市区町村2・就業市区町村3"${wStyle} ${dragAttrs}>就業市区町村2･3 <span class="sort-icon">-</span><span class="col-resizer" draggable="false" onmousedown="startResize(event,${idx})"></span></th>`;
       }
     } else {
       const sortIcon = sortCol === def.ci ? (sortDir === 1 ? '▲' : '▼') : '⇅';
@@ -2040,6 +2054,13 @@ function renderTable() {
             .map(ci => (ci >= 0 && row[ci] && row[ci].trim() && row[ci].trim() !== 'NaN') ? row[ci].trim() : '')
             .filter(v => v);
           const combined = parts.join(' / ');
+          const dispVal = combined.length > 50 ? combined.slice(0, 50) + '\u2026' : combined;
+          tbHtml += `<td title="${combined.replace(/"/g,'&quot;')}">${escH(dispVal)}</td>`;
+        } else if (def.key === '就業市区町村2･3') {
+          const parts = def.srcIdx
+            .map(ci => (ci >= 0 && row[ci] && row[ci].trim() && row[ci].trim() !== 'NaN') ? row[ci].trim() : '')
+            .filter(v => v);
+          const combined = parts.join('・');
           const dispVal = combined.length > 50 ? combined.slice(0, 50) + '\u2026' : combined;
           tbHtml += `<td title="${combined.replace(/"/g,'&quot;')}">${escH(dispVal)}</td>`;
         }
