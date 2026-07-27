@@ -261,6 +261,17 @@
       background:#fff !important;
     }
     @page{size:A4;margin:14mm;}
+    table{border-color:#000 !important;}
+    th,td{border:1px solid #000 !important;}
+    /* No.46〜47間：Noセル(1列目)の横罫線のみ消す（46の上・47の上の罫線は残す） */
+    tr.no46start td.idx, tr.no46start td:first-child,
+    tr.no46mid td.idx, tr.no46mid td:first-child{
+      border-bottom:none !important;
+    }
+    tr.no46mid td.idx, tr.no46mid td:first-child,
+    tr.no46end td.idx, tr.no46end td:first-child{
+      border-top:none !important;
+    }
   }
   @media (max-width:700px){
     .grid{grid-template-columns:1fr;}
@@ -293,12 +304,12 @@
     <div class="grid">
       <table id="tblLeft">
         <caption>1〜27　北海道〜大阪府</caption>
-        <thead><tr><th></th><th>道府県</th><th>件数</th><th>人数</th><th>社数</th></tr></thead>
+        <thead><tr><th></th><th>都道府県</th><th>件数</th><th>人数</th><th>社数</th></tr></thead>
         <tbody></tbody>
       </table>
       <table id="tblRight">
         <caption>28〜47　兵庫県〜沖縄県</caption>
-        <thead><tr><th></th><th>道府県</th><th>件数</th><th>人数</th><th>社数</th></tr></thead>
+        <thead><tr><th></th><th>都道府県</th><th>件数</th><th>人数</th><th>社数</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -511,14 +522,14 @@ function render(prefStats, kagoshimaSub){
   const bSum = statOut(kagoshimaSub["B"]);
   const totalKagoshima = statOut(prefStats[HOME_PREF]);
 
-  rightHTML += `<tr class="home"><td class="idx">46</td><td class="name">鹿児島A</td>` +
+  rightHTML += `<tr class="home no46start"><td class="idx">46</td><td class="name">鹿児島A</td>` +
     `<td>${fmt(aSum.count)}</td><td>${peopleMark(aSum)}</td><td>${fmt(aSum.companies)}</td></tr>`;
-  rightHTML += rowHTML(null, "（曽於市）", kagoshimaSub["曽於市"], "sub");
-  rightHTML += rowHTML(null, "（志布志市）", kagoshimaSub["志布志市"], "sub");
-  rightHTML += rowHTML(null, "（大崎町）", kagoshimaSub["大崎町"], "sub");
-  rightHTML += `<tr class="home"><td></td><td class="name">鹿児島B</td>` +
+  rightHTML += rowHTML(null, "（曽於市）", kagoshimaSub["曽於市"], "sub no46mid");
+  rightHTML += rowHTML(null, "（志布志市）", kagoshimaSub["志布志市"], "sub no46mid");
+  rightHTML += rowHTML(null, "（大崎町）", kagoshimaSub["大崎町"], "sub no46mid");
+  rightHTML += `<tr class="home no46mid"><td></td><td class="name">鹿児島B</td>` +
     `<td>${fmt(bSum.count)}</td><td>${peopleMark(bSum)}</td><td>${fmt(bSum.companies)}</td></tr>`;
-  rightHTML += `<tr class="subtotal"><td></td><td class="name">鹿児島県(A＋B)</td>` +
+  rightHTML += `<tr class="subtotal no46end"><td></td><td class="name">鹿児島県(A＋B)</td>` +
     `<td>${fmt(totalKagoshima.count)}</td><td>${peopleMark(totalKagoshima)}</td><td>${fmt(totalKagoshima.companies)}</td></tr>`;
 
   rightHTML += rowHTML(47, "沖縄県", prefStats["沖縄県"]);
