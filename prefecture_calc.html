@@ -68,12 +68,25 @@
     text-align: right;
   }
   .item-caption {
-    font-size: 8.5px;
+    font-size: 9.5px;
     color: #888;
     font-weight: 400;
   }
+  .item-caption.records-breakdown {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+  }
   .summary .item .label {
     color: #333;
+  }
+  .summary .item .label.label-jobs {
+    font-size: 12px;
+    color: #999;
+  }
+  .summary .item .value.value-jobs {
+    font-size: 12px;
+    color: #8a9bc4;
   }
   .summary .item .value {
     color: #1f4e9c;
@@ -133,17 +146,40 @@
   td.c-ichi {
     width: 20%;
     text-align: right;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
     padding-right: 6px;
   }
   td.c-ni {
     width: 17%;
     text-align: right;
-    font-size: 17px;
+    font-size: 14px;
     font-weight: 700;
     color: #555;
     padding-right: 6px;
+  }
+  td.c-ichi, td.c-ni {
+    line-height: 1.05;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+  .sub-count {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    color: #777;
+    line-height: 1.05;
+    margin-top: 1px;
+  }
+  td.c-ni .sub-count {
+    color: #8a8a8a;
+  }
+  td.c-ichi.is-zero,
+  td.c-ni.is-zero {
+    color: #c7c7c7;
+  }
+  .sub-count.is-zero {
+    color: #d2d2d2;
   }
   tbody tr:nth-child(even) {
     background: #f7f9fc;
@@ -186,12 +222,12 @@
       <h1 class="title">都道府県別 求人分類</h1>
       <div class="summary">
         <div class="item" style="position:relative; right:4px;">
-          <div><span class="label">求人総数:</span><span class="value" id="totalJobs">-</span></div>
+          <div><span class="label label-jobs">求人総数:</span><span class="value value-jobs" id="totalJobs">-</span></div>
           <div class="item-caption">(通勤+住込+不問)の合計</div>
         </div>
         <div class="item" style="position:relative; right:2px;">
           <div><span class="label">求人票総数:</span><span class="value" id="totalRecords">-</span></div>
-          <div class="item-caption">(一次 + 二次募集)の合計</div>
+          <div class="item-caption records-breakdown" id="totalRecordsBreakdown">県内:-・県外:-</div>
         </div>
         <div class="sub">
           <div class="box">一次募集<span class="num" id="totalIchiji">-</span></div>
@@ -320,6 +356,35 @@ function parseCSV(text) {
 
 function fmt(n) { return n.toLocaleString('ja-JP'); }
 
+// tbodyの行の高さを実測し、A4シート内にちょうど収まる（かつ余白なく埋まる）ように
+// 各行へ明示的な高さを割り当てる。フォント環境やブラウザ差異があっても
+// 1ページに収まることを実行時に保証するための処理。
+function fitRowsToPage() {
+  const tablesArea = document.getElementById('tablesArea');
+  const bodies = [document.getElementById('leftBody'), document.getElementById('rightBody')];
+
+  // まず明示的な高さ指定をリセットして自然な高さに戻す
+  for (const tbody of bodies) {
+    for (const tr of tbody.children) tr.style.height = '';
+  }
+
+  // レイアウト確定後に実測
+  requestAnimationFrame(() => {
+    for (const tbody of bodies) {
+      const rowCount = tbody.children.length;
+      if (rowCount === 0) continue;
+      const table = tbody.closest('table');
+      const thead = table.querySelector('thead');
+      const availableHeight = tablesArea.getBoundingClientRect().height - thead.getBoundingClientRect().height;
+      if (!(availableHeight > 0)) continue;
+      const rowHeight = availableHeight / rowCount;
+      for (const tr of tbody.children) {
+        tr.style.height = rowHeight + 'px';
+      }
+    }
+  });
+}
+
 async function main() {
   const statusArea = document.getElementById('statusArea');
   try {
@@ -343,6 +408,8 @@ async function main() {
     const dataRows = rows.slice(1).filter(r => r.some(v => v !== ''));
     const agg = {};
     const aggNiji = {};
+    const aggSum = {};
+    const aggNijiSum = {};
     let totalJobs = 0;
     let totalNiji = 0;
     let totalKyujinsu = 0;
@@ -352,16 +419,19 @@ async function main() {
       const t = parseInt(r[idxTsukin], 10) || 0;
       const s = parseInt(r[idxSumikomi], 10) || 0;
       const f = parseInt(r[idxFumon], 10) || 0;
-      totalKyujinsu += t + s + f;
+      const sum = t + s + f;
+      totalKyujinsu += sum;
       const [pref, city] = parsePrefCity(addr);
       if (!pref) continue;
       const group = classify(pref, city);
       agg[group] = (agg[group] || 0) + 1;
+      aggSum[group] = (aggSum[group] || 0) + sum;
       totalJobs += 1;
 
       const nijiUmu = idxNiji !== -1 ? (r[idxNiji] || '').trim() : '';
       if (nijiUmu === 'あり') {
         aggNiji[group] = (aggNiji[group] || 0) + 1;
+        aggNijiSum[group] = (aggNijiSum[group] || 0) + sum;
         totalNiji += 1;
       }
     }
@@ -371,9 +441,17 @@ async function main() {
     leftBody.innerHTML = '';
     rightBody.innerHTML = '';
 
+    function numCell(baseClass, val, sumVal) {
+      const cellClass = val === 0 ? `${baseClass} is-zero` : baseClass;
+      const subClass = sumVal === 0 ? 'sub-count is-zero' : 'sub-count';
+      return `<td class="${cellClass}">${fmt(val)}<span class="${subClass}">(${fmt(sumVal)})</span></td>`;
+    }
+
     for (const [no, pref, cls, key] of LEFT_ROWS) {
       const val = agg[key] || 0;
       const nijiVal = aggNiji[key] || 0;
+      const sumVal = aggSum[key] || 0;
+      const nijiSumVal = aggNijiSum[key] || 0;
       const isKagoshimaLabel = (cls === '【鹿児島Ａ】' || cls === '【鹿児島Ｂ】');
       const clsClass = isKagoshimaLabel ? 'c-cls c-cls-small' : 'c-cls';
       leftBody.insertAdjacentHTML('beforeend', `
@@ -381,21 +459,23 @@ async function main() {
         <td class="c-no">${no}</td>
         <td class="c-pref">${pref}</td>
         <td class="${clsClass}">${cls}</td>
-        <td class="c-ichi">${fmt(val)}</td>
-        <td class="c-ni">${fmt(nijiVal)}</td>
+        ${numCell('c-ichi', val, sumVal)}
+        ${numCell('c-ni', nijiVal, nijiSumVal)}
       </tr>`);
     }
 
     for (const [no, pref] of RIGHT_ROWS) {
       const val = agg[pref] || 0;
       const nijiVal = aggNiji[pref] || 0;
+      const sumVal = aggSum[pref] || 0;
+      const nijiSumVal = aggNijiSum[pref] || 0;
       rightBody.insertAdjacentHTML('beforeend', `
       <tr>
         <td class="c-no">${no}</td>
         <td class="c-pref">${pref}</td>
         <td class="c-cls">その他</td>
-        <td class="c-ichi">${fmt(val)}</td>
-        <td class="c-ni">${fmt(nijiVal)}</td>
+        ${numCell('c-ichi', val, sumVal)}
+        ${numCell('c-ni', nijiVal, nijiSumVal)}
       </tr>`);
     }
 
@@ -404,12 +484,22 @@ async function main() {
     document.getElementById('totalIchiji').textContent = fmt(totalJobs);
     document.getElementById('totalNiji').textContent = fmt(totalNiji);
 
+    // 求人票総数の内訳：鹿児島県内（鹿児島A・鹿児島Bの合計）と、それ以外（県外）
+    const kenNaiTotal =
+      (agg['鹿児島A'] || 0) + (aggNiji['鹿児島A'] || 0) +
+      (agg['鹿児島B'] || 0) + (aggNiji['鹿児島B'] || 0);
+    const kenGaiTotal = (totalJobs + totalNiji) - kenNaiTotal;
+    document.getElementById('totalRecordsBreakdown').textContent =
+      `県内:${fmt(kenNaiTotal)}・県外:${fmt(kenGaiTotal)}`;
+
     const now = new Date();
     document.getElementById('updatedNote').textContent =
       `データ取得元: ${CSV_URL}（令和8年度一次募集）／集計対象求人票数: ${dataRows.length}件／取得日時: ${now.toLocaleString('ja-JP')}`;
 
     statusArea.style.display = 'none';
     document.getElementById('tablesArea').style.display = 'flex';
+    fitRowsToPage();
+    window.addEventListener('resize', fitRowsToPage);
   } catch (err) {
     statusArea.textContent = 'データの読み込みに失敗しました。\n' + err.message +
       '\n\n※ このファイルをローカルで直接開いた場合（file://）は、ブラウザのセキュリティ制限により外部CSVを取得できないことがあります。\nWebサーバー経由（http/https）で開くか、CORSが許可された環境でお試しください。';
