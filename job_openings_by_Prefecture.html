@@ -237,6 +237,9 @@
   }
   table.modal-table td.mtName{text-align:left;}
   table.modal-table td.mtNum{text-align:right;white-space:nowrap;}
+  table.modal-table td.mtSmall{font-size:10px;}
+  table.modal-table th.mtHeadBig{font-size:14px;}
+  table.modal-table th.mtHeadSmall{font-size:10px;}
   table.modal-table tbody tr:nth-child(even){background:var(--cream);}
 
   @media print{
@@ -281,7 +284,7 @@
 
   <div class="legend">
     <b>集計方法</b>：就業場所住所（市区町村）の先頭一致で都道府県を判定。
-    <b>件数</b>＝求人票の行数、<b>人数</b>＝件数と同じ。ただし、補足事項・特記事項に「指定校求人」が含まれる求人が一件でも含まれる区分は、<b>人数</b>の数字の左に赤字で「<span style="color:#c0392b;">*</span>」を付す、
+    <b>件数</b>＝求人票の行数、<b>人数</b>＝件数と同じ。ただし、「インターネットへの公開」が「不可」の求人が一件でも含まれる区分は、<b>人数</b>の数字の左に赤字で「<span style="color:#c0392b;">*</span>」を付す、
     <b>社数</b>＝事業所番号（無い場合は事業所名）のユニーク数。
     鹿児島県は本校学区の<b>曽於市・志布志市・大崎町</b>を「鹿児島A」、それ以外の市町村を「鹿児島B」として内訳表示（都道府県別求人状況.xlsx と同じ様式）。
   </div>
@@ -304,7 +307,7 @@
   <div class="foot">
     <div class="footText" id="foot"></div>
     <button type="button" class="btn-flat" id="btnDesignated" disabled>
-      指定校求人一覧<span class="n" id="designatedCount"></span>
+      指定校一覧<span class="n" id="designatedCount"></span>
     </button>
   </div>
 </div>
@@ -312,14 +315,14 @@
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-box">
     <div class="modal-head">
-      <h2>指定校求人一覧</h2>
+      <h2>指定校一覧</h2>
       <button type="button" class="modal-close" id="modalClose">閉じる ✕</button>
     </div>
     <div class="modal-body">
       <p class="modal-note" id="modalNote"></p>
       <table class="modal-table">
         <thead>
-          <tr><th>管理No</th><th>事業所</th><th>職種</th><th>就業市区町村</th><th>公開</th></tr>
+          <tr><th class="mtHeadSmall">No</th><th class="mtHeadBig">求人番号</th><th>事業所</th><th class="mtHeadBig">職種</th><th>就業市区町村</th><th>指定校</th></tr>
         </thead>
         <tbody id="modalTbody"></tbody>
       </table>
@@ -396,8 +399,6 @@ async function run(){
       addr: header.indexOf("就業場所住所（市区町村）"),
       corpNo: header.indexOf("事業所番号"),
       corpName: header.indexOf("事業所名"),
-      supplement: header.indexOf("補足事項"),
-      special: header.indexOf("特記事項"),
       manageNo: header.findIndex(h => h.includes("管理") || h.includes("求人番号") || h.includes("受理番号")),
       jobType: header.findIndex(h => h === "職種" || h.includes("職種")),
       webPublic: header.indexOf("インターネットへの公開"),
@@ -425,9 +426,8 @@ async function run(){
       matched++;
 
       const corpKey = (row[idx.corpNo] || "").trim() || (row[idx.corpName] || "").trim() || null;
-      const supplementText = idx.supplement !== -1 ? (row[idx.supplement] || "") : "";
-      const specialText = idx.special !== -1 ? (row[idx.special] || "") : "";
-      const isDesignated = supplementText.includes("指定校求人") || specialText.includes("指定校求人");
+      const webPublicText = idx.webPublic !== -1 ? (row[idx.webPublic] || "").trim() : "";
+      const isDesignated = webPublicText === "不可";
 
       addRow(prefStats[pref], corpKey, isDesignated);
 
@@ -529,6 +529,29 @@ function escapeHTML(s){
   }[ch]));
 }
 
+function groupDesignatedByManageNo(rows){
+  const map = new Map();
+  const order = [];
+  rows.forEach(d => {
+    const key = d.manageNo ? d.manageNo : `__blank_${order.length}`;
+    if (!map.has(key)){
+      map.set(key, {
+        manageNo: d.manageNo,
+        corpName: d.corpName,
+        jobType: d.jobType,
+        addr: d.addr,
+        count: 0,
+        numSum: 0,
+      });
+      order.push(key);
+    }
+    const g = map.get(key);
+    g.count += 1;
+    g.numSum += d.numSum;
+  });
+  return order.map(k => map.get(k));
+}
+
 function setupDesignatedModal(designatedRows){
   const btn = document.getElementById('btnDesignated');
   const countEl = document.getElementById('designatedCount');
@@ -537,21 +560,24 @@ function setupDesignatedModal(designatedRows){
   const tbody = document.getElementById('modalTbody');
   const note = document.getElementById('modalNote');
 
-  countEl.textContent = designatedRows.length ? `（${fmt(designatedRows.length)}件）` : '（0件）';
+  const grouped = groupDesignatedByManageNo(designatedRows);
 
-  if (designatedRows.length === 0){
+  countEl.textContent = grouped.length ? `（${fmt(grouped.length)}件）` : '（0件）';
+
+  if (grouped.length === 0){
     btn.disabled = true;
     return;
   }
   btn.disabled = false;
 
-  note.textContent = `補足事項・特記事項に「指定校求人」を含む求人：全${fmt(designatedRows.length)}件`;
-  tbody.innerHTML = designatedRows.map(d => `<tr>` +
-    `<td class="mtNum">${escapeHTML(d.manageNo) || '-'}</td>` +
-    `<td class="mtName">${escapeHTML(d.corpName) || '-'}</td>` +
-    `<td class="mtName">${escapeHTML(d.jobType) || '-'}</td>` +
-    `<td class="mtName">${escapeHTML(d.addr) || '-'}</td>` +
-    `<td class="mtNum">${escapeHTML(d.webPublic) || '-'} <span style="font-size:9.5px;color:var(--sub);">(${fmt(d.numSum)})</span></td>` +
+  note.textContent = `「インターネットへの公開」が「不可」の求人：全${fmt(grouped.length)}件`;
+  tbody.innerHTML = grouped.map((g, i) => `<tr>` +
+    `<td class="mtNum">${i + 1}</td>` +
+    `<td class="mtNum mtSmall">${escapeHTML(g.manageNo) || '-'}</td>` +
+    `<td class="mtName">${escapeHTML(g.corpName) || '-'}</td>` +
+    `<td class="mtName mtSmall">${escapeHTML(g.jobType) || '-'}</td>` +
+    `<td class="mtName">${escapeHTML(g.addr) || '-'}</td>` +
+    `<td class="mtNum">${fmt(g.count)}<span style="font-size:9.5px;color:var(--sub);">(${fmt(g.numSum)})</span></td>` +
     `</tr>`).join('');
 
   function openModal(){ overlay.classList.add('show'); }

@@ -237,6 +237,9 @@
   }
   table.modal-table td.mtName{text-align:left;}
   table.modal-table td.mtNum{text-align:right;white-space:nowrap;}
+  table.modal-table td.mtSmall{font-size:10px;}
+  table.modal-table th.mtHeadBig{font-size:14px;}
+  table.modal-table th.mtHeadSmall{font-size:10px;}
   table.modal-table tbody tr:nth-child(even){background:var(--cream);}
 
   @media print{
@@ -304,7 +307,7 @@
   <div class="foot">
     <div class="footText" id="foot"></div>
     <button type="button" class="btn-flat" id="btnDesignated" disabled>
-      公開不可求人一覧<span class="n" id="designatedCount"></span>
+      指定校一覧<span class="n" id="designatedCount"></span>
     </button>
   </div>
 </div>
@@ -312,14 +315,14 @@
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-box">
     <div class="modal-head">
-      <h2>公開不可求人一覧</h2>
+      <h2>指定校一覧</h2>
       <button type="button" class="modal-close" id="modalClose">閉じる ✕</button>
     </div>
     <div class="modal-body">
       <p class="modal-note" id="modalNote"></p>
       <table class="modal-table">
         <thead>
-          <tr><th>管理No</th><th>事業所</th><th>職種</th><th>就業市区町村</th><th>公開</th></tr>
+          <tr><th class="mtHeadSmall">No</th><th class="mtHeadBig">求人番号</th><th>事業所</th><th class="mtHeadBig">職種</th><th>就業市区町村</th><th>指定校</th></tr>
         </thead>
         <tbody id="modalTbody"></tbody>
       </table>
@@ -448,8 +451,19 @@ async function run(){
       }
     }
 
+    const groupedDesignated = groupDesignatedByManageNo(designatedRows);
+    groupedDesignated.forEach(g => {
+      const gPref = ALL_PREFS.find(p => g.addr.startsWith(p));
+      if (!gPref) return;
+      prefStats[gPref].people += 1;
+      if (gPref === HOME_PREF){
+        const gCity = KAGOSHIMA_A_CITIES.find(c => g.addr.includes(c)) || "B";
+        kagoshimaSub[gCity].people += 1;
+      }
+    });
+
     render(prefStats, kagoshimaSub);
-    setupDesignatedModal(designatedRows);
+    setupDesignatedModal(groupedDesignated);
 
     statusEl.style.display = "none";
     document.getElementById('tables').classList.add('show');
@@ -526,7 +540,30 @@ function escapeHTML(s){
   }[ch]));
 }
 
-function setupDesignatedModal(designatedRows){
+function groupDesignatedByManageNo(rows){
+  const map = new Map();
+  const order = [];
+  rows.forEach(d => {
+    const key = d.manageNo ? d.manageNo : `__blank_${order.length}`;
+    if (!map.has(key)){
+      map.set(key, {
+        manageNo: d.manageNo,
+        corpName: d.corpName,
+        jobType: d.jobType,
+        addr: d.addr,
+        count: 0,
+        numSum: 0,
+      });
+      order.push(key);
+    }
+    const g = map.get(key);
+    g.count += 1;
+    g.numSum += d.numSum;
+  });
+  return order.map(k => map.get(k));
+}
+
+function setupDesignatedModal(grouped){
   const btn = document.getElementById('btnDesignated');
   const countEl = document.getElementById('designatedCount');
   const overlay = document.getElementById('modalOverlay');
@@ -534,21 +571,22 @@ function setupDesignatedModal(designatedRows){
   const tbody = document.getElementById('modalTbody');
   const note = document.getElementById('modalNote');
 
-  countEl.textContent = designatedRows.length ? `（${fmt(designatedRows.length)}件）` : '（0件）';
+  countEl.textContent = grouped.length ? `（${fmt(grouped.length)}件）` : '（0件）';
 
-  if (designatedRows.length === 0){
+  if (grouped.length === 0){
     btn.disabled = true;
     return;
   }
   btn.disabled = false;
 
-  note.textContent = `「インターネットへの公開」が「不可」の求人：全${fmt(designatedRows.length)}件`;
-  tbody.innerHTML = designatedRows.map(d => `<tr>` +
-    `<td class="mtNum">${escapeHTML(d.manageNo) || '-'}</td>` +
-    `<td class="mtName">${escapeHTML(d.corpName) || '-'}</td>` +
-    `<td class="mtName">${escapeHTML(d.jobType) || '-'}</td>` +
-    `<td class="mtName">${escapeHTML(d.addr) || '-'}</td>` +
-    `<td class="mtNum">${escapeHTML(d.webPublic) || '-'} <span style="font-size:9.5px;color:var(--sub);">(${fmt(d.numSum)})</span></td>` +
+  note.textContent = `「インターネットへの公開」が「不可」の求人：全${fmt(grouped.length)}件`;
+  tbody.innerHTML = grouped.map((g, i) => `<tr>` +
+    `<td class="mtNum">${i + 1}</td>` +
+    `<td class="mtNum mtSmall">${escapeHTML(g.manageNo) || '-'}</td>` +
+    `<td class="mtName">${escapeHTML(g.corpName) || '-'}</td>` +
+    `<td class="mtName mtSmall">${escapeHTML(g.jobType) || '-'}</td>` +
+    `<td class="mtName">${escapeHTML(g.addr) || '-'}</td>` +
+    `<td class="mtNum">${fmt(g.count)}<span style="font-size:9.5px;color:var(--sub);">(${fmt(g.numSum)})</span></td>` +
     `</tr>`).join('');
 
   function openModal(){ overlay.classList.add('show'); }
