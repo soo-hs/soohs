@@ -302,6 +302,59 @@
   ::-webkit-scrollbar{width:8px;height:8px;}
   ::-webkit-scrollbar-thumb{background:var(--line-strong);}
   ::-webkit-scrollbar-track{background:transparent;}
+
+  /* ---------- responsive additions ---------- */
+  html{-webkit-text-size-adjust:100%;}
+  .wrap{padding-left:max(clamp(14px,4vw,28px),env(safe-area-inset-left)); padding-right:max(clamp(14px,4vw,28px),env(safe-area-inset-right));}
+  .grid-2>*,.grid-3>*{min-width:0;}
+  canvas{max-width:100%;}
+  .table-scroll{overflow-x:auto;}
+  table.rank th{white-space:nowrap;}
+  @media (min-width:1500px){ .wrap{max-width:1360px;} }
+  @media (max-width:1240px){ .hero-sub .nb,.section-desc .nb{white-space:normal;} }
+  @media (max-width:1024px){
+    .ledger{grid-template-columns:repeat(6,1fr); gap:1.5px; background:var(--ink);}
+    .ledger .cell{grid-column:span 2; border:none; background:var(--card);}
+    .ledger .cell:nth-child(n+4){grid-column:span 3;}
+    .kpi-strip{grid-template-columns:repeat(6,1fr);}
+    .kpi-strip .kpi{grid-column:span 2;}
+    .kpi-strip .kpi:nth-child(n+4){grid-column:span 3;}
+  }
+  @media (min-width:881px) and (max-width:1024px){
+    .grid-3{grid-template-columns:repeat(2,1fr);}
+    .grid-3>.card:last-child{grid-column:span 2;}
+  }
+  @media (max-width:640px){
+    header.hero{padding-top:32px;}
+    .eyebrow{font-size:11px; letter-spacing:0.16em;}
+    .hero-title-row{gap:16px;}
+    .hero-sub{font-size:14px;}
+    .hanko{width:68px;height:68px;border-width:2px;}
+    .hanko::after{inset:5px;}
+    .hanko span{font-size:11px;}
+    .ledger{margin-top:28px; grid-template-columns:repeat(2,1fr);}
+    .ledger .cell,.ledger .cell:nth-child(n+4){grid-column:span 1; padding:14px 12px;}
+    .ledger .cell:last-child{grid-column:span 2;}
+    .kpi-strip{grid-template-columns:repeat(2,1fr);}
+    .kpi-strip .kpi,.kpi-strip .kpi:nth-child(n+4){grid-column:span 1; padding:12px 12px;}
+    .kpi-strip .kpi:last-child{grid-column:span 2;}
+    .kpi .value{font-size:19px;}
+    section{padding-top:48px;}
+    section:last-of-type{padding-bottom:48px;}
+    .section-head{gap:10px; padding-bottom:12px;}
+    .section-desc{font-size:13.5px; margin:12px 0 22px 0;}
+    .grid-2,.grid-3{gap:16px;}
+    .card{padding:16px;}
+    .card h3{flex-wrap:wrap; gap:6px;}
+    .chart-scroll{height:360px;}
+    .chart-scroll.h520{height:420px;}
+    table.rank{font-size:12.5px; min-width:440px;}
+    table.rank th,table.rank td{padding:8px 6px;}
+    select#prefSelect{width:100%; min-width:0;}
+    .selector-row{gap:10px; margin-bottom:20px;}
+    .insight-list li{grid-template-columns:26px 1fr; gap:10px; padding:14px;}
+    footer{flex-direction:column;}
+  }
 </style>
 </head>
 <body>
@@ -470,7 +523,7 @@ document.getElementById('ledgerStrip').innerHTML = `
 const TOPJOB_ROW_H = 26;
 document.getElementById('topJobsTag').textContent = `TOP ${NAT.top_jobs.length} / ${NAT.job_class_count}分類`;
 document.getElementById('topJobsInner').style.height = (NAT.top_jobs.length*TOPJOB_ROW_H + 40) + 'px';
-function truncJob(l){ return l.length>=15 ? l.slice(0,14)+'…' : l; }
+function truncJob(l,w){ const n = w<440 ? 8 : w<600 ? 11 : 14; return l.length>n ? l.slice(0,n-1)+'…' : l; }
 const rankBadgePlugin = {
   id:'rankBadge',
   afterDatasetsDraw(chart){
@@ -510,13 +563,17 @@ new Chart(document.getElementById('chartTopJobsNational'), {
     }}},
     scales:{
       x:{position:'top', grid:{color:COLORS.line}, ticks:{callback:(v)=>v}},
-      y:{grid:{display:false}, ticks:{font:{size:11}, autoSkip:false, callback:function(v){ return truncJob(this.getLabelForValue(v)); }}}
+      y:{grid:{display:false}, ticks:{font:{size:11}, autoSkip:false, callback:function(v){ return truncJob(this.getLabelForValue(v), this.chart.width); }}}
     }
   },
   plugins:[rankBadgePlugin]
 });
 
-new Chart(document.getElementById('chartSalaryNational'), {
+const salaryStack = document.querySelector('.salary-stack'), salaryDonutBox = document.querySelector('.salary-donut');
+const salaryNarrow = ()=> salaryStack.clientWidth < 400;
+function applySalaryLayout(n){ salaryStack.style.height = n ? '520px' : ''; salaryDonutBox.style.flexBasis = n ? '250px' : ''; }
+applySalaryLayout(salaryNarrow());
+const chartSalaryNational = new Chart(document.getElementById('chartSalaryNational'), {
   type:'doughnut',
   data:{
     labels: SALARY_ORDER,
@@ -530,7 +587,7 @@ new Chart(document.getElementById('chartSalaryNational'), {
     responsive:true, maintainAspectRatio:false,
     cutout:'55%',
     plugins:{
-      legend:{position:'right', labels:{boxWidth:12, padding:10, font:{size:11.5}}},
+      legend:{position: salaryNarrow() ? 'bottom' : 'right', labels:{boxWidth:12, padding:10, font:{size:11.5}}},
       tooltip:{callbacks:{label:(c)=>`${c.label}: ${fmtInt(c.raw)}件 (${(c.raw/totalRecords*100).toFixed(1)}%)`}}
     }
   }
@@ -557,7 +614,7 @@ new Chart(document.getElementById('chartSalaryLine'), {
       label:(c)=>`${fmtInt(c.raw)}件 (${(c.raw/totalRecords*100).toFixed(1)}%)`
     }}},
     scales:{
-      x:{grid:{display:false}, ticks:{font:{size:10}, autoSkip:false, maxRotation:0}, title:{display:true, text:'月給(万円)', font:{size:10}}},
+      x:{grid:{display:false}, ticks:{font:{size:10}, autoSkip:true, autoSkipPadding:6, maxRotation:0}, title:{display:true, text:'月給(万円)', font:{size:10}}},
       y:{grid:{color:COLORS.line}, ticks:{precision:0, font:{size:10}}, beginAtZero:true}
     }
   }
@@ -578,11 +635,20 @@ new Chart(document.getElementById('chartHolidayNational'), {
     responsive:true, maintainAspectRatio:false,
     plugins:{legend:{display:false}, tooltip:{callbacks:{label:(c)=>`${fmtInt(c.raw)}件 (${(c.raw/totalRecords*100).toFixed(1)}%)`}}},
     scales:{
-      x:{grid:{display:false}, ticks:{autoSkip:false, maxRotation:0, font:{size:11}}},
+      x:{grid:{display:false}, ticks:{autoSkip:false, maxRotation:0, font:(c)=>({size: c.chart.width<520 ? 9.5 : 11}),
+        callback:function(v){ const l = HOLIDAY_ORDER[v]; return this.chart.width<520 ? holidayShortLabel(l) : holidayLabel(l); }}},
       y:{grid:{color:COLORS.line}}
     }
   }
 });
+
+let lastSalaryNarrow = salaryNarrow();
+new ResizeObserver(()=>{
+  const n = salaryNarrow(); if(n === lastSalaryNarrow) return; lastSalaryNarrow = n;
+  applySalaryLayout(n);
+  chartSalaryNational.options.plugins.legend.position = n ? 'bottom' : 'right';
+  chartSalaryNational.update('none'); chartSalaryNational.resize();
+}).observe(salaryStack);
 
 // ---------- 02 Ranking ----------
 // 求人数合計の多い順に全都道府県を表示(固定高さのスクロール枠 + 右端に順位アイコン)
