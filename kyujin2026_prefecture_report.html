@@ -370,7 +370,7 @@
     <div class="hero-title-row">
       <div>
         <h1 class="serif"><span class="sm">曽於高校</span><span class="accent">受付求人票<span class="sm">･都道府県別</span></span><span class="sm">データ分析</span></h1>
-        <p class="hero-sub"><span class="nb">求人票2,968件の曽於高校受付求人票データをもとに、就業場所(都道府県)ごとの求人数・職業分類・月給水準・年間休日数の傾向を集計。</span><span class="nb">求人票そのものの「様式」を借りて、数字を一覧できる形にまとめました。</span></p>
+        <p class="hero-sub"><span class="nb">求人票2,968件の曽於高校受付求人票データをもとに、就業場所(都道府県)ごとの求人数・職業分類・月給水準・年間休日数の傾向を集計。</span><span class="nb">求人票そのものの「様式」を借りて、数字を一覧できる形にまとめました。《求人数合計(通勤+住込+不問)》</span></p>
       </div>
       <div class="hanko"><span>求人統計</span></div>
     </div>
@@ -522,7 +522,7 @@ function holidayShortLabel(l){
 function holidayLabel(l){ const i = l.indexOf('以上'); return (i>=0 && l.includes('未満')) ? [l.slice(0,i+2), l.slice(i+2)] : l; }
 document.getElementById('ledgerStrip').innerHTML = `
   <div class="cell"><div class="label">求人票 件数</div><div class="value mono">${fmtInt(totalRecords)}<small>件</small></div><div class="sub">45都道府県</div></div>
-  <div class="cell"><div class="label">求人数合計(通勤+住込+不問)</div><div class="value mono">${fmtInt(totalKyujinsu)}<small>人</small></div><div class="sub">1票あたり平均 ${(totalKyujinsu/totalRecords).toFixed(1)}人</div></div>
+  <div class="cell"><div class="label">求人数合計</div><div class="value mono">${fmtInt(totalKyujinsu)}<small>人</small></div><div class="sub">1票あたり平均 ${(totalKyujinsu/totalRecords).toFixed(1)}人</div></div>
   <div class="cell"><div class="label">平均月給</div><div class="value mono">${fmtInt(avgSalary)}<small>円</small></div><div class="sub">基本給+手当+残業代</div></div>
   <div class="cell"><div class="label">月給 中央値</div><div class="value mono">${fmtInt(medSalary)}<small>円</small></div><div class="sub">全国中央値</div></div>
   <div class="cell"><div class="label">平均年間休日数</div><div class="value mono">${avgHoliday.toFixed(1)}<small>日</small></div><div class="sub">全国平均</div></div>
@@ -715,7 +715,7 @@ let chartSalaryPref, chartSalaryLinePref, chartHolidayPref;
 function renderPref(prefName){
   const p = PREFS.find(x=>x.pref===prefName);
   const rankIdx = PREFS.findIndex(x=>x.pref===prefName) + 1;
-  document.getElementById('prefRankPill').textContent = `求人票数 全国 第${rankIdx}位 / 45都道府県`;
+  document.getElementById('prefRankPill').textContent = `受付求人票数/45都道府県`;
 
   document.getElementById('prefKpiStrip').innerHTML = `
     <div class="kpi"><div class="label">求人票数</div><div class="value">${fmtInt(p.count)} <span style="font-size:12px;font-weight:500;">件</span></div></div>
