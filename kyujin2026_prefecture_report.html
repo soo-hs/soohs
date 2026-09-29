@@ -198,7 +198,6 @@
   }
   .chart-box{position:relative; width:100%;}
   .chart-box.h260{height:260px;}
-  .chart-box.h350{height:350px;}
   .chart-box.h320{height:320px;}
   .chart-box.h420{height:420px;}
   .chart-box.h520{height:520px;}
@@ -209,7 +208,7 @@
   .chart-scroll::-webkit-scrollbar-thumb:hover{background:var(--seal-deep);}
   .chart-scroll.h520{height:520px;}
   .chart-scroll.h260{height:260px;}
-  .chart-scroll.h350{height:350px;}
+  .chart-scroll.h420{height:420px;}
   .chart-scroll.h480{height:480px;}
   .chart-scroll.h560{height:560px;}
   .salary-stack{height:540px; display:flex; flex-direction:column; gap:6px;}
@@ -220,9 +219,9 @@
   /* 全国概況: 円グラフ:折れ線 = 6:4 */
   .salary-stack .salary-donut{flex:6 1 0;}
   .salary-stack .salary-line{flex:4 1 0;}
-  .pref-salary-stack{height:350px; display:flex; flex-direction:column; gap:4px;}
-  .pref-salary-stack .salary-donut{flex:0 0 118px; min-height:0; overflow:hidden;}
-  .pref-salary-stack .salary-line{overflow:hidden;}
+  .pref-salary-stack{height:420px; display:flex; flex-direction:column; gap:4px;}
+  .pref-salary-stack .salary-donut{flex:6 1 0; min-height:0; overflow:hidden;} /* 円グラフ:折れ線 = 6:4 */
+  .pref-salary-stack .salary-line{flex:4 1 0; overflow:hidden;}
   .pref-salary-stack .salary-line-head{flex:0 0 auto;}
   .pref-salary-stack .salary-line-head{padding-top:6px; font-size:12px;}
   .job-list .jname{min-width:0;}
@@ -470,7 +469,7 @@
     <div class="grid-3">
       <div class="card">
         <h3>上位職種<span class="tag" id="prefJobTag">TOP 50</span></h3>
-        <div class="chart-scroll h350" id="prefJobScroll"><ul class="job-list" id="prefJobList"></ul></div>
+        <div class="chart-scroll h420" id="prefJobScroll"><ul class="job-list" id="prefJobList"></ul></div>
       </div>
       <div class="card">
         <h3>月給帯 構成<span class="tag">4区分</span></h3>
@@ -482,7 +481,7 @@
       </div>
       <div class="card">
         <h3>年間休日 帯 構成<span class="tag">7区分</span></h3>
-        <div class="chart-box h350"><canvas id="chartHolidayPref"></canvas></div>
+        <div class="chart-box h420"><canvas id="chartHolidayPref"></canvas></div>
       </div>
     </div>
   </section>
