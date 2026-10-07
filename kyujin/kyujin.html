@@ -1,219 +1,230 @@
-<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>受付求人票</title>
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>受付求人票</title>
 <style>
-:root{--nv:#2f4f8f;--nv2:#4166b0;--nvd:#1f3868;--am:#ffb02e;--am2:#ffe2a8;--bg:#f3f6fc;--tx:#1e2a44;--ln:#d5ddee}
+:root{--n:#2f63b8;--nd:#1f4a96;--nl:#e9f0fb;--a:#ffb300;--ad:#c98400;--t:#1d2b49;--bd:#cdd8ee}
 *{box-sizing:border-box}html,body{height:100%;margin:0}
-body{display:flex;flex-direction:column;font:12px/1.2 "Yu Gothic UI","Hiragino Sans","Meiryo",sans-serif;color:var(--tx);background:var(--bg)}
-header{background:linear-gradient(var(--nv2),var(--nv));color:#fff;padding:4px 10px;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;border-bottom:3px solid var(--am)}
-.top{flex:1 1 440px;min-width:0;display:flex;align-items:center;gap:12px}
-h1{margin:0;font-size:16px;white-space:nowrap;letter-spacing:.05em}
-#q{flex:1;min-width:0;height:24px;border:1px solid var(--am);border-radius:12px;padding:0 12px;font-size:12px}
-.ctl{display:flex;align-items:center;gap:10px;margin-left:auto}
-select,button,input{font:inherit}
-.ctl select{height:24px;border-radius:4px;border:1px solid var(--am)}
-#cnt{color:var(--am2);white-space:nowrap}
-.addw{position:relative}
-button{cursor:pointer}
-#addb{height:24px;padding:0 12px;border:0;border-radius:4px;background:var(--am);color:#3b2600;font-weight:700}
-.menu{position:absolute;right:0;top:28px;z-index:90;background:#fff;color:var(--tx);border:1px solid var(--nv);border-radius:6px;box-shadow:0 6px 20px #0004;width:260px;max-height:60vh;overflow:auto;padding:4px}
-.menu label{display:block;padding:2px 6px;cursor:pointer;white-space:nowrap}.menu label:hover{background:var(--am2)}
+body{display:flex;flex-direction:column;font:13px/1.3 "Meiryo","Yu Gothic UI",sans-serif;color:var(--t);background:#f4f7fd}
+header{background:var(--n);color:#fff;padding:4px 10px;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;border-bottom:3px solid var(--a)}
+.r1{flex:1 1 420px;display:flex;gap:6px;align-items:center;min-width:0}
+.r1 h1{font-size:16px;margin:0;white-space:nowrap}
+.r2{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+input,select,button{font:inherit;height:24px;border:1px solid var(--bd);border-radius:4px;padding:0 6px;color:var(--t)}
+input[type=checkbox],input[type=radio]{height:auto;width:auto;padding:0;margin:0}
+#q{flex:1;min-width:60px}
+button{cursor:pointer;background:var(--a);border-color:var(--ad);color:#3a2800;font-weight:600}
+button.g{background:#fff;color:var(--nd)}
+#cnt{white-space:nowrap}#ab{background:var(--a);color:#3a2800;border-radius:9px;padding:0 7px;font-size:11px;white-space:nowrap}
 #wrap{flex:1;overflow:auto;background:#fff}
-table{border-collapse:separate;border-spacing:0;table-layout:fixed;width:100%}
-th{position:sticky;top:0;z-index:2;background:var(--nvd);color:#fff;text-align:left;padding:3px 6px;height:24px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;user-select:none;border-right:1px solid #ffffff30}
-th.n{left:0;z-index:4;cursor:default;text-align:right}
-th.lt{color:#aab8d8}
-.rz{position:absolute;right:0;top:0;bottom:0;width:6px;cursor:col-resize}.rz:hover{background:var(--am)}
-td{padding:2px 6px;height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-bottom:1px solid var(--ln);border-right:1px solid #eef1f8}
-td.n{position:sticky;left:0;background:#eaf0fb;text-align:right;color:var(--nv);z-index:1;font-weight:700}
-td.r{text-align:right}td.lt{color:#9aa6c0}
-tbody tr:nth-child(even) td{background:#f7f9fe}tbody tr:nth-child(even) td.n{background:#eaf0fb}
-tbody tr:hover td{background:var(--am2)}
-.ov{position:fixed;inset:0;background:#0a1a3c99;display:flex;align-items:center;justify-content:center}
+table{border-collapse:separate;border-spacing:0;table-layout:fixed;min-width:100%}
+th,td{padding:1px 5px;border-bottom:1px solid #e3eaf6;border-right:1px solid #eef2fa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px;height:21px}
+th{position:sticky;top:0;z-index:3;background:var(--nl);color:var(--nd);text-align:left;cursor:pointer;user-select:none;border-bottom:2px solid var(--a)}
+th.fx,td.fx{position:sticky;left:0;z-index:2;background:#fff;text-align:right}
+th.fx{z-index:4;background:var(--nl)}
+tbody tr:nth-child(even) td{background:#f7faff}
+tbody tr:hover td{background:#fff3d1}
+.f{color:#9aa9c7!important;font-weight:400}
+.so{font-style:normal;color:var(--ad);font-size:10px;margin-left:2px}
+.rz{position:absolute;right:0;top:0;width:6px;height:100%;cursor:col-resize}.rz:hover{background:var(--a)}
+th.dr{outline:2px dashed var(--a);outline-offset:-2px}
+.ov{position:fixed;inset:0;background:rgba(25,45,90,.45);display:flex;align-items:center;justify-content:center;z-index:50}
 .ov[hidden]{display:none}
-.pn{background:#fff;border-radius:8px;border-top:4px solid var(--am);max-width:96vw;max-height:94vh;display:flex;flex-direction:column;box-shadow:0 10px 40px #0007}
-.ph{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--nv);color:#fff;border-radius:4px 4px 0 0}
-.ph b{flex:1;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.x{border:1px solid var(--am);background:none;color:#fff;border-radius:4px;width:28px;height:24px;font-size:16px;line-height:1}
-.bt{background:var(--am);color:#3b2600;border:0;border-radius:4px;height:24px;padding:0 12px;font-weight:700}
-.pb{overflow:auto;padding:8px 10px}
-#md .pn{width:1100px}
-.g{margin-bottom:8px;border:1px solid var(--ln);border-radius:6px}
-.g h3{margin:0;padding:3px 8px;background:var(--am2);color:#5a3a00;font-size:12px;border-radius:5px 5px 0 0}
-.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr))}
-.kv div{display:grid;grid-template-columns:120px 1fr;gap:6px;padding:3px 8px;border-bottom:1px dotted var(--ln);line-height:1.35}
-.kv b{color:var(--nv);font-weight:700}.kv span{white-space:pre-wrap;word-break:break-all}
-.kv .lt b,.kv .lt span{color:#9aa6c0}
-#adv .pn{width:940px}
-.af{padding:6px 12px 10px}
-.af h4{margin:6px 0 3px;color:var(--nv);font-size:12px}
-.af .row{display:flex;gap:6px}.af input[type=text],.af select{height:24px;border:1px solid #b9c5e0;border-radius:4px;padding:0 6px}
-.af input[type=text]{flex:1;min-width:0}
-.ck{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1px 8px}
-.ck label{white-space:nowrap}
-.bc{display:grid;grid-template-columns:96px 1fr;border:1px solid var(--ln);border-radius:4px;overflow:hidden}
-.bc>b{background:#e8eef9;padding:4px 6px;color:var(--nv);border-bottom:1px solid #fff}.bc>div{padding:3px 8px;border-bottom:1px solid var(--ln)}
-.fb{display:flex;justify-content:flex-end;gap:8px;padding:6px 12px;border-top:1px solid var(--ln)}
-.fb button{height:26px;padding:0 16px;border-radius:4px;border:1px solid var(--nv);background:#fff;color:var(--nv)}
-.fb .go{background:var(--am);border-color:var(--am);color:#3b2600;font-weight:700}
-#sm .pn{width:1500px;height:92vh}
-.st{width:100%;border-collapse:collapse;table-layout:auto}
-.st th{cursor:default;font-size:11px}.st td{white-space:normal;height:auto;padding:3px 6px;vertical-align:top;overflow:visible}
-.bar{height:8px;background:#e1e8f6;border-radius:4px;width:70px;display:inline-block;vertical-align:middle}.bar i{display:block;height:100%;background:var(--am);border-radius:4px}
-.ok,.ng{display:inline-block;padding:0 5px;margin:1px;border-radius:8px;font-size:10px;white-space:nowrap}
-.ok{background:#dbe7ff;color:var(--nvd)}.ng{background:#ffe3d6;color:#9a3d10}
-.ref{background:var(--am2);padding:4px 10px;margin-bottom:6px;border-radius:4px}
-@media(max-width:700px){.kv{grid-template-columns:1fr}}
+.dlg{background:#fff;border-radius:8px;width:min(96vw,1100px);max-height:94vh;display:flex;flex-direction:column;border-top:4px solid var(--a);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.dlg.adv{width:min(96vw,860px)}.dlg.wide{width:96vw;height:92vh}
+.mh{display:flex;gap:8px;align-items:center;padding:5px 10px;background:var(--nl);flex-wrap:wrap;font-weight:600;color:var(--nd)}
+.mb{overflow:auto;padding:6px 12px 10px}
+.ck{display:inline-flex;align-items:center;gap:3px;margin:1px 10px 1px 0;white-space:nowrap;font-size:12px;font-weight:400;color:var(--t)}
+.sec{font-weight:700;color:var(--nd);margin:7px 0 2px;border-left:4px solid var(--a);padding-left:6px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr)}
+.bt{width:100%;border:1px solid var(--bd);border-collapse:collapse}
+.bt th{position:static;width:96px;background:var(--nl);cursor:default;white-space:normal;vertical-align:middle;border:1px solid var(--bd);font-size:11px}
+.bt td{height:auto;white-space:normal;border:1px solid var(--bd);padding:2px 6px}
+.kv{display:grid;grid-template-columns:130px 1fr;gap:0 6px;border-bottom:1px dotted var(--bd);padding:1px 0;font-size:12px}
+.kv span{color:var(--nd)}.kv b{font-weight:400;white-space:pre-wrap;word-break:break-all}
+.kg{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:0 18px}
+h3{margin:8px 0 2px;font-size:13px;color:var(--nd);border-left:4px solid var(--a);padding-left:6px}
+.st th,.st td{font-size:12px}
+.bar{display:inline-block;height:8px;background:var(--a);border-radius:3px;vertical-align:middle}
+.ok{color:#d98a00;font-weight:700}.ng{color:#b33;font-weight:700}.tg td{background:#fff3d1!important}
 </style></head><body>
 <header>
-<div class="top"><h1>受付求人票</h1><input id="q" type="search" placeholder="事業所名/所在地/就業場所/求人番号/管理No/職業分類（ダブルクリックで詳細検索）"></div>
-<div class="ctl"><label>年度 <select id="yr"><option value="">すべて</select></label><label>表示数 <select id="ps"><option>50<option selected>100<option>300<option>400<option>500</select></label><span id="cnt"></span>
-<div class="addw"><button id="addb">＋列追加</button><div id="addm" class="menu" hidden></div></div></div>
+ <div class="r1"><h1>受付求人票</h1><input id="q" placeholder="事業所名・所在地・就業場所・求人番号・管理No・職業分類（/でOR／ダブルクリックで詳細検索）" autocomplete="off"><button class="g" id="clr">クリア</button><span id="ab" hidden>詳細検索中</span></div>
+ <div class="r2">年度<select id="yr"></select>表示数<select id="lim"><option>50<option selected>100<option>300<option>400<option>500</select><span id="cnt"></span><button id="addc">＋列追加</button><button class="g" id="chk">データ点検</button></div>
 </header>
-<main id="wrap"><table id="t"><colgroup></colgroup><thead></thead><tbody></tbody></table></main>
-<div id="adv" class="ov" hidden><div class="pn"><div class="ph"><b>詳細検索</b><button class="x" id="advx">×</button></div><div class="pb af" id="advb"></div><div class="fb"><button id="advc">クリア</button><button class="go" id="advg">検索</button></div></div></div>
-<div id="md" class="ov" hidden><div class="pn"><div class="ph"><b id="mdt"></b><button class="bt" id="mds">類似求人検索（上位50件）</button><button class="x" id="mdx">×</button></div><div class="pb" id="mdb"></div></div></div>
-<div id="sm" class="ov" hidden><div class="pn"><div class="ph"><b id="smt"></b><button class="x" id="smx">×</button></div><div class="pb" id="smb"></div></div></div>
+<div id="wrap"><table id="tb"><colgroup id="cg"></colgroup><thead id="th"></thead><tbody id="bd"></tbody></table></div>
 <script>
-const BASE='https://soo-hs.github.io/soohs/kyujin/';
-const RN=`
-'求人年度'→'年度','求人番号'→'求人番号','受付安定所'→'受付所','事業所番号'→'事業所No','インターネットへの公開'→'WEB公開','事業所名 カナ'→'事業所カナ','事業所名'→'事業所名','郵便番号（所在地）'→'所在_郵便No','住所（所在地）'→'所在地住所','アクセス（所在地）'→'所在地アクセス','代表者名'→'代表者','法人番号'→'法人No','ホームページ'→'web_site','従業員数（企業全体）'→'全社員数','従業員数（就業場所）'→'就業社員数','設立'→'設立年','資本金'→'資本金','事業内容'→'事業内容','会社の特長'→'会社特長','雇用形態'→'雇用形態','職種'→'職種','仕事の内容'→'仕事内容','郵便番号（就業場所）'→'就業_郵便No','住所（就業場所）'→'就業場所住所','アクセス（就業場所）'→'就業場所アクセス','求人数（通勤）'→'通勤求人','求人数（住込）'→'住込求人','求人数（不問）'→'不問求人','必要な知識・技能等'→'必要スキル','転勤の可能性'→'転勤','マイカー通勤の可否'→'マイカー通勤','入居可能住宅（単身用）'→'単身住宅','入居可能住宅（世帯用）'→'世帯住宅','基本給'→'基本給','月給（基本給+手当+残業代）'→'月給','賞与有無（新卒）'→'賞与','時間外労働の有無'→'残業の有無','時間外労働の月平均時間数'→'平均残業時間','変形労働時間制の種類'→'労働時間の種類','休日等'→'休日','就業時間1'→'就業時間1','就業時間2'→'就業時間2','就業時間3'→'就業時間3','年間休日数'→'年間休日','複数応募の受け入れ'→'複数応募','複数応募開始の日程'→'複数応募日程','職場見学の受け入れ'→'職場見学','職場見学の日程'→'見学日程','課係名・役職名（担当者）'→'担当役職','氏名（担当者）'→'担当者','氏名カナ（担当者）'→'担当者カナ','電話番号（担当者）'→'担当TEL','FAX（担当者）'→'担当FAX','Eメール（担当者）'→'担当メール','補足事項'→'補足','特記事項'→'特記','産業分類'→'産業分類NO','職業分類（3桁）'→'職業分類1','職業分類（5桁）'→'職業分類1','職業分類2（3桁）'→'職業分類2','職業分類2（5桁）'→'職業分類2','就業場所住所（市区町村）'→'就業_市区町村1','就業場所住所2（市区町村）'→'就業_市区町村2','就業場所住所3（市区町村）'→'就業_市区町村3','管理番号'→'管理No','対象学科'→'対象学科','エリア'→'エリア','卒業生の入社実績'→'入社実績','その他の分類'→'その他分類','募集人数'→'募集人数','来校の有無'→'来校','二次募集の有無'→'二次募集','職場見学人数'→'見学人数','応募人数'→'応募人数','入社人数'→'入社人数','備考'→'備考','申送り事項'→'申送り事項','公開日時'→'公開日時','最終更新日時'→'更新日時','登録方法'→'登録方法','元ファイル名'→'元ファイル','職業分類（ハローワーク）大分類'→'HW職業大分類','職業分類（ハローワーク）中分類'→'HW職業中分類','職業分類（ハローワーク）小分類'→'HW職業小分類','職業分類（handy）大分類'→'handy職業大分類','職業分類（handy）中分類'→'handy職業中分類','職業分類2（ハローワーク）大分類'→'HW職業2大分類','職業分類2（ハローワーク）中分類'→'HW職業2中分類','職業分類2（ハローワーク）小分類'→'HW職業2小分類','職業分類2（handy）大分類'→'handy職業2大分類','職業分類2（handy）中分類'→'handy職業2中分類','お気に入り登録数'→'お気に入り数','職業分類コード（日本標準職業分類への変換）'→'標準職業1コード','職業分類（日本標準職業分類への変換）'→'標準職業分類1','職業分類2コード（日本標準職業分類への変換）'→'標準職業2コード','職業分類2（日本標準職業分類への変換）'→'標準職業分類2'`
-.trim().split(/,(?=')/).map(l=>l.trim().split('→').map(s=>s.replace(/^'|'$/g,'')));
-const MAP={};RN.forEach(([a,b])=>MAP[a]=b);
-let ALL=[...new Set(RN.map(x=>x[1]))];
-ALL.splice(ALL.indexOf('産業分類NO')+1,0,'産業分類名');
-ALL.splice(ALL.indexOf('年間休日')+1,0,'時間あたりの賃金','予想月給','予想賞与');
-ALL.push('就業場所','求人数計','職業分類');
-const LBL={求人数計:'求人数(計)'};
-const MONEY=new Set(['基本給','月給','時間あたりの賃金','予想月給','予想賞与']);
-const LT=new Set(['時間あたりの賃金','予想月給','予想賞与','産業分類名']);
-const W={事業所名:200,所在地住所:230,就業場所:150,職業分類:210,資本金:90,管理No:70,全社員数:70,就業社員数:70,求人数計:70,月給:90,年間休日:70,賞与:60,求人番号:110,WEB公開:70,来校:50,仕事内容:260,事業内容:260};
-const DEF=['管理No','事業所名','所在地住所','全社員数','就業社員数','資本金','就業場所','求人数計','職業分類','月給','年間休日','賞与','求人番号','WEB公開','来校'];
-const GR=[['基本情報','年度 求人番号 管理No 受付所 事業所No WEB公開 公開日時 更新日時 登録方法 元ファイル お気に入り数'],['事業所','事業所名 事業所カナ 所在_郵便No 所在地住所 所在地アクセス 代表者 法人No web_site 全社員数 就業社員数 設立年 資本金 事業内容 会社特長 産業分類NO 産業分類名'],['仕事内容・就業場所','雇用形態 職種 仕事内容 就業_郵便No 就業場所住所 就業場所アクセス 就業_市区町村1 就業_市区町村2 就業_市区町村3 通勤求人 住込求人 不問求人 求人数計 必要スキル 転勤 マイカー通勤 単身住宅 世帯住宅'],['給与・労働時間','基本給 月給 賞与 残業の有無 平均残業時間 労働時間の種類 休日 就業時間1 就業時間2 就業時間3 年間休日 時間あたりの賃金 予想月給 予想賞与'],['応募・見学','複数応募 複数応募日程 職場見学 見学日程 募集人数 来校 二次募集 見学人数 応募人数 入社人数 入社実績'],['担当者','担当役職 担当者 担当者カナ 担当TEL 担当FAX 担当メール'],['職業分類','職業分類 職業分類1 職業分類2 HW職業大分類 HW職業中分類 HW職業小分類 handy職業大分類 handy職業中分類 HW職業2大分類 HW職業2中分類 HW職業2小分類 handy職業2大分類 handy職業2中分類 標準職業1コード 標準職業分類1 標準職業2コード 標準職業分類2'],['その他','補足 特記 備考 申送り事項 対象学科 エリア その他分類']].map(([n,s])=>[n,s.split(' ')]);
-const $=i=>document.getElementById(i);
+const URL_CSV='https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv',URL_IND='https://soo-hs.github.io/soohs/kyujin/産業分類.txt';
+const MAP_TXT=`'求人年度'→'年度','求人番号'→'求人番号','受付安定所'→'受付所','事業所番号'→'事業所No','インターネットへの公開'→'WEB公開','事業所名 カナ'→'事業所カナ','事業所名'→'事業所名','郵便番号（所在地）'→'所在_郵便No','住所（所在地）'→'所在地住所','アクセス（所在地）'→'所在地アクセス','代表者名'→'代表者','法人番号'→'法人No','ホームページ'→'web_site','従業員数（企業全体）'→'全社員数','従業員数（就業場所）'→'就業社員数','設立'→'設立年','資本金'→'資本金','事業内容'→'事業内容','会社の特長'→'会社特長','雇用形態'→'雇用形態','職種'→'職種','仕事の内容'→'仕事内容','郵便番号（就業場所）'→'就業_郵便No','住所（就業場所）'→'就業場所住所','アクセス（就業場所）'→'就業場所アクセス','求人数（通勤）'→'通勤求人','求人数（住込）'→'住込求人','求人数（不問）'→'不問求人','必要な知識・技能等'→'必要スキル','転勤の可能性'→'転勤','マイカー通勤の可否'→'マイカー通勤','入居可能住宅（単身用）'→'単身住宅','入居可能住宅（世帯用）'→'世帯住宅','基本給'→'基本給','月給（基本給+手当+残業代）'→'月給','賞与有無（新卒）'→'賞与','時間外労働の有無'→'残業の有無','時間外労働の月平均時間数'→'平均残業時間','変形労働時間制の種類'→'労働時間の種類','休日等'→'休日','就業時間1'→'就業時間1','就業時間2'→'就業時間2','就業時間3'→'就業時間3','年間休日数'→'年間休日','複数応募の受け入れ'→'複数応募','複数応募開始の日程'→'複数応募日程','職場見学の受け入れ'→'職場見学','職場見学の日程'→'見学日程','課係名・役職名（担当者）'→'担当役職','氏名（担当者）'→'担当者','氏名カナ（担当者）'→'担当者カナ','電話番号（担当者）'→'担当TEL','FAX（担当者）'→'担当FAX','Eメール（担当者）'→'担当メール','補足事項'→'補足','特記事項'→'特記','産業分類'→'産業分類NO','職業分類（3桁）'→'職業分類1','職業分類（5桁）'→'職業分類1','職業分類2（3桁）'→'職業分類2','職業分類2（5桁）'→'職業分類2','就業場所住所（市区町村）'→'就業_市区町村1','就業場所住所2（市区町村）'→'就業_市区町村2','就業場所住所3（市区町村）'→'就業_市区町村3','管理番号'→'管理No','対象学科'→'対象学科','エリア'→'エリア','卒業生の入社実績'→'入社実績','その他の分類'→'その他分類','募集人数'→'募集人数','来校の有無'→'来校','二次募集の有無'→'二次募集','職場見学人数'→'見学人数','応募人数'→'応募人数','入社人数'→'入社人数','備考'→'備考','申送り事項'→'申送り事項','公開日時'→'公開日時','最終更新日時'→'更新日時','登録方法'→'登録方法','元ファイル名'→'元ファイル','職業分類（ハローワーク）大分類'→'HW職業大分類','職業分類（ハローワーク）中分類'→'HW職業中分類','職業分類（ハローワーク）小分類'→'HW職業小分類','職業分類（handy）大分類'→'handy職業大分類','職業分類（handy）中分類'→'handy職業中分類','職業分類2（ハローワーク）大分類'→'HW職業2大分類','職業分類2（ハローワーク）中分類'→'HW職業2中分類','職業分類2（ハローワーク）小分類'→'HW職業2小分類','職業分類2（handy）大分類'→'handy職業2大分類','職業分類2（handy）中分類'→'handy職業2中分類','お気に入り登録数'→'お気に入り数','職業分類コード（日本標準職業分類への変換）'→'標準職業1コード','職業分類（日本標準職業分類への変換）'→'標準職業分類1','職業分類2コード（日本標準職業分類への変換）'→'標準職業2コード','職業分類2（日本標準職業分類への変換）'→'標準職業分類2'`;
+const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const norm=s=>String(s).normalize('NFKC').toLowerCase();
-const num=v=>{const n=parseFloat(String(v??'').normalize('NFKC').replace(/[^\d.\-]/g,''));return isNaN(n)?NaN:n};
-const fm=v=>{if(v===''||v==null)return'';const n=typeof v==='number'?v:num(v);return isNaN(n)?String(v):'¥'+Math.round(n).toLocaleString()};
-const show=(r,k)=>MONEY.has(k)?fm(r[k]):String(r[k]??'');
-let data=[],IND={},vis=[...DEF],filt=[],sort=[['年度','d'],['管理No','d']],Wd={},adv=null,Z=100;
-ALL.forEach(k=>Wd[k]=W[k]||100);
-function parseCSV(t){const R=[];let r=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}else if(c=='"')q=true;else if(c==',')r.push(f),f='';else if(c=='\n'||c=='\r'){if(c=='\r'&&t[i+1]=='\n')i++;r.push(f);f='';R.push(r);r=[]}else f+=c}if(f!==''||r.length){r.push(f);R.push(r)}return R}
-async function buf(n){for(const u of[n,BASE+n]){try{const r=await fetch(u);if(r.ok)return await r.arrayBuffer()}catch(e){}}return null}
-const dec=b=>{let t;try{t=new TextDecoder('utf-8',{fatal:true}).decode(b)}catch(e){t=new TextDecoder('shift_jis').decode(b)}return t.replace(/^\uFEFF/,'')};
-async function init(){
- const [bi,bk]=await Promise.all([buf('産業分類.txt'),buf('kyujin2026.csv')]);
- if(bi)dec(bi).split(/\r?\n/).slice(1).forEach(l=>{const i=l.indexOf(',');if(i>0)IND[l.slice(0,i).trim()]=l.slice(i+1).replace(/^,/,'').trim()});
- if(!bk){$('cnt').textContent='kyujin2026.csv を読み込めません';return}
- const R=parseCSV(dec(bk)),hd=R[0].map(h=>MAP[h.trim()]);
- data=R.slice(1).filter(r=>r.some(x=>x&&x.trim())).map(r=>{
-  const o={};hd.forEach((k,j)=>{if(!k)return;const v=(r[j]||'').trim();if(!(k in o)||(!o[k]&&v))o[k]=v});
-  ALL.forEach(k=>{if(!(k in o))o[k]=''});
-  if(o.管理No)o.管理No=o.管理No.padStart(4,'0');
-  const d=o.産業分類NO.replace(/\D/g,'');o.産業分類名=d?(IND[d]||IND[d.padStart(3,'0')]||IND[d.slice(0,3)]||''):'';
-  o.就業場所=[1,2,3].map(i=>o['就業_市区町村'+i]).filter(Boolean).join(' / ');
-  o.求人数計=(num(o.通勤求人)||0)+(num(o.住込求人)||0)+(num(o.不問求人)||0);
-  o.職業分類=[o.標準職業分類1,o.標準職業分類2].filter(Boolean).join(' / ');
-  const m=num(o.月給),h=(365-num(o.年間休日))*8/12;
-  if(m>0&&h>0){const w=m/h;o.時間あたりの賃金=Math.round(w);o.予想月給=Math.round(m+w*(num(o.平均残業時間)||0)*1.25)}
-  if(/あり/.test(o.賞与)&&num(o.基本給)>0)o.予想賞与=num(o.基本給)*2;
-  o._s=norm([o.事業所名,o.所在地住所,o.就業場所住所,o.就業場所,o.求人番号,o.管理No,o.職業分類,o.職種].join(' '));
-  return o});
- const ys=[...new Set(data.map(r=>r.年度).filter(Boolean))].sort((a,b)=>b.localeCompare(a,'ja',{numeric:true}));
- $('yr').innerHTML='<option value="">すべて</option>'+ys.map(y=>`<option>${esc(y)}</option>`).join('');
- if(ys.length)$('yr').value=ys[0];
- render();
+const num=v=>{const n=parseFloat(String(v??'').replace(/[,，円\s]/g,''));return isNaN(n)?NaN:n};
+const nz=s=>String(s??'').normalize('NFKC').toLowerCase();
+const PAIRS=[],used=new Set();
+for(const m of MAP_TXT.matchAll(/'(.+?)'→'(.+?)'/g)){let s=m[2];if(used.has(s))s+='('+((m[1].match(/(\d)桁/)||[])[1]||'2')+'桁)';used.add(s);PAIRS.push([m[1],s])}
+const ALL=[];PAIRS.forEach(([,s])=>{ALL.push(s);if(s=='産業分類NO')ALL.push('産業分類名');if(s=='年間休日')ALL.push('時間あたりの賃金','予想月給','予想賞与')});
+const VIRT=['#','就業場所(市区町村)','求人数(計)','職業分類(標準)'];
+const FAINT=new Set(['産業分類名','時間あたりの賃金','予想月給','予想賞与']);
+const YEN=new Set(['基本給','月給','時間あたりの賃金','予想月給','予想賞与']);
+let COLS=['#','管理No','事業所名','所在地住所','全社員数','就業社員数','資本金','就業場所(市区町村)','求人数(計)','職業分類(標準)','月給','年間休日','賞与','求人番号','WEB公開','来校'];
+const W={'#':40,管理No:55,事業所名:210,所在地住所:200,全社員数:70,就業社員数:70,資本金:90,'就業場所(市区町村)':130,'求人数(計)':70,'職業分類(標準)':160,月給:80,年間休日:70,賞与:60,求人番号:110,WEB公開:70,来校:50};
+let ROWS=[],IND=null,view=[],sh=[],S={key:null,dir:-1},ADV=null;
+const fmt=(k,r)=>{const v=r[k];if(YEN.has(k)){const n=num(v);return isNaN(n)?(v??''):Math.round(n).toLocaleString()+'円'}return v??''};
+
+function parseCSV(t){const rows=[];let r=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}else if(c=='"')q=true;else if(c==','){r.push(f);f=''}else if(c=='\n'){r.push(f);rows.push(r);r=[];f=''}else if(c!='\r')f+=c}if(f!==''||r.length){r.push(f);rows.push(r)}return rows}
+async function getText(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-cache'});if(!r.ok)continue;const b=await r.arrayBuffer();let t=new TextDecoder('utf-8').decode(b);if(t.includes('\uFFFD'))t=new TextDecoder('shift_jis').decode(b);if(t.trimStart().startsWith('<'))continue;return t}catch(e){}}return null}
+
+(async()=>{
+ $('#bd').innerHTML='<tr><td colspan=9>読み込み中…</td></tr>';
+ const [csv,ind]=await Promise.all([getText(['kyujin2026.csv',URL_CSV]),getText(['産業分類.txt',URL_IND])]);
+ if(!csv){$('#bd').innerHTML='<tr><td colspan=9 class=ng>kyujin2026.csv を読み込めませんでした</td></tr>';return}
+ if(ind){IND={};ind.split(/\r?\n/).forEach(l=>{const i=l.indexOf(',');if(i>0)IND[l.slice(0,i).trim()]=l.slice(i+1).trim()})}
+ const t=parseCSV(csv),H=t[0].map(h=>h.trim()),idx={};
+ PAIRS.forEach(([o,s])=>{const i=H.indexOf(o);if(i>=0)idx[s]=i});
+ ROWS=t.slice(1).filter(a=>a.some(x=>x.trim())).map(a=>{
+  const r={};for(const s in idx)r[s]=(a[idx[s]]??'').trim();
+  ALL.forEach(k=>{if(r[k]===undefined)r[k]=''});
+  if(/^\d+$/.test(r.管理No))r.管理No=r.管理No.padStart(4,'0');
+  const c=r.産業分類NO,ci=c.padStart(3,'0');r.産業分類名=IND?(IND[c]||IND[ci]||IND[ci.slice(0,3)]||''):'';
+  const mo=num(r.月給),kh=num(r.年間休日),zan=num(r.平均残業時間)||0,hw=mo/((365-kh)*8/12);
+  r.時間あたりの賃金=isFinite(hw)?hw:'';
+  r.予想月給=isFinite(hw)?mo+hw*zan*1.25:'';
+  r.予想賞与=/あり/.test(r.賞与)&&!isNaN(num(r.基本給))?num(r.基本給)*2:'';
+  r['就業場所(市区町村)']=[...new Set([r.就業_市区町村1,r.就業_市区町村2,r.就業_市区町村3].filter(Boolean))].join('・');
+  r['求人数(計)']=['通勤求人','住込求人','不問求人'].reduce((s,k)=>s+(num(r[k])||0),0);
+  r['職業分類(標準)']=[r.標準職業分類1,r.標準職業分類2].filter(Boolean).join('／');
+  r.__q=nz([r.事業所名,r.所在地住所,r.就業場所住所,r.就業_市区町村1,r.就業_市区町村2,r.就業_市区町村3,r.求人番号,r.管理No,r.職業分類1,r.職業分類2,r.標準職業分類1,r.標準職業分類2,r.職種,r.HW職業大分類,r.HW職業中分類,r.handy職業大分類,r.handy職業中分類].join('\t'));
+  return r});
+ const ys=[...new Set(ROWS.map(r=>r.年度))].sort().reverse();
+ $('#yr').innerHTML=ys.map(y=>`<option>${esc(y)}`).join('');
+ draw();
+})();
+
+const mq=(b,q)=>{const g=nz(q).split('/').map(s=>s.trim().split(/\s+/).filter(Boolean)).filter(a=>a.length);return !g.length||g.some(a=>a.every(t=>b.includes(t)))};
+const cmp=(a,b)=>{const re=/^-?[\d,.\s円]+$/;if(typeof a=='number'||typeof b=='number'||(re.test(a)&&re.test(b)))return (num(a)||0)-(num(b)||0);return String(a).localeCompare(String(b),'ja',{numeric:true})};
+function sorted(a){const k=S.key,d=S.dir;return a.sort((x,y)=>(k?cmp(x[k],y[k]):(cmp(x.年度,y.年度)||cmp(x.管理No,y.管理No)))*d)}
+function draw(){
+ const y=$('#yr').value,q=$('#q').value;
+ view=sorted(ROWS.filter(r=>r.年度==y&&mq(r.__q,q)&&(!ADV||advOK(r,ADV))));
+ sh=view.slice(0,+$('#lim').value);
+ $('#cnt').textContent=`${sh.length.toLocaleString()} / ${view.length.toLocaleString()} 件（総件数 ${ROWS.length.toLocaleString()}）`;
+ $('#ab').hidden=!ADV;
+ $('#cg').innerHTML=COLS.map(()=>'<col>').join('');
+ $('#th').innerHTML='<tr>'+COLS.map(k=>`<th data-k="${esc(k)}" class="${k=='#'?'fx':''}${FAINT.has(k)?' f':''}" draggable="${k!='#'}" title="${esc(k)}">${esc(k)}<i class=so>${S.key==k?(S.dir>0?'▲':'▼'):''}</i><b class="rz"></b></th>`).join('')+'</tr>';
+ $('#bd').innerHTML=sh.map((r,i)=>`<tr data-i="${i}">`+COLS.map(k=>{const v=k=='#'?i+1:fmt(k,r);return `<td class="${k=='#'?'fx':''}${FAINT.has(k)?' f':''}" title="${esc(v)}">${esc(v)}</td>`}).join('')+'</tr>').join('');
+ applyW();
 }
-const cmpv=(a,b)=>{const x=a===''?-Infinity:a,y=b===''?-Infinity:b;const nx=typeof x==='number'||(x!==''&&!isNaN(+x)),ny=typeof y==='number'||(y!==''&&!isNaN(+y));if(nx&&ny)return(+x)-(+y);return String(a).localeCompare(String(b),'ja')};
-function render(){
- const terms=norm($('q').value).split(/\s+/).filter(Boolean);
- const yv=$('yr').value;
- filt=data.filter(r=>(!yv||r.年度===yv)&&terms.every(t=>r._s.includes(t))&&(!adv||adv(r)));
- filt.sort((a,b)=>{for(const[k,d]of sort){const c=cmpv(a[k],b[k]);if(c)return d=='a'?c:-c}return 0});
- const sh=filt.slice(0,Z);
- $('cnt').textContent=`${sh.length.toLocaleString()} / ${filt.length.toLocaleString()} 件`+(filt.length<data.length?`（全${data.length.toLocaleString()}件）`:'')+(adv?' ★詳細検索中':'');
- $('t').querySelector('colgroup').innerHTML='<col style="width:42px">'+vis.map(k=>`<col style="width:${Wd[k]}px">`).join('');
- $('t').style.minWidth=(42+vis.reduce((s,k)=>s+Wd[k],0))+'px';
- $('t').tHead.innerHTML='<tr><th class="n">#</th>'+vis.map(k=>`<th data-k="${k}" draggable="true" class="${LT.has(k)?'lt':''}" title="${esc(LBL[k]||k)}">${esc(LBL[k]||k)}${sort[0][0]==k?(sort[0][1]=='a'?' ▲':' ▼'):''}<i class="rz"></i></th>`).join('')+'</tr>';
- $('t').tBodies[0].innerHTML=sh.map((r,i)=>`<tr data-i="${data.indexOf(r)}"><td class="n">${i+1}</td>`+vis.map(k=>{const s=esc(show(r,k));return`<td class="${MONEY.has(k)||k=='求人数計'?'r ':''}${LT.has(k)?'lt':''}" title="${s}">${s}</td>`}).join('')+'</tr>').join('');
-}
-const th=$('t').tHead;let dragK=null,rzing=false;
-th.addEventListener('click',e=>{if(rzing||e.target.classList.contains('rz'))return;const k=e.target.closest('th')?.dataset.k;if(!k)return;sort=[[k,sort[0][0]==k&&sort[0][1]=='a'?'d':'a']];render()});
-th.addEventListener('mousedown',e=>{if(!e.target.classList.contains('rz'))return;const h=e.target.closest('th'),k=h.dataset.k,x0=e.clientX,w0=Wd[k];h.draggable=false;rzing=true;
- const mv=ev=>{Wd[k]=Math.max(30,w0+ev.clientX-x0);const i=vis.indexOf(k);$('t').querySelector('colgroup').children[i+1].style.width=Wd[k]+'px';$('t').style.minWidth=(42+vis.reduce((s,c)=>s+Wd[c],0))+'px'};
- const up=()=>{document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);h.draggable=true;setTimeout(()=>rzing=false,0)};
- document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);e.preventDefault()});
-th.addEventListener('dragstart',e=>{dragK=e.target.closest('th')?.dataset.k;e.dataTransfer.setData('text/plain',dragK||'')});
-th.addEventListener('dragover',e=>e.preventDefault());
-th.addEventListener('drop',e=>{e.preventDefault();const k=e.target.closest('th')?.dataset.k;if(!k||!dragK||k==dragK)return;vis.splice(vis.indexOf(dragK),1);vis.splice(vis.indexOf(k),0,dragK);dragK=null;render()});
-function menu(){$('addm').innerHTML=ALL.map(k=>`<label style="${LT.has(k)?'color:#8a96b0':''}"><input type="checkbox" value="${k}" ${vis.includes(k)?'checked':''}> ${esc(LBL[k]||k)}</label>`).join('')}
-$('addb').onclick=e=>{e.stopPropagation();menu();$('addm').hidden=!$('addm').hidden};
-$('addm').onclick=e=>e.stopPropagation();
-$('addm').onchange=e=>{const k=e.target.value;if(e.target.checked){let p=ALL.indexOf(k)-1;while(p>=0&&!vis.includes(ALL[p]))p--;if(k=='産業分類名'&&vis.includes('産業分類NO'))p=ALL.indexOf('産業分類NO');vis.splice(p>=0&&vis.includes(ALL[p])?vis.indexOf(ALL[p])+1:vis.length,0,k)}else vis=vis.filter(c=>c!=k);render()};
-document.addEventListener('click',()=>$('addm').hidden=true);
-$('ps').onchange=e=>{Z=+e.target.value;render()};
-$('q').oninput=render;$('yr').onchange=render;
-let zt=100;const open=id=>{$(id).style.zIndex=++zt;$(id).hidden=false};
-$('t').tBodies[0].addEventListener('dblclick',e=>{const tr=e.target.closest('tr');if(tr)detail(+tr.dataset.i)});
-let cur=0;
-function detail(i){cur=i;const r=data[i];$('mdt').textContent=`${r.事業所名}　求人番号 ${r.求人番号}　管理No ${r.管理No}`;
- const used=new Set(GR.flatMap(g=>g[1]));const rest=ALL.filter(k=>!used.has(k)&&k!='就業場所');
- const G=GR.concat(rest.length?[['その他の項目',rest]]:[]);
- $('mdb').innerHTML=G.map(([n,ks])=>`<div class="g"><h3>${n}</h3><div class="kv">`+ks.filter(k=>ALL.includes(k)).map(k=>`<div class="${LT.has(k)?'lt':''}"><b>${esc(LBL[k]||k)}</b><span>${esc(show(r,k))||'<i style="color:#bbb">―</i>'}</span></div>`).join('')+'</div></div>').join('');
- open('md')}
-$('mdx').onclick=()=>$('md').hidden=true;$('smx').onclick=()=>$('sm').hidden=true;
-$('md').onclick=e=>{if(e.target.id=='md')$('md').hidden=true};
-function sim(a,b){let sc=0,mx=0;const ok=[],ng=[];
- const t=(w,l,x,y,f)=>{const m=v=>v===''||v==null||(typeof v=='number'&&isNaN(v));if(m(x)||m(y))return;const s=Math.max(0,f(x,y));mx+=w;sc+=w*s;(s>=.6?ok:ng).push(l+(s<1&&s>=.6?'(近)':''))};
- const eq=(x,y)=>x==y?1:0;
- const ind=r=>{const d=r.産業分類NO.replace(/\D/g,'');return d?d.padStart(3,'0'):''};
- t(15,'産業分類',ind(a),ind(b),(x,y)=>x==y?1:x.slice(0,2)==y.slice(0,2)?.6:0);
- t(20,'職業分類',a.標準職業1コード,b.標準職業1コード,(x,y)=>x==y?1:x.slice(0,3)==y.slice(0,3)?.7:x.slice(0,2)==y.slice(0,2)?.3:0);
- t(12,'市区町村',a.就業_市区町村1,b.就業_市区町村1,eq);
- t(8,'雇用形態',a.雇用形態,b.雇用形態,eq);
- t(10,'月給',num(a.月給),num(b.月給),(x,y)=>1-Math.abs(x-y)/Math.max(x,y)*4);
- t(6,'年間休日',num(a.年間休日),num(b.年間休日),(x,y)=>1-Math.abs(x-y)/30);
- t(5,'賞与',a.賞与,b.賞与,eq);t(4,'転勤',a.転勤,b.転勤,eq);t(3,'マイカー通勤',a.マイカー通勤,b.マイカー通勤,eq);t(3,'残業有無',a.残業の有無,b.残業の有無,eq);t(3,'勤務制度',a.労働時間の種類,b.労働時間の種類,eq);
- return{p:mx?sc/mx*100*Math.min(1,mx/50):0,ok,ng,n:mx}}
-$('mds').onclick=()=>{const a=data[cur];
- const L=data.map((r,i)=>i==cur?null:{r,i,...sim(a,r)}).filter(Boolean).sort((x,y)=>y.p-x.p).slice(0,50);
- $('smt').textContent=`類似求人 上位${L.length}件（基準：求人番号 ${a.求人番号}）`;
- $('smb').innerHTML=`<div class="ref"><b>基準求人：</b>${esc(a.事業所名)} ／ ${esc(a.職種)} ／ ${esc(a.就業場所)} ／ 月給 ${esc(fm(a.月給))} ／ 年間休日 ${esc(a.年間休日)} ／ 賞与 ${esc(a.賞与)} ／ 職業 ${esc(a.職業分類)} ／ 産業 ${esc(a.産業分類名)}</div>
- <table class="st"><thead><tr>${['順位','類似度','求人番号','管理No','事業所名','職種','就業場所','月給','年間休日','賞与','産業分類名','一致項目','相違項目'].map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>`+
- L.map((x,j)=>{const r=x.r;return`<tr data-i="${x.i}" style="cursor:pointer"><td>${j+1}</td><td><span class="bar"><i style="width:${x.p.toFixed(0)}%"></i></span> ${x.p.toFixed(0)}%<br><small style="color:#8a96b0">比較重み${x.n}</small></td><td>${esc(r.求人番号)}</td><td>${esc(r.管理No)}</td><td>${esc(r.事業所名)}</td><td>${esc(r.職種)}</td><td>${esc(r.就業場所)}</td><td>${esc(fm(r.月給))}</td><td>${esc(r.年間休日)}</td><td>${esc(r.賞与)}</td><td style="color:#8a96b0">${esc(r.産業分類名)}</td><td>${x.ok.map(s=>`<span class="ok">${s}</span>`).join('')}</td><td>${x.ng.map(s=>`<span class="ng">${s}</span>`).join('')}</td></tr>`}).join('')+'</tbody></table>';
- $('md').hidden=true;open('sm')};
-$('smb').addEventListener('dblclick',e=>{const tr=e.target.closest('tbody tr');if(tr)detail(+tr.dataset.i)});
-const JT={'医療/福祉':/医療|保健|看護|福祉|介護|薬/,'事務':/事務/,'営業':/営業/,'販売':/販売/,'接客/サービス':/サービス|接客|調理|飲食|理容|美容/,'農林水産業':/農|林業|漁/,'生産/製造':/生産|製造|製品|加工|組立|機械/,'運輸/物流':/運輸|運搬|輸送|配送|運転|物流|荷/,'建設/建築/土木':/建設|建築|土木|採掘|電気工事/,'情報処理/通信技術':/情報|通信|技術|ソフトウェア/,'警備/保安':/保安|警備/};
-const MR=[['149,999円以下',0,149999],['150,000円 - 174,999円',150000,174999],['175,000円 - 199,999円',175000,199999],['200,000円 - 249,999円',200000,249999],['250,000円以上',250000,1e9]];
-const HR=[['99日以下',0,99],['100日 - 109日',100,109],['110日 - 119日',110,119],['120日 - 129日',120,129],['130日以上',130,999]];
-const DY=[['月曜','月'],['火曜','火'],['水曜','水'],['木曜','木'],['金曜','金'],['土曜','土'],['日曜','日'],['祝日','祝'],['その他','他']];
-const WS=[['交替制（シフト制）',/交替|シフト/],['裁量労働制',/裁量/],['フレックスタイム制',/フレックス/],['変形労働時間制',/変形/],['上記のような特別な勤務制度ではない',null]];
-const cks=(n,a)=>`<div class="ck">`+a.map((x,i)=>`<label><input type="checkbox" name="${n}" value="${i}"> ${x}</label>`).join('')+'</div>';
-const rds=(n,a)=>a.map(([v,l],i)=>`<label style="margin-right:12px"><input type="radio" name="${n}" value="${v}" ${i?'':'checked'}> ${l}</label>`).join('');
-$('advb').innerHTML=`<h4>フリーワード</h4><div class="row"><select id="fs"><option value="">すべての項目から検索<option>事業所名<option>職種<option>仕事内容<option>事業内容<option>管理No<option>求人番号</select><input type="text" id="fw" placeholder="製造　食品　東京（スペース区切りでAND）"></div>
-<h4>就業場所住所　<small style="font-weight:400;color:#6b7a99">「/」でOR（例：都城市/宮崎市）</small></h4><input type="text" id="fa" style="width:100%" placeholder="東京都新宿区">
-<h4>仕事の種類</h4>${cks('jt',[...Object.keys(JT),'その他'])}
-<h4>基本条件</h4><div class="bc"><b>月給（基本給＋手当＋残業代）</b><div>${cks('mr',MR.map(x=>x[0]))}</div><b>賞与</b><div>${rds('bo',[['','指定なし'],['あり','あり'],['なし','なし']])}</div><b>希望する休日</b><div>${cks('dy',DY.map(x=>x[0]))}</div><b>年間休日数</b><div>${cks('hr',HR.map(x=>x[0]))}</div><b>転勤</b><div>${cks('tk',['転勤なし'])}</div><b>入居可能住宅</b><div>${cks('jy',['単身用あり','世帯用あり'])}</div><b>時間外労働</b><div>${rds('ot',[['','指定なし'],['あり','あり'],['なし','なし']])} 月平均 <input type="text" id="oh" style="width:50px" placeholder="10"> 時間以下（「あり」選択時）</div><b>勤務制度</b><div>${cks('ws',WS.map(x=>x[0]))}</div></div>`;
-const chk=n=>[...document.querySelectorAll(`#advb [name=${n}]:checked`)].map(e=>+e.value);
-const rv=n=>document.querySelector(`#advb [name=${n}]:checked`).value;
-$('advg').onclick=()=>{
- const fs=$('fs').value,fw=norm($('fw').value).split(/\s+/).filter(Boolean),fa=norm($('fa').value).split('/').map(s=>s.trim()).filter(Boolean);
- const jt=chk('jt'),mr=chk('mr'),dy=chk('dy'),hr=chk('hr'),tk=chk('tk').length,jy=chk('jy'),ws=chk('ws'),bo=rv('bo'),ot=rv('ot'),oh=num($('oh').value),JK=Object.keys(JT);
- adv=r=>{
-  if(fw.length){const s=norm((fs?[fs]:['事業所名','職種','仕事内容','事業内容','管理No','求人番号']).map(k=>r[k]).join(' '));if(!fw.every(t=>s.includes(t)))return false}
-  if(fa.length){const s=norm(r.就業場所住所+' '+r.就業場所);if(!fa.some(t=>s.includes(t)))return false}
-  if(jt.length){const s=r.職業分類+r.HW職業大分類+r.HW職業中分類+r.職種+r.handy職業大分類;if(!jt.some(i=>i<JK.length?JT[JK[i]].test(s):!JK.some(k=>JT[k].test(s))))return false}
-  if(mr.length){const m=num(r.月給);if(isNaN(m)||!mr.some(i=>m>=MR[i][1]&&m<=MR[i][2]))return false}
-  if(bo&&!(bo=='あり'?/あり/.test(r.賞与):/なし|無/.test(r.賞与)))return false
-  if(dy.length&&!dy.every(i=>DY[i][1]=='他'?/他|不定|シフト|交替|変形/.test(r.休日):r.休日.includes(DY[i][1])))return false
-  if(hr.length){const h=num(r.年間休日);if(isNaN(h)||!hr.some(i=>h>=HR[i][1]&&h<=HR[i][2]))return false}
-  if(tk&&!/なし|無|転勤.*ない/.test(r.転勤))return false
-  if(jy.some(i=>{const v=i?r.世帯住宅:r.単身住宅;return !v||/なし|無|不可/.test(v)}))return false
-  if(ot=='あり'){if(!/あり|有/.test(r.残業の有無))return false;if(!isNaN(oh)){const h=num(r.平均残業時間);if(!isNaN(h)&&h>oh)return false}}
-  if(ot=='なし'&&!/なし|無/.test(r.残業の有無))return false
-  if(ws.length&&!ws.some(i=>WS[i][1]?WS[i][1].test(r.労働時間の種類):(!r.労働時間の種類||/なし|無|該当/.test(r.労働時間の種類))))return false
-  return true};
- render();$('adv').hidden=true};
-$('advc').onclick=()=>{document.querySelectorAll('#advb input[type=checkbox]').forEach(e=>e.checked=false);document.querySelectorAll('#advb input[type=text]').forEach(e=>e.value='');$('fs').value='';document.querySelectorAll('#advb input[type=radio][value=""]').forEach(e=>e.checked=true);adv=null;render()};
-$('advx').onclick=()=>$('adv').hidden=true;
-$('q').ondblclick=()=>open('adv');
-init();
+function applyW(){const c=document.querySelectorAll('#cg col');let s=0;COLS.forEach((k,i)=>{c[i].style.width=(W[k]||90)+'px';s+=W[k]||90});$('#tb').style.width=s+'px'}
+let to;$('#q').addEventListener('input',()=>{clearTimeout(to);to=setTimeout(draw,150)});
+$('#yr').onchange=$('#lim').onchange=draw;
+$('#clr').onclick=()=>{$('#q').value='';ADV=null;$('#af').reset();draw()};
+$('#th').addEventListener('click',e=>{if(e.target.classList.contains('rz'))return;const th=e.target.closest('th');if(!th||th.dataset.k=='#')return;const k=th.dataset.k;if(S.key==k)S.dir*=-1;else{S.key=k;S.dir=1}draw()});
+let dragK=null;
+$('#th').addEventListener('dragstart',e=>{dragK=e.target.dataset?.k;e.dataTransfer.setData('text/plain',dragK)});
+$('#th').addEventListener('dragover',e=>{const th=e.target.closest('th');if(th&&th.dataset.k!='#'){e.preventDefault();document.querySelectorAll('th.dr').forEach(x=>x.classList.remove('dr'));th.classList.add('dr')}});
+$('#th').addEventListener('drop',e=>{e.preventDefault();const th=e.target.closest('th');if(!th||!dragK||th.dataset.k=='#'||th.dataset.k==dragK)return;COLS.splice(COLS.indexOf(dragK),1);COLS.splice(COLS.indexOf(th.dataset.k),0,dragK);draw()});
+$('#th').addEventListener('dragend',()=>document.querySelectorAll('th.dr').forEach(x=>x.classList.remove('dr')));
+document.addEventListener('mousedown',e=>{if(!e.target.classList?.contains('rz'))return;const th=e.target.parentNode,k=th.dataset.k,x0=e.clientX,w0=th.offsetWidth;th.draggable=false;
+ const mv=ev=>{W[k]=Math.max(30,w0+ev.clientX-x0);applyW()},up=()=>{removeEventListener('mousemove',mv);removeEventListener('mouseup',up);th.draggable=k!='#'};
+ addEventListener('mousemove',mv);addEventListener('mouseup',up);e.preventDefault()});
+$('#bd').addEventListener('dblclick',e=>{const tr=e.target.closest('tr');if(tr&&sh[+tr.dataset.i])detail(sh[+tr.dataset.i])});
+addEventListener('keydown',e=>{if(e.key=='Escape'){const o=[...document.querySelectorAll('.ov')].filter(x=>!x.hidden).pop();o&&o.close()}});
+
+function modal(head,body,cls='',keep,tail=''){const o=document.createElement('div');o.className='ov';
+ o.innerHTML=`<div class="dlg ${cls}"><div class=mh>${head}<span style="flex:1"></span>${tail}<button class="x g" title="閉じる">×</button></div><div class=mb>${body}</div></div>`;
+ document.body.appendChild(o);o.close=()=>keep?o.hidden=true:o.remove();o.querySelector('.x').onclick=o.close;return o}
+
+$('#addc').onclick=()=>{const all=[...VIRT.slice(1),...ALL];
+ const o=modal('列追加（チェックで表示／解除）',`<div class="g3">${all.map(k=>`<label class=ck><input type=checkbox value="${esc(k)}"${COLS.includes(k)?' checked':''}><span class="${FAINT.has(k)?'f':''}">${esc(k)}</span></label>`).join('')}</div>`,'adv');
+ o.querySelector('.mb').onchange=e=>{const k=e.target.value;if(e.target.checked){if(!COLS.includes(k))COLS.push(k)}else COLS=COLS.filter(c=>c!=k);draw()}};
+
+const GR={'事業所':['年度','求人番号','受付所','事業所No','WEB公開','事業所カナ','事業所名','所在_郵便No','所在地住所','所在地アクセス','代表者','法人No','web_site','全社員数','就業社員数','設立年','資本金','事業内容','会社特長','産業分類NO','産業分類名'],
+'仕事内容・就業場所':['雇用形態','職種','仕事内容','就業_郵便No','就業場所住所','就業場所アクセス','就業_市区町村1','就業_市区町村2','就業_市区町村3','通勤求人','住込求人','不問求人','必要スキル','転勤','マイカー通勤','単身住宅','世帯住宅'],
+'給与・労働時間':['基本給','月給','賞与','残業の有無','平均残業時間','労働時間の種類','休日','就業時間1','就業時間2','就業時間3','年間休日','時間あたりの賃金','予想月給','予想賞与'],
+'応募・見学・担当者':['複数応募','複数応募日程','職場見学','見学日程','担当役職','担当者','担当者カナ','担当TEL','担当FAX','担当メール','補足','特記']};
+function detail(r){
+ const used=new Set(Object.values(GR).flat()),g=Object.entries(GR);
+ const jb=ALL.filter(k=>/職業/.test(k)&&!used.has(k));jb.forEach(k=>used.add(k));g.push(['職業分類',jb]);
+ g.push(['管理・その他',ALL.filter(k=>!used.has(k))]);
+ const body=g.map(([n,ks])=>`<h3>${n}</h3><div class=kg>${ks.map(k=>`<div class=kv><span class="${FAINT.has(k)?'f':''}">${esc(k)}</span><b class="${FAINT.has(k)?'f':''}">${esc(fmt(k,r))}</b></div>`).join('')}</div>`).join('');
+ const o=modal(`<span>管理No ${esc(r.管理No)}</span><label class=ck><input type=checkbox id=pj>職種</label><label class=ck><input type=checkbox id=pm>月給</label><label class=ck><input type=checkbox id=py>年休</label><label class=ck><input type=checkbox id=pl>場所</label><span style="font-weight:400">${esc(r.事業所名)}</span>`,body,'',false,'<button id=sim>求人番号で同等求人50件</button>');
+ o.querySelector('#sim').onclick=()=>similar(r,{j:o.querySelector('#pj').checked,m:o.querySelector('#pm').checked,y:o.querySelector('#py').checked,l:o.querySelector('#pl').checked})}
+
+const bg=s=>{s=nz(s);const a=new Set();for(let i=0;i<s.length-1;i++)a.add(s.slice(i,i+2));return a};
+const jac=(a,b)=>{if(!a.size||!b.size)return 0;let n=0;a.forEach(x=>b.has(x)&&n++);return n/(a.size+b.size-n)};
+const pref=r=>((r.就業場所住所||r.所在地住所).match(/^.{2,3}?[都道府県]/)||[''])[0];
+function sc(t,r){
+ const tc=t.標準職業1コード,rc=r.標準職業1コード;
+ const j=t.職種&&t.職種===r.職種?1:Math.max(tc&&tc===rc?.9:0,tc&&rc&&tc.slice(0,2)==rc.slice(0,2)?.5:0,jac(bg(t.職種),bg(r.職種))*.7);
+ const a=num(t.月給),b=num(r.月給),m=a>0&&b>0?Math.max(0,1-Math.abs(a-b)/(a*.3)):0;
+ const c=num(t.年間休日),d=num(r.年間休日),y=isNaN(c)||isNaN(d)?0:Math.max(0,1-Math.abs(c-d)/25);
+ const l=t.就業_市区町村1&&t.就業_市区町村1===r.就業_市区町村1?1:(pref(t)&&pref(t)===pref(r)?.4:0);
+ return {j,m,y,l}}
+const mk=s=>s>=.9?'◎':s>=.6?'○':s>=.3?'△':'×';
+function similar(t,p){
+ const w={j:p.j?3:1,m:p.m?3:1,y:p.y?3:1,l:p.l?3:1},W_=w.j+w.m+w.y+w.l;
+ const res=ROWS.filter(r=>r!==t&&r.年度==t.年度).map(r=>{const s=sc(t,r);return {r,s,p:(s.j*w.j+s.m*w.m+s.y*w.y+s.l*w.l)/W_*100}}).sort((a,b)=>b.p-a.p).slice(0,50);
+ const row=(r,i,x)=>`<tr class="${x?'':'tg'}" ${x?`data-i="${i}"`:''}><td>${x?i+1:'基準'}</td><td>${x?`<span class=bar style="width:${Math.round(x.p*.6)}px"></span> ${x.p.toFixed(1)}%`:'—'}</td><td>${esc(r.管理No)}</td><td title="${esc(r.事業所名)}">${esc(r.事業所名)}</td><td title="${esc(r.職種)}">${esc(r.職種)}${x?` <span class=ok>${mk(x.s.j)}</span>`:''}</td><td>${esc(fmt('月給',r))}${x?` <span class=ok>${mk(x.s.m)}</span>`:''}</td><td>${esc(r.年間休日)}${x?` <span class=ok>${mk(x.s.y)}</span>`:''}</td><td title="${esc(r['就業場所(市区町村)'])}">${esc(r['就業場所(市区町村)'])}${x?` <span class=ok>${mk(x.s.l)}</span>`:''}</td><td>${esc(r.求人番号)}</td></tr>`;
+ const o=modal(`同等求人 上位50件　基準：求人番号 ${esc(t.求人番号)}／管理No ${esc(t.管理No)}　<span style="font-weight:400">◎≧90% ○≧60% △≧30% ×未満　優先：${['j','m','y','l'].filter(k=>p[k]).map(k=>({j:'職種',m:'月給',y:'年休',l:'場所'}[k])).join('・')||'なし（均等）'}</span>`,
+ `<table class=st style="width:100%"><colgroup><col style="width:5%"><col style="width:12%"><col style="width:6%"><col style="width:20%"><col style="width:17%"><col style="width:10%"><col style="width:7%"><col style="width:14%"><col style="width:9%"></colgroup><thead><tr><th>順位</th><th>一致度</th><th>管理No</th><th>事業所名</th><th>職種</th><th>月給</th><th>年休</th><th>就業場所</th><th>求人番号</th></tr></thead><tbody>${row(t,0,null)}${res.map((x,i)=>row(x.r,i,x)).join('')}</tbody></table>`,'wide');
+ o.querySelector('tbody').ondblclick=e=>{const tr=e.target.closest('tr[data-i]');if(tr)detail(res[+tr.dataset.i].r)}}
+
+/* 詳細検索 */
+const ck=(n,v,l)=>`<label class=ck><input type=checkbox name=${n} value="${v}">${l}</label>`;
+const rd=(n,v,l,c)=>`<label class=ck><input type=radio name=${n} value="${v}"${c?' checked':''}>${l}</label>`;
+const JT=[['医療/福祉に関わる','医療|福祉|看護|介護|保健|医師|薬剤|保育'],['事務に関わる','事務|会計|経理|総務'],['営業に関わる','営業'],['販売に関わる','販売|店員|レジ'],['接客/サービスに関わる','接客|サービス|調理|飲食|美容|理容|宿泊|清掃'],['農林水産業に関わる','農|林業|漁|畜産|水産'],['生産/製造に関わる','製造|生産|加工|組立|検査|溶接|工場|機械'],['運輸/物流に関わる','運輸|物流|運転|配送|倉庫|運搬'],['建設/建築/土木に関わる','建設|建築|土木|施工|大工|配管|電気工事'],['情報処理/通信技術に関わる','情報|通信|システム|プログラム'],['警備/保安に関わる','警備|保安|自衛|消防'],['その他','']];
+const MR=[[0,149999,'149,999円以下'],[150000,174999,'150,000円 - 174,999円'],[175000,199999,'175,000円 - 199,999円'],[200000,249999,'200,000円 - 249,999円'],[250000,1e12,'250,000円以上']];
+const YR=[[0,99,'99日以下'],[100,109,'100日 - 109日'],[110,119,'110日 - 119日'],[120,129,'120日 - 129日'],[130,999,'130日以上']];
+const FK=[['','すべての項目から検索'],['事業所名','事業所名'],['職種','職種'],['仕事内容','仕事内容'],['事業内容','事業内容'],['管理No','管理No'],['求人番号','求人番号']];
+const bt=(h,c)=>`<tr><th>${h}</th><td>${c}</td></tr>`;
+const af=modal('詳細検索',`<form id=af onsubmit="return false">
+<div class=sec>フリーワード（/でOR・空白でAND）</div><div style="display:flex;gap:6px"><select name=fk>${FK.map(([v,l])=>`<option value="${v}">${l}`).join('')}</select><input name=fw style="flex:1" placeholder="製造 食品 東京 / 事務"></div>
+<div class=sec>就業場所住所（/でOR）</div><input name=ad style="width:100%" placeholder="東京都新宿区 / 大阪府">
+<div class=sec>仕事の種類</div><div class=g3>${JT.map(([l],i)=>ck('jt',i,l)).join('')}</div>
+<div class=sec>基本条件</div><table class=bt>
+${bt('月給（基本給+手当+残業代）',MR.map(([,,l],i)=>ck('mr',i,l)).join(''))}
+${bt('賞与',rd('bo','1','あり')+rd('bo','2','なし')+rd('bo','','指定なし',1))}
+${bt('希望する休日',['月','火','水','木','金','土','日','祝'].map(d=>ck('hd',d,d+(d=='祝'?'日':'曜'))).join('')+ck('hd','他','その他'))}
+${bt('年間休日数',YR.map(([,,l],i)=>ck('yr',i,l)).join(''))}
+${bt('転勤',ck('tk',1,'転勤なし'))}
+${bt('入居可能住宅',ck('hs','s','単身用あり')+ck('hs','f','世帯用あり'))}
+${bt('時間外労働',rd('ot','a','あり')+'（月平均<input name=oh type=number min=0 style="width:52px;height:20px">時間以下）'+rd('ot','n','なし')+rd('ot','','指定なし',1))}
+${bt('勤務制度',ck('ws','k','交替制（シフト制）')+ck('ws','s','裁量労働制')+ck('ws','f','フレックスタイム制')+ck('ws','h','変形労働時間制')+ck('ws','n','上記のような特別な勤務制度ではない'))}
+</table></form>`,'adv',true,'<button id=ago>検索</button><button class="g" id=arst>リセット</button>');
+af.hidden=true;
+$('#q').addEventListener('dblclick',()=>af.hidden=false);
+af.querySelector('#ago').onclick=()=>{const f=new FormData($('#af')),g=n=>f.getAll(n);
+ ADV={fk:f.get('fk'),fw:f.get('fw').trim(),ad:f.get('ad').trim(),jt:g('jt'),mr:g('mr'),bo:f.get('bo'),hd:g('hd'),yr:g('yr'),tk:f.get('tk'),hs:g('hs'),ot:f.get('ot'),oh:f.get('oh'),ws:g('ws')};
+ if(!JSON.stringify(Object.values(ADV)).replace(/["\[\],]/g,'').length)ADV=null;
+ af.hidden=true;draw()};
+af.querySelector('#arst').onclick=()=>{$('#af').reset();ADV=null;draw()};
+$('#af').addEventListener('keydown',e=>{if(e.key=='Enter'){e.preventDefault();af.querySelector('#ago').click()}});
+function advOK(r,a){
+ if(a.fw&&!mq(nz((a.fk?[a.fk]:ALL).map(k=>r[k]).join('\t')),a.fw))return false;
+ if(a.ad&&!mq(nz([r.就業場所住所,r.就業_市区町村1,r.就業_市区町村2,r.就業_市区町村3].join(' ')),a.ad))return false;
+ if(a.jt.length){const t=nz([r.職種,r.職業分類1,r.職業分類2,r.標準職業分類1,r.標準職業分類2,r.HW職業大分類,r.HW職業中分類,r.HW職業小分類,r.handy職業大分類,r.handy職業中分類].join(' '));
+  const hit=i=>new RegExp(JT[i][1]).test(t);if(!a.jt.some(i=>i==11?!JT.slice(0,11).some((_,j)=>hit(j)):hit(i)))return false}
+ if(a.mr.length){const m=num(r.月給);if(!a.mr.some(i=>m>=MR[i][0]&&m<=MR[i][1]))return false}
+ if(a.bo=='1'&&!/あり/.test(r.賞与))return false;if(a.bo=='2'&&!/なし/.test(r.賞与))return false;
+ if(a.hd.length&&!a.hd.every(d=>d=='他'?/他/.test(r.休日):r.休日.includes(d)))return false;
+ if(a.yr.length){const y=num(r.年間休日);if(!a.yr.some(i=>y>=YR[i][0]&&y<=YR[i][1]))return false}
+ if(a.tk&&!/なし|無/.test(r.転勤))return false;
+ if(a.hs.length&&!a.hs.every(h=>{const v=h=='s'?r.単身住宅:r.世帯住宅;return v&&!/^(なし|無|不可|-)/.test(v)}))return false;
+ if(a.ot=='a'){if(!/あり|有/.test(r.残業の有無))return false;const h=num(a.oh),z=num(r.平均残業時間);if(!isNaN(h)&&!isNaN(z)&&z>h)return false}
+ if(a.ot=='n'&&!/なし|無/.test(r.残業の有無))return false;
+ if(a.ws.length){const w=r.労働時間の種類,tx=w+r.就業時間1+r.補足,none=!w||/^(なし|無)/.test(w);
+  const t={k:/交替|交代|シフト/.test(tx),s:/裁量/.test(tx),f:/フレックス/.test(tx),h:!none,n:none&&!/交替|交代|シフト|裁量|フレックス/.test(tx)};
+  if(!a.ws.some(k=>t[k]))return false}
+ return true}
+
+/* データ点検 */
+$('#chk').onclick=()=>{
+ const dup=k=>{const c={};ROWS.forEach(r=>{const x=r.年度+'|'+r[k];c[x]=(c[x]||0)+1});return r=>r[k]&&c[r.年度+'|'+r[k]]>1};
+ const CK=[['管理Noが空',r=>!r.管理No],['管理Noが同一年度内で重複',dup('管理No')],['求人番号が空',r=>!r.求人番号],['求人番号が同一年度内で重複',dup('求人番号')],['事業所名が空',r=>!r.事業所名],['就業場所住所が空',r=>!r.就業場所住所],
+ ['月給が数値でない/0以下',r=>!(num(r.月給)>0)],['月給が基本給より低い',r=>num(r.月給)<num(r.基本給)],['月給が10万円未満または100万円超',r=>{const m=num(r.月給);return m<1e5||m>1e6}],
+ ['年間休日が空/50日未満/200日超',r=>{const y=num(r.年間休日);return !(y>=50&&y<=200)}],['賞与「あり」だが基本給が数値でない',r=>/あり/.test(r.賞与)&&isNaN(num(r.基本給))],
+ ['求人数(計)が0',r=>!(r['求人数(計)']>0)],['平均残業時間が80時間超',r=>num(r.平均残業時間)>80],['年度が空',r=>!r.年度],
+ ['産業分類NOが産業分類.txtに無い',r=>IND&&r.産業分類NO&&!r.産業分類名]];
+ const rows=CK.map(([n,f])=>{const h=ROWS.filter(f);return `<tr><td>${n}</td><td style="text-align:right" class="${h.length?'ng':'ok'}">${h.length}</td><td title="${esc(h.map(r=>r.管理No).join(' '))}">${esc(h.slice(0,12).map(r=>r.管理No).join(' '))}${h.length>12?' …':''}</td></tr>`}).join('');
+ modal(`データ点検（全${ROWS.length.toLocaleString()}件）`,`<table class=st style="width:100%"><colgroup><col style="width:34%"><col style="width:8%"><col></colgroup><thead><tr><th>点検項目</th><th>件数</th><th>該当 管理No（先頭12件）</th></tr></thead><tbody>${rows}</tbody></table>
+ <h3>仕様・元データ上の注意</h3><ul style="font-size:12px;margin:2px 0;padding-left:18px"><li>項目名変更.txt の「職業分類（3桁）/（5桁）」「職業分類2（3桁）/（5桁）」は短縮名が同一のため、5桁側を「職業分類1(5桁)」「職業分類2(5桁)」としています。</li><li>月給は「基本給+手当+残業代」なので、予想月給は残業代を二重に加算する可能性があります（指定式のまま計算）。</li><li>産業分類.txt には区切りが不規則な行（例: 020,管理,補助的…）があるため最初のカンマで分割しています。${IND?'':'<b class=ng>産業分類.txt が読み込めていません（同じフォルダに置いてください）。</b>'}</li><li>詳細検索の「仕事の種類」は職種・職業分類のキーワード一致による近似です。</li></ul>`)};
 </script></body></html>
