@@ -18,6 +18,9 @@ input,select,button{font:inherit;height:24px}
 #q{flex:1 1 0;min-width:60px;border:1px solid #fff0;border-radius:4px;padding:0 8px;background:#fff;color:var(--ink)}
 #q:focus,select:focus{outline:2px solid var(--amber)}
 select{border:0;border-radius:4px;padding:0 4px;background:#fff;color:var(--ink)}
+#yrl{display:flex;align-items:center;gap:5px;white-space:nowrap;color:#fff;font-weight:bold;font-size:13px}
+#yr.yrv{color:#ffd37a;font-weight:bold;font-size:14px;border-bottom:2px solid var(--amber);padding:0 3px}
+label[for=yr] b{color:var(--amber);font-size:13px}
 button{border:0;border-radius:4px;padding:0 10px;background:var(--amber);color:#3a2800;font-weight:bold;cursor:pointer;white-space:nowrap}
 button:hover{background:#ffbd3d}
 button.nar{padding:0 5px;font-size:11px}
@@ -122,7 +125,7 @@ table.af td{white-space:normal;overflow:visible;padding:3px 6px;border-bottom:1p
   <button id="clr" class="sub nar">クリア</button>
  </div>
  <div class="g2">
-  <label class="l">年度<select id="yr"></select></label>
+  <span class="l" id="yrl"><b>年度</b><b id="yr" class="yrv"></b></span>
   <label class="l">表示数<select id="ps"><option>50</option><option selected>100</option><option>300</option><option>400</option><option>500</option><option value="0">全て</option></select></label>
   <span id="cnt"></span>
   <button id="addc" class="nar">＋列追加</button>
@@ -133,7 +136,7 @@ table.af td{white-space:normal;overflow:visible;padding:3px 6px;border-bottom:1p
 
 <script>
 'use strict';
-const ABS='https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv';
+const ABS='https://soo-hs.github.io/soohs/kyujin/kyujin.csv';
 
 /* ===== 項目名変更.txt ===== */
 const MAP_TXT=`
@@ -834,7 +837,7 @@ function decode(buf){
 }
 async function fetchCsv(){
  const errs=[];
- for(const u of ['kyujin2026.csv',ABS]){
+ for(const u of ['kyujin.csv',ABS]){
   try{const r=await fetch(u);if(!r.ok)throw new Error('HTTP '+r.status);return{text:decode(await r.arrayBuffer()),src:u};}
   catch(e){errs.push(u+' : '+e.message);}
  }
@@ -1272,13 +1275,11 @@ async function init(){
   wrap.innerHTML='<div id="msg">CSVを読み込めませんでした。\n'+esc(e.message)+'</div>';return;
  }
  const ys=[...new Set(DATA.map(r=>r['年度']).filter(Boolean))].sort((a,b)=>(num(b)||0)-(num(a)||0));
- $('#yr').innerHTML='<option value="">すべて</option>'+ys.map(y=>`<option>${esc(y)}</option>`).join('');
- S.year=ys[0]||'';$('#yr').value=S.year;
+ S.year=ys[0]||'';$('#yr').textContent=S.year||'—';
  buildAdv();
  $('#cnt').title='読込元: '+SRC;
  refresh();
 }
-$('#yr').onchange=e=>{S.year=e.target.value;refresh();};
 $('#ps').onchange=e=>{S.ps=+e.target.value;S.page=0;render();};
 $('#cnt').addEventListener('click',e=>{if(e.target.id==='pv'&&S.page>0){S.page--;render();wrap.scrollTop=0;}else if(e.target.id==='nx'&&!e.target.classList.contains('off')){S.page++;render();wrap.scrollTop=0;}});
 let tm;$('#q').addEventListener('input',e=>{clearTimeout(tm);tm=setTimeout(()=>{S.q=e.target.value.trim();refresh();},150);});
