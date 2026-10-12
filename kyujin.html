@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>受付求人票</title>
+<style>
+:root{--nv:#2f5597;--nv2:#4472b8;--nvl:#e9eff9;--am:#ffb020;--am2:#ffe3ad;--tx:#1d2a44;--ft:#a3aec4;--bd:#cdd7ea}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;font:12px/1.3 "Yu Gothic UI","Meiryo UI",sans-serif;color:var(--tx);background:#f3f6fc}
+header{background:var(--nv);color:#fff;padding:4px 8px;display:flex;flex-wrap:wrap;gap:3px 12px;align-items:center;border-bottom:3px solid var(--am)}
+.ha{display:flex;align-items:center;gap:6px;flex:1 1 440px;min-width:0}.hb{display:flex;align-items:center;gap:6px;flex:0 1 auto;flex-wrap:wrap}
+h1{font-size:15px;margin:0;white-space:nowrap;cursor:pointer;user-select:none}
+input,select,button{font:inherit;height:22px;border:1px solid var(--bd);border-radius:4px;padding:0 6px;color:var(--tx)}
+#q{flex:1;min-width:0}#q.on{background:var(--am2)}
+button{background:var(--am);color:#3b2b00;border-color:#e09a10;cursor:pointer;padding:0 7px;white-space:nowrap}button.s{background:#fff;color:var(--nv);border-color:var(--bd)}
+.cnt{font-size:11px}.cnt a{cursor:pointer;color:var(--am2);text-decoration:underline;margin:0 4px;font-size:10px}
+#yl{font-weight:700;font-size:13px;white-space:nowrap}
+#ad{font-size:10px;color:var(--am2)}
+main{flex:1;overflow:auto;background:#fff}
+table{border-collapse:separate;border-spacing:0;table-layout:fixed}
+th{position:sticky;top:0;z-index:2;background:var(--nv2);color:#fff;padding:2px 5px;text-align:left;white-space:nowrap;overflow:hidden;font-weight:600;border-right:1px solid #6b8fd0}
+th .lb{display:block;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+th.f,.k.f{color:#c9d6f0}
+.rz{position:absolute;right:0;top:0;bottom:0;width:6px;cursor:col-resize}.rz:hover{background:var(--am)}
+td{padding:1px 5px;height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-bottom:1px solid #e6ecf7}
+td.f,.v.f,.f{color:var(--ft)}td.r{text-align:right}
+tbody tr:nth-child(even) td{background:#f7f9fd}tbody tr:hover td{background:var(--am2)}
+.n{position:sticky;left:0;z-index:3;text-align:right;background:#eef3fb}th.n{z-index:4;background:var(--nv)}
+.ov{position:fixed;inset:0;background:rgba(20,35,70,.45);display:flex;align-items:center;justify-content:center;z-index:10}.ov[hidden]{display:none}
+.md{background:#fff;border-radius:8px;width:min(1100px,96vw);max-height:92vh;display:flex;flex-direction:column;border-top:4px solid var(--am);box-shadow:0 8px 30px #0006}
+.md.sm{width:min(760px,96vw)}.md.wd{width:min(960px,96vw)}.md.xl{width:min(1300px,98vw)}
+.mh{display:flex;align-items:center;gap:8px;padding:5px 10px;background:var(--nvl);flex-wrap:wrap}.mt{flex:1;font-weight:700;color:var(--nv);min-width:200px}.mt label{font-weight:400;margin-left:8px;color:var(--tx)}
+.mb{overflow:auto;padding:8px 12px}
+.x{width:26px;padding:0;font-size:15px}
+h3{margin:8px 0 3px;font-size:12px;color:var(--nv);border-left:4px solid var(--am);padding-left:6px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:2px 14px}
+.it{display:flex;border-bottom:1px dotted var(--bd);padding:1px 0}.it.lg{grid-column:1/-1}
+.it .k{flex:0 0 118px;color:var(--nv);font-size:11px}.it .v{white-space:pre-wrap;word-break:break-all;flex:1}
+.cg{display:grid;grid-template-columns:repeat(3,1fr);gap:2px 10px}
+@media(max-width:900px){.cg{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.cg{grid-template-columns:1fr}}
+.cg label,.row label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.row{display:grid;grid-template-columns:96px 1fr;border-bottom:1px solid #dbe3f2}.row>b{background:var(--nvl);padding:3px 6px;font-size:11px}
+.row>div{padding:3px 8px;display:flex;flex-wrap:wrap;gap:1px 14px;align-items:center}
+.row input[type=text],.row input[type=number]{height:20px}
+.st{width:100%;border-collapse:collapse;table-layout:auto}.st td,.st th{position:static;white-space:nowrap;max-width:260px}.st th{background:var(--nv2)}
+@media(max-width:1000px){.h1{display:none}}@media(max-width:760px){.h2{display:none}}
+</style></head><body>
+<header><div class="ha"><h1 id="ttl" title="ダブルクリックで事業所No別一覧に切替">受付求人票</h1><input id="q" placeholder="事業所名/所在地/就業場所/求人番号/管理No/職業分類（/でOR）　※ダブルクリックで詳細検索"><button class="s" id="clr">クリア</button><span id="ad" hidden>●詳細条件あり</span></div>
+<div class="hb"><span id="yl" title="表示中の年度">年度 -</span><select id="yr" hidden></select><label>表示数 <select id="ps"><option>50<option selected>100<option>300<option>400<option>500<option value="0">全て</select></label><span class="cnt" id="cnt"></span><button id="addc">＋列追加</button><button class="s" id="chk">検証</button></div></header>
+<main id="mn"><p style="padding:10px">読込中…</p></main>
+<script>
+const IND={"011":"農業","012":"畜産農業","013":"農業サービス (園芸サービス業を除く)","014":"園芸サービス業","021":"育林業","022":"素材生産業","023":"特用林産物生産業(きのこ類の栽培を除く)","024":"林業サービス業","029":"その他の林業","031":"海面漁業","032":"内水面漁業","041":"海面養殖業","042":"内水面養殖業","051":"金属鉱業","052":"石炭・亜炭鉱業","053":"原油・天然ガス鉱業","054":"採石業、砂・砂利、土石採取業","055":"窯業原料用鉱物鉱業(耐火物・陶磁器・ガラス・セメント原料用に限る)","059":"その他の鉱業","061":"一般土木建築工事業","062":"土木工事業(舗装工事業を除く)","063":"舗装工事業","064":"建築工事業(木造建築工事業を除く)","065":"木造建築工事業","066":"リフォーム工事業","071":"大工工事","072":"とび・土工・コンクリート工事業","073":"鉄骨・鉄筋工事業","074":"石工・れんが・タイル・ブロック工事業","075":"左官工事業","076":"板金・金物工事業","077":"塗装工事業","078":"床・内装工事業","079":"その他の職別工事業","081":"電気工事業","082":"電気通信、信号装置工事業","083":"管工事業(さく井工事業を除く)","084":"機械器具設置工事業","089":"その他の設備工事業","091":"畜産食料品製造業","092":"水産食料品製造業","093":"野菜缶詰・果実缶詰・農産保存食料品製造業","094":"調味料製造業","095":"糖類製造業","096":"製粉業","097":"パン・菓子製造業","098":"動植物油脂製造業","099":"その他の食料品製造業","101":"清涼飲料製造業","102":"酒類製造業","103":"茶・コーヒー製造業(清涼飲料を除く)","104":"製米・麦等精製業","105":"たばこ製造業","106":"飼料・有機質肥料製造業","112":"製糸、紡績、化学繊維・ねん糸等製造業","113":"ニット生地製造業","114":"染色整理業","115":"織物・網・レース・繊維製品製造業","116":"外衣・シャツ製造業(和式を除く)","117":"下着類製造業","118":"和装製品・その他の衣服・繊維製身の回り品製造業","119":"その他の繊維製品製造業","121":"製材、木製品製造業","122":"造作材・合板・建築用組立材料製造業","123":"木製容器製造業(竹、とうを含む)","129":"その他の木製品製造業(竹、とうを含む)","131":"家具製造業","132":"宗教用具製造業","133":"建具製造業","139":"その他の家具・装備品製造業","141":"パルプ製造業","142":"紙製造業","143":"加工紙製造業","144":"紙製品製造業","145":"紙製容器製造業","149":"その他のパルプ・紙・紙加工品製造業","151":"印刷業","152":"製版業","153":"製本、印刷物加工業","159":"印刷関連サービス業","161":"化学肥料製造業","162":"無機化学工業製品製造業","163":"有機化学工業製品製造業","164":"油脂加工製品・石けん・合成洗剤、界面活性剤・塗料製造業","165":"医薬品製造業","166":"化粧品・歯磨・その他の化粧用調整品製造業","169":"その他の化学工業","171":"石油精製業","172":"潤滑油・グリース製造業(石油精製業によらないもの)","173":"コークス製造業","174":"舗装材料製造業","179":"その他の石油製品・石炭製品製造業","181":"プラスチック板・管・継手・異形押出製品製造業","182":"プラスチックフィルム・シート・床材、合成皮革製造業","183":"工業用プラスチック製品製造業","184":"発泡・強化プラスチック製品製造業","185":"プラスチック成形材料製造業(廃プラスチックを含む)","189":"その他のプラスチック製品製造業","191":"タイヤ・チューブ製造業","192":"ゴム製・プラスチック製履物、同附属品製造業","193":"ゴムベルト・ゴムホース・工業用ゴム製品製造業","199":"その他のゴム製品製造業","201":"なめし革製造業","202":"工業用革製品製造業(手袋を除く)","203":"革製履物用材料、同附属品製造業","204":"革製履物製造業","205":"革製手袋製造業","206":"かばん製造業","207":"袋物製造業","208":"毛皮製造業","209":"その他のなめし革製品製造業","211":"ガラス・同製品製造業","212":"セメント・同製品製造業","213":"建設用粘土製品製造業(陶磁器製を除く)","214":"陶磁器・同関連製品製造業","215":"耐火物製造業","216":"炭素・黒鉛製品製造業","217":"研磨材・同製品製造業","218":"骨材・石工品等製造業","219":"その他の窯業・土石製品製造業","221":"製鉄業","222":"製鋼・製鋼圧延業","223":"製鋼を行わない鋼材製造業(表面処理鋼材を除く)","224":"表面処理鋼材製造業","225":"鉄素形材製造業","229":"その他の鉄鋼業","231":"非鉄金属第1次製錬・精製業","232":"非鉄金属第2次製錬・精製業(非鉄金属合金製造業を含む)","233":"非鉄金属・同合金圧延(抽伸、押出しを含む)","234":"電線・ケーブル製造業","235":"非鉄金属素形材製造業","239":"その他の非鉄金属製造業","241":"ブリキ缶・その他のめっき板等製品製造業","242":"洋食器・刃物・手道具・金物類製造業","243":"暖房装置・配管工事用附属品製造業","244":"建設用・建築用金属製品製造業(製缶板金業を含む)","245":"金属素形材製品製造業","246":"金属被覆、彫刻、熱処理(ほうろう鉄器を除く)","247":"金属線製品製造業(ねじ類を除く)","248":"ボルト・ナット・リベット・小ねじ・木ねじ等製造業","249":"その他の金属製品製造業","251":"ボイラ・原動機製造業","252":"ポンプ・圧縮機器製造業","253":"一般産業用機械・装置製造業","259":"その他のはん用機械・同部分品製造業","261":"農業用機械製造業(農業用器具を除く)","262":"建設機械・鉱山機械製造業","263":"繊維機械製造業","264":"生活関連産業用機械製造業","265":"基礎素材産業用機械製造業","266":"金属加工機械製造業","267":"半導体・フラットパネルディスプレイ製造装置製造業","269":"その他の生産用機械・同部分品製造業","271":"事務用機械器具製造業","272":"サービス用・娯楽用機械器具製造業","273":"計量器・測定器・分析機器・試験機・測量機械器具・理化学機械器具製造業","274":"医療用機械器具・医療用品製造業","275":"光学機械器具・レンズ製造業","276":"武器製造業","281":"電子デバイス製造業","282":"電子部品製造業","283":"記録メディア製造業","284":"電子回路製造業","285":"ユニット部品製造業","289":"その他の電子部品・デバイス・電子回路製造業","291":"発電用・送電用・配電用電気機械器具製造業","292":"産業用電気機械器具製造業","293":"民生用電気機械器具製造業","294":"電球・電気照明器具製造業","295":"電池製造業","296":"電子応用装置製造業","297":"電気計測器製造業","299":"その他の電気機械器具製造業","301":"通信機械器具・同関連機械器具製造業","302":"映像・音響機械器具製造業","303":"電子計算機・同附属装置製造業","311":"自動車・同附属品製造業","312":"鉄道車両・同部分品製造業","313":"船舶製造・修理業、舶用機関製造業","314":"航空機・同附属品製造業","315":"産業用運搬車両・同部分品・附属品製造業","319":"その他の輸送用機械器具製造業","321":"貴金属・宝石製品製造業","322":"装身具・装飾品・ボタン・同関連品製造業(貴金属・宝石製を除く)","323":"時計・同部分品製造業","324":"楽器製造業","325":"がん具・運動用具製造業","326":"ペン・鉛筆・絵画用品・その他の事務用品製造業","327":"漆器製造業","328":"寝具等生活雑貨製品製造業","329":"他に分類されない製造業","331":"電気業","341":"ガス業","351":"熱供給業","361":"上水道業","362":"工業用水道業","363":"下水道業","371":"固定電気通信業","372":"移動電気通信業","373":"電気通信に附帯するサービス業","381":"公共放送業(有線放送業を除く)","382":"民間放送業(有線放送業を除く)","383":"有線放送業","391":"ソフトウェア業","392":"情報処理・提供サービス業","401":"インターネット附随サービス業","411":"映像情報制作・配給業","412":"音声情報制作業","413":"新聞業","414":"出版業","415":"広告制作業","416":"映像・音声・文字情報制作に附帯するサービス業","421":"鉄道業","431":"一般乗合旅客自動車運送業","432":"一般乗用旅客自動車運送業","433":"一般貸切旅客自動車運送業","439":"その他の道路旅客運送業","441":"一般貨物自動車運送業","442":"特定貨物自動車運送業","443":"貨物軽自動車運送業","444":"集配利用運送業","449":"その他の道路貨物運送業","451":"外航海運業","452":"沿海海運業","453":"内陸水運業","454":"船舶貸渡業","461":"航空運送業","462":"航空機使用業(航空運送業を除く)","471":"倉庫業(冷蔵倉庫業を除く)","472":"冷蔵倉庫業","481":"港湾運送業","482":"貨物運送取扱業(集配利用運送業を除く)","483":"運送代理店","484":"こん包業","485":"運輸施設提供業","489":"その他の運輸に附帯するサービス業","491":"郵便業(信書便事業を含む)","501":"各種商品卸売業","511":"繊維品卸売業(衣服、身の回り品を除く)","512":"衣服卸売業","513":"身の回り品卸売業","521":"農畜産物・水産物卸売業","522":"食料・飲料卸売業","531":"建築材料卸売業","532":"化学製品卸売業","533":"石油・鉱物卸売業","534":"鉄鋼製品卸売業","535":"非鉄金属卸売業","536":"再生資源卸売業","541":"産業機械器具卸売業","542":"自動車卸売業","543":"電気機械器具卸売業","549":"その他の機械器具卸売業","551":"家具・建具・じゅう器等卸売業","552":"医薬品・化粧品等卸売業","553":"紙・紙製品卸売業","559":"他に分類されない卸売業","561":"百貨店、総合スーパー","569":"その他の各種商品小売業(従業者が常時50人未満のもの)","571":"呉服・服地・寝具小売業","572":"男子服小売業","573":"婦人・子供服小売業","574":"靴・履物小売業","579":"その他の織物・衣服・身の回り品小売業","581":"各種食料品小売業","582":"野菜・果実小売業","583":"食肉小売業","584":"鮮魚小売業","585":"酒小売業","586":"菓子・パン小売業","589":"その他の飲食料品小売業","591":"自動車小売業","592":"自転車小売業","593":"機械器具小売業(自動車、自転車を除く)","601":"家具・建具・畳小売業","602":"じゅう器小売業","603":"医薬品・化粧品小売業","604":"農耕用品小売業","605":"燃料小売業","606":"書籍・文房具小売業","607":"スポーツ用品・がん具・娯楽用品・楽器小売業","608":"写真機・時計・眼鏡小売業","609":"他に分類されない小売業","611":"通信販売・訪問販売小売業","612":"自動販売機による小売業","619":"その他の無店舗小売業","621":"中央銀行","622":"銀行(中央銀行を除く)","631":"中小企業等金融業","632":"農林水産金融業","641":"貸金業","642":"質屋","643":"クレジットカード業、割賦金融業","649":"その他の非預金信用機関","651":"金融商品取引業","652":"商品先物取引業、商品投資業","661":"補助的金融業、金融附帯業","662":"信託業","663":"金融代理業","671":"生命保険業","672":"損害保険業","673":"共済事業・少額短期保険業","674":"保険媒介代理業","675":"保険サービス業","681":"建物売買業、土地売買業","682":"不動産代理業・仲介業","691":"不動産賃貸業(貸家業、貸間業を除く)","692":"貸家業、貸間業","693":"駐車場業","694":"不動産管理業","701":"各種物品賃貸業","702":"産業用機械器具賃貸業","703":"事務用機械器具賃貸業","704":"自動車賃貸業","705":"スポーツ・娯楽用品賃貸業","709":"その他の物品賃貸業","711":"自然科学研究所","712":"人文・社会科学研究所","721":"法律事務所、特許事務所","722":"公証人役場・司法書士事務所・土地家屋調査士事務所","723":"行政書士事務所","724":"公認会計士事務所、税理士事務所","725":"社会保険労務士事務所","726":"デザイン業","727":"著述・芸術家業","728":"経営コンサルタント業、純粋持株会社","729":"その他の専門サービス業","731":"広告業","741":"獣医業","742":"土木建築サービス業","743":"機械設計業","744":"商品・非破壊検査業","745":"計量証明業","746":"写真業","749":"その他の技術サービス業","751":"旅館、ホテル","752":"簡易宿所","753":"下宿業","759":"その他の宿泊業","761":"食堂・レストラン (専門料理店を除く)","762":"専門料理店","763":"そば・うどん店","764":"すし店","765":"酒場、ビヤホール","766":"バー、キャバレー、ナイトクラブ","767":"喫茶店","769":"その他の飲食店","771":"持ち帰り飲食サービス業","772":"配達飲食サービス業","781":"洗濯業","782":"理容業","783":"美容業","784":"一般公衆浴場業","785":"その他の公衆浴場業","789":"その他の洗濯・理容・美容・浴場業","791":"旅行業","792":"家事サービス業","793":"衣服裁縫修理業","794":"物品預り業","795":"火葬・墓地管理業","796":"冠婚葬祭業","799":"他に分類されない生活関連サービス業","801":"映画館","802":"興行場(別掲を除く)、興行団","803":"競輪・競馬等の競走場、競技団","804":"スポーツ施設提供業","805":"公園、遊園地","806":"遊戯場","809":"その他の娯楽業","811":"幼稚園","812":"小学校","813":"中学校","814":"高等学校、中等教育学校","815":"特別支援学校","816":"高等教育機関","817":"専修学校、各種学校","818":"学校教育支援機関","821":"社会教育","822":"職業・教育支援施設","823":"学習塾","824":"教養・技能教授業","829":"他に分類されない教育、学習支援業","831":"病院","832":"一般診療所","833":"歯科診療所","834":"助産・看護業","835":"療術業","836":"医療に附帯するサービス業","841":"保健所","842":"健康相談施設","849":"その他の保健衛生","851":"社会保険事業団体","852":"福祉事務所","853":"児童福祉事業","854":"老人福祉・介護事業","855":"障害者福祉事業","859":"その他の社会保険・社会福祉・介護事業","861":"郵便局","862":"郵便局受託業","871":"農林水産業協同組合(他に分類されないもの)","872":"事業協同組合(他に分類されないもの)","881":"一般廃棄物処理業","882":"産業廃棄物処理業","889":"その他の廃棄物処理業","891":"自動車整備業","901":"機械修理業(電気機械器具を除く)","902":"電気機械器具修理業","903":"表具業","909":"その他の修理業","911":"職業紹介業","912":"労働者派遣業","921":"速記・ワープロ入力・複写業","922":"建物サービス業","923":"警備業","929":"他に分類されない事業サービス業","931":"経済団体","932":"労働団体","933":"学術・文化団体","934":"政治団体","939":"他に分類されない非営利的団体","941":"神道系宗教","942":"仏教系宗教","943":"キリスト教系宗教","949":"その他の宗教","951":"集会場","952":"と畜場","959":"他に分類されないサービス業","961":"外国公館","969":"その他の外国公務","971":"立法機関","972":"司法機関","973":"行政機関","981":"都道府県機関","982":"市町村機関","999":"分類不能の産業"},MAP=[["求人年度","年度"],["求人番号","求人番号"],["受付安定所","受付所"],["事業所番号","事業所No"],["インターネットへの公開","WEB公開"],["事業所名 カナ","事業所カナ"],["事業所名","事業所名"],["郵便番号（所在地）","所在_郵便No"],["住所（所在地）","所在地住所"],["アクセス（所在地）","所在地アクセス"],["代表者名","代表者"],["法人番号","法人No"],["ホームページ","web_site"],["従業員数（企業全体）","全社員数"],["従業員数（就業場所）","就業社員数"],["設立","設立年"],["資本金","資本金"],["事業内容","事業内容"],["会社の特長","会社特長"],["雇用形態","雇用形態"],["職種","職種"],["仕事の内容","仕事内容"],["郵便番号（就業場所）","就業_郵便No"],["住所（就業場所）","就業場所住所"],["アクセス（就業場所）","就業場所アクセス"],["求人数（通勤）","通勤求人"],["求人数（住込）","住込求人"],["求人数（不問）","不問求人"],["必要な知識・技能等","必要スキル"],["転勤の可能性","転勤"],["マイカー通勤の可否","マイカー通勤"],["入居可能住宅（単身用）","単身住宅"],["入居可能住宅（世帯用）","世帯住宅"],["基本給","基本給"],["月給（基本給+手当+残業代）","月給"],["賞与有無（新卒）","賞与"],["時間外労働の有無","残業の有無"],["時間外労働の月平均時間数","平均残業時間"],["変形労働時間制の種類","労働時間の種類"],["休日等","休日"],["就業時間1","就業時間1"],["就業時間2","就業時間2"],["就業時間3","就業時間3"],["年間休日数","年間休日"],["複数応募の受け入れ","複数応募"],["複数応募開始の日程","複数応募日程"],["職場見学の受け入れ","職場見学"],["職場見学の日程","見学日程"],["課係名・役職名（担当者）","担当役職"],["氏名（担当者）","担当者"],["氏名カナ（担当者）","担当者カナ"],["電話番号（担当者）","担当TEL"],["FAX（担当者）","担当FAX"],["Eメール（担当者）","担当メール"],["補足事項","補足"],["特記事項","特記"],["産業分類","産業分類NO"],["職業分類（3桁）","職業分類1(3桁)"],["職業分類（5桁）","職業分類1(5桁)"],["職業分類2（3桁）","職業分類2(3桁)"],["職業分類2（5桁）","職業分類2(5桁)"],["就業場所住所（市区町村）","就業_市区町村1"],["就業場所住所2（市区町村）","就業_市区町村2"],["就業場所住所3（市区町村）","就業_市区町村3"],["管理番号","管理No"],["対象学科","対象学科"],["エリア","エリア"],["卒業生の入社実績","入社実績"],["その他の分類","その他分類"],["募集人数","募集人数"],["来校の有無","来校"],["二次募集の有無","二次募集"],["職場見学人数","見学人数"],["応募人数","応募人数"],["入社人数","入社人数"],["備考","備考"],["申送り事項","申送り事項"],["公開日時","公開日時"],["最終更新日時","更新日時"],["登録方法","登録方法"],["元ファイル名","元ファイル"],["職業分類（ハローワーク）大分類","HW職業大分類"],["職業分類（ハローワーク）中分類","HW職業中分類"],["職業分類（ハローワーク）小分類","HW職業小分類"],["職業分類（handy）大分類","handy職業大分類"],["職業分類（handy）中分類","handy職業中分類"],["職業分類2（ハローワーク）大分類","HW職業2大分類"],["職業分類2（ハローワーク）中分類","HW職業2中分類"],["職業分類2（ハローワーク）小分類","HW職業2小分類"],["職業分類2（handy）大分類","handy職業2大分類"],["職業分類2（handy）中分類","handy職業2中分類"],["お気に入り登録数","お気に入り数"],["職業分類コード（日本標準職業分類への変換）","標準職業1コード"],["職業分類（日本標準職業分類への変換）","標準職業分類1"],["職業分類2コード（日本標準職業分類への変換）","標準職業2コード"],["職業分類2（日本標準職業分類への変換）","標準職業分類2"]],URLS=['kyujin2026.csv','https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv'];
+const $=s=>document.querySelector(s),mn=$('#mn'),Q=$('#q'),PS=$('#ps'),YR=$('#yr');
+const E=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const N=s=>String(s??'').normalize('NFKC').toLowerCase(),n=v=>{const x=parseFloat(String(v??'').replace(/,/g,''));return isNaN(x)?NaN:x},bl=v=>v===''||v==null;
+const ors=s=>s.split('/').map(x=>x.trim()).filter(Boolean),hit=(t,w)=>w.split(/\s+/).every(x=>t.includes(x));
+const WD={'#':40,'管理No':56,'事業所名':190,'所在地住所':170,'全社員数':66,'就業社員数':72,'資本金':76,'就業場所(市区町村・結合)':140,'求人数(計・通勤+住込+不問)':64,'職業分類(標準・結合)':150,'月給':70,'年間休日':66,'賞与':46,'求人番号':104,'WEB公開':66,'来校':44};
+const LONG=['仕事内容','事業内容','会社特長','必要スキル','補足','特記','備考','申送り事項','休日','就業場所住所','所在地住所'];
+const GCOL=['#','事業所No','事業所名','産業分類名','所在地住所','全社員数','資本金','設立年','WEB公開','来校'];
+const YEN=['基本給','月給','時間あたりの賃金','予想月給','予想賞与'],FAINT=['時間あたりの賃金','予想月給','予想賞与','産業分類名'];
+const NUM=['全社員数','就業社員数','年間休日','求人数(計・通勤+住込+不問)','通勤求人','住込求人','不問求人','平均残業時間',...YEN];
+const mk=l=>({k:l,w:WD[l]||(LONG.includes(l)?170:100),u:l==='#'});
+let R=[],LC=Object.keys(WD).map(mk),GC=GCOL.map(mk),view='list',sk='def',sd=1,pg=0,shown=[],tot=0,SC=1,dr=-1,ALLL=[];
+const cs=()=>view==='list'?LC:GC;
+let L=MAP.map(m=>m[1]);L.splice(L.indexOf('産業分類NO')+1,0,'産業分類名');L.splice(L.indexOf('年間休日')+1,0,'時間あたりの賃金','予想月給','予想賞与');L.push('就業場所(市区町村・結合)','求人数(計・通勤+住込+不問)','職業分類(標準・結合)');ALLL=L;
+function parse(t){if(t.charCodeAt(0)==65279)t=t.slice(1);const o=[];let r=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}else if(c=='"')q=true;else if(c==','){r.push(f);f=''}else if(c=='\n'||c=='\r'){if(c=='\r'&&t[i+1]=='\n')i++;r.push(f);f='';o.push(r);r=[]}else f+=c}if(f||r.length){r.push(f);o.push(r)}return o}
+const HN=h=>String(h).normalize('NFKC').replace(/[\s\u3000]+/g,''),MISS=[];
+function prep(a){const ix={};a[0].forEach((h,i)=>ix[HN(h)]=i);MISS.length=0;MAP.forEach(([c,l])=>{if(!(HN(c) in ix))MISS.push(c)});
+return a.slice(1).filter(r=>r.length>10).map(r=>{const o={};MAP.forEach(([c,l])=>o[l]=(r[ix[HN(c)]]??'').trim());
+o._y=+((o['年度'].normalize('NFKC').match(/\d+/)||[0])[0]);const m=o['管理No'];o._no=+m||0;if(/^\d+$/.test(m))o['管理No']=m.padStart(4,'0');
+const ic=o['産業分類NO'];o['産業分類名']=bl(ic)?'':(IND[ic.normalize('NFKC').padStart(3,'0')]||IND[ic.normalize('NFKC').slice(0,3)]||'');
+const y=n(o['年間休日']),g=n(o['月給']),z=n(o['平均残業時間'])||0,b=n(o['基本給']),h=y>=0?(365-y)*8/12:NaN;
+o['時間あたりの賃金']=h>0&&g>0?Math.round(g/h):'';o['予想月給']=h>0&&g>0?Math.round(g+g/h*z*1.25):'';o['予想賞与']=o['賞与']==='あり'&&b>0?b*2:'';
+o['就業場所(市区町村・結合)']=[1,2,3].map(i=>o['就業_市区町村'+i]).filter(Boolean).join(' / ');
+o['求人数(計・通勤+住込+不問)']=['通勤求人','住込求人','不問求人'].reduce((s,k)=>s+(n(o[k])||0),0);
+o['職業分類(標準・結合)']=[o['標準職業分類1'],o['標準職業分類2']].filter(Boolean).join(' / ');
+o._s=N([o['事業所名'],o['所在地住所'],o['就業場所住所'],o['就業場所(市区町村・結合)'],o['求人番号'],o['管理No'],o._no,o['標準職業分類1'],o['標準職業分類2'],o['HW職業小分類'],o['HW職業2小分類']].join('\n'));return o})}
+const fmt=(k,r)=>{const v=r[k];if(bl(v))return'';if(YEN.includes(k)){const x=n(v);return isNaN(x)?v:Math.round(x).toLocaleString()+'円'}return v};
+/* 詳細検索 */
+const P=[[0,149999,'149,999円以下'],[150000,174999,'150,000円 - 174,999円'],[175000,199999,'175,000円 - 199,999円'],[200000,249999,'200,000円 - 249,999円'],[250000,1e12,'250,000円以上']],D=[[0,99,'99日以下'],[100,109,'100日 - 109日'],[110,119,'110日 - 119日'],[120,129,'120日 - 129日'],[130,999,'130日以上']];
+const JOB=['医療/福祉に関わる','事務に関わる','営業に関わる','販売に関わる','接客/サービスに関わる','農林水産業に関わる','生産/製造に関わる','運輸/物流に関わる','建設/建築/土木に関わる','情報処理/通信技術に関わる','警備/保安に関わる','その他'];
+const holHit=(t,d)=>{t=N(t).replace(/週休[0-9二三一]日制|隔週|毎月|毎週|月末|月初|第[0-9一二三四五]|[0-9]+日|[0-9]+週/g,'');return d==='その他'?/他|その他|夏季|年末|盆|正月/.test(t):t.includes(d)};
+const SYSRX={'交替制':/交替|交代|シフト/,'裁量労働制':/裁量/,'フレックスタイム制':/フレックス/,'変形労働時間制':/変形|1年単位|1ヶ月単位|1か月単位|1週間単位/};
+const adv0=()=>({fw:'all',fwt:'',addr:'',job:[],pay:[],bonus:'',hol:[],days:[],tn:false,h1:false,h2:false,ot:'',otm:10,sys:[]});let adv=adv0(),F;
+const cb=(nm,v,t,ty='checkbox')=>`<label><input type="${ty}" name="${nm}" value="${v}"${v===''&&ty==='radio'?' checked':''}>${t}</label>`;
+function advOK(r){const a=adv;
+if(a.fwt){const t=N(a.fw==='all'?[r['事業所名'],r['職種'],r['仕事内容'],r['事業内容'],r['管理No'],r['求人番号']].join('\n'):r[a.fw]);if(!ors(N(a.fwt)).some(x=>hit(t,x)))return false}
+if(a.addr){const t=N([r['就業場所住所'],r['就業場所(市区町村・結合)']].join('\n'));if(!ors(N(a.addr)).some(x=>hit(t,x)))return false}
+if(a.job.length){const t=N([r['handy職業大分類'],r['handy職業中分類'],r['handy職業2大分類'],r['handy職業2中分類'],r['HW職業大分類'],r['HW職業2大分類']].join('\n'));if(!a.job.some(j=>j.replace(/に関わる$/,'').split('/').some(w=>t.includes(N(w)))))return false}
+const g=n(r['月給']);if(a.pay.length&&!a.pay.some(i=>g>=P[i][0]&&g<=P[i][1]))return false;
+if(a.bonus&&r['賞与']!==a.bonus)return false;
+if(a.hol.length&&!a.hol.some(d=>holHit(r['休日'],d)))return false;
+const y=n(r['年間休日']);if(a.days.length&&!a.days.some(i=>y>=D[i][0]&&y<=D[i][1]))return false;
+if(a.tn&&r['転勤']!=='なし'||a.h1&&r['単身住宅']!=='あり'||a.h2&&r['世帯住宅']!=='あり')return false;
+if(a.ot==='あり'){if(r['残業の有無']!=='あり')return false;const z=n(r['平均残業時間']);if(!isNaN(z)&&z>a.otm)return false}
+if(a.ot==='なし'&&r['残業の有無']!=='なし')return false;
+if(a.sys.length){const w=N([r['労働時間の種類'],r['就業時間1'],r['就業時間2'],r['就業時間3']].join('\n')),any=Object.values(SYSRX).some(x=>x.test(w));if(!a.sys.some(s=>s==='特別な制度ではない'?!any:SYSRX[s].test(w)))return false}return true}
+function rd(){const v=s=>[...F.querySelectorAll(`[name=${s}]:checked`)].map(x=>x.value);
+adv={fw:F.fw.value,fwt:F.fwt.value,addr:F.addr.value,job:v('job'),pay:v('pay').map(Number),bonus:v('bonus')[0]||'',hol:v('hol'),days:v('days').map(Number),tn:F.tn.checked,h1:F.h1.checked,h2:F.h2.checked,ot:v('ot')[0]||'',otm:+F.otm.value||0,sys:v('sys')};pg=0;rend()}
+function mkAdv(){const o=ovl('詳細検索','<form id="F" onsubmit="return false"></form>','','keep');o.hidden=true;F=o.querySelector('form');
+F.innerHTML=`<div class="row"><b>フリーワード</b><div><select name="fw"><option value="all">すべての項目から検索<option>事業所名<option>職種<option>仕事内容<option>事業内容<option>管理No<option>求人番号</select><input type="text" name="fwt" size="40" placeholder="製造/食品/東京（/でOR）"></div></div>
+<div class="row"><b>就業場所住所</b><div><input type="text" name="addr" size="40" placeholder="東京都新宿区/大阪市（/でOR）"></div></div>
+<div class="row"><b>仕事の種類</b><div>${JOB.map(j=>cb('job',j,j)).join('')}</div></div>
+<div class="row"><b>月給</b><div>${P.map((p,i)=>cb('pay',i,p[2])).join('')}</div></div>
+<div class="row"><b>賞与</b><div>${cb('bonus','あり','あり','radio')}${cb('bonus','なし','なし','radio')}${cb('bonus','','指定なし','radio')}</div></div>
+<div class="row"><b>希望する休日</b><div>${[['月','月曜'],['火','火曜'],['水','水曜'],['木','木曜'],['金','金曜'],['土','土曜'],['日','日曜'],['祝','祝日'],['その他','その他']].map(d=>cb('hol',d[0],d[1])).join('')}</div></div>
+<div class="row"><b>年間休日数</b><div>${D.map((p,i)=>cb('days',i,p[2])).join('')}</div></div>
+<div class="row"><b>転勤</b><div><label><input type="checkbox" name="tn">転勤なし</label></div></div>
+<div class="row"><b>入居可能住宅</b><div><label><input type="checkbox" name="h1">単身用あり</label><label><input type="checkbox" name="h2">世帯用あり</label></div></div>
+<div class="row"><b>時間外労働</b><div>${cb('ot','あり','あり（月平均','radio')}<input type="number" name="otm" value="10" min="0" style="width:52px">時間以下）${cb('ot','なし','なし','radio')}${cb('ot','','指定なし','radio')}</div></div>
+<div class="row"><b>勤務制度</b><div>${['交替制','裁量労働制','フレックスタイム制','変形労働時間制','特別な制度ではない'].map(s=>cb('sys',s,s==='交替制'?'交替制（シフト制）':s==='特別な制度ではない'?'上記のような特別な勤務制度ではない':s)).join('')}</div></div>
+<div style="padding:6px 0;text-align:right"><button class="s" type="button" id="aclr">条件をクリア</button> <button class="s" type="button" id="aok">閉じる</button></div>`;
+F.oninput=F.onchange=rd;$('#aclr').onclick=()=>{F.reset();rd()};$('#aok').onclick=()=>o.hidden=true;return o}
+/* 共通オーバーレイ */
+function ovl(h,b,c='',keep='',ex=''){const d=document.createElement('div');d.className='ov '+keep;d.innerHTML=`<div class="md ${c}"><div class="mh"><div class="mt">${h}</div>${ex}<button class="x s">×</button></div><div class="mb">${b}</div></div>`;d.querySelector('.x').onclick=()=>cl(d);d.onmousedown=e=>{if(e.target===d)cl(d)};document.body.appendChild(d);return d}
+const cl=d=>d.classList.contains('keep')?d.hidden=true:d.remove();
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){const a=[...document.querySelectorAll('.ov')].filter(x=>!x.hidden);a.length&&cl(a[a.length-1])}});
+/* 描画 */
+function filt(){const qs=ors(N(Q.value));return R.filter(r=>(!YR.value||r._y==YR.value)&&(!qs.length||qs.some(t=>hit(r._s,t)))&&advOK(r))}
+const sorter=k=>(a,b)=>{const x=a[k],y=b[k];if(bl(x)||bl(y))return bl(x)&&bl(y)?0:bl(x)?1:-1;const rx=/^[\d.,\-]+$/;const c=rx.test(x)&&rx.test(y)?n(x)-n(y):String(x).localeCompare(String(y),'ja');return c*sd};
+function eff(c){return c.u?c.w:Math.round(c.w*SC)}
+function calcSC(){const a=cs();const u=a.filter(c=>c.u).reduce((s,c)=>s+c.w,0),b=a.filter(c=>!c.u).reduce((s,c)=>s+c.w,0);SC=Math.max(.5,(mn.clientWidth-4-u)/(b||1))}
+function applyW(){const t=mn.querySelector('table');if(!t)return;const a=cs();t.querySelectorAll('col').forEach((c,i)=>c.style.width=eff(a[i])+'px');t.style.width=a.reduce((s,c)=>s+eff(c),0)+'px'}
+function rend(){let d=filt();if(view==='grp'){const m=new Map();d.forEach(r=>m.has(r['事業所No'])||m.set(r['事業所No'],r));d=[...m.values()]}
+d.sort(sk==='def'?(view==='list'?(a,b)=>(b._y-a._y)||(b._no-a._no):(a,b)=>String(a['事業所No']).localeCompare(b['事業所No'])):sorter(sk));
+tot=d.length;const sz=+PS.value||Math.max(tot,1);if(pg*sz>=tot)pg=0;const b0=pg*sz;shown=d.slice(b0,b0+sz);calcSC();const a=cs();
+let h=`<table><colgroup>${a.map(()=>'<col>').join('')}</colgroup><thead><tr>`;
+a.forEach((c,i)=>h+=`<th data-i="${i}" class="${c.k==='#'?'n':FAINT.includes(c.k)?'f':''}"><span class="lb" data-k="${E(c.k)}"${c.k==='#'?'':' draggable="true"'}>${E(c.k)}${sk===c.k?(sd>0?' ▲':' ▼'):''}</span>${c.k==='#'?'':'<i class="rz"></i>'}</th>`);
+h+='</tr></thead><tbody>';shown.forEach((r,j)=>{h+=`<tr data-i="${j}">`;a.forEach(c=>{const k=c.k;let v=k==='#'?b0+j+1:fmt(k,r);h+=`<td class="${k==='#'?'n':''}${FAINT.includes(k)?' f':''}${NUM.includes(k)?' r':''}" title="${E(v)}">${E(v)}</td>`});h+='</tr>'});
+mn.innerHTML=h+'</tbody></table>';applyW();
+$('#cnt').innerHTML=`${tot?b0+1:0}–${b0+shown.length} / ${tot.toLocaleString()}件 <a id="pv">戻</a><a id="nx">次</a>`;
+$('#ttl').textContent=view==='list'?'受付求人票':'受付求人票（事業所No別）';$('#q').classList.toggle('on',!!Q.value);$('#ad').hidden=JSON.stringify(adv)===JSON.stringify(adv0())}
+$('#cnt').onclick=e=>{const sz=+PS.value||tot;if(e.target.id==='nx'&&(pg+1)*sz<tot)pg++;else if(e.target.id==='pv'&&pg>0)pg--;else return;rend();mn.scrollTop=0};
+mn.addEventListener('click',e=>{const l=e.target.closest('.lb');if(!l||l.dataset.k==='#')return;const k=l.dataset.k;if(sk===k)sd=-sd;else{sk=k;sd=1}rend()});
+mn.addEventListener('dblclick',e=>{const t=e.target.closest('tbody tr');if(t)detail(shown[+t.dataset.i])});
+mn.addEventListener('dragstart',e=>{const t=e.target.closest('th');if(t){dr=+t.dataset.i;e.dataTransfer.setData('text','x')}});
+mn.addEventListener('dragover',e=>{if(e.target.closest('th'))e.preventDefault()});
+mn.addEventListener('drop',e=>{const t=e.target.closest('th');if(!t||dr<1)return;const i=+t.dataset.i,a=cs();if(i<1||i===dr)return;a.splice(i,0,a.splice(dr,1)[0]);dr=-1;rend()});
+mn.addEventListener('mousedown',e=>{const z=e.target.closest('.rz');if(!z)return;e.preventDefault();const th=z.parentNode,c=cs()[+th.dataset.i],x0=e.clientX,w0=th.offsetWidth;
+const mv=ev=>{c.w=Math.max(30,w0+ev.clientX-x0);c.u=true;applyW()},up=()=>{document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up)};document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up)});
+addEventListener('resize',()=>{calcSC();applyW()});
+/* 詳細モーダル */
+const GR=[['求人の基本',['年度','求人番号','管理No','受付所','WEB公開','雇用形態','職種','公開日時','更新日時','登録方法','元ファイル','お気に入り数']],
+['事業所',['事業所No','事業所名','事業所カナ','所在_郵便No','所在地住所','所在地アクセス','代表者','法人No','web_site','全社員数','就業社員数','設立年','資本金','事業内容','会社特長','産業分類NO','産業分類名']],
+['仕事内容・就業場所',['仕事内容','必要スキル','就業_郵便No','就業場所住所','就業場所アクセス','就業場所(市区町村・結合)','就業_市区町村1','就業_市区町村2','就業_市区町村3','転勤','マイカー通勤','単身住宅','世帯住宅']],
+['求人数・募集',['通勤求人','住込求人','不問求人','求人数(計・通勤+住込+不問)','募集人数','対象学科','エリア','複数応募','複数応募日程','職場見学','見学日程']],
+['給与・労働時間',['基本給','月給','賞与','残業の有無','平均残業時間','労働時間の種類','休日','就業時間1','就業時間2','就業時間3','年間休日','時間あたりの賃金','予想月給','予想賞与']],
+['担当者',['担当役職','担当者','担当者カナ','担当TEL','担当FAX','担当メール']],
+['職業分類',L.filter(k=>/職業/.test(k)&&k!=='職業分類(標準・結合)')],
+['補足・実績・管理',['補足','特記','入社実績','その他分類','来校','二次募集','見学人数','応募人数','入社人数','備考','申送り事項']]];
+function detail(r){const used=new Set();let h='';const it=(k)=>{used.add(k);const f=FAINT.includes(k)?' f':'';return`<div class="it${LONG.includes(k)?' lg':''}"><div class="k${f}">${E(k)}</div><div class="v${f}">${E(fmt(k,r))||'<span class="f">-</span>'}</div></div>`};
+GR.forEach(([t,ks])=>{ks=ks.filter(k=>k in r);ks.forEach(k=>used.add(k));h+=`<h3>${t}</h3><div class="kv">${ks.map(it).join('')}</div>`});
+const rest=L.filter(k=>!used.has(k)&&k in r);if(rest.length)h+=`<h3>その他</h3><div class="kv">${rest.map(it).join('')}</div>`;
+const o=ovl(`管理No ${E(r['管理No'])}　${E(r['事業所名'])}　<small style="font-weight:400">${E(r['職種'])}</small> <span style="font-weight:400;font-size:11px"><label><input type="checkbox" class="sc" value="job" checked>職種</label><label><input type="checkbox" class="sc" value="pay" checked>月給</label><label><input type="checkbox" class="sc" value="day" checked>年休</label><label><input type="checkbox" class="sc" value="loc" checked>場所</label></span>`,h,'','','<button id="sim">類似求人(上位50件)</button>');
+o.querySelector('#sim').onclick=()=>simShow(r,[...o.querySelectorAll('.sc:checked')].map(x=>x.value))}
+function simShow(b,op){if(!op.length){alert('条件を1つ以上選択してください');return}
+const pf=s=>(String(s).match(/^.{2,3}?[都道府県]/)||[''])[0],out=[];
+for(const r of R){if(r===b||r._y!==b._y)continue;let s=0,m=0;
+if(op.includes('job')){m+=40;const A=[b['標準職業1コード'],b['標準職業2コード']].filter(Boolean),C=[r['標準職業1コード'],r['標準職業2コード']].filter(Boolean);
+if(A.some(x=>C.includes(x)))s+=40;else if(A.some(x=>C.some(y=>x.slice(0,2)===y.slice(0,2))))s+=25;else if(b['handy職業大分類']&&b['handy職業大分類']===r['handy職業大分類'])s+=12}
+if(op.includes('pay')){m+=25;const x=n(b['月給']),y=n(r['月給']);if(!isNaN(x)&&!isNaN(y))s+=25*Math.max(0,1-Math.abs(x-y)/50000)}
+if(op.includes('day')){m+=15;const x=n(b['年間休日']),y=n(r['年間休日']);if(!isNaN(x)&&!isNaN(y))s+=15*Math.max(0,1-Math.abs(x-y)/20)}
+if(op.includes('loc')){m+=20;if(b['就業_市区町村1']&&b['就業_市区町村1']===r['就業_市区町村1'])s+=20;else if(pf(b['就業_市区町村1'])&&pf(b['就業_市区町村1'])===pf(r['就業_市区町村1']))s+=10}
+out.push([s/m*100,r])}
+out.sort((a,b)=>b[0]-a[0]||b[1]._no-a[1]._no);const t=out.slice(0,50);
+let h='<table class="st"><thead><tr><th>順位<th>類似度<th>管理No<th>事業所名<th class="h1">職種<th>就業場所<th>月給<th class="h2">年間休日<th class="h2">求人番号</tr></thead><tbody>';
+t.forEach(([s,r],i)=>h+=`<tr data-i="${i}"><td class="r">${i+1}<td class="r">${s.toFixed(0)}%<td>${E(r['管理No'])}<td title="${E(r['事業所名'])}">${E(r['事業所名'])}<td class="h1" title="${E(r['職種'])}">${E(r['職種'])}<td>${E(r['就業場所(市区町村・結合)'])}<td class="r">${E(fmt('月給',r))}<td class="r h2">${E(r['年間休日'])}<td class="h2">${E(r['求人番号'])}</tr>`);
+const o=ovl(`類似求人（上位${t.length}件）　基準: 管理No ${E(b['管理No'])} ${E(b['事業所名'])}　<small style="font-weight:400">条件: ${op.map(x=>({job:'職種',pay:'月給',day:'年休',loc:'場所'}[x])).join('・')}</small>`,h+'</tbody></table><p class="f">※行をダブルクリックで求人詳細</p>','xl');
+o.addEventListener('dblclick',e=>{const tr=e.target.closest('tbody tr');if(tr)detail(t[+tr.dataset.i][1])})}
+/* 列追加 */
+$('#addc').onclick=()=>{const a=cs();const o=ovl('列追加（チェックで表示/非表示）','<div class="cg">'+L.map(k=>`<label class="${FAINT.includes(k)?'f':''}"><input type="checkbox" value="${E(k)}"${a.some(c=>c.k===k)?' checked':''}>${E(k)}</label>`).join('')+'</div>','sm wd');
+o.onchange=e=>{const k=e.target.value,a=cs(),i=a.findIndex(c=>c.k===k);if(e.target.checked){if(i<0)a.push(mk(k))}else if(i>=0)a.splice(i,1);rend()}};
+/* 検証 */
+$('#chk').onclick=()=>{const iss=[],add=(t,f)=>{const l=R.filter(f);iss.push([t,l.length,l.slice(0,6).map(r=>r['管理No']).join(', ')])},cnt=k=>{const m={};R.forEach(r=>m[r[k]]=(m[r[k]]||0)+1);return m};
+const dn=cnt('管理No'),dj=cnt('求人番号'),nm={};R.forEach(r=>(nm[r['事業所No']]??=new Set()).add(r['事業所名']));
+add('管理Noが重複',r=>dn[r['管理No']]>1);add('求人番号が重複',r=>dj[r['求人番号']]>1);
+add('産業分類NOが空、または産業分類.txtに無い',r=>!r['産業分類名']);
+add('年間休日が空/60未満/150超',r=>{const y=n(r['年間休日']);return isNaN(y)||y<60||y>150});
+add('月給が空・数値でない',r=>isNaN(n(r['月給'])));add('基本給が空・数値でない',r=>isNaN(n(r['基本給'])));
+add('月給 < 基本給',r=>n(r['月給'])<n(r['基本給']));
+add('残業「あり」なのに平均残業時間が空/0',r=>r['残業の有無']==='あり'&&!(n(r['平均残業時間'])>0));
+add('残業「なし」なのに平均残業時間>0',r=>r['残業の有無']==='なし'&&n(r['平均残業時間'])>0);
+add('賞与「あり」なのに基本給が無く予想賞与を算出不可',r=>r['賞与']==='あり'&&!(n(r['基本給'])>0));
+add('求人数(計・通勤+住込+不問)が0',r=>!r['求人数(計・通勤+住込+不問)']);
+add('アクセス欄にダミー文字「**」',r=>/\*\*/.test(r['所在地アクセス']+r['就業場所アクセス']));
+add('就業場所の郵便番号が空/999-9999',r=>!r['就業_郵便No']||r['就業_郵便No']==='999-9999');
+add('法人Noが13桁の数字でない',r=>!/^\d{13}$/.test(r['法人No']));
+add('就業社員数 > 全社員数',r=>n(r['就業社員数'])>n(r['全社員数']));
+add('同一事業所Noで事業所名が複数',r=>nm[r['事業所No']].size>1);
+add('就業場所(市区町村)が空',r=>!r['就業_市区町村1']);
+add('時間あたりの賃金が900円未満（要確認）',r=>r['時間あたりの賃金']!==''&&r['時間あたりの賃金']<900);
+if(MISS.length)iss.unshift(['CSVに無い項目（項目名変更.txtと不一致）: '+MISS.slice(0,6).join(' / ')+(MISS.length>6?' …':''),MISS.length,'']);add('年度が数値でない',r=>!r._y);add('WEB公開が空',r=>!r['WEB公開']);add('来校が空',r=>!r['来校']);
+ovl(`データ点検（全${R.length.toLocaleString()}件）`,'<table class="st"><thead><tr><th>No<th>点検項目<th>件数<th>例（管理No）</tr></thead><tbody>'+iss.map((x,i)=>`<tr><td class="r">${i+1}<td>${E(x[0])}<td class="r" style="${x[1]?'color:#c0392b;font-weight:700':''}">${x[1]}<td>${E(x[2])}</tr>`).join('')+'</tbody></table>','sm')};
+/* 起動 */
+Q.ondblclick=()=>{const o=document.querySelector('.ov.keep');o&&(o.hidden=false)};
+Q.oninput=()=>{pg=0;rend()};YR.onchange=PS.onchange=()=>{pg=0;rend()};
+$('#clr').onclick=()=>{Q.value='';F.reset();rd()};
+$('#ttl').ondblclick=()=>{view=view==='list'?'grp':'list';sk='def';sd=1;pg=0;rend()};
+mkAdv();
+(async()=>{let t=null;for(const u of URLS){try{const r=await fetch(u,{cache:'no-store'});if(r.ok){const b=await r.arrayBuffer();let x;try{x=new TextDecoder('utf-8',{fatal:true}).decode(b)}catch(e){x=new TextDecoder('shift_jis').decode(b)}if(/求人番号/.test(x.slice(0,3000))){t=x;break}}}catch(e){}}
+if(!t){mn.innerHTML='<p style="padding:10px;color:#c0392b">kyujin2026.csv を読み込めませんでした（ローカルファイル直開きの場合は同フォルダのCSVが読めないことがあります）。</p>';return}
+R=prep(parse(t));const ys=[...new Set(R.map(r=>r._y))].sort((a,b)=>b-a);YR.innerHTML='<option value="">全て</option>'+ys.map(y=>`<option>${y}</option>`).join('');YR.value=ys[0]||'';$('#yl').textContent='年度 '+(ys[0]?ys[0]:'全て');rend()})();
+</script></body></html>
