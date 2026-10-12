@@ -138,7 +138,7 @@ table.af td{white-space:normal;overflow:visible;padding:3px 6px;border-bottom:1p
 
 <script>
 'use strict';
-const ABS='https://soo-hs.github.io/soohs/kyujin/kyujin.csv';
+const ABS='https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv';
 
 /* ===== 項目名変更.txt ===== */
 const MAP_TXT=`
@@ -839,7 +839,7 @@ function decode(buf){
 }
 async function fetchCsv(){
  const errs=[];
- for(const u of ['kyujin.csv',ABS]){
+ for(const u of ['kyujin2026.csv',ABS]){
   try{const r=await fetch(u);if(!r.ok)throw new Error('HTTP '+r.status);return{text:decode(await r.arrayBuffer()),src:u};}
   catch(e){errs.push(u+' : '+e.message);}
  }
