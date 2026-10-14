@@ -36,7 +36,7 @@ th.dov{box-shadow:inset 3px 0 var(--am)}
 td{height:21px;padding:0 6px;border-bottom:1px solid #e6ecf7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 tbody tr:nth-child(even) td{background:#f7f9ff}
 tbody tr:hover td{background:var(--aml)}
-th.k0,td.k0{position:sticky;left:0;text-align:right;color:var(--nv);font-weight:600}
+th.k0,td.k0{position:sticky;left:0;text-align:right;color:var(--nv);font-weight:600;font-size:10px;padding:0 4px}
 th.k0{z-index:5}td.k0{z-index:2;background:#eef3fc!important}
 td.r{text-align:right}
 th.light,td.light,.f.light b,.f.light span{color:var(--lt)}
@@ -792,7 +792,7 @@ const SPECIAL={_place:'就業場所(市区町村)',_cnt:'求人数(計)',_occ:'�
 const LABEL=k=>SPECIAL[k]||k;
 const LIGHT=new Set(['時間あたりの賃金','予想月給','予想賞与','産業分類名']);
 const MONEY=new Set(['基本給','月給','時間あたりの賃金','予想月給','予想賞与']);
-const BASEW={'#':40,'管理No':45,'事業所名':210,'所在地住所':200,'全社員数':70,'就業社員数':70,'資本金':90,'_place':150,'_cnt':70,'_occ':170,'月給':80,'年間休日':65,'賞与':55,'求人番号':105,'WEB公開':65,'来校':50,'事業所No':80,'産業分類名':170,'設立年':70,'基本給':80,'職種':160,'仕事内容':240,'事業内容':220,'会社特長':220};
+const BASEW={'#':38,'管理No':45,'事業所名':210,'所在地住所':200,'全社員数':70,'就業社員数':70,'資本金':90,'_place':150,'_cnt':70,'_occ':170,'月給':80,'年間休日':65,'賞与':55,'求人番号':105,'WEB公開':65,'来校':50,'事業所No':80,'産業分類名':170,'設立年':70,'基本給':80,'職種':160,'仕事内容':240,'事業内容':220,'会社特長':220};
 const LIST_DEF=['#','管理No','事業所名','所在地住所','全社員数','就業社員数','資本金','_place','_cnt','_occ','月給','年間休日','賞与','求人番号','WEB公開','来校'];
 const GROUP_DEF=['#','事業所No','事業所名','産業分類名','所在地住所','全社員数','資本金','設立年','WEB公開','来校'];
 
@@ -819,7 +819,7 @@ function decode(buf){
   catch(e){return new TextDecoder('shift_jis').decode(buf);}
 }
 async function loadCSV(){
-  const urls=['kyujin2026.csv','https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv'];
+  const urls=['kyujin.csv','https://soo-hs.github.io/soohs/kyujin/kyujin.csv'];
   const err=[];
   for(const u of urls){
     try{const res=await fetch(u,{cache:'no-cache'});
@@ -1197,7 +1197,7 @@ window.addEventListener('resize',fit);
     $('#msg').remove();
     apply();fit();
   }catch(e){
-    $('#msg').textContent='CSVを読み込めませんでした。\n'+e.message+'\n\nkyujin.html と kyujin2026.csv を同じフォルダに置くか、ネットワークを確認してください。';
+    $('#msg').textContent='CSVを読み込めませんでした。\n'+e.message+'\n\nkyujin.html と kyujin.csv を同じフォルダに置くか、ネットワークを確認してください。';
   }
 })();
 </script>
