@@ -819,7 +819,7 @@ function decode(buf){
   catch(e){return new TextDecoder('shift_jis').decode(buf);}
 }
 async function loadCSV(){
-  const urls=['kyujin.csv','https://soo-hs.github.io/soohs/kyujin/kyujin.csv'];
+  const urls=['kyujin2026.csv','https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv'];
   const err=[];
   for(const u of urls){
     try{const res=await fetch(u,{cache:'no-cache'});
@@ -1197,7 +1197,7 @@ window.addEventListener('resize',fit);
     $('#msg').remove();
     apply();fit();
   }catch(e){
-    $('#msg').textContent='CSVを読み込めませんでした。\n'+e.message+'\n\nkyujin.html と kyujin.csv を同じフォルダに置くか、ネットワークを確認してください。';
+    $('#msg').textContent='CSVを読み込めませんでした。\n'+e.message+'\n\nkyujin.html と kyujin2026.csv を同じフォルダに置くか、ネットワークを確認してください。';
   }
 })();
 </script>
