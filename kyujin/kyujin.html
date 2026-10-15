@@ -36,6 +36,8 @@ th.dov{box-shadow:inset 3px 0 var(--am)}
 td{height:21px;padding:0 6px;border-bottom:1px solid #e6ecf7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 tbody tr:nth-child(even) td{background:#f7f9ff}
 tbody tr:hover td{background:var(--aml)}
+tbody tr.sel td{background:#ffd97a!important;color:#1d2a4a;font-weight:600;border-bottom-color:#e0a020;box-shadow:inset 0 1px #e0a020}
+tbody tr.sel td.k0{background:#f5a524!important;color:#3b2a00}
 th.k0,td.k0{position:sticky;left:0;text-align:right;color:var(--nv);font-weight:600;font-size:10px;padding:0 4px}
 th.k0{z-index:5}td.k0{z-index:2;background:#eef3fc!important}
 td.r{text-align:right}
@@ -1003,6 +1005,7 @@ function cellText(k,r){
     case '時間あたりの賃金':case '予想月給':case '予想賞与':return yen(r[k]);
     default:return r[k]==null?'':r[k];}
 }
+function selKey(r){return S.view==='list'?[r['年度'],r['管理No'],r['求人番号']].join('|'):(r['事業所No']||'?'+r['事業所名']);}
 function render(){
   const cols=S.cols[S.view],data=S.sorted,tot=data.length,ps=S.ps;
   const pages=ps?Math.max(1,Math.ceil(tot/ps)):1;
@@ -1012,7 +1015,7 @@ function render(){
   let h='<colgroup>'+cols.map(c=>`<col style="width:${c.w}px">`).join('')+'</colgroup><thead><tr>';
   for(const c of cols)h+=`<th class="${c.key==='#'?'k0':''}${c.light?' light':''}" data-k="${esc(c.key)}"${c.key==='#'?'':' draggable="true"'} title="${esc(c.label)}（クリックでソート／ドラッグで並替）">${esc(c.label)}${cs.k===c.key?(cs.d>0?' ▲':' ▼'):''}<i class="rs"></i></th>`;
   h+='</tr></thead><tbody>';
-  for(let i=st;i<en;i++){const r=data[i];h+=`<tr data-i="${i}">`;
+  for(let i=st;i<en;i++){const r=data[i];h+=`<tr data-i="${i}"${S.sel&&S.sel.v===S.view&&S.sel.k===selKey(r)?' class="sel"':''}>`;
     for(const c of cols){
       if(c.key==='#'){h+=`<td class="k0">${i+1}</td>`;continue;}
       const t=String(cellText(c.key,r));
@@ -1070,6 +1073,12 @@ let tmr;const applyL=()=>{clearTimeout(tmr);tmr=setTimeout(apply,120);};
     drag=null;if(from<1||from===to)return;if(to<1)to=1;
     const [c]=cols.splice(from,1);cols.splice(to,0,c);render();});
   tb.addEventListener('dragend',()=>{drag=null;tb.querySelectorAll('th.dov').forEach(x=>x.classList.remove('dov'));});
+  tb.addEventListener('click',e=>{
+    const tr=e.target.closest('tbody tr');if(!tr)return;
+    const r=S.sorted[+tr.dataset.i];if(!r)return;
+    S.sel={v:S.view,k:selKey(r)};
+    tb.querySelectorAll('tbody tr.sel').forEach(x=>x.classList.remove('sel'));
+    tr.classList.add('sel');});
   tb.addEventListener('dblclick',e=>{const tr=e.target.closest('tbody tr');if(!tr)return;openDetail(S.sorted[+tr.dataset.i]);});
 })();
 
