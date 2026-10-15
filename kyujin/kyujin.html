@@ -952,8 +952,8 @@ function cmp(a,b){
   const ea=a==null||a===''||(typeof a==='number'&&isNaN(a)),eb=b==null||b===''||(typeof b==='number'&&isNaN(b));
   if(ea||eb)return ea&&eb?0:ea?2:-2;
   const na=toNum(a),nb=toNum(b);
-  if(na!=null&&nb!=null)return na-nb;
-  return String(a).localeCompare(String(b),'ja',{numeric:true});
+  if(na!=null&&nb!=null)return Math.sign(na-nb); /* 差をそのまま返すと±2が空欄判定と衝突するため符号のみ返す */
+  return Math.sign(String(a).localeCompare(String(b),'ja',{numeric:true}));
 }
 function resort(){
   const data=S.view==='list'?S.filtered.slice():makeGroups(S.filtered);
