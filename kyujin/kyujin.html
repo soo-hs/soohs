@@ -74,7 +74,29 @@ dialog::backdrop{background:#0b1b4070}
 @media(max-width:1000px){.cg{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:760px){.cg{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.cg{grid-template-columns:1fr}}
-#dDet{width:min(1200px,97vw);height:92vh}
+#dDet{width:min(1200px,97vw);height:92vh;background:var(--bg)}
+.dn{flex:0 0 auto;display:flex;gap:4px;flex-wrap:wrap;padding:4px 10px;background:#fff;border-bottom:1px solid var(--ln)}
+.dn button{border:1px solid var(--ln);background:var(--bg);color:var(--nvd);border-radius:11px;padding:1px 10px;font-size:11px;cursor:pointer}
+.dn button:hover{background:var(--am);border-color:var(--am);color:#3b2a00}
+#dDet .sm{padding:10px 14px;background:#fff;border-bottom:1px solid var(--ln)}
+#dDet .nm{font-size:18px;font-weight:800;color:var(--nvd);line-height:1.3}
+#dDet .tg{display:flex;flex-wrap:wrap;gap:4px;margin:5px 0}
+#dDet .tg span{background:#e8eefa;color:var(--nvd);border-radius:3px;padding:0 7px;font-size:11px}
+#dDet .jb{font-size:13px;font-weight:600;margin:2px 0 8px}
+#dDet .kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+#dDet .kp div{border:1px solid var(--ln);border-left:4px solid var(--am);border-radius:4px;padding:3px 8px;background:#fafcff;min-width:0}
+#dDet .kp small{display:block;color:var(--nv);font-size:10.5px}
+#dDet .kp b{font-size:14px;word-break:break-all}
+#dDet .sec{margin:10px 12px;background:#fff;border:1px solid var(--ln);border-radius:6px}
+#dDet .sec h4{padding:4px 10px;font-size:12.5px;border-radius:5px 5px 0 0}
+#dDet .sec h4 small{font-weight:400;color:var(--lt);margin-left:6px}
+#dDet .grid{grid-template-columns:repeat(auto-fill,minmax(380px,1fr))}
+#dDet .f{padding:4px 10px;gap:10px;align-items:baseline}
+#dDet .f b{flex:0 0 108px;font-size:11px}
+#dDet .f span{font-size:12.5px;line-height:1.55}
+#dDet .f.w{flex-direction:column;gap:2px;padding:6px 10px}
+#dDet .f.w span{background:#fafcff;border:1px solid #edf1f9;border-radius:4px;padding:5px 8px}
+#dDet .f.e span{color:var(--lt)}
 #dSim{width:97vw;height:92vh}
 #dChk{width:min(1000px,97vw);height:90vh}
 .tb2{width:100%;border-collapse:collapse;table-layout:auto}
@@ -123,9 +145,11 @@ dialog::backdrop{background:#0b1b4070}
     <label><input type="checkbox" class="sf" value="mg" checked>月給</label>
     <label><input type="checkbox" class="sf" value="yh" checked>年休</label>
     <label><input type="checkbox" class="sf" value="loc" checked>場所</label>
+    <label style="margin-left:10px"><input type="checkbox" id="showEmpty">空欄も表示</label>
     <button class="b s" id="simB" style="margin-left:auto">類似求人(上位50件)</button>
     <button class="x" data-close>×</button>
   </div>
+  <div class="dn" id="dN"></div>
   <div class="db" id="dB"></div>
 </dialog>
 
@@ -1090,24 +1114,42 @@ const DGROUPS=[
  ['担当者',['担当役職','担当者','担当者カナ','担当TEL','担当FAX','担当メール']],
  ['職業分類',['職業分類1','職業分類2','HW職業大分類','HW職業中分類','HW職業小分類','HW職業2大分類','HW職業2中分類','HW職業2小分類','handy職業大分類','handy職業中分類','handy職業2大分類','handy職業2中分類','標準職業1コード','標準職業分類1','標準職業2コード','標準職業分類2','_occ']]];
 const LONGF=new Set(['仕事内容','事業内容','会社特長','必要スキル','補足','特記','備考','申送り事項','休日','就業場所アクセス','所在地アクセス','入社実績','見学日程','複数応募日程','その他分類']);
+const DORDER=['求人情報','給与・労働時間','就業場所・住宅','事業所','応募・見学','担当者','職業分類','備考・管理'];
+function detVal(k,v){
+  if(k==='web_site'&&/^https?:\/\//i.test(v))return `<a href="${esc(v)}" target="_blank" rel="noopener noreferrer">${esc(v)}</a>`;
+  return esc(v);}
 function openDetail(r){
   if(!r)return;S.cur=r;
   const used=new Set();DGROUPS.forEach(g=>g[1].forEach(k=>used.add(k)));
   const groups=DGROUPS.map(g=>[g[0],g[1]]);
   groups.push(['備考・管理',MASTER.filter(k=>!used.has(k))]);
-  let h='';
-  for(const [t,ks] of groups){
-    if(!ks.length)continue;
-    h+=`<div class="sec"><h4>${t}</h4><div class="grid">`;
-    for(const k of ks){
-      const v=String(cellText(k,r));
-      h+=`<div class="f${LONGF.has(k)?' w':''}${LIGHT.has(k)?' light':''}"><b>${esc(LABEL(k))}</b><span>${esc(v)}</span></div>`;}
-    h+='</div></div>';}
+  groups.sort((a,b)=>DORDER.indexOf(a[0])-DORDER.indexOf(b[0]));
+  const showE=$('#showEmpty').checked,T=k=>String(cellText(k,r)).trim();
+  /* 要約 */
+  const tags=['年度','管理No','求人番号','事業所No','受付所','WEB公開'].filter(k=>T(k)).map(k=>`<span>${esc(k)} ${esc(T(k))}</span>`).join('');
+  const jb=[T('職種'),T('雇用形態')].filter(Boolean).map(esc).join('　/　');
+  const kp=[['月給','月給'],['基本給','基本給'],['年間休日','年間休日'],['賞与','賞与'],['募集人数','募集人数'],['平均残業','平均残業時間'],['就業場所','_place']]
+    .map(([l,k])=>[l,T(k)||(k==='_place'?T('就業場所住所'):'')]).filter(x=>x[1])
+    .map(([l,v])=>`<div><small>${esc(l)}</small><b>${esc(v)}</b></div>`).join('');
+  let h=`<div class="sm"><div class="nm">${esc(r['事業所名'])}</div><div class="tg">${tags}</div>${jb?`<div class="jb">${jb}</div>`:''}<div class="kp">${kp}</div></div>`;
+  let nav='';
+  groups.forEach(([t,ks],gi)=>{
+    const items=ks.map(k=>[k,T(k)]).filter(x=>showE||x[1]!=='');
+    if(!items.length)return;
+    const nf=items.filter(x=>x[1]!=='').length;
+    h+=`<div class="sec" id="ds${gi}"><h4>${esc(t)}<small>${nf}/${ks.length}</small></h4><div class="grid">`;
+    for(const [k,v] of items){
+      h+=`<div class="f${LONGF.has(k)?' w':''}${LIGHT.has(k)?' light':''}${v===''?' e':''}"><b>${esc(LABEL(k))}</b><span>${v===''?'—':detVal(k,v)}</span></div>`;}
+    h+='</div></div>';
+    nav+=`<button type="button" data-t="ds${gi}">${esc(t)}</button>`;});
   $('#dT').textContent=`管理No ${r['管理No']}　${r['事業所名']}`;
-  $('#dB').innerHTML=h;
+  $('#dB').innerHTML=h;$('#dN').innerHTML=nav;
   if(!$('#dDet').open)$('#dDet').showModal();
   $('#dB').scrollTop=0;
 }
+$('#dN').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  const el=document.getElementById(b.dataset.t);if(el)$('#dB').scrollTo({top:el.offsetTop-$('#dB').offsetTop-4,behavior:'smooth'});});
+$('#showEmpty').addEventListener('change',()=>{if(S.cur)openDetail(S.cur);});
 
 /* ---------- 類似求人 ---------- */
 function bg(r){if(r._bg)return r._bg;const s=nz((r['職種']||'')+(r['職業分類1']||'')+(r['標準職業分類1']||'')).replace(/\s+/g,'');const m=new Set();for(let i=0;i<s.length-1;i++)m.add(s.substr(i,2));return r._bg=m;}
