@@ -27,6 +27,8 @@ select,input[type=number]{height:22px;border:1px solid var(--ln);border-radius:4
 .cnt a{cursor:pointer;color:var(--am);font-weight:700;padding:0 4px;user-select:none}
 .cnt a:hover{text-decoration:underline}
 #wrap{flex:1 1 auto;overflow:auto;position:relative;background:#fff}
+#wrap:focus{outline:none}
+td.ac{outline:2px solid var(--nv);outline-offset:-2px}
 table{border-collapse:separate;border-spacing:0;table-layout:fixed}
 th{position:sticky;top:0;z-index:3;background:#dfe8f8;color:var(--nvd);font-weight:700;text-align:left;height:24px;padding:0 6px;border-right:1px solid var(--ln);border-bottom:2px solid var(--am);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;user-select:none}
 th.k0{cursor:pointer}th.k0:hover{background:var(--am);color:#3b2a00}
@@ -130,7 +132,7 @@ dialog::backdrop{background:#0b1b4070}
     <button class="b" id="chk">検証</button>
   </div>
 </header>
-<div id="wrap"><table id="tb"></table><div id="msg">読み込み中…</div></div>
+<div id="wrap" tabindex="0"><table id="tb"></table><div id="msg">読み込み中…</div></div>
 
 <dialog id="dAdv">
   <div class="dh"><b class="t">詳細検索</b><button class="x" data-close style="margin-left:auto" title="閉じる">×</button></div>
@@ -1026,7 +1028,7 @@ function render(){
     h+='</tr>';}
   h+='</tbody>';
   $('#tb').innerHTML=h;
-  applyW();
+  applyW();markAc();
   const all=S.all.length,unit=S.view==='list'?'件':'事業所';
   $('#ct').textContent=` 表示件数 ${en-st} / 総件数 ${tot}${S.filtered.length!==all?`(全${all})`:''} `;
   $('#ct').title=`${tot?st+1:0}～${en} ${unit} / ${S.page+1}/${pages}ページ`;
@@ -1102,6 +1104,7 @@ let tmr;const applyL=()=>{clearTimeout(tmr);tmr=setTimeout(apply,120);};
     const tr=e.target.closest('tbody tr');if(!tr)return;
     const r=S.sorted[+tr.dataset.i];if(!r)return;
     S.sel={v:S.view,k:selKey(r)};
+    const td0=e.target.closest('td');if(td0){S.ac={i:+tr.dataset.i,c:td0.cellIndex};markAc();}
     tb.querySelectorAll('tbody tr.sa').forEach(x=>x.classList.remove('sa'));
     tb.querySelectorAll('tbody tr.sel').forEach(x=>x.classList.remove('sel'));
     tr.classList.add('sel');});
@@ -1280,6 +1283,53 @@ $('#ttl').addEventListener('dblclick',()=>{
   $('#vb').textContent=S.view==='group'?'　[事業所No別]':'';
   S.page=0;resort();render();fit();});
 window.addEventListener('resize',fit);
+/* ---------- キーボード操作（矢印キー / Enter で一覧内を移動） ---------- */
+function markAc(scroll){
+  const tb=$('#tb');tb.querySelectorAll('td.ac').forEach(x=>x.classList.remove('ac'));
+  if(!S.ac)return;
+  const tr=tb.querySelector(`tbody tr[data-i="${S.ac.i}"]`);if(!tr)return;
+  const td=tr.cells[S.ac.c];if(!td)return;
+  td.classList.add('ac');
+  if(!scroll)return;
+  const w=$('#wrap'),wr=w.getBoundingClientRect(),r=td.getBoundingClientRect();
+  const th=tb.querySelector('thead th'),hh=th?th.getBoundingClientRect().height:0;
+  const k0=tb.querySelector('th.k0'),kw=k0&&S.ac.c>0?k0.getBoundingClientRect().width:0;
+  if(r.top<wr.top+hh)w.scrollTop-=(wr.top+hh-r.top);
+  else if(r.bottom>wr.bottom)w.scrollTop+=(r.bottom-wr.bottom);
+  if(r.left<wr.left+kw)w.scrollLeft-=(wr.left+kw-r.left);
+  else if(r.right>wr.right)w.scrollLeft+=(r.right-wr.right);
+}
+function moveAc(dr,dc){
+  const n=S.sorted.length,ncol=S.cols[S.view].length;if(!n)return;
+  const ps=S.ps,pages=ps?Math.max(1,Math.ceil(n/ps)):1;
+  let st=ps?S.page*ps:0,en=ps?Math.min(n,st+ps):n;
+  let i=S.ac?S.ac.i:st,c=S.ac?S.ac.c:1;
+  if(!S.ac&&!dr&&!dc){}
+  i+=dr;c=Math.max(1,Math.min(ncol-1,c+dc));
+  let pg=S.page;
+  if(i>=en){if(S.page<pages-1)pg=S.page+1;else i=en-1;}
+  else if(i<st){if(S.page>0)pg=S.page-1;else i=st;}
+  i=Math.max(0,Math.min(n-1,i));
+  S.ac={i,c};S.sel={v:S.view,k:selKey(S.sorted[i])};
+  const tb=$('#tb');
+  if(pg!==S.page){S.page=pg;render();$('#wrap').scrollTop=dr<0?1e9:0;}
+  else{tb.querySelectorAll('tbody tr.sa,tbody tr.sel').forEach(x=>x.classList.remove('sa','sel'));
+    const tr=tb.querySelector(`tbody tr[data-i="${i}"]`);if(tr)tr.classList.add('sel');}
+  markAc(true);
+}
+$('#wrap').addEventListener('keydown',e=>{
+  if(e.ctrlKey||e.metaKey||e.altKey||e.isComposing)return;
+  let dr=0,dc=0;
+  switch(e.key){
+    case 'ArrowDown':dr=1;break;case 'ArrowUp':dr=-1;break;
+    case 'ArrowRight':dc=1;break;case 'ArrowLeft':dc=-1;break;
+    case 'Enter':dr=e.shiftKey?-1:1;break;
+    default:return;}
+  e.preventDefault();
+  if(!S.ac){S.ac={i:S.page*(S.ps||0),c:1};S.sel={v:S.view,k:selKey(S.sorted[S.ac.i]||{})};markAc(true);if(!dr||e.key==='Enter')return;if(e.key!=='Enter')return;}
+  moveAc(dr,dc);
+});
+
 
 /* ---------- 起動 ---------- */
 (async function(){
