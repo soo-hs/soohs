@@ -64,11 +64,15 @@ dialog::backdrop{background:#0b1b4070}
 .ao input[type=checkbox],.ao input[type=radio]{margin:0 2px 0 0;width:13px;height:13px}
 .ao input[type=text]{height:22px;border:1px solid var(--ln);border-radius:4px;padding:0 6px;font-size:12px;flex:1 1 150px;min-width:0}
 .af{flex:0 0 auto;display:flex;gap:6px;justify-content:flex-end;padding:4px 10px;border-top:1px solid var(--ln);background:#f3f6fc}
-#dCols{width:min(900px,97vw)}
-.cg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px 12px;padding:6px 12px}
+#dCols{width:min(1040px,97vw);font-size:11px}
+#dCols .dh{font-size:11px}#dCols .dh b.t{font-size:12px}
+.cs{padding:4px 12px;border-bottom:1px solid var(--ln);background:#f3f6fc;position:sticky;top:0;z-index:1;font-size:11px}
+.cs label{display:inline-flex;align-items:center;gap:3px;font-weight:700;color:var(--nvd);cursor:pointer}
+.cg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px 12px;padding:6px 12px;font-size:11px}
 .cg label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:3px}
 .cg label.light{color:var(--lt)}
-@media(max-width:860px){.cg{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1000px){.cg{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.cg{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.cg{grid-template-columns:1fr}}
 #dDet{width:min(1200px,97vw);height:92vh}
 #dSim{width:97vw;height:92vh}
@@ -108,8 +112,8 @@ dialog::backdrop{background:#0b1b4070}
 </dialog>
 
 <dialog id="dCols">
-  <div class="dh"><b class="t">列の追加・削除</b><span style="font-size:10.5px;opacity:.85">チェックで表示／非表示</span><button class="x" data-close style="margin-left:auto">×</button></div>
-  <div class="db"><div class="cg" id="cg"></div></div>
+  <div class="dh"><b class="t">列の追加・削除</b><span style="font-size:9.5px;opacity:.85">チェックで表示／非表示</span><button class="x" data-close style="margin-left:auto">×</button></div>
+  <div class="db"><div class="cs"><button class="b s" id="cgTog" type="button">全選択</button></div><div class="cg" id="cg"></div></div>
 </dialog>
 
 <dialog id="dDet">
@@ -1049,16 +1053,32 @@ let tmr;const applyL=()=>{clearTimeout(tmr);tmr=setTimeout(apply,120);};
 function openCols(){
   const cols=S.cols[S.view];
   $('#cg').innerHTML=MASTER.map(k=>`<label class="${LIGHT.has(k)?'light':''}" title="${esc(LABEL(k))}"><input type="checkbox" value="${esc(k)}"${cols.some(c=>c.key===k)?' checked':''}>${esc(LABEL(k))}</label>`).join('');
+  syncAll();
   $('#dCols').showModal();
 }
+function syncAll(){
+  const cols=S.cols[S.view],all=MASTER.every(k=>cols.some(c=>c.key===k)),b=$('#cgTog');
+  b.textContent=all?'戻す':'全選択';b.title=all?'初期の表示列に戻します':'すべての列を表示します';
+}
+function addCol(k){
+  const cols=S.cols[S.view];if(cols.some(c=>c.key===k))return;
+  const m=MASTER.indexOf(k);let at=1,best=-1;
+  cols.forEach((c,j)=>{const mi=MASTER.indexOf(c.key);if(mi>=0&&mi<m&&mi>best){best=mi;at=j+1;}});
+  cols.splice(at,0,mkCol(k));
+}
+$('#cgTog').addEventListener('click',()=>{
+  const cols0=S.cols[S.view],all=MASTER.every(k=>cols0.some(c=>c.key===k));
+  if(all)S.cols[S.view]=(S.view==='list'?LIST_DEF:GROUP_DEF).map(mkCol);
+  else MASTER.forEach(addCol);
+  const cols=S.cols[S.view];
+  $('#cg').querySelectorAll('input').forEach(x=>x.checked=cols.some(c=>c.key===x.value));
+  syncAll();render();fit();});
 $('#cg').addEventListener('change',e=>{
   const k=e.target.value,cols=S.cols[S.view],i=cols.findIndex(c=>c.key===k);
   if(e.target.checked){
-    if(i>=0)return;const m=MASTER.indexOf(k);let at=1,best=-1;
-    cols.forEach((c,j)=>{const mi=MASTER.indexOf(c.key);if(mi>=0&&mi<m&&mi>best){best=mi;at=j+1;}});
-    cols.splice(at,0,mkCol(k));
+    if(i>=0)return;addCol(k);
   }else if(i>0)cols.splice(i,1);
-  render();fit();});
+  syncAll();render();fit();});
 
 /* ---------- 求人詳細 ---------- */
 const DGROUPS=[
