@@ -91,7 +91,7 @@ dialog::backdrop{background:#0b1b4070}
 #dDet .dh{padding:2px 8px;gap:6px}
 #dDet .db{flex:0 1 auto}
 #dDet .sm{padding:3px 8px;background:#fff;border-bottom:1px solid var(--ln)}
-#dDet .nm{font-size:14px;font-weight:800;color:var(--nvd);line-height:1.2}
+#dDet .nm{font-size:15.3px;font-weight:800;color:#c2570c;line-height:1.2}
 #dDet .tg{display:flex;flex-wrap:wrap;gap:3px;margin:2px 0}
 #dDet .tg span{background:#e8eefa;color:var(--nvd);border-radius:3px;padding:0 5px;font-size:10.5px;line-height:15px}
 #dDet .jb{font-size:12px;font-weight:600;margin:0 0 2px;line-height:1.2}
@@ -110,12 +110,14 @@ dialog::backdrop{background:#0b1b4070}
 #dDet .f.w span{flex:1;background:transparent;border:0;border-radius:0;padding:0}
 #dDet .f.e span{color:var(--lt)}
 #dDet .f:focus{outline:2px solid var(--am);outline-offset:-2px;background:var(--aml)}
-#dDet .pr{grid-column:1/-1;display:grid;grid-template-columns:var(--c,1fr 1fr)}
-#dDet .pr .f,#dDet .pr .f.w{grid-column:auto;min-width:0}
-#dDet .pr .f+.f{border-left:1px solid #edf1f9}
-#dDet .pr:not(.pr2) .f b{flex:0 0 8.2em}
-@media(max-width:900px){#dDet .pr:not(.pr2){grid-template-columns:1fr 1fr}#dDet .pr:not(.pr2) .f:nth-child(odd){border-left:0}}
-@media(max-width:700px){#dDet .pr,#dDet .pr:not(.pr2){grid-template-columns:1fr}#dDet .pr .f+.f{border-left:0}}
+#dDet .pr{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr}
+#dDet .pr .f.w,#dDet .pr .f{grid-column:auto;min-width:0}
+#dDet .pr.pn{align-items:stretch}
+#dDet .pr.pn .f b{flex:0 0 auto;max-width:8.6em;white-space:normal;word-break:break-all}
+#dDet .pr.pn .f span{min-width:0;overflow-wrap:anywhere}
+#dDet .pr.pn .f+.f{border-left:1px solid #edf1f9}
+#dDet .pr .f.w+.f.w{border-left:1px solid #edf1f9}
+@media(max-width:700px){#dDet .pr,#dDet .pr.pn{grid-template-columns:1fr!important}#dDet .pr.pn .f+.f{border-left:0}}
 #dSim{width:97vw;height:92vh}
 #dChk{width:min(1000px,97vw);height:90vh}
 .tb2{width:100%;border-collapse:collapse;table-layout:auto}
@@ -1185,12 +1187,24 @@ const DGROUPS=[
  ['求人情報',['年度','求人番号','受付所','管理No','WEB公開','雇用形態','職種','仕事内容','通勤求人','住込求人','不問求人','_cnt','必要スキル','募集人数','対象学科','エリア','その他分類']],
  ['事業所',['事業所No','事業所名','事業所カナ','所在_郵便No','所在地住所','所在地アクセス','代表者','法人No','web_site','全社員数','就業社員数','設立年','資本金','事業内容','会社特長','産業分類NO','産業分類名']],
  ['就業場所・住宅',['就業_郵便No','就業場所住所','就業場所アクセス','就業_市区町村1','就業_市区町村2','就業_市区町村3','_place','転勤','マイカー通勤','単身住宅','世帯住宅']],
- ['給与・労働時間',['基本給','月給','賞与','残業の有無','平均残業時間','労働時間の種類','休日','就業時間1','就業時間2','就業時間3','年間休日','時間あたりの賃金','予想月給','予想賞与']],
+ ['給与・休日・労働時間',['基本給','月給','賞与','残業の有無','平均残業時間','労働時間の種類','休日','就業時間1','就業時間2','就業時間3','年間休日','時間あたりの賃金','予想月給','予想賞与']],
  ['応募・見学',['複数応募','複数応募日程','職場見学','見学日程','来校','二次募集','見学人数','応募人数','入社人数','入社実績']],
  ['人事担当',['担当役職','担当者','担当者カナ','担当TEL','担当FAX','担当メール']],
  ['職業分類',['職業分類1','職業分類2','HW職業大分類','HW職業中分類','HW職業小分類','HW職業2大分類','HW職業2中分類','HW職業2小分類','handy職業大分類','handy職業中分類','handy職業2大分類','handy職業2中分類','標準職業1コード','標準職業分類1','標準職業2コード','標準職業分類2','_occ']]];
 const LONGF=new Set(['仕事内容','事業内容','会社特長','必要スキル','補足','特記','備考','申送り事項','休日','就業場所アクセス','所在地アクセス','入社実績','見学日程','複数応募日程','その他分類']);
-const DORDER=['求人情報','給与・労働時間','就業場所・住宅','事業所','応募・見学','人事担当','職業分類','備考・管理'];
+const DORDER=['求人情報','給与・休日・労働時間','就業場所・住宅','事業所','応募・見学','人事担当','職業分類','備考・管理'];
+const ROWS={
+ '職種':[['仕事内容'],['minmax(0,1fr)','minmax(0,3fr)']],
+ '職種':[['仕事内容'],['minmax(0,.8fr)','minmax(0,2.2fr)']],
+ '職種':[['仕事内容'],['minmax(0,1fr)','minmax(0,2.4fr)']],
+ '不問求人':[['_cnt'],['1fr','1fr']],
+ '必要スキル':[['募集人数','対象学科','エリア','その他分類'],['minmax(0,2.2fr)','minmax(0,.7fr)','minmax(0,1.2fr)','minmax(0,1fr)','minmax(0,1.6fr)']],
+ '就業_郵便No':[['就業場所住所','就業場所アクセス'],['minmax(0,.8fr)','minmax(0,1.6fr)','minmax(0,1.6fr)']],
+ '就業時間1':[['就業時間2','就業時間3'],['1fr','1fr','1fr']],
+ '年間休日':[['休日'],['minmax(0,1fr)','minmax(0,2.2fr)']],
+ '時間あたりの賃金':[['予想月給','予想賞与'],['1fr','1fr','1fr']],
+ '応募人数':[['入社人数','入社実績'],['minmax(0,1fr)','minmax(0,1fr)','minmax(0,2.4fr)']]};
+const DLBL={'入社実績':'過去入社実績'};
 function detVal(k,v){
   if(k==='web_site'&&/^https?:\/\//i.test(v))return `<a href="${esc(v)}" target="_blank" rel="noopener noreferrer">${esc(v)}</a>`;
   return esc(v);}
@@ -1216,26 +1230,21 @@ function openDetail(r){
     h+=`<div class="sec" id="ds${gi}"><h4>${esc(t)}<small>${nf}/${ks.length}</small></h4><div class="grid">`;
     const fld=(k,v)=>`<div class="f${LONGF.has(k)?' w':''}${LIGHT.has(k)?' light':''}${v===''?' e':''}"><b>${esc(LABEL(k))}</b><span>${v===''?'—':detVal(k,v)}</span></div>`;
     const PAIR={'事業内容':'会社特長','補足':'特記'},skip=new Set();
-    /* 1行に並べる項目 [キー,横幅比] */
-    const ROWS=[[['不問求人',1],['_cnt',1],['',1]],
-      [['必要スキル',2.4],['募集人数',1.3],['対象学科',1.5],['エリア',1.3],['その他分類',1.5]],
-      [['就業時間1',1],['就業時間2',1],['就業時間3',1]],
-      [['年間休日',1],['休日',2]],
-      [['時間あたりの賃金',1],['予想月給',1],['予想賞与',1]],
-      [['応募人数',1],['入社人数',1],['入社実績',1]]];
-    const MLABEL={'入社実績':'過去入社実績'};
-    const fld2=(k,v)=>fld(k,v).replace(`<b>${esc(LABEL(k))}</b>`,`<b>${esc(MLABEL[k]||LABEL(k))}</b>`);
+    const has=k=>items.some(x=>x[0]===k);
+    const rowFld=(k,v)=>fld(k,v).replace(/<b>[^<]*<\/b>/,m=>DLBL[k]?`<b>${esc(DLBL[k])}</b>`:m);
+    for(const k of Object.keys(ROWS))if(has(k))ROWS[k][0].forEach(x=>skip.add(x));
     for(const [k,v] of items){
       if(skip.has(k))continue;
-      const rw=ROWS.find(r=>r.some(x=>x[0]===k));
+      const rw=ROWS[k];
       if(rw){
-        const m=rw.filter(x=>x[0]).map(([kk,w])=>[kk,w,items.find(x=>x[0]===kk)]).filter(x=>x[2]),pad=rw.filter(x=>!x[0]).map(x=>x[1]+'fr');
-        m.forEach(x=>skip.add(x[0]));
-        if(m.length>1){h+=`<div class="pr" style="--c:${m.map(x=>x[1]+'fr').concat(pad).join(' ')}">${m.map(x=>fld2(x[0],x[2][1])).join('')}</div>`;continue;}
-        h+=fld2(k,v);continue;}
+        const fs=rw[0].filter(has);
+        if(fs.length){const cols=[rw[1][0]].concat(rw[1].slice(1).filter((_,i)=>has(rw[0][i]))).join(' ');
+          h+=`<div class="pr pn" style="grid-template-columns:${cols}">${rowFld(k,v)}${fs.map(x=>rowFld(x,items.find(y=>y[0]===x)[1])).join('')}</div>`;}
+        else h+=fld(k,v);
+        continue;}
       const pk=PAIR[k],pi=pk&&items.find(x=>x[0]===pk);
-      if(pi){skip.add(pk);h+=`<div class="pr pr2">${fld(k,v)}${fld(pi[0],pi[1])}</div>`;}
-      else h+=fld2(k,v);}
+      if(pi){skip.add(pk);h+=`<div class="pr">${fld(k,v)}${fld(pi[0],pi[1])}</div>`;}
+      else h+=fld(k,v);}
     h+='</div></div>';
     nav+=`<button type="button" data-t="ds${gi}">${esc(t)}</button>`;});
   $('#dT').textContent=`管理No ${r['管理No']}　${r['事業所名']}`;
