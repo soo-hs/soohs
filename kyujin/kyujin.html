@@ -116,6 +116,8 @@ dialog::backdrop{background:#0b1b4070}
 #dDet .pr.pn .f b{flex:0 0 auto;max-width:8.6em;white-space:normal;word-break:break-all}
 #dDet .pr.pn .f span{min-width:0;overflow-wrap:anywhere}
 #dDet .pr.pn .f+.f{border-left:1px solid #edf1f9}
+#dDet .pr.pn.meta .f b,#dDet .pr.pn.meta .f span{color:var(--lt);font-size:9.2px}
+#dDet .pr.pn.meta .f span{font-size:10.2px}
 #dDet .pr .f.w+.f.w{border-left:1px solid #edf1f9}
 @media(max-width:700px){#dDet .pr,#dDet .pr.pn{grid-template-columns:1fr!important}#dDet .pr.pn .f+.f{border-left:0}}
 #dSim{width:97vw;height:92vh}
@@ -1197,7 +1199,9 @@ const ROWS={
  '職種':[['仕事内容'],['minmax(0,1fr)','minmax(0,3fr)']],
  '職種':[['仕事内容'],['minmax(0,.8fr)','minmax(0,2.2fr)']],
  '職種':[['仕事内容'],['minmax(0,1fr)','minmax(0,2.4fr)']],
- '不問求人':[['_cnt'],['1fr','1fr']],
+ '公開日時':[['更新日時','登録方法','元ファイル','お気に入り数'],['minmax(0,1fr)','minmax(0,1fr)','minmax(0,.8fr)','minmax(0,1.6fr)','minmax(0,.8fr)'],'meta'],
+ '通勤求人':[['住込求人','不問求人','_cnt'],['1fr','1fr','1fr','1fr']],
+ '複数応募':[['複数応募日程','職場見学','見学日程','二次募集'],['minmax(0,.7fr)','minmax(0,1.6fr)','minmax(0,.9fr)','minmax(0,1.6fr)','minmax(0,.8fr)']],
  '必要スキル':[['募集人数','対象学科','エリア','その他分類'],['minmax(0,2.2fr)','minmax(0,.7fr)','minmax(0,1.2fr)','minmax(0,1fr)','minmax(0,1.6fr)']],
  '就業_郵便No':[['就業場所住所','就業場所アクセス'],['minmax(0,.8fr)','minmax(0,1.6fr)','minmax(0,1.6fr)']],
  '就業時間1':[['就業時間2','就業時間3'],['1fr','1fr','1fr']],
@@ -1239,7 +1243,7 @@ function openDetail(r){
       if(rw){
         const fs=rw[0].filter(has);
         if(fs.length){const cols=[rw[1][0]].concat(rw[1].slice(1).filter((_,i)=>has(rw[0][i]))).join(' ');
-          h+=`<div class="pr pn" style="grid-template-columns:${cols}">${rowFld(k,v)}${fs.map(x=>rowFld(x,items.find(y=>y[0]===x)[1])).join('')}</div>`;}
+          h+=`<div class="pr pn${rw[2]?' '+rw[2]:''}" style="grid-template-columns:${cols}">${rowFld(k,v)}${fs.map(x=>rowFld(x,items.find(y=>y[0]===x)[1])).join('')}</div>`;}
         else h+=fld(k,v);
         continue;}
       const pk=PAIR[k],pi=pk&&items.find(x=>x[0]===pk);
