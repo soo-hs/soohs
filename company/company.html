@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>求人票のデジタル提出のお願い | 鹿児島県立曽於高等学校</title>
+<style>
+  :root {
+    --text: #555;
+    --heading: #444;
+    --accent: #f0b84e;
+    --line: #fde8c0;
+    --teal: #5ab4bd;
+    --box-border: #f7e9c4;
+    --btn-bg: #fffdec;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: var(--text);
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, "Noto Sans JP", sans-serif;
+    font-size: 14px;
+    line-height: 2;
+  }
+  .container {
+    max-width: 910px;
+    margin: 0 auto;
+    padding: 60px 20px 80px;
+  }
+  .greeting {
+    font-size: 17px;
+    margin: 0 0 14px;
+    color: var(--text);
+  }
+  h1 {
+    font-size: 21px;
+    line-height: 1.6;
+    margin: 0;
+    padding-bottom: 20px;
+    color: var(--heading);
+    border-bottom: 8px solid var(--line);
+  }
+  h1 .em {
+    color: var(--accent);
+    font-size: 28px;
+  }
+  .lead { margin: 40px 0 0; }
+  .lead p { margin: 0; line-height: 2.1; }
+  a { color: var(--teal); }
+
+  .invite {
+    max-width: 810px;
+    margin: 36px auto 0;
+    border: 2px solid var(--box-border);
+    padding: 34px 30px 40px 32px;
+  }
+  .invite h2 {
+    margin: 0 0 22px;
+    font-size: 19px;
+    color: var(--teal);
+  }
+  .invite-body {
+    display: flex;
+    gap: 36px;
+    align-items: flex-start;
+  }
+  .invite-body img {
+    width: 166px;
+    height: 166px;
+    flex: none;
+    display: block;
+  }
+  .invite-text { flex: 1; }
+  .invite-text p { margin: 0; line-height: 2.2; }
+  .btn-wrap { text-align: center; margin-top: 32px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: var(--btn-bg);
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    font-weight: bold;
+    font-size: 13px;
+    text-decoration: none;
+    padding: 0 40px;
+    min-height: 72px;
+    box-shadow: 0 6px 12px rgba(0,0,0,.18);
+    transition: opacity .2s, transform .2s;
+  }
+  .btn:hover { opacity: .8; transform: translateY(-1px); }
+  .btn.wide { width: 320px; }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+
+  .notes { margin-top: 28px; }
+  .notes strong { display: block; }
+  .notes p { margin: 0; }
+
+  .flow { margin-top: 40px; }
+  .flow strong { display: block; margin-bottom: 18px; }
+  .btn.flow-btn { width: 253px; min-height: 72px; }
+
+  @media (max-width: 680px) {
+    .container { padding: 36px 16px 60px; }
+    h1 { font-size: 18px; }
+    h1 .em { font-size: 23px; }
+    .invite { padding: 24px 18px 30px; }
+    .invite-body { flex-direction: column; align-items: center; gap: 20px; }
+    .btn.wide, .btn.flow-btn { width: 100%; padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <p class="greeting">求人企業様　各位</p>
+  <h1>今後の求人票送付は、<span class="em">デジタル提出</span>にご協力をお願いいたします</h1>
+
+  <div class="lead">
+    <p>今年度も、当校へ求人票をお送りいただき誠にありがとうございます。</p>
+    <p>当校ではHandy進路指導室を活用し学内･学外で生徒や保護者の方も一緒にスマートフォンやタブレットで求人票を検索し閲覧しております。</p>
+    <p>今後の求人募集の際には、<a href="https://handy.school/for-recruiter/" target="_blank" rel="noopener">Handy進路指導室</a>で当校宛にデジタルで送付をお願いいたします。</p>
+    <p>紙の求人票の追加発送は不要でございます。企業様のご負担になりますので、デジタル送付にご協力いただけますようお願い申し上げます。</p>
+  </div>
+
+  <section class="invite">
+    <h2>当校専用のHandyご招待ページはこちら</h2>
+    <div class="invite-body">
+      <img src="https://soo-hs.github.io/soohs/Handy_CompanyQR.png" alt="当校専用のHandyご招待ページ QRコード">
+      <div class="invite-text">
+        <p>QRコードまたは、下記ボタンからHandy進路指導室の無料アカウントの発行をお願いします。</p>
+        <p>本機能の利用に当たり、ご利用料金が発生することは一切ございません。</p>
+      </div>
+    </div>
+    <div class="btn-wrap">
+      <a class="btn wide" href="https://biz-app.handy.school/connected-schools?sid=3tFfXpyFxLh38YEa3EgP" target="_blank" rel="noopener">
+        <span>当校専用のHandyご招待ページ</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <rect x="3" y="7" width="13" height="13" rx="1"/>
+          <path d="M8 7V4h13v13h-3"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <div class="notes">
+    <strong>注意事項</strong>
+    <p>既にハンディアカウントをお持ちの方も、必ずアクセスしてください。</p>
+    <p>アカウント発行後、ログインいただき上部メニュー「学校管理＞つながり管理」の一覧画面に本校が表示されていれば作業完了です。</p>
+    <p>表示されない場合は、もう一度アクセスしてください。</p>
+    <p>ご利用にあたりご不明な点やご要望がありましたら、<a href="https://handy.school/contact/company/" target="_blank" rel="noopener">Handy進路指導室サポートセンター</a>までお問合せください。</p>
+  </div>
+
+  <div class="flow">
+    <strong>ご利用の流れはこちらをご参照ください。</strong>
+    <a class="btn flow-btn" href="https://soo-hs.github.io/soohs/handy_company.pdf" target="_blank" rel="noopener">
+      <span>ご利用の流れ</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>
+      </svg>
+    </a>
+  </div>
+
+</div>
+</body>
+</html>
