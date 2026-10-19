@@ -1294,7 +1294,7 @@ const FIELD_MAP = {
   '入居可能住宅（単身用）': '単身住宅',
   '入居可能住宅（世帯用）': '世帯住宅',
   '基本給': '基本給',
-  '月給（基本給+手当+残業代）': '月給',
+  '月給（基本給+手当+固定残業代）': '月給',
   '賞与有無（新卒）': '賞与',
   '時間外労働の月平均時間数': '残業',
   '休日等': '休日',
@@ -1822,7 +1822,7 @@ function applyFilter() {
 
   // ===== 月給フィルタ =====
   if (qsSalary) {
-    const salaryColIdx = headers.findIndex(h => h === '月給（基本給+手当+残業代）');
+    const salaryColIdx = headers.findIndex(h => h === '月給（基本給+手当+固定残業代）');
     if (salaryColIdx >= 0) {
       const [minStr, maxStr] = qsSalary.split('-');
       const minVal = parseInt(minStr, 10);
@@ -1908,7 +1908,7 @@ function applyFilter() {
 // ========== 評価ソート ==========
 // 重み設定
 const EVAL_WEIGHTS = {
-  salary:   0.35,   // 月給（基本給+手当+残業代）
+  salary:   0.35,   // 月給（基本給+手当+固定残業代）
   holiday:  0.25,   // 年間休日数
   overtime: 0.10,   // 時間外労働の月平均時間数（低いほど高評価）
   bonus:    0.15,   // 賞与有無（新卒）：あり=1, なし=0
@@ -1918,7 +1918,7 @@ const EVAL_WEIGHTS = {
 
 function calcEvalScores(rows) {
   const hi = k => headers.findIndex(h => h === k);
-  const idxSalary   = hi('月給（基本給+手当+残業代）');
+  const idxSalary   = hi('月給（基本給+手当+固定残業代）');
   const idxHoliday  = hi('年間休日数');
   const idxOvertime = hi('時間外労働の月平均時間数');
   const idxBonus    = hi('賞与有無（新卒）');
@@ -2123,7 +2123,7 @@ function renderTable() {
         const val = (raw.trim() === 'NaN' || raw.trim() === 'nan') ? '' : raw;
         const cleanVal = val.replace(/\\r\\n/g, ' ').replace(/\r\n|\r|\n/g, ' ');
         // 月給・基本給はカンマ区切り表示
-        const COMMA_COLS = new Set(['基本給', '月給（基本給+手当+残業代）']);
+        const COMMA_COLS = new Set(['基本給', '月給（基本給+手当+固定残業代）']);
         let dispVal;
         if (COMMA_COLS.has(def.orig) && /^\d+(\.\d+)?$/.test(val.trim())) {
           const num = parseInt(val.trim(), 10);
