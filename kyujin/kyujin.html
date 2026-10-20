@@ -482,6 +482,7 @@ const IND_RAW=`分類コード,分類
 470,管理補助的経済活動を行う事業所(47倉庫業)
 471,倉庫業(冷蔵倉庫業を除く)
 472,冷蔵倉庫業
+480,管理,補助的経済活動を行う事業所(48運輸に附帯するサービス業)
 481,港湾運送業
 482,貨物運送取扱業(集配利用運送業を除く)
 483,運送代理店
@@ -857,13 +858,13 @@ SHORTS.forEach(k=>{MASTER.push(k);
   if(k==='就業_市区町村3')MASTER.push('_place');
   if(k==='標準職業分類2')MASTER.push('_occ');
   if(k==='年間休日')MASTER.push('時間あたりの賃金','予想月給','予想賞与');});
-const SPECIAL={_place:'就業場所(市区町村)',_cnt:'求人数(計)',_occ:'職業分類(標準)'};
+const SPECIAL={_place:'就業場所(市区町村)',_cnt:'求人数(計)',_occ:'職業分類(標準)',_n:'求人件数'};
 const LABEL=k=>SPECIAL[k]||k;
 const LIGHT=new Set(['時間あたりの賃金','予想月給','予想賞与','産業分類名']);
 const MONEY=new Set(['基本給','月給','時間あたりの賃金','予想月給','予想賞与']);
-const BASEW={'#':38,'管理No':45,'事業所名':210,'所在地住所':200,'全社員数':70,'就業社員数':70,'資本金':90,'_place':150,'_cnt':70,'_occ':170,'月給':80,'年間休日':65,'賞与':55,'求人番号':105,'WEB公開':65,'来校':50,'事業所No':80,'産業分類名':170,'設立年':70,'基本給':80,'職種':160,'仕事内容':240,'事業内容':220,'会社特長':220};
+const BASEW={'#':38,'_n':62,'管理No':45,'事業所名':210,'所在地住所':200,'全社員数':70,'就業社員数':70,'資本金':90,'_place':150,'_cnt':70,'_occ':170,'月給':80,'年間休日':65,'賞与':55,'求人番号':105,'WEB公開':65,'来校':50,'事業所No':80,'産業分類名':170,'設立年':70,'基本給':80,'職種':160,'仕事内容':240,'事業内容':220,'会社特長':220};
 const LIST_DEF=['#','管理No','事業所名','所在地住所','全社員数','就業社員数','資本金','_place','_cnt','_occ','月給','年間休日','賞与','求人番号','WEB公開','来校'];
-const GROUP_DEF=['#','事業所No','事業所名','産業分類名','所在地住所','全社員数','資本金','設立年','WEB公開','来校'];
+const GROUP_DEF=['#','事業所No','事業所名','_n','産業分類名','所在地住所','全社員数','資本金','設立年','WEB公開','来校'];
 
 const S={all:[],filtered:[],sorted:[],view:'list',page:0,ps:100,src:'',missing:[],cols:{list:null,group:null},
   sort:{list:[{k:'年度',d:-1},{k:'管理No',d:-1}],group:[{k:'事業所No',d:1}]},cur:null,simList:[]};
@@ -888,7 +889,9 @@ function decode(buf){
   catch(e){return new TextDecoder('shift_jis').decode(buf);}
 }
 async function loadCSV(){
-  const urls=['kyujin2026.csv','https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv'];
+  /* 年度は URL の ?y=2027 で切替（省略時は DEFAULT_YEAR）。例: kyujin.html?y=2027 */
+  const DEFAULT_YEAR='2026',py=new URLSearchParams(location.search).get('y'),Y=/^\d{4}$/.test(py||'')?py:DEFAULT_YEAR;
+  const urls=[`kyujin${Y}.csv`,`https://soo-hs.github.io/soohs/kyujin/kyujin${Y}.csv`];
   const err=[];
   for(const u of urls){
     try{const res=await fetch(u,{cache:'no-cache'});
@@ -919,12 +922,25 @@ const JOBKW=[
 const JOBRE=JOBKW.map(j=>j[1]?new RegExp(j[1]):null);
 function bonusYes(r){const b=r['賞与']||'';return /あり|有/.test(b)&&!/なし|無/.test(b);}
 
+/* 「1,000人」「約50名」→ 数値。数字を含まなければ null */
+function headNum(s){const m=nz(s).replace(/,/g,'').match(/\d+(\.\d+)?/);return m?Number(m[0]):null;}
+/* 「3,000万円」「1億2千万円」「1億円」「500万」「5000000」→ 円。単位なしの数字はそのまま円として扱う */
+function capNum(s){
+  const t=nz(s).replace(/[,\s円¥]/g,'');if(!/\d/.test(t))return null;
+  const num=x=>Number(x);let v=0,hit=false,m;
+  if(m=t.match(/(\d+(?:\.\d+)?)億/)){v+=num(m[1])*1e8;hit=true;}
+  if(m=t.match(/(\d+(?:\.\d+)?)千万/)){v+=num(m[1])*1e7;hit=true;}
+  else if(m=t.match(/(\d+(?:\.\d+)?)万/)){v+=num(m[1])*1e4;hit=true;}
+  if(hit)return v;
+  m=t.match(/\d+(?:\.\d+)?/);return m?num(m[0]):null;}
+
 function derive(r){
   const dg=(r['管理No']||'').replace(/\D/g,'');
   r['管理No']=dg?dg.padStart(4,'0'):'';
   r._k=dg?Number(dg):null;
   r._mg=toNum(r['月給']);r._kh=toNum(r['基本給']);r._yh=toNum(r['年間休日']);
   r._ot=toNum(nz(r['平均残業時間']).replace(/時間/g,''));
+  r._emp=headNum(r['全社員数']);r._emp2=headNum(r['就業社員数']);r._cap=capNum(r['資本金']);
   r._tot=['通勤求人','住込求人','不問求人'].reduce((a,k)=>a+(toNum(r[k])||0),0);
   const ic=indCode(r['産業分類NO']);r._ic=ic;r['産業分類名']=IND[ic]||'';
   const mh=(r._yh!=null&&r._yh<365)?(365-r._yh)*8/12:null;
@@ -959,7 +975,7 @@ const YHR=[[null,99],[100,109],[110,119],[120,129],[130,null]];
 const inR=(v,[a,b])=>v!=null&&(a==null||v>=a)&&(b==null||v<=b);
 const HOLN=['月','火','水','木','金','土'];
 function holHit(i,t){
-  const tk=t.split(/[\s、,・\/]+/);
+  const tk=t.split(/[\s、,・\/()（）]+/); /* 「土・日)」のように括弧が付いても分割する */
   if(i<6){const d=HOLN[i];return tk.includes(d)||t.includes(d+'曜')||(d==='土'&&/土日/.test(t));}
   if(i===6)return tk.includes('日')||/日曜|土日|日祝/.test(t);
   if(i===7)return /祝/.test(t);
@@ -1015,7 +1031,11 @@ function readAdv(){
 
 /* ---------- ソート ---------- */
 function sv(r,k){
-  switch(k){case '_cnt':return r._tot;case '_place':return r._pl;case '_occ':return r._oc;case '管理No':return r._k;default:return r[k];}
+  /* 数値列は toNum 済みの値で比較する（「18万〜20万」等の範囲表記は null＝空欄扱いで末尾へ） */
+  switch(k){case '_cnt':return r._tot;case '_place':return r._pl;case '_occ':return r._oc;case '管理No':return r._k;
+    case '月給':return r._mg;case '基本給':return r._kh;case '年間休日':return r._yh;case '平均残業時間':return r._ot;
+    case '全社員数':return r._emp;case '就業社員数':return r._emp2;case '資本金':return r._cap;case '_n':return r._n;
+    default:return r[k];}
 }
 function cmp(a,b){
   const ea=a==null||a===''||(typeof a==='number'&&isNaN(a)),eb=b==null||b===''||(typeof b==='number'&&isNaN(b));
@@ -1030,10 +1050,14 @@ function resort(){
   data.sort((x,y)=>{for(const s of sp){const c=cmp(sv(x,s.k),sv(y,s.k));if(Math.abs(c)===2)return c>0?1:-1;if(c)return c*s.d;}return 0;});
   S.sorted=data;
 }
+/* 事業所No別: 代表行は「最新の年度 → 管理Noが大きい」求人。_n に求人件数を持たせる */
+function newer(a,b){const c=cmp(a['年度'],b['年度']);if(Math.abs(c)!==2&&c)return c>0;return (a._k||0)>(b._k||0);}
 function makeGroups(rows){
-  const m=new Map();
-  for(const r of rows){const k=r['事業所No']||('?'+r['事業所名']);let g=m.get(k);if(!g){g=Object.assign({},r);g._n=0;m.set(k,g);}g._n++;}
-  return [...m.values()];
+  const best=new Map(),cnt=new Map();
+  for(const r of rows){const k=r['事業所No']||('?'+r['事業所名']);
+    cnt.set(k,(cnt.get(k)||0)+1);
+    const b=best.get(k);if(!b||newer(r,b))best.set(k,r);}
+  return [...best].map(([k,r])=>{const g=Object.assign({},r);g._n=cnt.get(k);return g;});
 }
 
 /* ---------- 描画 ---------- */
@@ -1126,7 +1150,7 @@ function updateFooter(){
 function apply(){
   const sg=segs($('#q').value),A=readAdv(),act=advActive(A);
   S.filtered=S.all.filter(r=>hit(r._s,sg)&&(!act||matchAdv(r,A)));
-  S.page=0;resort();render();updateFooter();
+  S.page=0;S.ac=null;resort();render();updateFooter(); /* 行位置(S.ac)は並びが変わると無効になるので破棄 */
 }
 let tmr;const applyL=()=>{clearTimeout(tmr);tmr=setTimeout(apply,120);};
 
@@ -1137,7 +1161,7 @@ let tmr;const applyL=()=>{clearTimeout(tmr);tmr=setTimeout(apply,120);};
     const th=e.target.closest('th');if(!th||resizing||e.target.classList.contains('rs'))return;
     const k=th.dataset.k;if(k==='#'){copyView();return;}
     const sp=S.sort[S.view],cur=sp[sp.length-1];
-    S.sort[S.view]=[{k,d:cur.k===k?-cur.d:1}];S.page=0;resort();render();});
+    S.sort[S.view]=[{k,d:cur.k===k?-cur.d:1}];S.page=0;S.ac=null;resort();render();});
   tb.addEventListener('mousedown',e=>{
     if(!e.target.classList.contains('rs'))return;
     e.preventDefault();e.stopPropagation();resizing=true;
@@ -1210,8 +1234,6 @@ const DGROUPS=[
 const LONGF=new Set(['仕事内容','事業内容','会社特長','必要スキル','補足','特記','備考','申送り事項','休日','就業場所アクセス','所在地アクセス','入社実績','見学日程','複数応募日程','その他分類']);
 const DORDER=['求人情報','給与・休日・労働時間','就業場所・住宅','事業所','応募・見学','人事担当','職業分類','備考・管理'];
 const ROWS={
- '職種':[['仕事内容'],['minmax(0,1fr)','minmax(0,3fr)']],
- '職種':[['仕事内容'],['minmax(0,.8fr)','minmax(0,2.2fr)']],
  '職種':[['仕事内容'],['minmax(0,1fr)','minmax(0,2.4fr)']],
  '公開日時':[['更新日時','登録方法','元ファイル','お気に入り数'],['minmax(0,1fr)','minmax(0,1fr)','minmax(0,.8fr)','minmax(0,1.6fr)','minmax(0,.8fr)'],'meta'],
  '通勤求人':[['住込求人','不問求人','_cnt'],['1fr','1fr','1fr','1fr']],
@@ -1320,7 +1342,7 @@ function askYesNo(info){return new Promise(res=>{const d=$('#dCfm');$('#cfI').te
 $('#sB').addEventListener('dblclick',async e=>{const tr=e.target.closest('tbody tr');if(!tr)return;
   const r=S.simList[[...tr.parentNode.children].indexOf(tr)];if(!r)return;
   const ok=await askYesNo(`求人番号 ${r['求人番号']||''}　${r['事業所名']||''}`);
-  if(ok)openDetail(r);});
+  if(ok){$('#dSim').close();openDetail(r);} /* 類似一覧を閉じてから詳細を差し替える（dDet は開いたままなので focusCurRow は走らない） */});
 $('#simB').addEventListener('click',openSim);
 
 /* ---------- 求人票を閉じたら、同じ管理Noの行へフォーカスを戻す ---------- */
@@ -1400,7 +1422,7 @@ $('#chk').addEventListener('click',()=>{if(S.all.length)runChecks();});
 $('#ttl').addEventListener('dblclick',()=>{
   S.view=S.view==='list'?'group':'list';
   $('#vb').textContent=S.view==='group'?'　[事業所No別]':'';
-  S.page=0;resort();render();fit();});
+  S.page=0;S.ac=null;resort();render();fit();});
 window.addEventListener('resize',fit);
 /* ---------- キーボード操作（矢印キー / Enter で一覧内を移動） ---------- */
 function markAc(scroll){
@@ -1423,7 +1445,6 @@ function moveAc(dr,dc){
   const ps=S.ps,pages=ps?Math.max(1,Math.ceil(n/ps)):1;
   let st=ps?S.page*ps:0,en=ps?Math.min(n,st+ps):n;
   let i=S.ac?S.ac.i:st,c=S.ac?S.ac.c:1;
-  if(!S.ac&&!dr&&!dc){}
   i+=dr;c=Math.max(1,Math.min(ncol-1,c+dc));
   let pg=S.page;
   if(i>=en){if(S.page<pages-1)pg=S.page+1;else i=en-1;}
@@ -1445,7 +1466,12 @@ $('#wrap').addEventListener('keydown',e=>{
     case 'Enter':dr=e.shiftKey?-1:1;break;
     default:return;}
   e.preventDefault();
-  if(!S.ac){S.ac={i:S.page*(S.ps||0),c:1};S.sel={v:S.view,k:selKey(S.sorted[S.ac.i]||{})};markAc(true);if(!dr||e.key==='Enter')return;if(e.key!=='Enter')return;}
+  if(!S.ac){ /* 最初の1回は、表示中ページの先頭行を選ぶだけ（移動はしない） */
+    const i0=S.page*(S.ps||0),r0=S.sorted[i0];if(!r0)return;
+    S.ac={i:i0,c:1};S.sel={v:S.view,k:selKey(r0)};
+    const tb=$('#tb');tb.querySelectorAll('tbody tr.sa,tbody tr.sel').forEach(x=>x.classList.remove('sa','sel'));
+    const tr0=tb.querySelector(`tbody tr[data-i="${i0}"]`);if(tr0)tr0.classList.add('sel');
+    markAc(true);return;}
   moveAc(dr,dc);
 });
 
