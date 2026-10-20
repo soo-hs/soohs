@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>受付求人票</title>
+<style>
+:root{--nv:#27478a;--nv2:#3a5ba8;--nvd:#1b3366;--am:#f5a524;--aml:#fff3d6;--bg:#f3f6fc;--ln:#d5deee;--tx:#1d2a4a;--lt:#9aa6c0}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font:12px/1.35 "Meiryo","Yu Gothic UI","Hiragino Sans",sans-serif;color:var(--tx);background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+header{flex:0 0 auto;background:linear-gradient(180deg,var(--nv2),var(--nv));color:#fff;padding:3px 8px;display:flex;flex-wrap:wrap;gap:3px 12px;align-items:center;border-bottom:2px solid var(--am)}
+.l1{display:flex;align-items:center;gap:5px;flex:1 1 440px;min-width:0}
+.l2{display:flex;align-items:center;gap:8px;flex:0 0 auto;flex-wrap:wrap}
+h1{font-size:15px;margin:0;white-space:nowrap;cursor:pointer;user-select:none}
+h1 small{font-size:10px;color:var(--am);font-weight:600}
+#q{flex:1 1 0;min-width:50px;height:22px;border:1px solid transparent;border-radius:4px;padding:0 8px;font-size:12px;background:#fff;color:var(--tx)}
+#q:focus{outline:2px solid var(--am)}
+.yl{white-space:nowrap}.yl b{color:var(--am);font-weight:800;font-size:13px}
+.l2 label{white-space:nowrap}
+select,input[type=number]{height:22px;border:1px solid var(--ln);border-radius:4px;font-size:12px;background:#fff;color:var(--tx)}
+.b{height:22px;padding:0 8px;border:0;border-radius:4px;background:var(--am);color:#3b2a00;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+.b:hover{filter:brightness(1.08)}
+.b.s{height:20px;padding:0 6px;font-size:10.5px}
+.b.g{background:#e3eaf8;color:var(--nvd)}
+.cnt{font-size:10.5px;white-space:nowrap;color:#dbe6ff}
+.cnt a{cursor:pointer;color:var(--am);font-weight:700;padding:0 4px;user-select:none}
+.cnt a:hover{text-decoration:underline}
+#wrap{flex:1 1 auto;overflow:auto;position:relative;background:#fff}
+#wrap:focus{outline:none}
+td.ac{outline:2px solid var(--nv);outline-offset:-2px}
+table{border-collapse:separate;border-spacing:0;table-layout:fixed}
+th{position:sticky;top:0;z-index:3;background:#dfe8f8;color:var(--nvd);font-weight:700;text-align:left;height:24px;padding:0 6px;border-right:1px solid var(--ln);border-bottom:2px solid var(--am);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;user-select:none}
+th.k0{cursor:pointer}th.k0:hover{background:var(--am);color:#3b2a00}
+footer{flex:0 0 auto;display:flex;align-items:center;gap:4px;height:16px;padding:0 8px;background:var(--nvd);color:#dbe6ff;border-top:1px solid var(--am);font-size:10px;line-height:16px}
+footer .fl{flex:0 0 auto;color:var(--am);font-weight:700;white-space:nowrap}
+footer #fs{flex:1 1 0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#toast{position:fixed;left:50%;bottom:36px;transform:translateX(-50%);background:#1b3366;color:#fff;padding:8px 18px;border-radius:6px;border-left:5px solid var(--am);box-shadow:0 4px 18px #0b1b4080;font-size:12.5px;z-index:9999;opacity:0;pointer-events:none;transition:opacity .25s}
+#toast.on{opacity:1}
+th.dov{box-shadow:inset 3px 0 var(--am)}
+.rs{position:absolute;right:0;top:0;width:6px;height:100%;cursor:col-resize}
+.rs:hover{background:var(--am)}
+td{height:21px;padding:0 6px;border-bottom:1px solid #e6ecf7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+tbody tr:nth-child(even) td{background:#f7f9ff}
+tbody tr:hover td{background:var(--aml)}
+tbody tr.sa td{background:#cfe3ff!important}
+tbody tr.sel td{background:#ffd97a!important;color:#1d2a4a;font-weight:600;border-bottom-color:#e0a020;box-shadow:inset 0 1px #e0a020}
+tbody tr.sel td.k0{background:#f5a524!important;color:#3b2a00}
+th.k0,td.k0{position:sticky;left:0;text-align:right;color:var(--nv);font-weight:600;font-size:10px;padding:0 4px}
+th.k0{z-index:5}td.k0{z-index:2;background:#eef3fc!important}
+td.r{text-align:right}
+th.light,td.light,.f.light b,.f.light span{color:var(--lt)}
+#msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#fffd;font-size:14px;color:var(--nv);text-align:center;padding:20px;z-index:10;white-space:pre-wrap}
+#dCfm{width:min(380px,92vw)}
+#dCfm .db{padding:14px 16px;font-size:12.5px;line-height:1.7}
+#dCfm .cm{font-weight:700;margin-bottom:4px}
+#dCfm .ci{font-size:11.5px;color:#444;word-break:break-all}
+#dCfm .af{display:flex;justify-content:flex-end;gap:8px;padding:8px 12px;border-top:1px solid #ddd}
+#dCfm .af .b{height:26px;padding:0 16px;font-size:12px}
+dialog{border:0;border-radius:8px;padding:0;box-shadow:0 8px 40px #0b1b4099;color:var(--tx);background:#fff;max-width:97vw;max-height:94vh;overflow:hidden}
+dialog[open]{display:flex;flex-direction:column}
+dialog::backdrop{background:#0b1b4070}
+.dh{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:5px 10px;background:var(--nv);color:#fff;border-bottom:2px solid var(--am);font-size:12px}
+.dh b.t{font-size:13px}
+.dh label{white-space:nowrap;font-size:11px}
+.x{border:1px solid #fff6;background:transparent;color:#fff;width:24px;height:22px;border-radius:4px;font-size:15px;line-height:1;cursor:pointer;flex:0 0 auto}
+.x:hover{background:var(--am);color:#3b2a00}
+.db{flex:1 1 auto;overflow:auto;padding:0}
+.sec h4{margin:0;padding:2px 10px;background:#e3ebfa;color:var(--nvd);border-left:4px solid var(--am);font-size:12px;position:sticky;top:0;z-index:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.f{display:flex;gap:6px;padding:2px 10px;border-bottom:1px solid #edf1f9;min-width:0}
+.f b{flex:0 0 96px;color:var(--nv);font-weight:600}
+.f span{min-width:0;word-break:break-all;white-space:pre-wrap}
+.f.w{grid-column:1/-1}
+#dAdv{width:min(780px,97vw)}
+.ar{display:flex;border-bottom:1px solid var(--ln)}
+.al{flex:0 0 104px;background:#e8eefa;color:var(--nvd);font-weight:700;font-size:11px;padding:3px 6px}
+.ao{flex:1;display:flex;flex-wrap:wrap;gap:1px 12px;padding:3px 8px;align-items:center;font-size:11.5px;min-width:0}
+.ao label{white-space:nowrap;display:inline-flex;align-items:center;gap:2px}
+.ao input[type=checkbox],.ao input[type=radio]{margin:0 2px 0 0;width:13px;height:13px}
+.ao input[type=text]{height:22px;border:1px solid var(--ln);border-radius:4px;padding:0 6px;font-size:12px;flex:1 1 150px;min-width:0}
+.af{flex:0 0 auto;display:flex;gap:6px;justify-content:flex-end;padding:4px 10px;border-top:1px solid var(--ln);background:#f3f6fc}
+#dCols{width:min(1040px,97vw);font-size:11px}
+#dCols .dh{font-size:11px}#dCols .dh b.t{font-size:12px}
+.cs{padding:4px 12px;border-bottom:1px solid var(--ln);background:#f3f6fc;position:sticky;top:0;z-index:1;font-size:11px}
+.cs label{display:inline-flex;align-items:center;gap:3px;font-weight:700;color:var(--nvd);cursor:pointer}
+.cg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px 12px;padding:6px 12px;font-size:11px}
+.cg label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:3px}
+.cg label.light{color:var(--lt)}
+@media(max-width:1000px){.cg{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.cg{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.cg{grid-template-columns:1fr}}
+#dDet{width:min(1200px,97vw);height:auto;max-height:94vh;background:var(--bg)}
+.dn{flex:0 0 auto;display:flex;gap:3px;flex-wrap:wrap;padding:2px 8px;background:#fff;border-bottom:1px solid var(--ln)}
+.dn button{border:1px solid var(--ln);background:var(--bg);color:var(--nvd);border-radius:9px;padding:0 8px;font-size:10.5px;line-height:15px;cursor:pointer}
+.dn button:hover{background:var(--am);border-color:var(--am);color:#3b2a00}
+#dDet .dh{padding:2px 8px;gap:6px}
+#dDet .db{flex:0 1 auto}
+#dDet .sm{padding:3px 8px;background:#fff;border-bottom:1px solid var(--ln)}
+#dDet .nm{font-size:15.3px;font-weight:800;color:#c2570c;line-height:1.2}
+#dDet .tg{display:flex;flex-wrap:wrap;gap:3px;margin:2px 0}
+#dDet .tg span{background:#e8eefa;color:var(--nvd);border-radius:3px;padding:0 5px;font-size:10.5px;line-height:15px}
+#dDet .jb{font-size:12px;font-weight:600;margin:0 0 2px;line-height:1.2}
+#dDet .kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:3px}
+#dDet .kp div{border:1px solid var(--ln);border-left:3px solid var(--am);border-radius:3px;padding:0 6px;background:#fafcff;min-width:0;line-height:1.2}
+#dDet .kp small{display:block;color:var(--nv);font-size:9.5px;line-height:1.1}
+#dDet .kp b{font-size:12px;word-break:break-all}
+#dDet .sec{margin:3px 6px;background:#fff;border:1px solid var(--ln);border-radius:4px}
+#dDet .sec h4{padding:0 8px;font-size:11px;line-height:16px;border-radius:3px 3px 0 0}
+#dDet .sec h4 small{font-weight:400;color:var(--lt);margin-left:6px}
+#dDet .grid{grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+#dDet .f{padding:0 8px;gap:6px;align-items:baseline;line-height:1.25}
+#dDet .f b{flex:0 0 96px;font-size:10.5px}
+#dDet .f span{font-size:11.5px;line-height:1.25}
+#dDet .f.w{flex-direction:row;gap:6px;padding:0 8px}
+#dDet .f.w span{flex:1;background:transparent;border:0;border-radius:0;padding:0}
+#dDet .f.e span{color:var(--lt)}
+#dDet .f:focus{outline:2px solid var(--am);outline-offset:-2px;background:var(--aml)}
+#dDet .pr{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr}
+#dDet .pr .f.w,#dDet .pr .f{grid-column:auto;min-width:0}
+#dDet .pr.pn{align-items:stretch}
+#dDet .pr.pn .f b{flex:0 0 auto;max-width:8.6em;white-space:normal;word-break:break-all}
+#dDet .pr.pn .f span{min-width:0;overflow-wrap:anywhere}
+#dDet .pr.pn .f+.f{border-left:1px solid #edf1f9}
+#dDet .pr.pn .f.nw b{white-space:nowrap;word-break:normal;max-width:none}
+#dDet .pr.pn .f.nw span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal;word-break:normal}
+#dDet .pr.pn.meta .f b,#dDet .pr.pn.meta .f span{color:var(--lt);font-size:9.2px}
+#dDet .pr.pn.meta .f span{font-size:10.2px}
+#dDet .pr .f.w+.f.w{border-left:1px solid #edf1f9}
+@media(max-width:700px){#dDet .pr,#dDet .pr.pn{grid-template-columns:1fr!important}#dDet .pr.pn .f+.f{border-left:0}}
+#dSim{width:97vw;height:92vh}
+#dChk{width:min(1000px,97vw);height:90vh}
+.tb2{width:100%;border-collapse:collapse;table-layout:auto}
+.tb2 th{position:sticky;top:0;cursor:default;background:#dfe8f8;padding:2px 6px;border-right:0;height:22px}
+.tb2 td{max-width:240px;padding:2px 6px;height:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-bottom:1px solid #e6ecf7}
+.tb2 tbody tr:hover td{background:var(--aml)}
+.tb2 tr.base td{background:#fff0c7;font-weight:600}
+.bar{width:70px;height:8px;background:#e3eaf8;border-radius:4px;display:inline-block;vertical-align:middle;margin-right:4px}
+.bar i{display:block;height:100%;background:var(--am);border-radius:4px}
+.ok{color:#1a7f4b;font-weight:700}.ng{color:#c2410c;font-weight:700}
+.note{padding:6px 12px;font-size:11.5px}.note li{margin:2px 0}
+</style>
+</head>
+<body>
+<header>
+  <div class="l1">
+    <h1 id="ttl" title="ダブルクリックで 事業所No別一覧 ⇔ 求人一覧 を切替">受付求人票<small id="vb"></small></h1>
+    <input id="q" type="search" autocomplete="off" placeholder="事業所名(かな・カナ可)/担当者/所在地/就業場所/求人番号/管理No/職業分類  (「/」でOR・ダブルクリックで詳細検索)" title="ダブルクリックで詳細検索">
+    <button class="b" id="clr" title="検索条件をすべて消す">クリア</button>
+  </div>
+  <div class="l2">
+    <span class="yl">年度：<b id="yr">-</b></span>
+    <label>表示数 <select id="ps"><option>50</option><option selected>100</option><option>300</option><option>400</option><option>500</option><option value="0">全て</option></select></label>
+    <span class="cnt"><a id="prv">戻</a><span id="ct"></span><a id="nxt">次</a></span>
+    <button class="b" id="addc">＋列追加</button>
+    <button class="b" id="chk">検証</button>
+  </div>
+</header>
+<div id="wrap" tabindex="0"><table id="tb"></table><div id="msg">読み込み中…</div></div>
+
+<footer><span class="fl">検索：</span><span id="fs">なし(全件)</span></footer>
+
+<dialog id="dAdv">
+  <div class="dh"><b class="t">詳細検索</b><button class="x" data-close style="margin-left:auto" title="閉じる">×</button></div>
+  <form id="advF" class="db" onsubmit="return false"></form>
+  <div class="af"><button class="b s g" id="advClr" type="button">条件クリア</button><button class="b s" data-close type="button">閉じる</button></div>
+</dialog>
+
+<dialog id="dCols">
+  <div class="dh"><b class="t">列の追加・削除</b><span style="font-size:9.5px;opacity:.85">チェックで表示／非表示</span><button class="x" data-close style="margin-left:auto">×</button></div>
+  <div class="db"><div class="cs"><button class="b s" id="cgTog" type="button">全選択</button></div><div class="cg" id="cg"></div></div>
+</dialog>
+
+<dialog id="dDet">
+  <div class="dh">
+    <b class="t">求人票</b><span id="dT" style="font-weight:700"></span>
+    <label><input type="checkbox" class="sf" value="job" checked>職種</label>
+    <label><input type="checkbox" class="sf" value="mg" checked>月給</label>
+    <label><input type="checkbox" class="sf" value="yh" checked>年休</label>
+    <label><input type="checkbox" class="sf" value="loc" checked>場所</label>
+    <label style="margin-left:10px"><input type="checkbox" id="showEmpty">空欄も表示</label>
+    <button class="b s" id="simB" style="margin-left:auto">類似求人(上位50件)</button>
+    <button class="x" data-close>×</button>
+  </div>
+  <div class="dn" id="dN"></div>
+  <div class="db" id="dB"></div>
+</dialog>
+
+<dialog id="dSim">
+  <div class="dh"><b class="t">類似求人(上位50件)</b><span id="sT" style="font-size:11px"></span><button class="x" data-close style="margin-left:auto">×</button></div>
+  <div class="db" id="sB"></div>
+</dialog>
+
+<dialog id="dCfm">
+  <div class="dh"><b class="t">確認</b></div>
+  <div class="db"><div class="cm">この求人票を表示しますか？</div><div class="ci" id="cfI"></div></div>
+  <form method="dialog" class="af"><button class="b s g" value="no" id="cfNo">いいえ(No)</button><button class="b" value="yes" id="cfYes" autofocus>はい(Yes)</button></form>
+</dialog>
+
+<dialog id="dChk">
+  <div class="dh"><b class="t">データ検証</b><span id="kT" style="font-size:11px"></span><button class="x" data-close style="margin-left:auto">×</button></div>
+  <div class="db" id="kB"></div>
+</dialog>
+
+<script>
+'use strict';
+const IND_RAW=`分類コード,分類
+010,管理補助的経済活動を行う事業所(01農業)
+011,農業
+012,畜産農業
+013,農業サービス (園芸サービス業を除く)
+014,園芸サービス業
+020,管理,補助的経済活動を行う事業所(02 林業)
+021,育林業
+022,素材生産業
+023,特用林産物生産業(きのこ類の栽培を除く)
+024,林業サービス業
+029,その他の林業
+030,管理、補助的経済活動を行う事業所(03 漁業)
+031,海面漁業
+032,内水面漁業
+040,管理,補助的経済活動を行う事業所(04 水産養殖業)
+041,海面養殖業
+042,内水面養殖業
+050,管理,補助的経済活動を行う事業所 (05 鉱業、採石業、砂利採取業)
+051,金属鉱業
+052,石炭・亜炭鉱業
+053,原油・天然ガス鉱業
+054,採石業,砂・砂利、土石採取業
+055,窯業原料用鉱物鉱業(耐火物・陶磁器・ガラス・セメント原料用に限る)
+059,その他の鉱業
+060,管理,補助的経済活動を行う事業所(06 総合工事業)
+061,一般土木建築工事業
+062,土木工事業(舗装工事業を除く)
+063,舗装工事業
+064,建築工事業(木造建築工事業を除く)
+065,木造建築工事業
+066,リフォーム工事業
+070,管理,補助的経済活動を行う事業所(07 職別工事業)
+071,大工工事
+072,とび・土工・コンクリート工事業
+073,鉄骨・鉄筋工事業
+074,石工・れんが・タイル・ブロック工事業
+075,左官工事業
+076,板金・金物工事業
+077,塗装工事業
+078,床・内装工事業
+079,その他の職別工事業
+080,管理,補助的経済活動を行う事業所(08 設備工事業)
+081,電気工事業
+082,電気通信,信号装置工事業
+083,管工事業(さく井工事業を除く)
+084,機械器具設置工事業
+089,その他の設備工事業
+090,管理、補助的経済活動を行う事業所(09 食料品製造業)
+091,畜産食料品製造業
+092,水産食料品製造業
+093,野菜缶詰・果実缶詰・農産保存食料品製造業
+094,調味料製造業
+095,糖類製造業
+096,製粉業
+097,パン・菓子製造業
+098,動植物油脂製造業
+099,その他の食料品製造業
+100,管理,補助的経済活動を行う事業所(10 飲料・たばこ・飼料製造業)
+101,清涼飲料製造業
+102,酒類製造業
+103,茶・コーヒー製造業(清涼飲料を除く)
+104,製米・麦等精製業
+105,たばこ製造業
+106,飼料・有機質肥料製造業
+110,管理補助的経済活動を行う事業所(11繊維工業)
+112,製糸,紡績,化学繊維・ねん糸等製造業
+113,ニット生地製造業
+114,染色整理業
+115,織物・網・レース・繊維製品製造業
+116,外衣・シャツ製造業(和式を除く)
+117,下着類製造業
+118,和装製品・その他の衣服・繊維製身の回り品製造業
+119,その他の繊維製品製造業
+120,管理、補助的経済活動を行う事業所(12 木材・木製品製造業)
+121,製材,木製品製造業
+122,造作材・合板・建築用組立材料製造業
+123,木製容器製造業(竹、とうを含む)
+129,その他の木製品製造業(竹、とうを含む)
+130,管理,補助的経済活動を行う事業所 (13 家具・装備品製造業)
+131,家具製造業
+132,宗教用具製造業
+133,建具製造業
+139,その他の家具・装備品製造業
+140,管理,補助的経済活動を行う事業所 (14 パルプ・紙・紙加工品製造業)
+141,パルプ製造業
+142,紙製造業
+143,加工紙製造業
+144,紙製品製造業
+145,紙製容器製造業
+149,その他のパルプ・紙・紙加工品製造業
+150,管理,補助的経済活動を行う事業所(15 印刷・同関連業)
+151,印刷業
+152,製版業
+153,製本,印刷物加工業
+159,印刷関連サービス業
+160,管理、補助的経済活動を行う事業所(16 化学工業)
+161,化学肥料製造業
+162,無機化学工業製品製造業
+163,有機化学工業製品製造業
+164,油脂加工製品・石けん・合成洗剤,界面活性剤・塗料製造業
+165,医薬品製造業
+166,化粧品・歯磨・その他の化粧用調整品製造業
+169,その他の化学工業
+170,管理,補助的経済活動を行う事業所 (17 石油製品・石炭製品製造業)
+171,石油精製業
+172,潤滑油・グリース製造業(石油精製業によらないもの)
+173,コークス製造業
+174,舗装材料製造業
+179,その他の石油製品・石炭製品製造業
+180,管理補助的経済活動を行う事業所 (18 プラスチック製品製造業)
+181,プラスチック板・管・継手・異形押出製品製造業
+182,プラスチックフィルム・シート・床材,合成皮革製造業
+183,工業用プラスチック製品製造業
+184,発泡・強化プラスチック製品製造業
+185,プラスチック成形材料製造業(廃プラスチックを含む)
+189,その他のプラスチック製品製造業
+190,管理,補助的経済活動を行う事業所 (19 ゴム製品製造業)
+191,タイヤ・チューブ製造業
+192,ゴム製・プラスチック製履物,同附属品製造業
+193,ゴムベルト・ゴムホース・工業用ゴム製品製造業
+199,その他のゴム製品製造業
+200,管理,補助的経済活動を行う事業所 (20 なめし革・同製品,毛皮製造業)
+201,なめし革製造業
+202,工業用革製品製造業(手袋を除く)
+203,革製履物用材料,同附属品製造業
+204,革製履物製造業
+205,革製手袋製造業
+206,かばん製造業
+207,袋物製造業
+208,毛皮製造業
+209,その他のなめし革製品製造業
+210,管理,補助的経済活動を行う事業所 (21 窯業・土石製品製造業)
+211,ガラス・同製品製造業
+212,セメント・同製品製造業
+213,建設用粘土製品製造業(陶磁器製を除く)
+214,陶磁器・同関連製品製造業
+215,耐火物製造業
+216,炭素・黒鉛製品製造業
+217,研磨材・同製品製造業
+218,骨材・石工品等製造業
+219,その他の窯業・土石製品製造業
+220,管理,補助的経済活動を行う事業所 (22 鉄鋼業)
+221,製鉄業
+222,製鋼・製鋼圧延業
+223,製鋼を行わない鋼材製造業(表面処理鋼材を除く)
+224,表面処理鋼材製造業
+225,鉄素形材製造業
+229,その他の鉄鋼業
+230,管理,補助的経済活動を行う事業所 (23 非鉄金属製造業)
+231,非鉄金属第1次製錬・精製業
+232,非鉄金属第2次製錬・精製業(非鉄金属合金製造業を含む)
+233,非鉄金属・同合金圧延(抽伸,押出しを含む)
+234,電線・ケーブル製造業
+235,非鉄金属素形材製造業
+239,その他の非鉄金属製造業
+240,管理、補助的経済活動を行う事業所(24 金属製品製造業)
+241,ブリキ缶・その他のめっき板等製品製造業
+242,洋食器・刃物・手道具・金物類製造業
+243,暖房装置・配管工事用附属品製造業
+244,建設用・建築用金属製品製造業(製缶板金業を含む)
+245,金属素形材製品製造業
+246,金属被覆,彫刻,熱処理(ほうろう鉄器を除く)
+247,金属線製品製造業(ねじ類を除く)
+248,ボルト・ナット・リベット・小ねじ・木ねじ等製造業
+249,その他の金属製品製造業
+250,管理、補助的経済活動を行う事業所 (25 はん用機械器具製造業)
+251,ボイラ・原動機製造業
+252,ポンプ・圧縮機器製造業
+253,一般産業用機械・装置製造業
+259,その他のはん用機械・同部分品製造業
+260,管理補助的経済活動を行う事業所(26 生産用機械器具製造業)
+261,農業用機械製造業(農業用器具を除く)
+262,建設機械・鉱山機械製造業
+263,繊維機械製造業
+264,生活関連産業用機械製造業
+265,基礎素材産業用機械製造業
+266,金属加工機械製造業
+267,半導体・フラットパネルディスプレイ製造装置製造業
+269,その他の生産用機械・同部分品製造業
+270,管理,補助的経済活動を行う事業所(27 業務用機械器具製造業)
+271,事務用機械器具製造業
+272,サービス用・娯楽用機械器具製造業
+273,計量器・測定器・分析機器・試験機・測量機械器具・理化学機械器具製造業
+274,医療用機械器具・医療用品製造業
+275,光学機械器具・レンズ製造業
+276,武器製造業
+280,管理,補助的経済活動を行う事業所 (28 電子部品・デバイス・電子回路製造業)
+281,電子デバイス製造業
+282,電子部品製造業
+283,記録メディア製造業
+284,電子回路製造業
+285,ユニット部品製造業
+289,その他の電子部品・デバイス・電子回路製造業
+290,管理、補助的経済活動を行う事業所(29 電気機械器具製造業)
+291,発電用・送電用・配電用電気機械器具製造業
+292,産業用電気機械器具製造業
+293,民生用電気機械器具製造業
+294,電球・電気照明器具製造業
+295,電池製造業
+296,電子応用装置製造業
+297,電気計測器製造業
+299,その他の電気機械器具製造業
+300,管理、補助的経済活動を行う事業所 (30 情報通信機械器具製造業)
+301,通信機械器具・同関連機械器具製造業
+302,映像・音響機械器具製造業
+303,電子計算機・同附属装置製造業
+310,管理補助的経済活動を行う事業所(31輸送用機械器具製造業)
+311,自動車・同附属品製造業
+312,鉄道車両・同部分品製造業
+313,船舶製造・修理業,舶用機関製造業
+314,航空機・同附属品製造業
+315,産業用運搬車両・同部分品・附属品製造業
+319,その他の輸送用機械器具製造業
+320,管理・補助的経済活動を行う事業所(32 その他の製造業)
+321,貴金属・宝石製品製造業
+322,装身具・装飾品・ボタン・同関連品製造業(貴金属・宝石製を除く)
+323,時計・同部分品製造業
+324,楽器製造業
+325,がん具・運動用具製造業
+326,ペン・鉛筆・絵画用品・その他の事務用品製造業
+327,漆器製造業
+328,寝具等生活雑貨製品製造業
+329,他に分類されない製造業
+330,管理、補助的経済活動を行う事業所(33電気業)
+331,電気業
+340,管理・補助的経済活動を行う事業所(34ガス業)
+341,ガス業
+350,管理,補助的経済活動を行う事業所(35熱供給業)
+351,熱供給業
+360,管理,補助的経済活動を行う事業所 (36水道業)
+361,上水道業
+362,工業用水道業
+363,下水道業
+370,管理・補助的経済活動を行う事業所 (37通信業)
+371,固定電気通信業
+372,移動電気通信業
+373,電気通信に附帯するサービス業
+380,管理・補助的経済活動を行う事業所 (38放送業)
+381,公共放送業(有線放送業を除く)
+382,民間放送業(有線放送業を除く)
+383,有線放送業
+390,管理、補助的経済活動を行う事業所(39情報サービス業)
+391,ソフトウェア業
+392,情報処理・提供サービス業
+400,管理、補助的経済活動を行う事業所 (40 インターネット附随サービス業)
+401,インターネット附随サービス業
+410,管理・補助的経済活動を行う事業所(41映像・音声・文字情報制作業)
+411,映像情報制作・配給業
+412,音声情報制作業
+413,新聞業
+414,出版業
+415,広告制作業
+416,映像・音声・文字情報制作に附帯するサービス業
+420,管理・補助的経済活動を行う事業所(42鉄道業)
+421,鉄道業
+430,管理、補助的経済活動を行う事業所(43道路旅客運送業)
+431,一般乗合旅客自動車運送業
+432,一般乗用旅客自動車運送業
+433,一般貸切旅客自動車運送業
+439,その他の道路旅客運送業
+440,管理補助的経済活動を行う事業所 (44道路貨物運送業)
+441,一般貨物自動車運送業
+442,特定貨物自動車運送業
+443,貨物軽自動車運送業
+444,集配利用運送業
+449,その他の道路貨物運送業
+450,管理,補助的経済活動を行う事業所(45水運業)
+451,外航海運業
+452,沿海海運業
+453,内陸水運業
+454,船舶貸渡業
+460,管理・補助的経済活動を行う事業所(46航空運輸業)
+461,航空運送業
+462,航空機使用業(航空運送業を除く)
+470,管理補助的経済活動を行う事業所(47倉庫業)
+471,倉庫業(冷蔵倉庫業を除く)
+472,冷蔵倉庫業
+481,港湾運送業
+482,貨物運送取扱業(集配利用運送業を除く)
+483,運送代理店
+484,こん包業
+485,運輸施設提供業
+489,その他の運輸に附帯するサービス業
+490,管理、補助的経済活動を行う事業所(49郵便業)
+491,郵便業(信書便事業を含む)
+500,管理・補助的経済活動を行う事業所 (50各種商品卸売業)
+501,各種商品卸売業
+510,管理、補助的経済活動を行う事業所(51繊維・衣服等卸売業)
+511,繊維品卸売業(衣服、身の回り品を除く)
+512,衣服卸売業
+513,身の回り品卸売業
+520,管理、補助的経済活動を行う事業所(52飲食料品卸売業)
+521,農畜産物・水産物卸売業
+522,食料・飲料卸売業
+530,管理、補助的経済活動を行う事業所(53 建築材料、鉱物・金属材料等卸売業)
+531,建築材料卸売業
+532,化学製品卸売業
+533,石油・鉱物卸売業
+534,鉄鋼製品卸売業
+535,非鉄金属卸売業
+536,再生資源卸売業
+540,管理・補助的経済活動を行う事業所(54機械器具卸売業)
+541,産業機械器具卸売業
+542,自動車卸売業
+543,電気機械器具卸売業
+549,その他の機械器具卸売業
+550,管理補助的経済活動を行う事業所(55その他の卸売業)
+551,家具・建具・じゅう器等卸売業
+552,医薬品・化粧品等卸売業
+553,紙・紙製品卸売業
+559,他に分類されない卸売業
+560,管理補助的経済活動を行う事業所(56各種商品小売業)
+561,百貨店、総合スーパー
+569,その他の各種商品小売業(従業者が常時50人未満のもの)
+570,管理、補助的経済活動を行う事業所 (57織物・衣服・身の回り品小売業)
+571,呉服・服地・寝具小売業
+572,男子服小売業
+573,婦人・子供服小売業
+574,靴・履物小売業
+579,その他の織物・衣服・身の回り品小売業
+580,管理補助的経済活動を行う事業所(58飲食料品小売業)
+581,各種食料品小売業
+582,野菜・果実小売業
+583,食肉小売業
+584,鮮魚小売業
+585,酒小売業
+586,菓子・パン小売業
+589,その他の飲食料品小売業
+590,管理,補助的経済活動を行う事業所(59機械器具小売業)
+591,自動車小売業
+592,自転車小売業
+593,機械器具小売業(自動車、自転車を除く)
+600,管理補助的経済活動を行う事業所(60その他の小売業)
+601,家具・建具・畳小売業
+602,じゅう器小売業
+603,医薬品・化粧品小売業
+604,農耕用品小売業
+605,燃料小売業
+606,書籍・文房具小売業
+607,スポーツ用品・がん具・娯楽用品・楽器小売業
+608,写真機・時計・眼鏡小売業
+609,他に分類されない小売業
+610,管理補助的経済活動を行う事業所(61無店舗小売業)
+611,通信販売・訪問販売小売業
+612,自動販売機による小売業
+619,その他の無店舗小売業
+620,管理、補助的経済活動を行う事業所(62銀行業)
+621,中央銀行
+622,銀行(中央銀行を除く)
+630,管理補助的経済活動を行う事業所(63協同組織金融業)
+631,中小企業等金融業
+632,農林水産金融業
+640,管理、補助的経済活動を行う事業所(64貸金業、クレジットカード等非預金信用機関)
+641,貸金業
+642,質屋
+643,クレジットカード業、割賦金融業
+649,その他の非預金信用機関
+650,管理、補助的経済活動を行う事業所 (65金融商品取引業、商品先物取引業)
+651,金融商品取引業
+652,商品先物取引業,商品投資業
+660,管理、補助的経済活動を行う事業所(66補助的金融業等)
+661,補助的金融業、金融附帯業
+662,信託業
+663,金融代理業
+670,管理・補助的経済活動を行う事業所(67保険業)
+671,生命保険業
+672,損害保険業
+673,共済事業・少額短期保険業
+674,保険媒介代理業
+675,保険サービス業
+680,管理補助的経済活動を行う事業所(68不動産取引業)
+681,建物売買業、土地売買業
+682,不動産代理業・仲介業
+690,管理補助的経済活動を行う事業所(69不動産賃貸業・管理業)
+691,不動産賃貸業(貸家業、貸間業を除く)
+692,貸家業、貸間業
+693,駐車場業
+694,不動産管理業
+700,管理補助的経済活動を行う事業所(70物品賃貸業)
+701,各種物品賃貸業
+702,産業用機械器具賃貸業
+703,事務用機械器具賃貸業
+704,自動車賃貸業
+705,スポーツ・娯楽用品賃貸業
+709,その他の物品賃貸業
+710,管理・補助的経済活動を行う事業所(71学術・開発研究機関)
+711,自然科学研究所
+712,人文・社会科学研究所
+720,管理,補助的経済活動を行う事業所(72専門サービス業)
+721,法律事務所,特許事務所
+722,公証人役場・司法書士事務所・土地家屋調査士事務所
+723,行政書士事務所
+724,公認会計士事務所,税理士事務所
+725,社会保険労務士事務所
+726,デザイン業
+727,著述・芸術家業
+728,経営コンサルタント業、純粋持株会社
+729,その他の専門サービス業
+730,管理・補助的経済活動を行う事業所 (73広告業)
+731,広告業
+740,管理補助的経済活動を行う事業所 (74技術サービス業)
+741,獣医業
+742,土木建築サービス業
+743,機械設計業
+744,商品・非破壊検査業
+745,計量証明業
+746,写真業
+749,その他の技術サービス業
+750,管理補助的経済活動を行う事業所(75宿泊業)
+751,旅館、ホテル
+752,簡易宿所
+753,下宿業
+759,その他の宿泊業
+760,管理、補助的経済活動を行う事業所(76飲食店)
+761,食堂・レストラン (専門料理店を除く)
+762,専門料理店
+763,そば・うどん店
+764,すし店
+765,酒場、ビヤホール
+766,バー、キャバレー、ナイトクラブ
+767,喫茶店
+769,その他の飲食店
+770,管理、補助的経済活動を行う事業所 (77持ち帰り・配達飲食サービス業)
+771,持ち帰り飲食サービス業
+772,配達飲食サービス業
+780,管理、補助的経済活動を行う事業所(78洗濯・理容・美容・浴場業)
+781,洗濯業
+782,理容業
+783,美容業
+784,一般公衆浴場業
+785,その他の公衆浴場業
+789,その他の洗濯・理容・美容・浴場業
+790,管理、補助的経済活動を行う事業所 (79その他の生活関連サービス業)
+791,旅行業
+792,家事サービス業
+793,衣服裁縫修理業
+794,物品預り業
+795,火葬・墓地管理業
+796,冠婚葬祭業
+799,他に分類されない生活関連サービス業
+800,管理補助的経済活動を行う事業所(80娯楽業)
+801,映画館
+802,興行場(別掲を除く)、興行団
+803,競輪・競馬等の競走場、競技団
+804,スポーツ施設提供業
+805,公園,遊園地
+806,遊戯場
+809,その他の娯楽業
+810,管理補助的経済活動を行う事業所(81学校教育)
+811,幼稚園
+812,小学校
+813,中学校
+814,高等学校、中等教育学校
+815,特別支援学校
+816,高等教育機関
+817,専修学校、各種学校
+818,学校教育支援機関
+820,管理、補助的経済活動を行う事業所 (82その他の教育、学習支援業)
+821,社会教育
+822,職業・教育支援施設
+823,学習塾
+824,教養・技能教授業
+829,他に分類されない教育、学習支援業
+830,管理補助的経済活動を行う事業所 (83医療業)
+831,病院
+832,一般診療所
+833,歯科診療所
+834,助産・看護業
+835,療術業
+836,医療に附帯するサービス業
+840,管理補助的経済活動を行う事業所(84保健衛生)
+841,保健所
+842,健康相談施設
+849,その他の保健衛生
+850,管理、補助的経済活動を行う事業所(85 社会保険・社会福祉・介護事業)
+851,社会保険事業団体
+852,福祉事務所
+853,児童福祉事業
+854,老人福祉・介護事業
+855,障害者福祉事業
+859,その他の社会保険・社会福祉・介護事業
+860,管理補助的経済活動を行う事業所(86郵便局)
+861,郵便局
+862,郵便局受託業
+870,管理、補助的経済活動を行う事業所(87協同組合)
+871,農林水産業協同組合(他に分類されないもの)
+872,事業協同組合(他に分類されないもの)
+880,管理・補助的経済活動を行う事業所 (88廃棄物処理業)
+881,一般廃棄物処理業
+882,産業廃棄物処理業
+889,その他の廃棄物処理業
+890,管理補助的経済活動を行う事業所(89自動車整備業)
+891,自動車整備業
+900,管理,補助的経済活動を行う事業所(90機械等修理業)
+901,機械修理業(電気機械器具を除く)
+902,電気機械器具修理業
+903,表具業
+909,その他の修理業
+910,管理、補助的経済活動を行う事業所 (91 職業紹介・労働者派遣業)
+911,職業紹介業
+912,労働者派遣業
+920,管理、補助的経済活動を行う事業所 (92その他の事業サービス業)
+921,速記・ワープロ入力・複写業
+922,建物サービス業
+923,警備業
+929,他に分類されない事業サービス業
+931,経済団体
+932,労働団体
+933,学術・文化団体
+934,政治団体
+939,他に分類されない非営利的団体
+941,神道系宗教
+942,仏教系宗教
+943,キリスト教系宗教
+949,その他の宗教
+950,管理,補助的経済活動を行う事業所(95その他のサービス業)
+951,集会場
+952,と畜場
+959,他に分類されないサービス業
+961,外国公館
+969,その他の外国公務
+971,立法機関
+972,司法機関
+973,行政機関
+981,都道府県機関
+982,市町村機関
+999,分類不能の産業`;
+const MAP_RAW=`  
+  '求人年度'→'年度',
+  '求人番号'→'求人番号',
+  '受付安定所'→'受付所',
+  '事業所番号'→'事業所No',
+  'インターネットへの公開'→'WEB公開',
+  '事業所名 カナ'→'事業所カナ',
+  '事業所名'→'事業所名',
+  '郵便番号（所在地）'→'所在_郵便No',
+  '住所（所在地）'→'所在地住所',
+  'アクセス（所在地）'→'所在地アクセス',
+  '代表者名'→'代表者',
+  '法人番号'→'法人No',
+  'ホームページ'→'web_site',
+  '従業員数（企業全体）'→'全社員数',
+  '従業員数（就業場所）'→'就業社員数',
+  '設立'→'設立年',
+  '資本金'→'資本金',
+  '事業内容'→'事業内容',
+  '会社の特長'→'会社特長',
+  '雇用形態'→'雇用形態',
+  '職種'→'職種',
+  '仕事の内容'→'仕事内容',
+  '郵便番号（就業場所）'→'就業_郵便No',
+  '住所（就業場所）'→'就業場所住所',
+  'アクセス（就業場所）'→'就業場所アクセス',
+  '求人数（通勤）'→'通勤求人',
+  '求人数（住込）'→'住込求人',
+  '求人数（不問）'→'不問求人',
+  '必要な知識・技能等'→'必要スキル',
+  '転勤の可能性'→'転勤',
+  'マイカー通勤の可否'→'マイカー通勤',
+  '入居可能住宅（単身用）'→'単身住宅',
+  '入居可能住宅（世帯用）'→'世帯住宅',
+  '基本給'→'基本給',
+  '月給（基本給+手当+固定残業代）'→'月給',
+  '賞与有無（新卒）'→'賞与',
+  '時間外労働の有無'→'残業の有無',
+  '時間外労働の月平均時間数'→'平均残業時間',
+  '変形労働時間制の種類'→'労働時間の種類',
+  '休日等'→'休日',
+  '就業時間1'→'就業時間1',
+  '就業時間2'→'就業時間2',
+  '就業時間3'→'就業時間3',
+  '年間休日数'→'年間休日',
+  '複数応募の受け入れ'→'複数応募',
+  '複数応募開始の日程'→'複数応募日程',
+  '職場見学の受け入れ'→'職場見学',
+  '職場見学の日程'→'見学日程',
+  '課係名・役職名（担当者）'→'担当役職',
+  '氏名（担当者）'→'担当者',
+  '氏名カナ（担当者）'→'担当者カナ',
+  '電話番号（担当者）'→'担当TEL',
+  'FAX（担当者）'→'担当FAX',
+  'Eメール（担当者）'→'担当メール',
+  '補足事項'→'補足',
+  '特記事項'→'特記',
+  '産業分類'→'産業分類NO',
+  '職業分類（3桁）'→'職業分類1',
+  '職業分類（5桁）'→'職業分類1',
+  '職業分類2（3桁）'→'職業分類2',
+  '職業分類2（5桁）'→'職業分類2',
+  '就業場所住所（市区町村）'→'就業_市区町村1',
+  '就業場所住所2（市区町村）'→'就業_市区町村2',
+  '就業場所住所3（市区町村）'→'就業_市区町村3',
+  '管理番号'→'管理No',
+  '対象学科'→'対象学科',
+  'エリア'→'エリア',
+  '卒業生の入社実績'→'入社実績',
+  'その他の分類'→'その他分類',
+  '募集人数'→'募集人数',
+  '来校の有無'→'来校',
+  '二次募集の有無'→'二次募集',
+  '職場見学人数'→'見学人数',
+  '応募人数'→'応募人数',
+  '入社人数'→'入社人数',
+  '備考'→'備考',
+  '申送り事項'→'申送り事項',
+  '公開日時'→'公開日時',
+  '最終更新日時'→'更新日時',
+  '登録方法'→'登録方法',
+  '元ファイル名'→'元ファイル',
+  '職業分類（ハローワーク）大分類'→'HW職業大分類',
+  '職業分類（ハローワーク）中分類'→'HW職業中分類',
+  '職業分類（ハローワーク）小分類'→'HW職業小分類',
+  '職業分類（handy）大分類'→'handy職業大分類',
+  '職業分類（handy）中分類'→'handy職業中分類',
+  '職業分類2（ハローワーク）大分類'→'HW職業2大分類',
+  '職業分類2（ハローワーク）中分類'→'HW職業2中分類',
+  '職業分類2（ハローワーク）小分類'→'HW職業2小分類',
+  '職業分類2（handy）大分類'→'handy職業2大分類',
+  '職業分類2（handy）中分類'→'handy職業2中分類',
+  'お気に入り登録数'→'お気に入り数',
+  '職業分類コード（日本標準職業分類への変換）'→'標準職業1コード',
+  '職業分類（日本標準職業分類への変換）'→'標準職業分類1',
+  '職業分類2コード（日本標準職業分類への変換）'→'標準職業2コード',
+  '職業分類2（日本標準職業分類への変換）'→'標準職業分類2'`;
+
+/* ---------- 基本ユーティリティ ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nz=s=>String(s==null?'':s).normalize('NFKC');
+const nk=h=>nz(h).replace(/\s+/g,'');
+/* 検索用: NFKC(半角カナ→全角カナ)＋ひらがな→カタカナ統一＋小文字化。かな/カナ/半角カナどれでもヒット */
+const ns=s=>nz(s).replace(/[ぁ-ゖ]/g,c=>String.fromCharCode(c.charCodeAt(0)+0x60)).toLowerCase();
+function toNum(s){if(s==null)return null;if(typeof s==='number')return isFinite(s)?s:null;
+  const t=nz(s).replace(/[,円¥\s]/g,'');return /^-?\d+(\.\d+)?$/.test(t)?Number(t):null;}
+const yen=n=>n==null||isNaN(n)?'':Math.round(n).toLocaleString('ja-JP')+'円';
+
+/* ---------- 項目名変更 / 産業分類 ---------- */
+const HMAP={},SHORTS=[];
+for(const m of MAP_RAW.matchAll(/'([^']*)'\s*→\s*'([^']*)'/g)){
+  HMAP[nk(m[1])]=m[2]; if(!SHORTS.includes(m[2]))SHORTS.push(m[2]);
+}
+const IND={};
+IND_RAW.split(/\r?\n/).forEach((ln,i)=>{ if(!i||!ln.trim())return; const p=ln.indexOf(','); if(p<0)return;
+  IND[ln.slice(0,p).trim()]=ln.slice(p+1).trim().replace(/^管理[,、・]\s*/,'管理、'); });
+
+const MASTER=[];
+SHORTS.forEach(k=>{MASTER.push(k);
+  if(k==='産業分類NO')MASTER.push('産業分類名');
+  if(k==='不問求人')MASTER.push('_cnt');
+  if(k==='就業_市区町村3')MASTER.push('_place');
+  if(k==='標準職業分類2')MASTER.push('_occ');
+  if(k==='年間休日')MASTER.push('時間あたりの賃金','予想月給','予想賞与');});
+const SPECIAL={_place:'就業場所(市区町村)',_cnt:'求人数(計)',_occ:'職業分類(標準)'};
+const LABEL=k=>SPECIAL[k]||k;
+const LIGHT=new Set(['時間あたりの賃金','予想月給','予想賞与','産業分類名']);
+const MONEY=new Set(['基本給','月給','時間あたりの賃金','予想月給','予想賞与']);
+const BASEW={'#':38,'管理No':45,'事業所名':210,'所在地住所':200,'全社員数':70,'就業社員数':70,'資本金':90,'_place':150,'_cnt':70,'_occ':170,'月給':80,'年間休日':65,'賞与':55,'求人番号':105,'WEB公開':65,'来校':50,'事業所No':80,'産業分類名':170,'設立年':70,'基本給':80,'職種':160,'仕事内容':240,'事業内容':220,'会社特長':220};
+const LIST_DEF=['#','管理No','事業所名','所在地住所','全社員数','就業社員数','資本金','_place','_cnt','_occ','月給','年間休日','賞与','求人番号','WEB公開','来校'];
+const GROUP_DEF=['#','事業所No','事業所名','産業分類名','所在地住所','全社員数','資本金','設立年','WEB公開','来校'];
+
+const S={all:[],filtered:[],sorted:[],view:'list',page:0,ps:100,src:'',missing:[],cols:{list:null,group:null},
+  sort:{list:[{k:'年度',d:-1},{k:'管理No',d:-1}],group:[{k:'事業所No',d:1}]},cur:null,simList:[]};
+
+function mkCol(k){const w=BASEW[k]||110;return {key:k,label:LABEL(k),base:w,w:w,manual:false,fixed:k==='#'||k==='管理No',light:LIGHT.has(k),money:MONEY.has(k)};}
+
+/* ---------- CSV ---------- */
+function parseCSV(t){
+  if(t.charCodeAt(0)===0xFEFF)t=t.slice(1);
+  const rows=[];let row=[],f='',q=false;
+  for(let i=0;i<t.length;i++){const c=t[i];
+    if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}
+    else if(c==='"')q=true;
+    else if(c===','){row.push(f);f='';}
+    else if(c==='\n'){row.push(f);rows.push(row);row=[];f='';}
+    else if(c!=='\r')f+=c;}
+  if(f!==''||row.length){row.push(f);rows.push(row);}
+  return rows;
+}
+function decode(buf){
+  try{return new TextDecoder('utf-8',{fatal:true}).decode(buf);}
+  catch(e){return new TextDecoder('shift_jis').decode(buf);}
+}
+async function loadCSV(){
+  const urls=['kyujin2026.csv','https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv'];
+  const err=[];
+  for(const u of urls){
+    try{const res=await fetch(u,{cache:'no-cache'});
+      if(!res.ok)throw new Error('HTTP '+res.status);
+      const t=decode(await res.arrayBuffer());
+      if(!t.trim())throw new Error('空のファイル');
+      S.src=u;return t;}
+    catch(e){err.push(u+' : '+e.message);}
+  }
+  throw new Error(err.join('\n'));
+}
+
+function indCode(v){const d=nz(v).replace(/\D/g,'');if(!d)return '';
+  for(const c of [d,d.padStart(3,'0'),d.slice(0,3)])if(IND[c])return c;return d;}
+const JOBKW=[
+ ['医療/福祉に関わる','医療|福祉|介護|看護|保健|医師|薬剤|栄養|保育|歯科|リハビリ|臨床'],
+ ['事務に関わる','事務|会計|経理|総務|受付|庶務'],
+ ['営業に関わる','営業'],
+ ['販売に関わる','販売|店員|小売|商品陳列|レジ'],
+ ['接客/サービスに関わる','サービス|接客|飲食|調理|美容|理容|ホテル|旅館|給仕|クリーニング'],
+ ['農林水産業に関わる','農|林業|漁|水産|畜産|養殖'],
+ ['生産/製造に関わる','生産|製造|製品|組立|加工|工員|溶接|検査|機械'],
+ ['運輸/物流に関わる','運輸|輸送|運転|運搬|物流|配送|倉庫|荷'],
+ ['建設/建築/土木に関わる','建設|建築|土木|採掘|電気工事|設備|施工|とび|大工'],
+ ['情報処理/通信技術に関わる','情報|通信|システム|プログラ|ソフトウェア|IT|ネットワーク'],
+ ['警備/保安に関わる','警備|保安|警察|消防|自衛|防犯'],
+ ['その他',null]];
+const JOBRE=JOBKW.map(j=>j[1]?new RegExp(j[1]):null);
+function bonusYes(r){const b=r['賞与']||'';return /あり|有/.test(b)&&!/なし|無/.test(b);}
+
+function derive(r){
+  const dg=(r['管理No']||'').replace(/\D/g,'');
+  r['管理No']=dg?dg.padStart(4,'0'):'';
+  r._k=dg?Number(dg):null;
+  r._mg=toNum(r['月給']);r._kh=toNum(r['基本給']);r._yh=toNum(r['年間休日']);
+  r._ot=toNum(nz(r['平均残業時間']).replace(/時間/g,''));
+  r._tot=['通勤求人','住込求人','不問求人'].reduce((a,k)=>a+(toNum(r[k])||0),0);
+  const ic=indCode(r['産業分類NO']);r._ic=ic;r['産業分類名']=IND[ic]||'';
+  const mh=(r._yh!=null&&r._yh<365)?(365-r._yh)*8/12:null;
+  r['時間あたりの賃金']=(r._mg!=null&&mh)?r._mg/mh:null;
+  const ot=(/なし|無/.test(r['残業の有無']||'')?0:(r._ot||0));
+  r['予想月給']=r['時間あたりの賃金']!=null?r._mg+r['時間あたりの賃金']*ot*1.25:null;
+  r['予想賞与']=(bonusYes(r)&&r._kh!=null)?r._kh*2:null;
+  r._pl=['就業_市区町村1','就業_市区町村2','就業_市区町村3'].map(k=>r[k]).filter(Boolean).join('、');
+  r._oc=[r['標準職業分類1'],r['標準職業分類2']].filter(Boolean).join(' / ');
+  r._s=ns([r['事業所名'],r['事業所カナ'],r['担当者'],r['担当者カナ'],r['所在地住所'],r._pl,r['就業場所住所'],r['求人番号'],r['管理No'],r['職業分類1'],r['職業分類2'],r['標準職業分類1'],r['標準職業分類2']].join('\n'));
+  r._jt=nz([r['HW職業大分類'],r['HW職業中分類'],r['HW職業小分類'],r['HW職業2大分類'],r['HW職業2中分類'],r['HW職業2小分類'],r['標準職業分類1'],r['標準職業分類2'],r['職業分類1'],r['職業分類2'],r['職種']].join(' '));
+  return r;
+}
+
+function buildRows(recs){
+  const H=recs[0].map(h=>HMAP[nk(h)]);
+  S.missing=SHORTS.filter(s=>!H.includes(s));
+  const out=[];
+  for(let i=1;i<recs.length;i++){const rec=recs[i];
+    if(rec.length<=1&&!(rec[0]||'').trim())continue;
+    const r={};SHORTS.forEach(s=>r[s]='');
+    H.forEach((s,j)=>{if(!s)return;const v=(rec[j]==null?'':rec[j]).trim();if(v!=='')r[s]=v;});
+    out.push(derive(r));}
+  return out;
+}
+
+/* ---------- 検索 ---------- */
+function segs(s){return ns(s).split('/').map(x=>x.trim()).filter(Boolean).map(x=>x.split(/\s+/));}
+function hit(t,sg){return !sg.length||sg.some(terms=>terms.every(w=>t.includes(w)));}
+const MGR=[[null,149999],[150000,174999],[175000,199999],[200000,249999],[250000,null]];
+const YHR=[[null,99],[100,109],[110,119],[120,129],[130,null]];
+const inR=(v,[a,b])=>v!=null&&(a==null||v>=a)&&(b==null||v<=b);
+const HOLN=['月','火','水','木','金','土'];
+function holHit(i,t){
+  const tk=t.split(/[\s、,・\/]+/);
+  if(i<6){const d=HOLN[i];return tk.includes(d)||t.includes(d+'曜')||(d==='土'&&/土日/.test(t));}
+  if(i===6)return tk.includes('日')||/日曜|土日|日祝/.test(t);
+  if(i===7)return /祝/.test(t);
+  return tk.includes('他')||/その他|不定|シフト|交替|交代/.test(t);}
+const FWF={'all':['事業所名','事業所カナ','職種','仕事内容','事業内容','管理No','求人番号'],'事業所名':['事業所名','事業所カナ'],'職種':['職種'],'仕事内容':['仕事内容'],'事業内容':['事業内容'],'管理No':['管理No'],'求人番号':['求人番号']};
+
+function matchAdv(r,A){
+  if(A.fwt.trim()){const t=ns(FWF[A.fws].map(k=>r[k]).join('\n'));if(!hit(t,segs(A.fwt)))return false;}
+  if(A.ad.trim()){const t=ns((r['就業場所住所']||'')+'\n'+r._pl);if(!hit(t,segs(A.ad)))return false;}
+  if(A.job.length){const ok=A.job.some(i=>JOBRE[i]?JOBRE[i].test(r._jt):!JOBRE.some(re=>re&&re.test(r._jt)));if(!ok)return false;}
+  if(A.mg.length&&!A.mg.some(i=>inR(r._mg,MGR[i])))return false;
+  if(A.bonus==='あり'&&!bonusYes(r))return false;
+  if(A.bonus==='なし'&&!/なし|無/.test(r['賞与']||''))return false;
+  if(A.hol.length){const t=nz(r['休日']);if(!A.hol.every(i=>holHit(i,t)))return false;}
+  if(A.yh.length&&!A.yh.some(i=>inR(r._yh,YHR[i])))return false;
+  if(A.ten&&!/なし|無|ない/.test(r['転勤']||''))return false;
+  if(A.house.length&&!A.house.some(i=>{const v=r[i===0?'単身住宅':'世帯住宅']||'';return v&&!/なし|無|不可/.test(v);}))return false;
+  if(A.ot==='あり'){if(!/あり|有/.test(r['残業の有無']||''))return false;if(A.otn!=null&&(r._ot==null||r._ot>A.otn))return false;}
+  if(A.ot==='なし'&&!(/なし|無/.test(r['残業の有無']||'')||r._ot===0))return false;
+  if(A.sys.length){const kind=nz(r['労働時間の種類']);const ts=nz([kind,r['就業時間1'],r['就業時間2'],r['就業時間3'],r['休日']].join(' '));
+    const f=[/交替|交代|シフト/.test(ts),/裁量/.test(ts),/フレックス/.test(ts),!!kind&&!/なし|無/.test(kind)];
+    f.push(!f.some(Boolean));
+    if(!A.sys.some(i=>f[i]))return false;}
+  return true;
+}
+function advActive(A){return !!(A.fwt.trim()||A.ad.trim()||A.job.length||A.mg.length||A.bonus||A.hol.length||A.yh.length||A.ten||A.house.length||A.ot||A.sys.length);}
+
+function buildAdv(){
+  const row=(l,inner)=>`<div class="ar"><div class="al">${l}</div><div class="ao">${inner}</div></div>`;
+  const chk=(n,i,t)=>`<label><input type="checkbox" name="${n}" value="${i}">${t}</label>`;
+  const rad=(n,v,t,c)=>`<label><input type="radio" name="${n}" value="${v}"${c?' checked':''}>${t}</label>`;
+  const rg=(n,R,u)=>R.map((x,i)=>chk(n,i,x[0]==null?`${x[1].toLocaleString()}${u}以下`:x[1]==null?`${x[0].toLocaleString()}${u}以上`:`${x[0].toLocaleString()}${u} - ${x[1].toLocaleString()}${u}`)).join('');
+  let h='';
+  h+=row('フリーワード',`<select id="fws"><option value="all">すべての項目から検索</option>${Object.keys(FWF).slice(1).map(k=>`<option>${k}</option>`).join('')}</select><input type="text" id="fwt" placeholder="製造/食品/トウキョウ・とうきょう   ( / でOR ・ 空白でAND ・かな/カナ可 )">`);
+  h+=row('就業場所住所',`<input type="text" id="ad" placeholder="鹿児島県曽於市/宮崎県都城市   ( / でOR )">`);
+  h+=row('仕事の種類',JOBKW.map((j,i)=>chk('job',i,j[0])).join(''));
+  h+=row('月給<br><span style="font-weight:400">基本給+手当+固定残業代</span>',rg('mg',MGR,'円'));
+  h+=row('賞与',rad('bonus','あり','あり')+rad('bonus','なし','なし')+rad('bonus','','指定なし',1));
+  h+=row('希望する休日',['月曜','火曜','水曜','木曜','金曜','土曜','日曜','祝日','その他'].map((t,i)=>chk('hol',i,t)).join(''));
+  h+=row('年間休日数',rg('yh',YHR,'日'));
+  h+=row('転勤',chk('ten',0,'転勤なし'));
+  h+=row('入居可能住宅',chk('house',0,'単身用あり')+chk('house',1,'世帯用あり'));
+  h+=row('時間外労働',rad('ot','あり','あり (月平均')+`<input type="number" id="otn" min="0" max="200" style="width:56px" placeholder="10">時間以下)`+rad('ot','なし','なし')+rad('ot','','指定なし',1));
+  h+=row('勤務制度',['交替制(シフト制)','裁量労働制','フレックスタイム制','変形労働時間制','上記のような特別な勤務制度ではない'].map((t,i)=>chk('sys',i,t)).join(''));
+  $('#advF').innerHTML=h;
+}
+function readAdv(){
+  const f=$('#advF');const g=n=>[...f.querySelectorAll(`input[name="${n}"]:checked`)].map(e=>+e.value);
+  const rv=n=>(f.querySelector(`input[name="${n}"]:checked`)||{}).value||'';
+  const on=$('#otn').value;
+  return {fws:$('#fws').value,fwt:$('#fwt').value,ad:$('#ad').value,job:g('job'),mg:g('mg'),bonus:rv('bonus'),hol:g('hol'),yh:g('yh'),ten:g('ten').length>0,house:g('house'),ot:rv('ot'),otn:on===''?null:+on,sys:g('sys')};
+}
+
+/* ---------- ソート ---------- */
+function sv(r,k){
+  switch(k){case '_cnt':return r._tot;case '_place':return r._pl;case '_occ':return r._oc;case '管理No':return r._k;default:return r[k];}
+}
+function cmp(a,b){
+  const ea=a==null||a===''||(typeof a==='number'&&isNaN(a)),eb=b==null||b===''||(typeof b==='number'&&isNaN(b));
+  if(ea||eb)return ea&&eb?0:ea?2:-2;
+  const na=toNum(a),nb=toNum(b);
+  if(na!=null&&nb!=null)return Math.sign(na-nb); /* 差をそのまま返すと±2が空欄判定と衝突するため符号のみ返す */
+  return Math.sign(String(a).localeCompare(String(b),'ja',{numeric:true}));
+}
+function resort(){
+  const data=S.view==='list'?S.filtered.slice():makeGroups(S.filtered);
+  const sp=S.sort[S.view];
+  data.sort((x,y)=>{for(const s of sp){const c=cmp(sv(x,s.k),sv(y,s.k));if(Math.abs(c)===2)return c>0?1:-1;if(c)return c*s.d;}return 0;});
+  S.sorted=data;
+}
+function makeGroups(rows){
+  const m=new Map();
+  for(const r of rows){const k=r['事業所No']||('?'+r['事業所名']);let g=m.get(k);if(!g){g=Object.assign({},r);g._n=0;m.set(k,g);}g._n++;}
+  return [...m.values()];
+}
+
+/* ---------- 描画 ---------- */
+function cellText(k,r){
+  switch(k){
+    case '_place':return r._pl;case '_cnt':return r._tot;case '_occ':return r._oc;
+    case '基本給':case '月給':{const n=toNum(r[k]);return n==null?r[k]:yen(n);}
+    case '時間あたりの賃金':case '予想月給':case '予想賞与':return yen(r[k]);
+    default:return r[k]==null?'':r[k];}
+}
+function selKey(r){return S.view==='list'?[r['年度'],r['管理No'],r['求人番号']].join('|'):(r['事業所No']||'?'+r['事業所名']);}
+function render(){
+  const cols=S.cols[S.view],data=S.sorted,tot=data.length,ps=S.ps;
+  const pages=ps?Math.max(1,Math.ceil(tot/ps)):1;
+  S.page=Math.min(Math.max(S.page,0),pages-1);
+  const st=ps?S.page*ps:0,en=ps?Math.min(tot,st+ps):tot;
+  const sp=S.sort[S.view],cs=sp[sp.length-1];
+  let h='<colgroup>'+cols.map(c=>`<col style="width:${c.w}px">`).join('')+'</colgroup><thead><tr>';
+  for(const c of cols)h+=`<th class="${c.key==='#'?'k0':''}${c.light?' light':''}" data-k="${esc(c.key)}"${c.key==='#'?'':' draggable="true"'} title="${c.key==='#'?'クリックで表示中の行を全選択してクリップボードにコピー（最大500件）':esc(c.label)+'（クリックでソート／ドラッグで並替）'}">${esc(c.label)}${cs.k===c.key?(cs.d>0?' ▲':' ▼'):''}<i class="rs"></i></th>`;
+  h+='</tr></thead><tbody>';
+  for(let i=st;i<en;i++){const r=data[i];h+=`<tr data-i="${i}"${S.sel&&S.sel.v===S.view&&S.sel.k===selKey(r)?' class="sel"':''}>`;
+    for(const c of cols){
+      if(c.key==='#'){h+=`<td class="k0">${i+1}</td>`;continue;}
+      const t=String(cellText(c.key,r));
+      h+=`<td class="${c.money?'r ':''}${c.light?'light':''}" title="${esc(t)}">${esc(t)}</td>`;}
+    h+='</tr>';}
+  h+='</tbody>';
+  $('#tb').innerHTML=h;
+  applyW();markAc();
+  const all=S.all.length,unit=S.view==='list'?'件':'事業所';
+  $('#ct').textContent=` 表示件数 ${en-st} / 総件数 ${tot}${S.filtered.length!==all?`(全${all})`:''} `;
+  $('#ct').title=`${tot?st+1:0}～${en} ${unit} / ${S.page+1}/${pages}ページ`;
+  $('#prv').style.visibility=S.page>0?'visible':'hidden';
+  $('#nxt').style.visibility=S.page<pages-1?'visible':'hidden';
+}
+const COPY_MAX=500;
+let toastT;
+function toast(m){let t=$('#toast');if(!t){t=document.createElement('div');t.id='toast';document.body.appendChild(t);}
+  t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),3200);}
+async function copyText(t){
+  try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(t);return true;}}catch(e){}
+  const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;left:-9999px;top:0';document.body.appendChild(a);a.select();
+  let ok=false;try{ok=document.execCommand('copy');}catch(e){}a.remove();return ok;}
+async function copyView(){
+  const cols=S.cols[S.view].filter(c=>c.key!=='#'),data=S.sorted,ps=S.ps;
+  const st=ps?S.page*ps:0,en=ps?Math.min(data.length,st+ps):data.length;
+  const n=Math.min(en-st,COPY_MAX);
+  if(n<=0){toast('コピーするデータがありません');return;}
+  const cl=v=>String(v==null?'':v).replace(/[\t\r\n]+/g,' ');
+  const lines=[cols.map(c=>cl(c.label)).join('\t')];
+  for(let i=st;i<st+n;i++)lines.push(cols.map(c=>cl(cellText(c.key,data[i]))).join('\t'));
+  const rows=$('#tb').querySelectorAll('tbody tr');
+  rows.forEach((tr,i)=>tr.classList.toggle('sa',i<n));
+  const ok=await copyText(lines.join('\r\n'));
+  toast(ok?`表示中の${n}件を選択し、クリップボードにコピーしました（Excel等に貼り付け可）${en-st>COPY_MAX?`　※表示${en-st}件のうち先頭${COPY_MAX}件まで`:''}`
+          :'クリップボードにコピーできませんでした（ブラウザの権限をご確認ください）');
+}
+function applyW(){const cols=S.cols[S.view];let sum=0;cols.forEach(c=>sum+=c.w);
+  const t=$('#tb');t.style.width=sum+'px';t.querySelectorAll('col').forEach((el,i)=>{if(cols[i])el.style.width=cols[i].w+'px';});}
+function fit(){
+  const cols=S.cols[S.view];if(!cols)return;
+  const avail=$('#wrap').clientWidth-2;let fx=0,sb=0;
+  cols.forEach(c=>{if(c.fixed||c.manual)fx+=c.w;else sb+=c.base;});
+  let f=sb?(avail-fx)/sb:1;f=Math.max(.7,Math.min(f,3));
+  cols.forEach(c=>{if(!c.fixed&&!c.manual)c.w=Math.round(c.base*f);});
+  applyW();
+}
+function searchSummary(){
+  const parts=[],q=$('#q').value.trim();
+  if(q)parts.push(q);
+  $('#advF').querySelectorAll('.ar').forEach(row=>{
+    const name=row.querySelector('.al').firstChild.textContent.trim(),vals=[];
+    row.querySelectorAll('input').forEach(i=>{
+      if(i.type==='checkbox'){if(i.checked)vals.push(i.parentNode.textContent.trim());}
+      else if(i.type==='radio'){if(i.checked&&i.value!=='')vals.push(i.value);}
+      else if(i.type==='text'){if(i.value.trim())vals.push(i.value.trim());}
+      else if(i.type==='number'){if(i.value!=='')vals.push('月平均'+i.value+'時間以下');}
+    });
+    if(!vals.length)return;
+    let v=vals.join('・');
+    if(name==='フリーワード'){const f=$('#fws').value;if(f!=='all')v=f+'='+v;}
+    parts.push(name+':'+v);
+  });
+  return parts.join(' ｜ ');
+}
+function updateFooter(){
+  const t=searchSummary()||'なし(全件)',el=$('#fs');
+  el.textContent=t;el.title=t;
+}
+function apply(){
+  const sg=segs($('#q').value),A=readAdv(),act=advActive(A);
+  S.filtered=S.all.filter(r=>hit(r._s,sg)&&(!act||matchAdv(r,A)));
+  S.page=0;resort();render();updateFooter();
+}
+let tmr;const applyL=()=>{clearTimeout(tmr);tmr=setTimeout(apply,120);};
+
+/* ---------- 列操作（ソート / 並替 / 幅） ---------- */
+(function(){
+  const tb=$('#tb');let drag=null,resizing=false;
+  tb.addEventListener('click',e=>{
+    const th=e.target.closest('th');if(!th||resizing||e.target.classList.contains('rs'))return;
+    const k=th.dataset.k;if(k==='#'){copyView();return;}
+    const sp=S.sort[S.view],cur=sp[sp.length-1];
+    S.sort[S.view]=[{k,d:cur.k===k?-cur.d:1}];S.page=0;resort();render();});
+  tb.addEventListener('mousedown',e=>{
+    if(!e.target.classList.contains('rs'))return;
+    e.preventDefault();e.stopPropagation();resizing=true;
+    const th=e.target.parentNode,cols=S.cols[S.view],c=cols.find(x=>x.key===th.dataset.k);
+    const x0=e.clientX,w0=c.w;th.draggable=false;
+    const mv=ev=>{c.w=Math.max(28,w0+ev.clientX-x0);c.manual=true;applyW();};
+    const up=()=>{document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);th.draggable=true;setTimeout(()=>resizing=false,0);};
+    document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);});
+  tb.addEventListener('dragstart',e=>{const th=e.target.closest&&e.target.closest('th');if(!th)return;drag=th.dataset.k;e.dataTransfer.setData('text/plain',drag);e.dataTransfer.effectAllowed='move';});
+  tb.addEventListener('dragover',e=>{const th=e.target.closest('th');if(!th||drag==null)return;e.preventDefault();
+    tb.querySelectorAll('th.dov').forEach(x=>x.classList.remove('dov'));th.classList.add('dov');});
+  tb.addEventListener('dragleave',e=>{const th=e.target.closest('th');if(th)th.classList.remove('dov');});
+  tb.addEventListener('drop',e=>{
+    e.preventDefault();const th=e.target.closest('th');if(!th||drag==null)return;
+    const cols=S.cols[S.view],from=cols.findIndex(c=>c.key===drag);let to=cols.findIndex(c=>c.key===th.dataset.k);
+    drag=null;if(from<1||from===to)return;if(to<1)to=1;
+    const [c]=cols.splice(from,1);cols.splice(to,0,c);render();});
+  tb.addEventListener('dragend',()=>{drag=null;tb.querySelectorAll('th.dov').forEach(x=>x.classList.remove('dov'));});
+  tb.addEventListener('click',e=>{
+    const tr=e.target.closest('tbody tr');if(!tr)return;
+    const r=S.sorted[+tr.dataset.i];if(!r)return;
+    S.sel={v:S.view,k:selKey(r)};
+    const td0=e.target.closest('td');if(td0){S.ac={i:+tr.dataset.i,c:td0.cellIndex};markAc();}
+    tb.querySelectorAll('tbody tr.sa').forEach(x=>x.classList.remove('sa'));
+    tb.querySelectorAll('tbody tr.sel').forEach(x=>x.classList.remove('sel'));
+    tr.classList.add('sel');});
+  tb.addEventListener('dblclick',e=>{const tr=e.target.closest('tbody tr');if(!tr)return;openDetail(S.sorted[+tr.dataset.i]);});
+})();
+
+/* ---------- 列追加 ---------- */
+function openCols(){
+  const cols=S.cols[S.view];
+  $('#cg').innerHTML=MASTER.map(k=>`<label class="${LIGHT.has(k)?'light':''}" title="${esc(LABEL(k))}"><input type="checkbox" value="${esc(k)}"${cols.some(c=>c.key===k)?' checked':''}>${esc(LABEL(k))}</label>`).join('');
+  syncAll();
+  $('#dCols').showModal();
+}
+function syncAll(){
+  const cols=S.cols[S.view],all=MASTER.every(k=>cols.some(c=>c.key===k)),b=$('#cgTog');
+  b.textContent=all?'戻す':'全選択';b.title=all?'初期の表示列に戻します':'すべての列を表示します';
+}
+function addCol(k){
+  const cols=S.cols[S.view];if(cols.some(c=>c.key===k))return;
+  const m=MASTER.indexOf(k);let at=1,best=-1;
+  cols.forEach((c,j)=>{const mi=MASTER.indexOf(c.key);if(mi>=0&&mi<m&&mi>best){best=mi;at=j+1;}});
+  cols.splice(at,0,mkCol(k));
+}
+$('#cgTog').addEventListener('click',()=>{
+  const cols0=S.cols[S.view],all=MASTER.every(k=>cols0.some(c=>c.key===k));
+  if(all)S.cols[S.view]=(S.view==='list'?LIST_DEF:GROUP_DEF).map(mkCol);
+  else MASTER.forEach(addCol);
+  const cols=S.cols[S.view];
+  $('#cg').querySelectorAll('input').forEach(x=>x.checked=cols.some(c=>c.key===x.value));
+  syncAll();render();fit();});
+$('#cg').addEventListener('change',e=>{
+  const k=e.target.value,cols=S.cols[S.view],i=cols.findIndex(c=>c.key===k);
+  if(e.target.checked){
+    if(i>=0)return;addCol(k);
+  }else if(i>0)cols.splice(i,1);
+  syncAll();render();fit();});
+
+/* ---------- 求人詳細 ---------- */
+const DGROUPS=[
+ ['求人情報',['年度','求人番号','受付所','管理No','WEB公開','雇用形態','職種','仕事内容','通勤求人','住込求人','不問求人','_cnt','必要スキル','募集人数','対象学科','エリア','その他分類']],
+ ['事業所',['事業所No','事業所名','事業所カナ','所在_郵便No','所在地住所','所在地アクセス','代表者','法人No','web_site','全社員数','就業社員数','設立年','資本金','事業内容','会社特長','産業分類NO','産業分類名']],
+ ['就業場所・住宅',['就業_郵便No','就業場所住所','就業場所アクセス','就業_市区町村1','就業_市区町村2','就業_市区町村3','_place','転勤','マイカー通勤','単身住宅','世帯住宅']],
+ ['給与・休日・労働時間',['基本給','月給','賞与','残業の有無','平均残業時間','労働時間の種類','休日','就業時間1','就業時間2','就業時間3','年間休日','時間あたりの賃金','予想月給','予想賞与']],
+ ['応募・見学',['複数応募','複数応募日程','職場見学','見学日程','来校','二次募集','見学人数','応募人数','入社人数','入社実績']],
+ ['人事担当',['担当役職','担当者','担当者カナ','担当TEL','担当FAX','担当メール']],
+ ['職業分類',['_occ','職業分類1','職業分類2','HW職業大分類','HW職業中分類','HW職業小分類','HW職業2大分類','HW職業2中分類','HW職業2小分類','handy職業大分類','handy職業中分類','handy職業2大分類','handy職業2中分類','標準職業1コード','標準職業分類1','標準職業2コード','標準職業分類2']]];
+const LONGF=new Set(['仕事内容','事業内容','会社特長','必要スキル','補足','特記','備考','申送り事項','休日','就業場所アクセス','所在地アクセス','入社実績','見学日程','複数応募日程','その他分類']);
+const DORDER=['求人情報','給与・休日・労働時間','就業場所・住宅','事業所','応募・見学','人事担当','職業分類','備考・管理'];
+const ROWS={
+ '職種':[['仕事内容'],['minmax(0,1fr)','minmax(0,3fr)']],
+ '職種':[['仕事内容'],['minmax(0,.8fr)','minmax(0,2.2fr)']],
+ '職種':[['仕事内容'],['minmax(0,1fr)','minmax(0,2.4fr)']],
+ '公開日時':[['更新日時','登録方法','元ファイル','お気に入り数'],['minmax(0,1fr)','minmax(0,1fr)','minmax(0,.8fr)','minmax(0,1.6fr)','minmax(0,.8fr)'],'meta'],
+ '通勤求人':[['住込求人','不問求人','_cnt'],['1fr','1fr','1fr','1fr']],
+ '複数応募':[['複数応募日程','職場見学','見学日程','二次募集'],['minmax(0,.7fr)','minmax(0,1.6fr)','minmax(0,.9fr)','minmax(0,1.6fr)','minmax(0,.8fr)']],
+ '必要スキル':[['募集人数','対象学科','エリア','その他分類'],['minmax(0,2.2fr)','minmax(0,.7fr)','minmax(0,1.2fr)','minmax(0,1fr)','minmax(0,1.6fr)']],
+ '就業_郵便No':[['就業場所住所','就業場所アクセス'],['minmax(0,.8fr)','minmax(0,1.6fr)','minmax(0,1.6fr)']],
+ '就業時間1':[['就業時間2','就業時間3'],['1fr','1fr','1fr']],
+ '年間休日':[['休日'],['minmax(0,1fr)','minmax(0,2.2fr)']],
+ '時間あたりの賃金':[['予想月給','予想賞与'],['1fr','1fr','1fr']],
+ '応募人数':[['入社人数','入社実績'],['minmax(0,1fr)','minmax(0,1fr)','minmax(0,2.4fr)']],
+ '_occ':[['職業分類1','職業分類2'],['1fr','1fr','1fr']],
+ 'HW職業大分類':[['HW職業中分類','HW職業小分類'],['1fr','1fr','1fr']],
+ 'HW職業2大分類':[['HW職業2中分類','HW職業2小分類'],['1fr','1fr','1fr']],
+ 'handy職業大分類':[['handy職業中分類'],['1fr','1fr']],
+ 'handy職業2大分類':[['handy職業2中分類'],['1fr','1fr']],
+ '標準職業1コード':[['標準職業分類1','標準職業2コード','標準職業分類2'],['minmax(0,.7fr)','minmax(0,1.3fr)','minmax(0,.7fr)','minmax(0,1.3fr)']]};
+const DLBL={'入社実績':'過去入社実績'};
+const NOWRAP=new Set(['handy職業2大分類','handy職業2中分類']);
+function detVal(k,v){
+  if(k==='web_site'&&/^https?:\/\//i.test(v))return `<a href="${esc(v)}" target="_blank" rel="noopener noreferrer">${esc(v)}</a>`;
+  return esc(v);}
+function openDetail(r){
+  if(!r)return;S.cur=r;
+  const used=new Set();DGROUPS.forEach(g=>g[1].forEach(k=>used.add(k)));
+  const groups=DGROUPS.map(g=>[g[0],g[1]]);
+  groups.push(['備考・管理',MASTER.filter(k=>!used.has(k))]);
+  groups.sort((a,b)=>DORDER.indexOf(a[0])-DORDER.indexOf(b[0]));
+  const showE=$('#showEmpty').checked,T=k=>String(cellText(k,r)).trim();
+  /* 要約 */
+  const tags=['年度','管理No','求人番号','事業所No','受付所','WEB公開'].filter(k=>T(k)).map(k=>`<span>${esc(k)} ${esc(T(k))}</span>`).join('');
+  const jb=[T('職種'),T('雇用形態')].filter(Boolean).map(esc).join('　/　');
+  const kp=[['月給','月給'],['基本給','基本給'],['年間休日','年間休日'],['賞与','賞与'],['募集人数','募集人数'],['平均残業','平均残業時間'],['就業場所','_place']]
+    .map(([l,k])=>[l,T(k)||(k==='_place'?T('就業場所住所'):'')]).filter(x=>x[1])
+    .map(([l,v])=>`<div><small>${esc(l)}</small><b>${esc(v)}</b></div>`).join('');
+  let h=`<div class="sm"><div class="nm">${esc(r['事業所名'])}</div><div class="tg">${tags}</div>${jb?`<div class="jb">${jb}</div>`:''}<div class="kp">${kp}</div></div>`;
+  let nav='';
+  groups.forEach(([t,ks],gi)=>{
+    const items=ks.map(k=>[k,T(k)]).filter(x=>showE||x[1]!=='');
+    if(!items.length)return;
+    const nf=items.filter(x=>x[1]!=='').length;
+    h+=`<div class="sec" id="ds${gi}"><h4>${esc(t)}<small>${nf}/${ks.length}</small></h4><div class="grid">`;
+    const fld=(k,v)=>`<div class="f${NOWRAP.has(k)?' nw':''}${LONGF.has(k)?' w':''}${LIGHT.has(k)?' light':''}${v===''?' e':''}"><b>${esc(LABEL(k))}</b><span>${v===''?'—':detVal(k,v)}</span></div>`;
+    const PAIR={'事業内容':'会社特長','補足':'特記'},skip=new Set();
+    const has=k=>items.some(x=>x[0]===k);
+    const rowFld=(k,v)=>fld(k,v).replace(/<b>[^<]*<\/b>/,m=>DLBL[k]?`<b>${esc(DLBL[k])}</b>`:m);
+    for(const k of Object.keys(ROWS))if(has(k))ROWS[k][0].forEach(x=>skip.add(x));
+    for(const [k,v] of items){
+      if(skip.has(k))continue;
+      const rw=ROWS[k];
+      if(rw){
+        const fs=rw[0].filter(has);
+        if(fs.length){const cols=[rw[1][0]].concat(rw[1].slice(1).filter((_,i)=>has(rw[0][i]))).join(' ');
+          h+=`<div class="pr pn${rw[2]?' '+rw[2]:''}" style="grid-template-columns:${cols}">${rowFld(k,v)}${fs.map(x=>rowFld(x,items.find(y=>y[0]===x)[1])).join('')}</div>`;}
+        else h+=fld(k,v);
+        continue;}
+      const pk=PAIR[k],pi=pk&&items.find(x=>x[0]===pk);
+      if(pi){skip.add(pk);h+=`<div class="pr">${fld(k,v)}${fld(pi[0],pi[1])}</div>`;}
+      else h+=fld(k,v);}
+    h+='</div></div>';
+    nav+=`<button type="button" data-t="ds${gi}">${esc(t)}</button>`;});
+  $('#dT').textContent=`管理No ${r['管理No']}　${r['事業所名']}`;
+  $('#dB').innerHTML=h;$('#dN').innerHTML=nav;
+  if(!$('#dDet').open)$('#dDet').showModal();
+  $('#dB').scrollTop=0;
+}
+$('#dN').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  const el=document.getElementById(b.dataset.t),box=$('#dB');if(!el)return;
+  box.scrollTo({top:box.scrollTop+el.getBoundingClientRect().top-box.getBoundingClientRect().top,behavior:'smooth'});
+  const f=el.querySelector('.f');if(f){f.tabIndex=-1;f.focus({preventScroll:true});}});
+$('#showEmpty').addEventListener('change',()=>{if(S.cur)openDetail(S.cur);});
+
+/* ---------- 類似求人 ---------- */
+function bg(r){if(r._bg)return r._bg;const s=nz((r['職種']||'')+(r['職業分類1']||'')+(r['標準職業分類1']||'')).replace(/\s+/g,'');const m=new Set();for(let i=0;i<s.length-1;i++)m.add(s.substr(i,2));return r._bg=m;}
+function jac(a,b){if(!a.size||!b.size)return 0;let n=0;a.forEach(x=>{if(b.has(x))n++;});return n/(a.size+b.size-n);}
+const clip=x=>Math.max(0,Math.min(1,x));
+function simScore(a,b,F){
+  let sw=0,ss=0;
+  if(F.job){const ca=nz(a['標準職業1コード']),cb=nz(b['標準職業1コード']);const j=jac(bg(a),bg(b));
+    let s=j;if(ca&&cb){const c=ca===cb?1:ca.slice(0,3)===cb.slice(0,3)?.7:ca.slice(0,2)===cb.slice(0,2)?.4:ca.slice(0,1)===cb.slice(0,1)?.2:0;s=.55*c+.45*j;}
+    sw+=40;ss+=40*s;}
+  if(F.mg){const x=a._mg,y=b._mg;sw+=25;if(x!=null&&y!=null&&Math.max(x,y)>0)ss+=25*clip(1-Math.abs(x-y)/Math.max(x,y)*2);}
+  if(F.yh){const x=a._yh,y=b._yh;sw+=15;if(x!=null&&y!=null)ss+=15*clip(1-Math.abs(x-y)/30);}
+  if(F.loc){sw+=20;const p=a['就業_市区町村1'],q=b['就業_市区町村1'];
+    if(p&&p===q)ss+=20;else{const x=(a['就業場所住所']||'').slice(0,3),y=(b['就業場所住所']||'').slice(0,3);if(x&&x===y)ss+=8;}}
+  return sw?ss/sw*100:0;
+}
+function openSim(){
+  const base=S.cur;if(!base)return;
+  const F={};document.querySelectorAll('.sf').forEach(c=>F[c.value]=c.checked);
+  if(!Object.values(F).some(Boolean)){F.job=F.mg=F.yh=F.loc=true;}
+  const list=S.all.filter(r=>r!==base&&!(base['求人番号']&&r['求人番号']===base['求人番号']))
+    .map(r=>({r,s:simScore(base,r,F)})).sort((a,b)=>b.s-a.s||(b.r._k||0)-(a.r._k||0)).slice(0,50);
+  const cell=(t,st)=>`<td title="${esc(t)}"${st||''}>${esc(t)}</td>`;
+  let h=`<table class="tb2"><thead><tr><th>順位</th><th>類似度</th><th>管理No</th><th>求人番号</th><th>事業所名</th><th>職種</th><th>雇用形態</th><th>月給</th><th>年間休日</th><th>賞与</th><th>就業場所</th><th>職業分類(標準)</th></tr></thead><tbody>`;
+  const row=(r,rank,s,cls)=>`<tr class="${cls||''}"><td>${rank}</td><td>${s==null?'基準':`<span class="bar"><i style="width:${s.toFixed(0)}%"></i></span>${s.toFixed(0)}%`}</td>${cell(r['管理No'])}${cell(r['求人番号'])}${cell(r['事業所名'])}${cell(r['職種'])}${cell(r['雇用形態'])}${cell(yen(r._mg),' style="text-align:right"')}${cell(r['年間休日'])}${cell(r['賞与'])}${cell(r._pl||r['就業場所住所'])}${cell(r._oc)}</tr>`;
+  h+=row(base,'★',null,'base');
+  list.forEach((x,i)=>{h+=row(x.r,i+1,x.s);});
+  h+='</tbody></table>';
+  $('#sT').textContent=`基準：求人番号 ${base['求人番号']}（比較: ${[F.job&&'職種',F.mg&&'月給',F.yh&&'年休',F.loc&&'場所'].filter(Boolean).join('・')}）行ダブルクリックで求人票を表示`;
+  $('#sB').innerHTML=h;
+  S.simList=[base].concat(list.map(x=>x.r));
+  $('#dSim').showModal();$('#sB').scrollTop=0;
+}
+function askYesNo(info){return new Promise(res=>{const d=$('#dCfm');$('#cfI').textContent=info||'';
+  d.returnValue='no';d.addEventListener('close',()=>res(d.returnValue==='yes'),{once:true});d.showModal();$('#cfYes').focus();});}
+$('#sB').addEventListener('dblclick',async e=>{const tr=e.target.closest('tbody tr');if(!tr)return;
+  const r=S.simList[[...tr.parentNode.children].indexOf(tr)];if(!r)return;
+  const ok=await askYesNo(`求人番号 ${r['求人番号']||''}　${r['事業所名']||''}`);
+  if(ok)openDetail(r);});
+$('#simB').addEventListener('click',openSim);
+
+/* ---------- 求人票を閉じたら、同じ管理Noの行へフォーカスを戻す ---------- */
+function focusCurRow(){
+  const r=S.cur;if(!r||!S.sorted.length)return;
+  let i=S.sorted.indexOf(r);
+  if(i<0){
+    if(S.view==='list'){const k=r['管理No'];if(k)i=S.sorted.findIndex(x=>x['管理No']===k);}
+    else{const k=r['事業所No'];if(k)i=S.sorted.findIndex(x=>x['事業所No']===k);}
+  }
+  if(i<0)return; /* 検索条件で一覧に出ていない求人は何もしない */
+  if(S.ps)S.page=Math.floor(i/S.ps);
+  const nc=S.cols[S.view].length;
+  S.ac={i,c:Math.max(1,Math.min(nc-1,S.ac?S.ac.c:1))};
+  S.sel={v:S.view,k:selKey(S.sorted[i])};
+  render();
+  markAc(true);
+  const tr=$('#tb').querySelector(`tbody tr[data-i="${i}"]`);
+  if(tr)tr.scrollIntoView({block:'nearest'});
+  $('#wrap').focus({preventScroll:true});
+}
+$('#dDet').addEventListener('close',()=>{if(!$('#dSim').open)focusCurRow();});
+$('#dSim').addEventListener('close',()=>{if(!$('#dDet').open)focusCurRow();});
+
+/* ---------- 検証 ---------- */
+function runChecks(){
+  const R=S.all,out=[];
+  const add=(n,d,list,id)=>out.push({n,d,c:list.length,ex:list.slice(0,8).map(id||(r=>r['管理No']||r['求人番号']||'?'))});
+  const dup=k=>{const m=new Map();R.forEach(r=>{const v=r[k];if(v)m.set(v,(m.get(v)||0)+1);});return R.filter(r=>r[k]&&m.get(r[k])>1);};
+  add('管理No 欠損・数値以外','管理Noが空、または数字でない',R.filter(r=>r._k==null),r=>r['求人番号']);
+  add('管理No 重複','同じ管理Noが複数行',dup('管理No'));
+  add('求人番号 欠損','求人番号が空',R.filter(r=>!r['求人番号']));
+  add('求人番号 重複','同じ求人番号が複数行',dup('求人番号'),r=>r['求人番号']);
+  add('事業所名 欠損','事業所名が空',R.filter(r=>!r['事業所名']));
+  add('事業所No 欠損','事業所Noが空(事業所別一覧が正しくまとまらない)',R.filter(r=>!r['事業所No']));
+  const nm=new Map();R.forEach(r=>{if(r['事業所No']){if(!nm.has(r['事業所No']))nm.set(r['事業所No'],new Set());nm.get(r['事業所No']).add(r['事業所名']);}});
+  add('同一事業所Noで事業所名が相違','同じ事業所Noに複数の事業所名',R.filter(r=>nm.get(r['事業所No'])&&nm.get(r['事業所No']).size>1),r=>r['事業所No']);
+  add('産業分類NO 欠損','産業分類NOが空',R.filter(r=>!r['産業分類NO']));
+  add('産業分類NO コード表に無い','産業分類.txtに該当コードが無い(桁不足など)',R.filter(r=>r['産業分類NO']&&!IND[r._ic]),r=>`${r['管理No']}(${r['産業分類NO']})`);
+  add('月給 欠損・数値化不可','月給が空/範囲表記など数値でない(賃金・予想月給が計算不可)',R.filter(r=>r._mg==null));
+  add('月給 範囲外','月給が8万円未満または100万円超',R.filter(r=>r._mg!=null&&(r._mg<80000||r._mg>1000000)));
+  add('基本給 > 月給','基本給が月給を上回る',R.filter(r=>r._kh!=null&&r._mg!=null&&r._kh>r._mg));
+  add('年間休日 欠損・範囲外','空、数値でない、50日未満または180日超',R.filter(r=>r._yh==null||r._yh<50||r._yh>180));
+  add('賞与あり で基本給なし','予想賞与(基本給×2)が計算不可',R.filter(r=>bonusYes(r)&&r._kh==null));
+  add('残業あり で時間数なし/過大','残業ありで平均残業時間が空、または80時間超',R.filter(r=>/あり|有/.test(r['残業の有無']||'')&&(r._ot==null||r._ot>80)));
+  add('就業場所 欠損','就業場所住所と市区町村がともに空',R.filter(r=>!r['就業場所住所']&&!r._pl));
+  add('求人数(計) 0','通勤+住込+不問が0または空',R.filter(r=>!r._tot));
+  add('全社員数 < 就業社員数','企業全体より就業場所の人数が多い',R.filter(r=>{const a=toNum(r['全社員数']),b=toNum(r['就業社員数']);return a!=null&&b!=null&&a<b;}));
+  add('年度 欠損','年度が空',R.filter(r=>!r['年度']));
+  const yrs=[...new Set(R.map(r=>r['年度']).filter(Boolean))];
+  const bad=out.filter(o=>o.c).length;
+  let h=`<div class="note"><b>読込元:</b> ${esc(S.src)}　<b>行数:</b> ${R.length}　<b>年度:</b> ${esc(yrs.join(', ')||'なし')}<br><b>CSVに存在しない項目(項目名変更.txt基準):</b> ${S.missing.length?`<span class="ng">${esc(S.missing.join('、'))}</span>`:'<span class="ok">なし</span>'}</div>`;
+  h+=`<table class="tb2"><thead><tr><th>#</th><th>点検項目</th><th>判定</th><th>件数</th><th>内容</th><th>該当例(先頭8件)</th></tr></thead><tbody>`;
+  out.forEach((o,i)=>{h+=`<tr><td>${i+1}</td><td>${esc(o.n)}</td><td class="${o.c?'ng':'ok'}">${o.c?'要確認':'OK'}</td><td style="text-align:right">${o.c}</td><td>${esc(o.d)}</td><td title="${esc(o.ex.join(', '))}">${esc(o.ex.join(', '))}</td></tr>`;});
+  h+='</tbody></table>';
+  h+=`<div class="note"><b>仕様上の注意</b><ul>
+<li>時間あたりの賃金 = 月給 ÷ ((365−年間休日)×8÷12)。分母は「月の所定労働時間」です。</li>
+<li>予想賞与は賞与が「あり」の求人のみ 基本給×2 とし、それ以外は空欄です。</li>
+<li>「職業分類(3桁)」「(5桁)」は同じ短縮ラベルのため、値のある方(両方あれば5桁)を使用します。</li>
+<li>詳細検索の「仕事の種類」「希望する休日」「勤務制度」はキーワード照合による近似です。</li></ul></div>`;
+  $('#kT').textContent=`要確認 ${bad} / ${out.length} 項目`;
+  $('#kB').innerHTML=h;$('#dChk').showModal();
+}
+
+/* ---------- イベント ---------- */
+document.addEventListener('click',e=>{const c=e.target.closest('[data-close]');if(c)c.closest('dialog').close();});
+$('#q').addEventListener('input',applyL);
+$('#q').addEventListener('dblclick',()=>$('#dAdv').showModal());
+$('#advF').addEventListener('input',applyL);$('#advF').addEventListener('change',applyL);
+$('#advClr').addEventListener('click',()=>{$('#advF').reset();apply();});
+$('#clr').addEventListener('click',()=>{$('#q').value='';$('#advF').reset();apply();});
+$('#ps').addEventListener('change',e=>{S.ps=+e.target.value;S.page=0;render();});
+$('#prv').addEventListener('click',()=>{S.page--;render();$('#wrap').scrollTop=0;});
+$('#nxt').addEventListener('click',()=>{S.page++;render();$('#wrap').scrollTop=0;});
+$('#addc').addEventListener('click',openCols);
+$('#chk').addEventListener('click',()=>{if(S.all.length)runChecks();});
+$('#ttl').addEventListener('dblclick',()=>{
+  S.view=S.view==='list'?'group':'list';
+  $('#vb').textContent=S.view==='group'?'　[事業所No別]':'';
+  S.page=0;resort();render();fit();});
+window.addEventListener('resize',fit);
+/* ---------- キーボード操作（矢印キー / Enter で一覧内を移動） ---------- */
+function markAc(scroll){
+  const tb=$('#tb');tb.querySelectorAll('td.ac').forEach(x=>x.classList.remove('ac'));
+  if(!S.ac)return;
+  const tr=tb.querySelector(`tbody tr[data-i="${S.ac.i}"]`);if(!tr)return;
+  const td=tr.cells[S.ac.c];if(!td)return;
+  td.classList.add('ac');
+  if(!scroll)return;
+  const w=$('#wrap'),wr=w.getBoundingClientRect(),r=td.getBoundingClientRect();
+  const th=tb.querySelector('thead th'),hh=th?th.getBoundingClientRect().height:0;
+  const k0=tb.querySelector('th.k0'),kw=k0&&S.ac.c>0?k0.getBoundingClientRect().width:0;
+  if(r.top<wr.top+hh)w.scrollTop-=(wr.top+hh-r.top);
+  else if(r.bottom>wr.bottom)w.scrollTop+=(r.bottom-wr.bottom);
+  if(r.left<wr.left+kw)w.scrollLeft-=(wr.left+kw-r.left);
+  else if(r.right>wr.right)w.scrollLeft+=(r.right-wr.right);
+}
+function moveAc(dr,dc){
+  const n=S.sorted.length,ncol=S.cols[S.view].length;if(!n)return;
+  const ps=S.ps,pages=ps?Math.max(1,Math.ceil(n/ps)):1;
+  let st=ps?S.page*ps:0,en=ps?Math.min(n,st+ps):n;
+  let i=S.ac?S.ac.i:st,c=S.ac?S.ac.c:1;
+  if(!S.ac&&!dr&&!dc){}
+  i+=dr;c=Math.max(1,Math.min(ncol-1,c+dc));
+  let pg=S.page;
+  if(i>=en){if(S.page<pages-1)pg=S.page+1;else i=en-1;}
+  else if(i<st){if(S.page>0)pg=S.page-1;else i=st;}
+  i=Math.max(0,Math.min(n-1,i));
+  S.ac={i,c};S.sel={v:S.view,k:selKey(S.sorted[i])};
+  const tb=$('#tb');
+  if(pg!==S.page){S.page=pg;render();$('#wrap').scrollTop=dr<0?1e9:0;}
+  else{tb.querySelectorAll('tbody tr.sa,tbody tr.sel').forEach(x=>x.classList.remove('sa','sel'));
+    const tr=tb.querySelector(`tbody tr[data-i="${i}"]`);if(tr)tr.classList.add('sel');}
+  markAc(true);
+}
+$('#wrap').addEventListener('keydown',e=>{
+  if(e.ctrlKey||e.metaKey||e.altKey||e.isComposing)return;
+  let dr=0,dc=0;
+  switch(e.key){
+    case 'ArrowDown':dr=1;break;case 'ArrowUp':dr=-1;break;
+    case 'ArrowRight':dc=1;break;case 'ArrowLeft':dc=-1;break;
+    case 'Enter':dr=e.shiftKey?-1:1;break;
+    default:return;}
+  e.preventDefault();
+  if(!S.ac){S.ac={i:S.page*(S.ps||0),c:1};S.sel={v:S.view,k:selKey(S.sorted[S.ac.i]||{})};markAc(true);if(!dr||e.key==='Enter')return;if(e.key!=='Enter')return;}
+  moveAc(dr,dc);
+});
+
+
+/* ---------- 起動 ---------- */
+(async function(){
+  buildAdv();
+  S.cols.list=LIST_DEF.map(mkCol);S.cols.group=GROUP_DEF.map(mkCol);
+  try{
+    const recs=parseCSV(await loadCSV());
+    if(recs.length<2)throw new Error('データ行がありません');
+    S.all=buildRows(recs);
+    const ys=S.all.map(r=>r['年度']).filter(Boolean).sort((a,b)=>cmp(b,a));
+    $('#yr').textContent=ys[0]||'-';
+    $('#msg').remove();
+    apply();fit();
+  }catch(e){
+    $('#msg').textContent='CSVを読み込めませんでした。\n'+e.message+'\n\nkyujin.html と kyujin2026.csv を同じフォルダに置くか、ネットワークを確認してください。';
+  }
+})();
+</script>
+</body>
+</html>
