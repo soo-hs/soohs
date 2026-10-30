@@ -100,8 +100,10 @@ dialog::backdrop{background:#0b1b4070}
 #dDet .dh{position:relative;flex-wrap:wrap;padding:2px 38px 2px 8px;gap:2px 6px}
 #dDet .dh .x{position:absolute;top:3px;right:8px;z-index:6}
 #dDet .dh label{display:inline-flex;align-items:center;gap:2px;white-space:nowrap}
-#dDet .dh #simB{margin-left:auto}
-@media(max-width:700px){#dDet .dh{gap:3px 8px}#dDet .dh #simB{margin-left:0;flex:1 1 100%}}
+#dDet .dh{column-gap:clamp(2px,1.2vw,10px)}
+#dDet .dh label{font-size:clamp(9.5px,1.5vw,11px);margin-left:0!important}
+#dDet .dh #simB{margin-left:auto;height:18px;padding:0 4px;font-size:9.5px;letter-spacing:-.3px}
+@media(max-width:700px){#dDet .dh{column-gap:4px}#dDet .dh #simB{margin-left:auto;flex:0 0 auto}}
 #dDet .db{flex:0 1 auto}
 #dDet .sm{padding:3px 8px;background:#fff;border-bottom:1px solid var(--ln)}
 #dDet .nm{font-size:15.3px;font-weight:800;color:#c2570c;line-height:1.2}
