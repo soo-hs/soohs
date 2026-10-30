@@ -25,8 +25,10 @@ select,input[type=number]{height:22px;border:1px solid var(--ln);border-radius:4
 .b.g{background:#e3eaf8;color:var(--nvd)}
 #addc,#chk{padding:0 3px;font-size:10.5px;letter-spacing:-.5px}
 .cnt{font-size:10.5px;white-space:nowrap;color:#dbe6ff}
+#ct{position:relative;left:-2pt}
 .cnt a{cursor:pointer;color:var(--am);font-weight:700;padding:0 4px;user-select:none}
 .cnt a:hover{text-decoration:underline}
+#ct{position:relative;left:-1pt}
 #wrap{flex:1 1 auto;overflow:auto;position:relative;background:#fff}
 #wrap:focus{outline:none}
 td.ac{outline:2px solid var(--nv);outline-offset:-2px}
@@ -97,6 +99,9 @@ dialog::backdrop{background:#0b1b4070}
 .dn button:hover{background:var(--am);border-color:var(--am);color:#3b2a00}
 #dDet .dh{position:relative;flex-wrap:wrap;padding:2px 38px 2px 8px;gap:2px 6px}
 #dDet .dh .x{position:absolute;top:3px;right:8px;z-index:6}
+#dDet .dh label{display:inline-flex;align-items:center;gap:2px;white-space:nowrap}
+#dDet .dh #simB{margin-left:auto}
+@media(max-width:700px){#dDet .dh{gap:3px 8px}#dDet .dh #simB{margin-left:0;flex:1 1 100%}}
 #dDet .db{flex:0 1 auto}
 #dDet .sm{padding:3px 8px;background:#fff;border-bottom:1px solid var(--ln)}
 #dDet .nm{font-size:15.3px;font-weight:800;color:#c2570c;line-height:1.2}
@@ -1296,7 +1301,7 @@ function openDetail(r){
       else h+=fld(k,v);}
     h+='</div></div>';
     nav+=`<button type="button" data-t="ds${gi}">${esc(t)}</button>`;});
-  $('#dT').textContent=`管理No ${r['管理No']}　${r['事業所名']}`;
+  $('#dT').textContent=`管理No ${r['管理No']}`;
   $('#dB').innerHTML=h;$('#dN').innerHTML=nav;
   if(!$('#dDet').open)$('#dDet').showModal();
   $('#dB').scrollTop=0;
