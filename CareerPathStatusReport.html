@@ -259,6 +259,62 @@
     .note-list li{font-size:9.5pt;line-height:1.35;margin-bottom:1mm;}
     footer{margin-top:2mm;padding-top:2mm;font-size:8pt;}
   }
+
+  /* ---- 6．学科別生徒名簿（移植） ---- */
+  #roster .rs-tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:3px solid var(--navy);}
+  #roster .rs-tab{border:0;background:#E3E9F5;color:var(--navy);padding:6px 14px;font:inherit;font-size:clamp(12px,2vw,14px);font-weight:700;cursor:pointer;border-radius:8px 8px 0 0;}
+  #roster .rs-tab small{font-weight:400;margin-left:4px;}
+  #roster .rs-tab.on{background:var(--navy);color:#fff;box-shadow:inset 0 3px 0 var(--orange);}
+  #roster .rs-tab:focus-visible{outline:3px solid var(--orange);outline-offset:2px;}
+  #roster .rs-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0;}
+  #roster .rs-bar input,#roster .rs-bar select{padding:4px 8px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px;background:#fff;}
+  #roster .rs-bar input{min-width:200px;}
+  #roster .rs-stats{margin-left:auto;font-size:13px;color:#444;}
+  #roster .rs-stats b{color:var(--navy);}
+  #roster .rs-wrap{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:8px;}
+  #roster .rs-panel{display:none;}
+  #roster .rs-panel.on{display:block;}
+  #roster .rs-ph{display:none;}
+  #roster table{border-collapse:collapse;table-layout:fixed;width:100%;min-width:860px;font-size:13px;margin:0;box-shadow:none;}
+  #roster th{background:var(--navy);color:#fff;padding:4px 8px;font-size:12.5px;text-align:left;white-space:nowrap;position:sticky;top:0;border:0;}
+  #roster td{padding:3px 8px;line-height:1.35;font-size:12px;border:0;border-top:1px solid var(--line);vertical-align:top;text-align:left;font-weight:400;overflow-wrap:anywhere;background:#fff;}
+  #roster tr:nth-child(even) td{background:#F8F9FC;}
+  #roster td:first-child,#roster th:first-child{text-align:center;font-weight:400;}
+  #roster th:first-child{font-weight:700;}
+  #roster td.no{color:#777;}
+  #roster th:nth-child(1){width:44px}#roster th:nth-child(2){width:120px}#roster th:nth-child(3){width:90px}#roster th:nth-child(4){width:115px}#roster th:nth-child(5){width:160px}#roster th:nth-child(6){width:60px}#roster th:nth-child(7){width:220px}#roster th:nth-child(8){width:90px}
+  #roster td.nm{font-weight:700;white-space:nowrap;font-size:13px;}
+  #roster .b{display:inline-block;padding:0 8px;border-radius:10px;font-size:12px;line-height:1.5;font-weight:700;white-space:nowrap;}
+  #roster .b.s{background:#E3EEFB;color:#1F4F8F;}
+  #roster .b.j{background:#FDEBD3;color:#9A5A00;}
+  #roster .b.ok{background:#DFF3E3;color:#1C6B32;}
+  #roster .b.ng{background:#FBE0E0;color:#A32727;}
+  #roster .b.mid{background:#FFF3C4;color:#7A5D00;}
+  #roster .rs-empty{padding:12px;text-align:center;color:#888;}
+  #roster .rs-head{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  #roster .rs-toggle{flex:none;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.14);color:#fff;font:inherit;font-size:clamp(11px,1.9vw,13px);font-weight:700;padding:3px 12px;border-radius:999px;cursor:pointer;white-space:nowrap;}
+  #roster .rs-toggle:hover{background:rgba(255,255,255,.28);}
+  #roster .rs-toggle:focus-visible{outline:3px solid var(--orange);outline-offset:2px;}
+  #roster .rs-body[hidden]{display:none;}
+  /* 閉じている間：見出しを隠し、右端にボタンだけ表示 */
+  #roster:not(.open) .rs-head{background:none;padding:0;margin:clamp(14px,3vw,24px) 0 0;justify-content:flex-end;border-radius:0;}
+  #roster:not(.open) .rs-head > span{display:none;}
+  #roster:not(.open) .rs-toggle{color:var(--navy);border-color:var(--navy);background:#fff;}
+  #roster:not(.open) .rs-toggle:hover{background:#EDF1F9;}
+  @media print{#roster:not(.open){display:none !important;}}
+  @media print{
+    #roster .rs-tabs,#roster .rs-bar{display:none !important;}
+    #roster .rs-panel{display:block !important;margin-bottom:4mm;}
+    #roster .rs-ph{display:block;font-size:11pt;font-weight:700;color:var(--navy);border-left:4px solid var(--accent);padding-left:2.5mm;margin:3mm 0 1.5mm;break-after:avoid;page-break-after:avoid;}
+    #roster .rs-wrap{border:0;overflow:visible;}
+    #roster table{min-width:0;font-size:8pt;break-inside:auto;page-break-inside:auto;}
+    #roster th{position:static;font-size:8pt;padding:0.6mm 1.5mm;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    #roster td{font-size:7.5pt;padding:0.4mm 1.5mm;line-height:1.25;}
+    #roster td.nm{font-size:8pt;}
+    #roster .b{font-size:7.5pt;padding:0 2mm;}
+    #roster tr{break-inside:avoid;page-break-inside:avoid;}
+    #roster th:nth-child(1){width:8mm}#roster th:nth-child(2){width:22mm}#roster th:nth-child(3){width:16mm}#roster th:nth-child(4){width:24mm}#roster th:nth-child(5){width:30mm}#roster th:nth-child(6){width:11mm}#roster th:nth-child(7){width:auto}#roster th:nth-child(8){width:16mm}
+  }
 </style>
 </head>
 <body>
@@ -434,6 +490,21 @@
     <li>本資料は提出されたExcelファイル「R8_進路状況シート_10月31日現在_.xlsx」の各学科シート（S3／G3／A3／M3／B3）および「集計」シートの数値を基に作成した。</li>
   </ul>
 
+  <section id="roster">
+    <h2 class="section pb rs-head" id="roster-head"><span>【学科別生徒名簿】</span><button type="button" class="rs-toggle no-print" id="rsToggle" aria-expanded="false" aria-controls="rsBody">More contents ▼</button></h2>
+    <div class="rs-body" id="rsBody" hidden>
+    <p class="no-print">学科別シート（S3／G3／A3／M3／B3）の生徒名簿。タブで学科を切り替え、氏名・備考の検索や、進学・就職、合否での絞り込みができる。印刷時は全学科を続けて出力する。</p>
+    <div class="rs-tabs" id="rsTabs" role="tablist"></div>
+    <div class="rs-bar">
+      <input id="rsQ" type="search" placeholder="氏名・備考で検索" aria-label="氏名・備考で検索">
+      <select id="rsF1" aria-label="進学・就職で絞り込み"><option value="">進学・就職：すべて</option><option>進学</option><option>就職</option></select>
+      <select id="rsF2" aria-label="合否で絞り込み"><option value="">合否：すべて</option><option value="合">合</option><option value="一次合格">一次合格</option><option value="否">否</option><option value="__none">未記入</option></select>
+      <span class="rs-stats" id="rsStats"></span>
+    </div>
+    <div id="rsPanels"></div>
+    </div>
+  </section>
+
   <footer>
     令和8年度　第11期生　進路状況報告書
   </footer>
@@ -446,6 +517,58 @@
   t.addEventListener('click',doPrint);
   t.addEventListener('keydown',function(e){
     if(e.key==='Enter'||e.key===' '){e.preventDefault();doPrint();}
+  });
+})();
+</script>
+<script>
+(function(){
+var D=[{"id": "S3", "name": "文理科", "asof": "2026年10月31日現在", "rows": [[1, "石井 花紅", "進学", "国公立４年制大学", "教育・保育", "", "宮崎大学教育学部", ""], [2, "迫 大夢", "進学", "国公立４年制大学", "農業・バイオ・動物", "", "宮崎大学農学部", ""], [3, "中迫 蘭", "進学", "国公立４年制大学", "医療・薬学・健康・スポーツ", "", "香川大医学部看護学科", ""], [4, "福永 雅翔", "進学", "国公立４年制大学", "語学・国際・観光・エアライン", "", "", ""], [5, "米重 幸太", "進学", "国公立４年制大学", "理化学・宇宙・生物", "", "北海道大学 総合理系", ""]]}, {"id": "G3", "name": "普通科", "asof": "2026年10月26日現在", "rows": [[1, "伊地知 悠", "進学", "高等看護専門学校", "医療・薬学・健康・スポーツ", "合", "鹿児島医療技術専門学校診療放射線技術学科 学校公募推薦希望", "鹿児島"], [2, "石見 稜桜", "進学", "私立短期大学", "法律・政治・経済・ビジネス・マスコミ", "", "西日本短期大学法学ビジネス学科 学校公募推薦", "福岡"], [3, "今西 啓元", "進学", "専門学校／職訓", "医療・薬学・健康・スポーツ", "合", "都城リハビリテーション学院理学療法科 指定校推薦希望", "宮崎"], [4, "岡元 美海", "就職", "県内就職", "事務", "合", "株式会社瀬戸山組（一般事務）", "鹿児島"], [5, "小濵 樹", "進学", "私立４年制大学", "法律・政治・経済・ビジネス・マスコミ", "", "福岡大学経済学部 学校公募推薦希望", "福岡"], [6, "桂原 凜", "進学", "国公立４年制大学", "食物・服飾・美容", "", "山口県立大学管理栄養学部栄養学科 一般受験", "山 口"], [7, "北園 穏奈", "進学", "専門学校／職訓", "医療・薬学・健康・スポーツ", "", "東京アニメ・声優＆eスポーツ専門学校 又は鹿児島第一リハビリ専門学校 理学療法又は作業療法 総合型選抜", ""], [8, "城戸 ハルカ", "進学", "私立短期大学", "教育・保育", "合", "宮崎学園短期大学部保育科 総合型選抜第一期", "宮崎"], [9, "木之下 美優", "就職", "公務員", "自衛官", "", "２等任期候補生（海） 一般曹候補生 ３つだめなら第一幼児教育短大", "鹿児島"], [10, "妹尾 愛理奈", "進学", "専門学校／職訓", "医療・薬学・健康・スポーツ", "", "鹿児島第一医療リハビリ専門学校 作業療法学科  指定校推薦希望", "鹿児島"], [11, "地主園 桜佑", "進学", "専門学校／職訓", "医療・薬学・健康・スポーツ", "", "鹿児島第一医療リハビリ専門学校 理学療法科 指定校推薦希望", "鹿児島"], [12, "長尾 咲那", "進学", "私立短期大学", "教育・保育", "合", "佐賀女子短期大学こども未来学科こども養護フィールド 総合型選抜8月25日オンライン面談", "佐賀"], [13, "中根 隆寛", "進学", "専門学校／職訓", "医療・薬学・健康・スポーツ", "合", "福岡医療専門学校の理学療法科（学校推薦希望）", "福岡"], [14, "永山 莉央", "進学", "高等看護専門学校", "医療・薬学・健康・スポーツ", "合", "藤元メディカルシステム看護大学校 指定校推薦希望", "宮崎"], [15, "濱田 倖貴", "就職", "県内就職", "製造（飲料・食料品）", "合", "就職 ナンチク", "鹿児島"], [16, "平田 愛優", "進学", "私立短期大学", "教育・保育", "", "鹿児島第一幼児教育短期大学 指定校推薦希望", "鹿児島"], [17, "福永 茉里", "進学", "国公立短期大学", "文学・歴史・地理", "", "鹿児島県立短期大学日本文学科（学校推薦希望） だめなら鹿児島国際大国際文化学部又は志學館大人間関係学部", "鹿児島"], [18, "古山 直熙", "進学", "", "", "", "（９月３０日付転学）", ""], [19, "松ヶ野 隼風", "進学", "私立４年制大学", "教育・保育", "", "大阪経済大学経済学部（中学社会の免許取得希望） 宮崎産業経営大学 一般受験", "大阪"], [20, "森岡 輝優", "進学", "国公立４年制大学", "工学・工業・建築・コンピューター", "", "宮崎公立大学・第一工科大学 一般受験", "宮崎か鹿児島"], [21, "吉留 吾蓮", "進学", "私立４年制大学", "文学・歴史・地理", "", "鹿児島国際大学国際文化学部国際文化学科 学校推薦希望", "鹿児島"], [22, "和田 仁", "進学", "専門学校／職訓", "医療・薬学・健康・スポーツ", "合", "都城リハビリテーション学院理学療法科 指定校推薦希望", "宮崎"]]}, {"id": "A3", "name": "畜産食農科", "asof": "2026年10月31日現在", "rows": [[1, "井上 拳斗", "就職", "県内就職", "", "", "未定", "県内"], [2, "草清 杏璃", "就職", "県内就職", "", "否", "公務員（市役所）曽於・志布志", "県内"], [3, "久保 一花", "進学", "専門学校／職訓", "農業・バイオ・動物", "合", "鹿児島県立農業大学校（肉用牛科）推薦入試", "県内"], [4, "黒木 大空", "就職", "公務員", "自衛官", "", "陸上自衛隊(マルトミ建設？)", "宮崎"], [5, "撿崎 祐綺", "就職", "県外就職", "製造（飲料・食料品）", "合", "南日本酪農業協同組合株式会社", "宮崎"], [6, "坂元 威桜莉", "就職", "県内就職", "サービス", "合", "株式会社ニシムタ", "鹿児島･宮崎"], [7, "坂元 武士", "就職", "県外就職", "農業・バイオ・動物", "否", "公益社団法人 日本軽種馬協会 静内種馬場", "北海道"], [8, "新村 百大郎", "進学", "専門学校／職訓", "農業・バイオ・動物", "合", "鹿児島県立農業大学校（肉用牛科）推薦入試", "県内"], [9, "高井田 竣", "進学", "専門学校／職訓", "農業・バイオ・動物", "", "鹿児島県立農業大学校（野菜科）A日程", "県内"], [10, "中馬 壱聖", "就職", "県外就職", "サービス", "", "株式会社ハウステンボス", "長崎"], [11, "土橋 遥翔", "進学", "専門学校／職訓", "農業・バイオ・動物", "合", "鹿児島県立農業大学校（肉用牛科）推薦入試", "県内"], [12, "德田 向陽", "就職", "県外就職", "製造（飲料・食料品）", "合", "南日本酪農業協同組合株式会社", "宮崎"], [13, "永峰 竜成", "就職", "県外就職", "製造（飲料・食料品）", "合", "南日本酪農業協同組合株式会社", "宮崎"], [14, "西田 颯真", "進学", "専門学校／職訓", "農業・バイオ・動物", "", "鹿児島県立農業大学校（肉用牛科）A日程", "県内"], [15, "野口 真優", "進学", "専門学校／職訓", "医療・薬学・健康・スポーツ", "合", "都城デンタルコアカレッジ 歯科衛生士科（指定校推薦）", "宮崎"], [16, "原 小鳥", "就職", "県内就職", "製造（飲料・食料品）", "", "株式会社 アクシーズ", "県内"], [17, "吉水 希杜菜", "進学", "専門学校／職訓", "農業・バイオ・動物", "合", "鹿児島県立農業大学校（肉用牛科）推薦入試", "県内"]]}, {"id": "M3", "name": "機械電子科", "asof": "2026年10月29日現在", "rows": [[1, "池田 幸人", "就職", "県外就職", "建設・機械・電気作業", "合", "新生電子 株式会社 都城工場", "宮崎"], [2, "磯脇 恵輔", "進学", "専門学校／職訓", "工学・工業・建築・コンピューター", "合", "熊本デザイン専門学校（指定校推薦希望）", "熊本"], [3, "内村 蓮翔", "就職", "県内就職", "製造（金属・機械製品）", "否", "京セラ株式会社 鹿児島霧島工場", "鹿児島"], [4, "大村 琉生", "就職", "公務員", "警察官", "一次合格", "鹿児島県警", "鹿児島"], [5, "河野 太飛", "就職", "県外就職", "製造（金属・機械製品）", "合", "株式会社 神戸製鋼所 加古川製鉄所", "兵庫"], [6, "川原 礼也", "進学", "私立４年制大学", "工学・工業・建築・コンピューター", "", "福岡工業大学  工学部 先進工学科", "福岡"], [7, "草ノ瀬 遼介", "就職", "県外就職", "建設・機械・電気作業", "合", "三栄ビルシステム 株式会社", "東京"], [8, "木田 琉斗", "就職", "県内就職", "製造（金属・機械製品）", "合", "メークス 株式会社", "鹿児島"], [9, "重久 賢太", "就職", "公務員", "自衛官", "一次合格", "自衛隊一般曹候補生（空）", ""], [10, "竹下 棟真", "就職", "公務員", "消防士", "否", "大隅曽於地区消防組合 消防吏員", "鹿児島"], [11, "田之脇 煌介", "就職", "公務員", "自衛官", "一次合格", "自衛隊一般曹候補生（陸）", ""], [12, "田淵 琉生", "就職", "県外就職", "製造（金属・機械製品）", "合", "吉川工業 株式会社 鉄鋼事業部八幡支店", "福岡"], [13, "中村 光希", "就職", "県内就職", "サービス", "合", "株式会社 ホンダ鹿児島", "鹿児島"], [14, "西田 昊生", "進学", "私立４年制大学", "心理・福祉", "", "九州産業大学 人間科学部 臨床心理学科", "福岡"], [15, "西濵 優潤", "進学", "専門学校／職訓", "医療・薬学・健康・スポーツ", "合", "鹿児島第一医療リハビリ専門学校  柔道整復学科（指定校推薦希望）", "鹿児島"], [16, "仁田 琉月", "就職", "県内就職", "サービス", "合", "ホシザキ南九 株式会社", "鹿児島"], [17, "平野 琉羽", "就職", "公務員", "自衛官", "一次合格", "自衛隊一般曹候補生（陸）", ""], [18, "福重 花蓮", "就職", "県外就職", "販売", "否", "株式会社 ファインズ東京", "東京"], [19, "福丸 聖悠", "進学", "国公立４年制大学", "工学・工業・建築・コンピューター", "", "宮崎大学 工学部 工学科", "宮崎"], [20, "藤原 琥珀", "進学", "私立４年制大学", "工学・工業・建築・コンピューター", "", "第一工科大学 工学部 機械システム工学科", "鹿児島"], [21, "持留 強志", "就職", "県外就職", "製造（その他製品）", "合", "日本工業検査株式会社", "神奈川"], [22, "山﨑 琉雅", "就職", "県外就職", "その他職業", "合", "ＳＢＳ即配サポート株式会社", "東京"], [23, "山村 涼真", "就職", "県内就職", "建設・機械・電気作業", "合", "コスモコンサルタンツ 株式会社", "鹿児島"], [24, "吉國 陽真人", "就職", "県内就職", "製造（金属・機械製品）", "合", "京セラ株式会社 鹿児島霧島工場", "鹿児島"], [25, "吉田 優斗", "就職", "公務員", "自衛官", "一次合格", "自衛隊一般曹候補生（陸）", ""]]}, {"id": "B3", "name": "商業科", "asof": "2026年10月29日現在", "rows": [[1, "稲森 明里", "進学", "専門学校／職訓", "芸術・芸能", "合", "福岡ﾋﾞｼﾞｭｱﾙｱｰﾂ･ｱｶﾃﾞﾐｰ 写真学科(総合型/特待生受験)", "福岡"], [2, "稲森 唯", "就職", "県外就職", "その他職業", "", "ダンススタジオ エイト(縁故/姉の会社)", "宮崎"], [3, "岩井 美優", "就職", "県内就職", "事務", "合", "曽於市森林組合 総合職員", "鹿児島"], [4, "上野 志勇矢", "就職", "県内就職", "事務", "合", "(株)鹿児島銀行 総合職(エリア限定希望)", "鹿児島"], [5, "上原 唯杏", "進学", "専門学校／職訓", "芸術・芸能", "合", "福岡ビジュアルアーツ・アカデミー CG映像学科(総合型/特待生受験)", "福岡"], [6, "江口 紗耶香", "進学", "国公立短期大学", "法律・政治・経済・ビジネス・マスコミ", "", "鹿児島県立短期大学 商経学科 経済専攻(学校推薦型(公募))", "鹿児島"], [7, "大保 まい", "進学", "国公立短期大学", "法律・政治・経済・ビジネス・マスコミ", "", "鹿児島県立短期大学 商経学科 経営情報専攻(学校推薦型(公募))", "鹿児島"], [8, "小川 友綾", "進学", "私立４年制大学", "医療・薬学・健康・スポーツ", "", "中部大学 生命健康科学部 保健看護学科(総合型)", "愛知"], [9, "鎌原 一花", "進学", "専門学校／職訓", "農業・バイオ・動物", "合", "福岡ビジネス・アカデミー 愛玩動物看護学科(総合型)", "福岡"], [10, "上 優愛", "就職", "県内就職", "事務", "", "医療法人 明成会 塩川医院 医療事務 ※縁故就職予定", "鹿児島"], [11, "上川 華蓮", "進学", "専門学校／職訓", "医療・薬学・健康・スポーツ", "合", "福岡天神医療リハビリ専門学校 理学療法学科(部活動特待(総合型))", "福岡"], [12, "上元 麗愛", "進学", "専門学校／職訓", "医療・薬学・健康・スポーツ", "合", "福岡医療専門学校 歯科衛生科(学校推薦型(指定校))", "福岡"], [13, "桐木 楓", "進学", "専門学校／職訓", "教育・保育", "合", "麻生医療福祉＆保育専門学校 福岡校 こども保育科(学校推薦型(公募))", "福岡"], [14, "竹之内 萌香", "就職", "県内就職", "建設・機械・電気作業", "合", "(株)錦城 土木設計技術者：高卒", "鹿児島"], [15, "釣段 涼夏", "就職", "県内就職", "事務", "合", "鹿児島相互信用金庫 一般職", "鹿児島"], [16, "寺山 侑吾", "進学", "専門学校／職訓", "農業・バイオ・動物", "合", "専門学校 福岡ビジョナリーアーツ ペット学科 水族館・海洋生物専攻(学校推薦型(公募))", "福岡"], [17, "西川 絢奈", "進学", "専門学校／職訓", "食物・服飾・美容", "合", "福岡理容美容専門学校 美容科(学校推薦型(公募))", "福岡"], [18, "西田 侑弥", "進学", "国公立４年制大学", "法律・政治・経済・ビジネス・マスコミ", "", "佐賀大学 経済学部 経済学科(学校推薦型(公募))", "佐賀"], [19, "野田 彩乃", "就職", "県外就職", "サービス", "", "(株)ホテルアルファーワン都城 フロントスタッフ(夜勤)", "宮崎"], [20, "KHAN IBRAR", "就職", "県内就職", "その他職業", "合", "(株)SAKIBUSA SHOKAI(縁故/父の会社)", "鹿児島"], [21, "東迫 美優", "進学", "専門学校／職訓", "語学・国際・観光・エアライン", "合", "鹿児島レディスカレッジ キャリア養成学科 ２年コース(総合型)", "鹿児島"], [22, "樋脇 結愛", "進学", "私立４年制大学", "教育・保育", "", "南九州大学 人間発達学部 子ども教育学科(学校推薦型(指定校))", "宮崎"], [23, "福原 彩", "進学", "専門学校／職訓", "医療・薬学・健康・スポーツ", "合", "鹿児島第一医療リハビリ専門学校 理学療法学科(学校推薦型(指定校))", "鹿児島"], [24, "前原 遼誠", "進学", "私立４年制大学", "法律・政治・経済・ビジネス・マスコミ", "", "九州共立大学 経済学部 地域創造学科(学校推薦型(指定校))", "福岡"], [25, "曲田 唯人", "進学", "専門学校／職訓", "工学・工業・建築・コンピューター", "合", "KCS鹿児島情報専門学校 情報エキスパート学科(学校推薦型(指定校))", "鹿児島"], [26, "松野下 和奏", "進学", "専門学校／職訓", "医療・薬学・健康・スポーツ", "合", "都城デンタルコアカレッジ 歯科衛生士科(総合型)", "宮崎"], [27, "宮島 愛夢", "就職", "県内就職", "事務", "", "そお鹿児島農業協同組合 事務職", "鹿児島"], [28, "森若 梓瑛瑠", "就職", "県内就職", "事務", "", "(株)カードックサービス(車検のコバック) 受付 事務", "鹿児島"], [29, "山下 蒼空", "就職", "県内就職", "製造（飲料・食料品）", "合", "(株)ナンチク 総合職(食肉製造加工)", "鹿児島"], [30, "横山 芽惟", "進学", "専門学校／職訓", "食物・服飾・美容", "合", "鹿児島県美容専門学校 トータル美容本科 昼間課程(総合型)", "鹿児島"], [31, "𠮷田 優衣音", "就職", "県内就職", "サービス", "合", "城山観光(株) ホテルスタッフ", "鹿児島"], [32, "吉原 知里", "就職", "県内就職", "サービス", "合", "(株)共立メンテナンス ホテルスタッフ(ドーミーイン鹿児島)", "鹿児島"]]}];
+var cur=0;
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});};
+var tabs=document.getElementById('rsTabs'),panels=document.getElementById('rsPanels');
+var head='<table><thead><tr><th>No</th><th>氏名</th><th>進学・就職</th><th>区分</th><th>職種・学部</th><th>合否</th><th>備考（進路先）</th><th>都道府県</th></tr></thead><tbody></tbody></table>';
+D.forEach(function(d,i){
+  var b=document.createElement('button');b.type='button';b.className='rs-tab';b.setAttribute('role','tab');
+  b.innerHTML=esc(d.name)+'<small>'+d.rows.length+'名</small>';
+  b.onclick=function(){cur=i;render();};tabs.appendChild(b);
+  var p=document.createElement('div');p.className='rs-panel';
+  p.innerHTML='<div class="rs-ph">'+esc(d.name)+'（'+esc(d.id)+'）　'+esc(d.asof)+'　'+d.rows.length+'名</div><div class="rs-wrap">'+head+'</div>';
+  panels.appendChild(p);
+});
+['rsQ','rsF1','rsF2'].forEach(function(id){document.getElementById(id).addEventListener('input',render);});
+var gb=function(v){return v?'<span class="b '+(v==='合'?'ok':v==='否'?'ng':'mid')+'">'+esc(v)+'</span>':'';};
+var sb=function(v){return v?'<span class="b '+(v==='進学'?'s':'j')+'">'+esc(v)+'</span>':'';};
+function render(){
+  var q=document.getElementById('rsQ').value.trim().replace(/[\s\u3000]/g,''),
+      f1=document.getElementById('rsF1').value,f2=document.getElementById('rsF2').value;
+  Array.prototype.forEach.call(tabs.children,function(b,i){b.classList.toggle('on',i===cur);b.setAttribute('aria-selected',i===cur);});
+  D.forEach(function(d,i){
+    var rows=d.rows.filter(function(r){
+      if(q&&!(r[1].replace(/\s/g,'')+r[6]).includes(q))return false;
+      if(f1&&r[2]!==f1)return false;
+      if(f2==='__none'?r[5]!=='':(f2&&r[5]!==f2))return false;
+      return true;});
+    var pn=panels.children[i];
+    pn.classList.toggle('on',i===cur);
+    pn.querySelector('tbody').innerHTML=rows.length?rows.map(function(r){
+      return '<tr><td class="no">'+r[0]+'</td><td class="nm">'+esc(r[1])+'</td><td>'+sb(r[2])+'</td><td>'+esc(r[3])+'</td><td>'+esc(r[4])+'</td><td>'+gb(r[5])+'</td><td>'+esc(r[6])+'</td><td>'+esc(r[7])+'</td></tr>';
+    }).join(''):'<tr><td colspan="8" class="rs-empty">該当する生徒がいません</td></tr>';
+    if(i===cur){
+      var shin=rows.filter(function(r){return r[2]==='進学';}).length,shu=rows.filter(function(r){return r[2]==='就職';}).length;
+      document.getElementById('rsStats').innerHTML=esc(d.asof)+'｜表示 <b>'+rows.length+'</b>／'+d.rows.length+'名（進学 <b>'+shin+'</b>・就職 <b>'+shu+'</b>）';
+    }
+  });
+}
+render();
+})();
+(function(){
+  var r=document.getElementById('roster'),b=document.getElementById('rsToggle'),body=document.getElementById('rsBody');
+  b.addEventListener('click',function(){
+    var open=body.hidden;
+    body.hidden=!open;
+    r.classList.toggle('open',open);
+    b.setAttribute('aria-expanded',open);
+    b.textContent=open?'隠す ▲':'More contents ▼';
   });
 })();
 </script>
