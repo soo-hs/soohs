@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>都道府県別 求人分類 2025・2026年度比較</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--c25b:#3f5670;--c26b:#a8460f;--bg:#f7f8fa;--card:#fff;--tx:#1d2733;--sub:#5d6b7a;--bd:#dde3ea;--ln:#8896a5;--c25:#7d93ab;--c26:#e8743b;--h25:#e3eaf2;--h26:#fde6d8;--up:#1a8a4a;--dn:#c93c3c;--hl:#fff4e5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--c25b:#a9bdd3;--c26b:#ffb58c;--bg:#14181d;--card:#1e242b;--tx:#e8edf2;--sub:#9aa7b5;--bd:#333c46;--ln:#6b7a8a;--c25:#6f86a0;--c26:#f08a55;--h25:#26323f;--h26:#43301f;--up:#4cc07f;--dn:#ef7070;--hl:#3a2d1e}}
+:root[data-theme="dark"]{--c25b:#a9bdd3;--c26b:#ffb58c;--bg:#14181d;--card:#1e242b;--tx:#e8edf2;--sub:#9aa7b5;--bd:#333c46;--ln:#6b7a8a;--c25:#6f86a0;--c26:#f08a55;--h25:#26323f;--h26:#43301f;--up:#4cc07f;--dn:#ef7070;--hl:#3a2d1e}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:clamp(11px,1.1vw,15px)/1.6 "Hiragino Sans","Meiryo",sans-serif}
+.two{display:grid;grid-template-columns:minmax(0,1fr) fit-content(600px);gap:8px}#tb{font-size:clamp(9px,.85vw,12px)}#kpi{font-size:clamp(10px,1vw,13px);white-space:normal}#kpi{height:100%}#kpi th,#kpi td{padding:6px 4px}.ch.wrap{overflow:visible}:root{--navy:#1a2f7a}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--navy:#9db8ff}}:root[data-theme="dark"]{--navy:#9db8ff}#tb th,#tb td{padding:1px 4px}@media(max-width:800px){.two{grid-template-columns:minmax(0,1fr)}}
+main{max-width:1500px;margin:0 auto;padding:10px 12px}
+h1{font-size:19px;margin:4px 0}h2{font-size:clamp(13px,1.3vw,17px);margin:14px 0 4px;border-left:4px solid var(--c26);padding-left:8px}
+.kpcards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:1fr;gap:8px;margin:8px 0}@media(max-width:1199px){.kpcards{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:699px){.kpcards{grid-template-columns:minmax(0,1fr)}}.kpb{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:8px 12px;min-width:0;display:flex;flex-direction:column;justify-content:center}.kpb b{display:block;font-size:12px;color:var(--sub);font-weight:500}.kpb span.v{font-size:clamp(18px,2vw,26px);font-weight:700}.kpb small{display:block;color:var(--sub);font-size:12px}
+.sub{color:var(--sub);font-size:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:8px;margin:4px 0}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:1fr;gap:6px}@media(max-width:1199px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:699px){.grid{grid-template-columns:minmax(0,1fr)}}
+.grid .card{margin:0;min-width:0;overflow:hidden}.grid .ch{height:250px}.kpic{display:flex;flex-direction:column}#kpiw{position:relative;flex:1;min-height:120px;overflow:hidden}#kpi{position:absolute;left:0;top:0;width:100%;height:100%;font-size:16px}#kpi th,#kpi td{padding:.3em .4em;vertical-align:middle}.grid b{font-size:13px}.cap{font-size:12px;color:var(--sub);text-align:center}
+.up{color:var(--up);font-weight:700}.dn{color:var(--dn);font-weight:700}
+.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:12px;white-space:nowrap}
+th,td{border-bottom:1px solid var(--bd);padding:2px 7px;text-align:right}
+#tb tr:not(.sum) td:nth-child(-n+3){text-align:left}#tb tr.sum td{text-align:right}#tb tr.sum td:first-child{text-align:left}#kpi td{text-align:center}#kpi td:first-child{text-align:left}#kpi tr:last-child td{border-top:2px solid var(--bd)}#kpi tr:last-child td:first-child{color:#f4a9c4}
+.g25{background:var(--h25)}.g26{background:var(--h26)}th{text-align:center!important}
+.l{border-left:2px solid var(--ln)}
+tr.k td:not(.l){background:var(--hl)}tr.k td.l{background:var(--hl)}
+tr.sum td{font-weight:700;border-top:2px solid var(--ln)}
+.ch{position:relative;height:280px}ul{padding-left:18px;margin:2px 0}li{margin:2px 0}
+@page{size:A4 portrait;margin:10mm}
+@media print{html{-webkit-print-color-adjust:exact;print-color-adjust:exact}.noprint{display:none!important}}
+#ttl{cursor:pointer}#ttl:hover{text-decoration:underline}
+.pm .noprint{display:none!important}.pm body{background:#fff;font-size:11px;line-height:1.5}
+.pm main{width:190mm;max-width:190mm;margin:0;padding:0}
+.pm h2{break-after:avoid;page-break-after:avoid}
+.pm .card,.pm .kpb,.pm li,.pm tr{break-inside:avoid;page-break-inside:avoid}
+.pm .kpcards{grid-template-columns:repeat(4,minmax(0,1fr))}.pm .kpb span.v{font-size:20px}.pm .kpb small{font-size:10px}
+.pm .grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pm .grid .ch{height:230px}
+.pm .two{display:block}
+.pm .two>div:first-child,.pm .two>div:last-child{break-before:page;page-break-before:always}
+.pm .two .ch{height:930px!important}
+.pm #tb{font-size:9.5px;line-height:1.25}.pm #tb th,.pm #tb td{padding:1px 5px}
+</style></head><body><main>
+<h1 id="ttl" title="クリックで印刷(A4縦)">都道府県別 求人分類 2025年度・2026年度 比較 <span class="noprint sub">(クリックでA4縦印刷)</span></h1>
+<div class="kpcards" id="kpcards"></div>
+<div class="sub">対象:求人票数(一次募集の件数)。二次募集は一次募集に含まれる同じ求人の再募集のため、合計には加算していません(「うち二次」として表示)。2025年度の「追加」は全て0、「重複」(17件)は合計に含めていません。2026年度データ取得日 2026/10/29。</div>
+
+<h2>全体のポイント(年度別)/ 県内外(二重円)と地域分類別の比較(一次募集)</h2>
+<div class="grid">
+<div class="card kpic"><div><b>全体のポイント</b> <span class="sub">求人票数</span></div><div id="kpiw"><table id="kpi"></table></div></div>
+
+
+<div class="card"><b>地域分類別 集計</b> <span class="sub">濃色=うち二次(棒全体=求人票数)</span><div class="ch"><canvas id="cReg"></canvas></div><div class="cap">&nbsp;</div></div>
+<div class="card"><b>2025年度</b> <span class="sub">外円=県外 / 内円=県内</span><div class="ch"><canvas id="d25"></canvas></div><div class="cap" id="c25"></div></div>
+<div class="card"><b>2026年度</b> <span class="sub">外円=県外 / 内円=県内</span><div class="ch"><canvas id="d26"></canvas></div><div class="cap" id="c26"></div></div>
+</div>
+
+<div class="two"><div><h2>都道府県別の比較(一次募集・濃色=うち二次)</h2>
+<div class="card wrap"><div class="ch" style="height:700px;min-width:300px"><canvas id="cPref"></canvas></div></div></div>
+<div><h2>都道府県別 一覧表</h2>
+
+<div class="card wrap"><table id="tb"></table></div></div></div>
+
+<div id="ana"><h2>分析と傾向</h2>
+<div class="card"><ul>
+<li><b>県内が伸長</b>:県内は 650→690(+40、+6.2%)で、県外 2,299→2,394(+95、+4.1%)より伸び率が高い。全体は 2,949→3,084(+135、+4.6%)。</li>
+<li><b>鹿児島B増・A減</b>:鹿児島Bは 534→588(+54)、鹿児島Aは 116→102(−14)。</li>
+<li><b>東京減・大阪増</b>:東京 448→411(−37)、関東Bは 452→447 とほぼ横ばい。関西は大阪 266→319、兵庫・奈良 93→120 と拡大。</li>
+<li><b>九州</b>:福岡 379→420、熊本 34→43、長崎 12→22、宮崎 147→162 と増加、佐賀は 29→21 と減少。</li>
+<li><b>二次募集(一次に含まれる再募集)</b>は全国で 578→556 に減少(一次に占める割合 19.6%→18.0%)。ただし県内は 76→119 と増加し、鹿児島Bは 61→108 と逆行。</li>
+<li><b>人数面(2026年度のみ)</b>:県内の求人数(一次募集)は2,120人で、全体18,919人の約11.2%。1票あたりでは県内約3.1人(全体約6.1人)と小規模求人が中心。</li>
+</ul></div></div>
+</main>
+<script>
+var RAW=`46 鹿児島 鹿児島A 116 15 102 11
+46 鹿児島 鹿児島B 534 61 588 108
+45 宮崎 宮崎 147 18 162 12
+44 大分 九州 24 8 24 7
+43 熊本 九州 34 7 43 9
+42 長崎 九州 12 1 22 1
+41 佐賀 九州 29 6 21 2
+40 福岡 九州 379 119 420 89
+27 大阪 関西A 266 43 319 58
+25 滋賀 関西B 8 1 12 1
+26 京都 関西B 60 10 49 5
+28 兵庫 関西C 85 17 100 21
+29 奈良 関西C 8 2 20 7
+23 愛知 中京A 134 28 137 24
+24 三重 中京B 15 0 23 0
+22 静岡 中京B 27 5 20 4
+21 岐阜 中京B 10 1 10 0
+13 東京 関東A 448 105 411 96
+14 神奈川 関東B 199 28 189 35
+12 千葉 関東B 113 31 114 19
+11 埼玉 関東B 97 29 96 20
+10 群馬 関東B 8 3 7 0
+9 栃木 関東B 8 1 10 3
+8 茨城 関東B 27 5 31 6
+1 北海道 その他 23 5 24 1
+2 青森 その他 3 0 6 0
+3 岩手 その他 5 0 3 0
+4 宮城 その他 13 4 6 1
+5 秋田 その他 2 0 2 0
+6 山形 その他 1 0 2 0
+7 福島 その他 8 0 7 0
+15 新潟 その他 14 0 6 0
+16 富山 その他 3 2 2 0
+17 石川 その他 2 0 1 0
+18 福井 その他 2 0 2 0
+19 山梨 その他 1 1 1 0
+20 長野 その他 3 0 4 0
+30 和歌山 その他 7 4 6 2
+31 鳥取 その他 1 0 1 0
+32 島根 その他 2 0 4 3
+33 岡山 その他 26 5 19 2
+34 広島 その他 23 7 35 7
+35 山口 その他 6 4 6 1
+36 徳島 その他 1 0 0 0
+37 香川 その他 1 0 3 1
+38 愛媛 その他 9 1 13 0
+39 高知 その他 0 0 1 0
+47 沖縄 その他 5 1 0 0`;
+var R=RAW.split("\n").map(function(l){var p=l.split(" ");return{no:+p[0],n:p[1],g:p[2],a1:+p[3],a2:+p[4],b1:+p[5],b2:+p[6],k:p[1]==="鹿児島"}});
+var cs=getComputedStyle(document.documentElement),col=function(v){return cs.getPropertyValue(v).trim()};
+var FS=Math.max(9,Math.min(12,Math.round(innerWidth/120)));Chart.defaults.font.size=FS+1;Chart.defaults.color=col("--tx");Chart.defaults.font.family='"Hiragino Sans","Meiryo",sans-serif';Chart.defaults.borderColor=col("--bd");
+var C25=col("--c25"),C26=col("--c26"),C25B=col("--c25b"),C26B=col("--c26b");
+function sum(f,a){return a.reduce(function(s,r){return s+f(r)},0)}
+function f(n){return n.toLocaleString()}
+var IN=R.filter(function(r){return r.k}),OUT=R.filter(function(r){return !r.k});
+var A=function(r){return r.a1},B=function(r){return r.b1};
+function dd(n){return '<span class="'+(n>0?"up":n<0?"dn":"")+'">'+(n>0?"+":"")+n.toLocaleString()+"</span>"}
+// KPI table
+var T=[["一次募集",sum(A,R),sum(B,R)],["二次募集",sum(function(r){return r.a2},R),sum(function(r){return r.b2},R)],["県内",sum(A,IN),sum(B,IN)],["県外",sum(A,OUT),sum(B,OUT)]];
+var k='<tr><th>項目</th><th class="g25 l">2025年度</th><th class="g26 l">2026年度</th><th class="l">増減</th><th>増減率</th></tr>';
+T.forEach(function(t){k+='<tr><td'+(t[0]==="一次募集"?' style="color:var(--navy);font-weight:700"':'')+'>'+t[0]+'</td><td class="l">'+f(t[1])+'</td><td class="l">'+f(t[2])+'</td><td class="l">'+dd(t[2]-t[1])+'</td><td>'+((t[2]-t[1])/t[1]*100).toFixed(1)+'%</td></tr>'});
+var N25=20454,N26=18919;
+k+='<tr><td>求人総数</td><td class="l">'+f(N25)+'</td><td class="l">'+f(N26)+'</td><td class="l">'+dd(N26-N25)+'</td><td>'+((N26-N25)/N25*100).toFixed(1)+'%</td></tr>';
+document.getElementById("kpi").innerHTML=k;
+var a1f=function(r){return r.a1},a2f=function(r){return r.a2},b1f=function(r){return r.b1},b2f=function(r){return r.b2};
+document.getElementById("kpcards").innerHTML=[["一次募集 合計",sum(a1f,R),sum(b1f,R)],["二次募集(うち再募集)",sum(a2f,R),sum(b2f,R)],["県内(鹿児島)一次",sum(a1f,IN),sum(b1f,IN)],["県外 一次",sum(a1f,OUT),sum(b1f,OUT)]].map(function(t){var p=(t[2]/t[1]*100-100);return '<div class="kpb"><b>'+t[0]+'</b><span class="v">'+f(t[2])+'</span><small>2025年度 '+f(t[1])+' → '+dd(t[2]-t[1])+'('+(p>0?"+":"")+p.toFixed(1)+'%)</small></div>'}).join("");
+// doughnuts
+var G=["鹿児島A","鹿児島B","宮崎","九州","関西A","関西B","関西C","中京A","中京B","関東A","関東B","その他"];
+var PAL=["#e8743b","#f4a261","#e9c46a","#2a9d8f","#264f9e","#4f7fd1","#8fb0ec","#7b4fa0","#b48bd1","#c2455e","#e58a9c","#9aa5b1"];
+function gv(fn,only){return G.map(function(g){var inK=g.indexOf("鹿児島")===0;if(only==="in"&&!inK||only==="out"&&inK)return 0;return sum(fn,R.filter(function(r){return r.g===g}))})}
+function dn(id,fn,cap,x){new Chart(document.getElementById(id),{type:"doughnut",data:{labels:G,datasets:[{label:"県外",data:gv(fn,"out"),backgroundColor:PAL,borderWidth:1},{label:"県内",data:gv(fn,"in"),backgroundColor:PAL,borderWidth:1}]},
+options:{maintainAspectRatio:false,cutout:"22%",plugins:{legend:{position:"right",labels:{boxWidth:10,font:{size:FS}}},tooltip:{callbacks:{label:function(c){return c.dataset.label+" "+c.label+": "+f(c.parsed)}}}}}});
+var i=sum(fn,IN),o=sum(fn,OUT);document.getElementById(cap).textContent="県内 "+f(i)+"("+(i/(i+o)*100).toFixed(1)+"%) / 県外 "+f(o)+"("+(o/(i+o)*100).toFixed(1)+"%)"}
+dn("d25",A,"c25");dn("d26",B,"c26");
+function stk(id,labels,r25,r26,horiz){var A2=r25[1],A1=r25[0],B2=r26[1],B1=r26[0];
+var ds=[{label:"2025年度 うち二次",data:A2,backgroundColor:C25B,stack:"s25"},{label:"2025年度 二次以外",data:A1.map(function(v,i){return v-A2[i]}),backgroundColor:C25,stack:"s25"},{label:"2026年度 うち二次",data:B2,backgroundColor:C26B,stack:"s26"},{label:"2026年度 二次以外",data:B1.map(function(v,i){return v-B2[i]}),backgroundColor:C26,stack:"s26"}];
+var sc={x:{stacked:true,ticks:{font:{size:FS},maxRotation:60}},y:{stacked:true,ticks:{font:{size:FS},autoSkip:false}}};
+new Chart(document.getElementById(id),{type:"bar",data:{labels:labels,datasets:ds},options:{indexAxis:horiz?"y":"x",maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10}},tooltip:{callbacks:{footer:function(it){var c=it[0],d=c.chart.data.datasets,t=0;d.forEach(function(x){if(x.stack===c.dataset.stack)t+=x.data[c.dataIndex]});return "求人票数(一次募集) "+f(t)}}}},scales:sc}})}
+stk("cReg",G,[gv(A),gv(function(r){return r.a2})],[gv(B),gv(function(r){return r.b2})],false);
+// prefecture chart
+var P=[];R.forEach(function(r){var l=P[P.length-1];if(l&&l.no===r.no){l.a+=A(r);l.b+=B(r);l.a2+=r.a2;l.b2+=r.b2}else P.push({no:r.no,n:r.n,a:A(r),b:B(r),a2:r.a2,b2:r.b2})});
+stk("cPref",P.map(function(p){return p.no+" "+p.n}),[P.map(function(p){return p.a}),P.map(function(p){return p.a2})],[P.map(function(p){return p.b}),P.map(function(p){return p.b2})],true);
+// table
+var h='<tr><th colspan="3">区分</th><th colspan="2" class="g25 l">2025年度</th><th colspan="2" class="g26 l">2026年度</th><th class="l">増減</th></tr>';
+h+='<tr><th>番号</th><th>都道府県</th><th>地域分類</th><th class="g25 l">求人票数</th><th class="g25">うち二次</th><th class="g26 l">求人票数</th><th class="g26">うち二次</th><th class="l">26−25</th></tr>';
+R.forEach(function(r){h+='<tr'+(r.k?' class="k"':'')+'><td>'+r.no+'</td><td>'+r.n+'</td><td>'+r.g+'</td><td class="l">'+r.a1+'</td><td>'+r.a2+'</td><td class="l">'+r.b1+'</td><td>'+r.b2+'</td><td class="l">'+dd(B(r)-A(r))+'</td></tr>'});
+[["県内計",IN],["県外計",OUT],["合計",R]].forEach(function(s){var q=s[1],a1=sum(function(r){return r.a1},q),a2=sum(function(r){return r.a2},q),b1=sum(function(r){return r.b1},q),b2=sum(function(r){return r.b2},q);
+h+='<tr class="sum"><td colspan="3">'+s[0]+'</td><td class="l">'+f(a1)+'</td><td>'+f(a2)+'</td><td class="l">'+f(b1)+'</td><td>'+f(b2)+'</td><td class="l">'+dd(b1-a1)+'</td></tr>'});
+document.getElementById("tb").innerHTML=h;
+function fitKpi(){var t=document.getElementById("kpi"),w=document.getElementById("kpiw"),z=16;t.style.fontSize=z+"px";while(z>8&&(t.offsetHeight>w.clientHeight+1||t.scrollWidth>w.clientWidth+1)){z-=.5;t.style.fontSize=z+"px"}}
+function sync(){fitKpi();var c=document.getElementById("tb").parentNode,e=document.getElementById("cPref").parentNode;e.style.height=(c.offsetHeight-18)+"px"}
+window.addEventListener("resize",sync);sync();
+// A4縦印刷
+var pmS=null;
+function recolor(o,n,tx,bd){Object.keys(Chart.instances).forEach(function(k){var c=Chart.instances[k];c.data.datasets.forEach(function(d){if(typeof d.backgroundColor==="string"){var i=o.indexOf(d.backgroundColor);if(i>=0)d.backgroundColor=n[i]}});c.options.color=tx;c.options.borderColor=bd;var lg=c.options.plugins&&c.options.plugins.legend;if(lg&&lg.labels)lg.labels.color=tx;Object.keys(c.options.scales||{}).forEach(function(a){var sc=c.options.scales[a];if(sc.ticks)sc.ticks.color=tx;if(sc.grid)sc.grid.color=bd})})}
+function relayout(){sync();Object.keys(Chart.instances).forEach(function(k){var c=Chart.instances[k];c.resize();c.update("none")})}
+function pmOn(){if(pmS)return;var r=document.documentElement;pmS={a:r.getAttribute("data-theme"),o:[C25,C26,C25B,C26B],tx:col("--tx"),bd:col("--bd")};r.setAttribute("data-theme","light");r.classList.add("pm");var m=document.querySelector("main");m.insertBefore(document.getElementById("ana"),document.querySelector(".two"));var n=[col("--c25"),col("--c26"),col("--c25b"),col("--c26b")];recolor(pmS.o,n,col("--tx"),col("--bd"));C25=n[0];C26=n[1];C25B=n[2];C26B=n[3];pmS.n=n;relayout()}
+function pmOff(){if(!pmS)return;var r=document.documentElement,p=pmS;pmS=null;r.classList.remove("pm");document.querySelector("main").appendChild(document.getElementById("ana"));if(p.a===null)r.removeAttribute("data-theme");else r.setAttribute("data-theme",p.a);recolor(p.n,p.o,p.tx,p.bd);C25=p.o[0];C26=p.o[1];C25B=p.o[2];C26B=p.o[3];relayout()}
+window.addEventListener("beforeprint",pmOn);window.addEventListener("afterprint",pmOff);
+document.getElementById("ttl").addEventListener("click",function(){window.print()});
+</script></body></html>
