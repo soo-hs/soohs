@@ -132,7 +132,7 @@ function dd(n){return '<span class="'+(n>0?"up":n<0?"dn":"")+'">'+(n>0?"+":"")+n
 var T=[["一次募集",sum(A,R),sum(B,R)],["二次募集",sum(function(r){return r.a2},R),sum(function(r){return r.b2},R)],["県内",sum(A,IN),sum(B,IN)],["県外",sum(A,OUT),sum(B,OUT)]];
 var k='<tr><th>項目</th><th class="g25 l">2025年度</th><th class="g26 l">2026年度</th><th class="l">増減</th><th>増減率</th></tr>';
 T.forEach(function(t){k+='<tr><td'+(t[0]==="一次募集"?' style="color:var(--navy);font-weight:700"':'')+'>'+t[0]+'</td><td class="l">'+f(t[1])+'</td><td class="l">'+f(t[2])+'</td><td class="l">'+dd(t[2]-t[1])+'</td><td>'+((t[2]-t[1])/t[1]*100).toFixed(1)+'%</td></tr>'});
-var N25=20454,N26=18919;
+var N25=20393,N26=18919;
 k+='<tr><td>求人総数</td><td class="l">'+f(N25)+'</td><td class="l">'+f(N26)+'</td><td class="l">'+dd(N26-N25)+'</td><td>'+((N26-N25)/N25*100).toFixed(1)+'%</td></tr>';
 document.getElementById("kpi").innerHTML=k;
 var a1f=function(r){return r.a1},a2f=function(r){return r.a2},b1f=function(r){return r.b1},b2f=function(r){return r.b2};
