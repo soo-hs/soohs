@@ -56,19 +56,22 @@
   }
   .summary {
     display: flex;
-    justify-content: flex-end;
+    flex: 1 1 auto;
+    justify-content: space-between; /* 5項目を等間隔に配置 */
     align-items: center;
-    gap: 22px;
-    flex-wrap: wrap;
-    margin-right: 4px;
+    gap: 0;
+    flex-wrap: nowrap;
+    padding-left: 12px;
+    margin-right: 0;
   }
   .summary .item {
     font-size: 14px;
     font-weight: 700;
     text-align: right;
+    white-space: nowrap;
   }
   .item-caption {
-    font-size: 9.5px;
+    font-size: 8.2px; /* 9.5px から約1pt縮小 */
     color: #888;
     font-weight: 400;
   }
@@ -93,9 +96,17 @@
     font-size: 15px;
     margin-left: 5px;
   }
+  .summary .item.item-stack {
+    text-align: center;
+  }
+  .summary .item.item-stack .label,
+  .summary .item.item-stack .value {
+    display: block;
+    margin-left: 0;
+  }
   .summary .sub {
-    display: flex;
-    gap: 16px;
+    display: contents; /* 一次募集・二次募集も他項目と同列で等間隔にする */
+    gap: 3px;
     align-items: center;
   }
   .summary .sub .box {
@@ -221,11 +232,15 @@
     <div class="header-row">
       <h1 class="title">都道府県別 求人分類</h1>
       <div class="summary">
-        <div class="item" style="position:relative; right:4px;">
+        <div class="item item-stack">
+          <span class="label label-jobs">企業数</span>
+          <span class="value value-jobs" id="totalCompanies">-</span>
+        </div>
+        <div class="item">
           <div><span class="label label-jobs">求人総数:</span><span class="value value-jobs" id="totalJobs">-</span></div>
           <div class="item-caption">(通勤+住込+不問)の合計</div>
         </div>
-        <div class="item" style="position:relative; right:2px;">
+        <div class="item">
           <div><span class="label">求人票総数:</span><span class="value" id="totalRecords">-</span></div>
           <div class="item-caption records-breakdown" id="totalRecordsBreakdown">県内:-・県外:-</div>
         </div>
@@ -401,6 +416,8 @@ async function main() {
     const idxSumikomi = header.indexOf('求人数（住込）');
     const idxFumon = header.indexOf('求人数（不問）');
     const idxNiji = header.indexOf('二次募集の有無');
+    const idxJigyosho = header.indexOf('事業所番号');
+    if (idxJigyosho === -1) throw new Error('「事業所番号」列が見つかりません（列構成が変更された可能性があります）');
     if (idxAddr === -1 || idxTsukin === -1 || idxSumikomi === -1 || idxFumon === -1) {
       throw new Error('必要な列が見つかりません（列構成が変更された可能性があります）');
     }
@@ -413,6 +430,7 @@ async function main() {
     let totalJobs = 0;
     let totalNiji = 0;
     let totalKyujinsu = 0;
+    const companySet = new Set(); // 事業所番号でグループ化（企業数）
 
     for (const r of dataRows) {
       const addr = (r[idxAddr] || '').trim();
@@ -421,6 +439,8 @@ async function main() {
       const f = parseInt(r[idxFumon], 10) || 0;
       const sum = t + s + f;
       totalKyujinsu += sum;
+      const jno = (r[idxJigyosho] || '').trim();
+      if (jno) companySet.add(jno);
       const [pref, city] = parsePrefCity(addr);
       if (!pref) continue;
       const group = classify(pref, city);
@@ -480,6 +500,7 @@ async function main() {
     }
 
     document.getElementById('totalRecords').textContent = fmt(totalJobs + totalNiji);
+    document.getElementById('totalCompanies').textContent = fmt(companySet.size);
     document.getElementById('totalJobs').textContent = fmt(totalKyujinsu);
     document.getElementById('totalIchiji').textContent = fmt(totalJobs);
     document.getElementById('totalNiji').textContent = fmt(totalNiji);

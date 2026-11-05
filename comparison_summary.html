@@ -14,6 +14,8 @@ main{max-width:1500px;margin:0 auto;padding:10px 12px}
 h1{font-size:19px;margin:4px 0}h2{font-size:clamp(13px,1.3vw,17px);margin:14px 0 4px;border-left:4px solid var(--c26);padding-left:8px}
 .kpcards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:1fr;gap:8px;margin:8px 0}@media(max-width:1199px){.kpcards{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:699px){.kpcards{grid-template-columns:minmax(0,1fr)}}.kpb{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:8px 12px;min-width:0;display:flex;flex-direction:column;justify-content:center}.kpb b{display:block;font-size:12px;color:var(--sub);font-weight:500}.kpb span.v{font-size:clamp(18px,2vw,26px);font-weight:700}.kpb small{display:block;color:var(--sub);font-size:12px}
 .sub{color:var(--sub);font-size:12px}
+:root{--red:#d62828}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--red:#ff6b6b}}:root[data-theme="dark"]{--red:#ff6b6b}.pm{--red:#d62828}
+.kpb .vr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:4px 0}.kpb .vc{display:flex;flex-direction:column;justify-content:center;align-items:center;min-width:0;white-space:nowrap;border:1px solid var(--bd);border-radius:8px;padding:3px 6px}.kpb .vc i{font-style:normal;font-size:11px;line-height:1.3;color:var(--sub)}.kpb .vc.co i,.kpb .vc.co span.v{color:var(--red)}.kpb .vc .u{font-size:.5em;font-weight:500;margin-left:2px}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:8px;margin:4px 0}
 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:1fr;gap:6px}@media(max-width:1199px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:699px){.grid{grid-template-columns:minmax(0,1fr)}}
 .grid .card{margin:0;min-width:0;overflow:hidden}.grid .ch{height:250px}.kpic{display:flex;flex-direction:column}#kpiw{position:relative;flex:1;min-height:120px;overflow:hidden}#kpi{position:absolute;left:0;top:0;width:100%;height:100%;font-size:16px}#kpi th,#kpi td{padding:.3em .4em;vertical-align:middle}.grid b{font-size:13px}.cap{font-size:12px;color:var(--sub);text-align:center}
@@ -42,7 +44,7 @@ tr.sum td{font-weight:700;border-top:2px solid var(--ln)}
 </style></head><body><main>
 <h1 id="ttl" title="クリックで印刷(A4縦)">都道府県別 求人分類 2025年度・2026年度 比較 <span class="noprint sub">(クリックでA4縦印刷)</span></h1>
 <div class="kpcards" id="kpcards"></div>
-<div class="sub">対象:求人票数(一次募集の件数)。二次募集は一次募集に含まれる同じ求人の再募集のため、合計には加算していません(「うち二次」として表示)。2025年度の「追加」は全て0、「重複」(17件)は合計に含めていません。2026年度データ取得日 2026/10/29。</div>
+<div class="sub">対象:求人票数(一次募集の件数)。二次募集は一次募集に含まれる同じ求人の再募集のため、合計には加算していません(「うち二次」として表示)。2025年度の「追加」は全て0、「重複」(17件)は合計に含めていません。企業数は事業所番号の重複を除いた件数(2026年度のみ)。2026年度データ取得日 2026/11/02。</div>
 
 <h2>全体のポイント(年度別)/ 県内外(二重円)と地域分類別の比較(一次募集)</h2>
 <div class="grid">
@@ -62,24 +64,24 @@ tr.sum td{font-weight:700;border-top:2px solid var(--ln)}
 
 <div id="ana"><h2>分析と傾向</h2>
 <div class="card"><ul>
-<li><b>県内が伸長</b>:県内は 650→690(+40、+6.2%)で、県外 2,299→2,394(+95、+4.1%)より伸び率が高い。全体は 2,949→3,084(+135、+4.6%)。</li>
+<li><b>県内が伸長</b>:県内は 650→690(+40、+6.2%)で、県外 2,299→2,398(+99、+4.3%)より伸び率が高い。全体は 2,949→3,088(+139、+4.7%)。</li>
 <li><b>鹿児島B増・A減</b>:鹿児島Bは 534→588(+54)、鹿児島Aは 116→102(−14)。</li>
-<li><b>東京減・大阪増</b>:東京 448→411(−37)、関東Bは 452→447 とほぼ横ばい。関西は大阪 266→319、兵庫・奈良 93→120 と拡大。</li>
-<li><b>九州</b>:福岡 379→420、熊本 34→43、長崎 12→22、宮崎 147→162 と増加、佐賀は 29→21 と減少。</li>
-<li><b>二次募集(一次に含まれる再募集)</b>は全国で 578→556 に減少(一次に占める割合 19.6%→18.0%)。ただし県内は 76→119 と増加し、鹿児島Bは 61→108 と逆行。</li>
-<li><b>人数面(2026年度のみ)</b>:県内の求人数(一次募集)は2,120人で、全体18,919人の約11.2%。1票あたりでは県内約3.1人(全体約6.1人)と小規模求人が中心。</li>
+<li><b>東京減・大阪増</b>:東京 448→411(−37)、関東Bは 452→447 とほぼ横ばい。関西は大阪 266→321、兵庫・奈良 93→120 と拡大。</li>
+<li><b>九州</b>:福岡 379→420、熊本 34→43、長崎 12→22、宮崎 147→164 と増加、佐賀は 29→21 と減少。</li>
+<li><b>二次募集(一次に含まれる再募集)</b>は全国で 578→560 に減少(一次に占める割合 19.6%→18.1%)。ただし県内は 76→119 と増加し、鹿児島Bは 61→108 と逆行。</li>
+<li><b>人数面(2026年度のみ)</b>:県内の求人数(一次募集)は2,120人で、全体18,928人の約11.2%。1票あたりでは県内約3.1人(全体約6.1人)と小規模求人が中心。</li>
 </ul></div></div>
 </main>
 <script>
 var RAW=`46 鹿児島 鹿児島A 116 15 102 11
 46 鹿児島 鹿児島B 534 61 588 108
-45 宮崎 宮崎 147 18 162 12
+45 宮崎 宮崎 147 18 164 14
 44 大分 九州 24 8 24 7
 43 熊本 九州 34 7 43 9
 42 長崎 九州 12 1 22 1
 41 佐賀 九州 29 6 21 2
-40 福岡 九州 379 119 420 89
-27 大阪 関西A 266 43 319 58
+40 福岡 九州 379 119 420 90
+27 大阪 関西A 266 43 321 59
 25 滋賀 関西B 8 1 12 1
 26 京都 関西B 60 10 49 5
 28 兵庫 関西C 85 17 100 21
@@ -132,11 +134,11 @@ function dd(n){return '<span class="'+(n>0?"up":n<0?"dn":"")+'">'+(n>0?"+":"")+n
 var T=[["一次募集",sum(A,R),sum(B,R)],["二次募集",sum(function(r){return r.a2},R),sum(function(r){return r.b2},R)],["県内",sum(A,IN),sum(B,IN)],["県外",sum(A,OUT),sum(B,OUT)]];
 var k='<tr><th>項目</th><th class="g25 l">2025年度</th><th class="g26 l">2026年度</th><th class="l">増減</th><th>増減率</th></tr>';
 T.forEach(function(t){k+='<tr><td'+(t[0]==="一次募集"?' style="color:var(--navy);font-weight:700"':'')+'>'+t[0]+'</td><td class="l">'+f(t[1])+'</td><td class="l">'+f(t[2])+'</td><td class="l">'+dd(t[2]-t[1])+'</td><td>'+((t[2]-t[1])/t[1]*100).toFixed(1)+'%</td></tr>'});
-var N25=1674,N26=1588;
+var N25=1674,N26=1592;var CO={a:1592,s:318,i:361,o:1268};
 k+='<tr><td>企業数</td><td class="l">'+f(N25)+'</td><td class="l">'+f(N26)+'</td><td class="l">'+dd(N26-N25)+'</td><td>'+((N26-N25)/N25*100).toFixed(1)+'%</td></tr>';
 document.getElementById("kpi").innerHTML=k;
 var a1f=function(r){return r.a1},a2f=function(r){return r.a2},b1f=function(r){return r.b1},b2f=function(r){return r.b2};
-document.getElementById("kpcards").innerHTML=[["一次募集 合計",sum(a1f,R),sum(b1f,R)],["二次募集(うち再募集)",sum(a2f,R),sum(b2f,R)],["県内(鹿児島)一次",sum(a1f,IN),sum(b1f,IN)],["県外 一次",sum(a1f,OUT),sum(b1f,OUT)]].map(function(t){var p=(t[2]/t[1]*100-100);return '<div class="kpb"><b>'+t[0]+'</b><span class="v">'+f(t[2])+'</span><small>2025年度 '+f(t[1])+' → '+dd(t[2]-t[1])+'('+(p>0?"+":"")+p.toFixed(1)+'%)</small></div>'}).join("");
+document.getElementById("kpcards").innerHTML=[["一次募集 合計",sum(a1f,R),sum(b1f,R),CO.a],["二次募集(うち再募集)",sum(a2f,R),sum(b2f,R),CO.s],["県内(鹿児島)一次",sum(a1f,IN),sum(b1f,IN),CO.i],["県外 一次",sum(a1f,OUT),sum(b1f,OUT),CO.o]].map(function(t){var p=(t[2]/t[1]*100-100);return '<div class="kpb"><b>'+t[0]+'</b><div class="vr"><div class="vc"><i>求人票数</i><span class="v">'+f(t[2])+'<span class="u">件</span></span></div><div class="vc co"><i>企業数</i><span class="v">'+f(t[3])+'<span class="u">社</span></span></div></div><small>2025年度 '+f(t[1])+' → '+dd(t[2]-t[1])+'('+(p>0?"+":"")+p.toFixed(1)+'%)</small></div>'}).join("");
 // doughnuts
 var G=["鹿児島A","鹿児島B","宮崎","九州","関西A","関西B","関西C","中京A","中京B","関東A","関東B","その他"];
 var PAL=["#e8743b","#f4a261","#e9c46a","#2a9d8f","#264f9e","#4f7fd1","#8fb0ec","#7b4fa0","#b48bd1","#c2455e","#e58a9c","#9aa5b1"];
