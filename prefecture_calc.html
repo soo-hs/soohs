@@ -75,6 +75,9 @@
     color: #888;
     font-weight: 400;
   }
+  .item-caption.item-caption-spacer {
+    visibility: hidden; /* 求人総数の注記と同じ高さを確保し、1行目の位置を揃える */
+  }
   .item-caption.records-breakdown {
     font-size: 12px;
     font-weight: 600;
@@ -232,9 +235,9 @@
     <div class="header-row">
       <h1 class="title">都道府県別 求人分類</h1>
       <div class="summary">
-        <div class="item item-stack">
-          <span class="label label-jobs">企業数</span>
-          <span class="value value-jobs" id="totalCompanies">-</span>
+        <div class="item">
+          <div><span class="label label-jobs">企業数:</span><span class="value value-jobs" id="totalCompanies">-</span></div>
+          <div class="item-caption item-caption-spacer">&nbsp;</div>
         </div>
         <div class="item">
           <div><span class="label label-jobs">求人総数:</span><span class="value value-jobs" id="totalJobs">-</span></div>
