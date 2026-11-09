@@ -20,6 +20,9 @@ header p{margin:0.125rem auto 0;max-width:min(100%,60rem);font-size:clamp(.72rem
 .how .g b{display:block;font-size:0.9062rem}
 .how .g:nth-child(2){background:var(--orange2)}.how .g:nth-child(3){background:var(--green2)}.how .g:nth-child(4){background:#ffe6ef}.how .g:nth-child(5){background:#efe8ff}
 .how p{font-size:0.8438rem;color:var(--sub);margin:0.25rem 0 0.625rem}
+.how p.nt{margin:0}
+.how p.nt:first-of-type,.how .grid+p.nt{margin-top:.25rem}
+.how p.nt:last-child{margin-bottom:.5rem}
 .tabs{position:sticky;top:0;z-index:20;background:var(--bg);padding:0.5rem 0;display:flex;gap:0.5rem;overflow-x:auto;scrollbar-width:thin}
 .tab{flex:0 0 auto;border:0.125rem solid var(--line);background:#fff;color:var(--ink);border-radius:62.44rem;padding:0.5625rem 1.125rem;font-size:0.9375rem;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:var(--shadow)}
 .tab small{display:block;font-weight:600;font-size:0.7188rem;color:var(--sub);line-height:1.2}
@@ -154,8 +157,8 @@ details.more{margin-top:auto;padding-top:.5rem}
       <div class="g"><b>🎓 育成・職場環境 18点</b>資格取得支援（費用負担）／研修・OJT／定着率・採用実績・育休など</div>
       <div class="g"><b>🏢 企業の健全性 10点</b>設立年・従業員数・資本金・グループ／上場など</div>
     </div>
-    <p>※点数は<b>求人票に書かれている情報だけ</b>で計算した目安です。賞与の月数・研修の中身など、書かれていない項目は加点されません。実際の応募は、必ず求人票の原本・職場見学・先生との相談で確認してください。</p>
-    <p>※「並べ替え」で、自分のタイプ（ワークライフバランス重視／手取り・生活安定重視／地元・通勤重視／キャリア・成長重視）に合わせた順にもできます。</p>
+    <p class="nt">※点数は<b>求人票に書かれている情報だけ</b>で計算した目安です。賞与の月数・研修の中身など、書かれていない項目は加点されません。実際の応募は、必ず求人票の原本・職場見学・先生との相談で確認してください。</p>
+    <p class="nt">※「並べ替え」で、自分のタイプ（ワークライフバランス重視／手取り・生活安定重視／地元・通勤重視／キャリア・成長重視）に合わせた順にもできます。</p>
   </details>
 
   <nav class="tabs" role="tablist" id="tabs"></nav>
