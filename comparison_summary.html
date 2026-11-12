@@ -42,7 +42,7 @@ tr.sum td{font-weight:700;border-top:2px solid var(--ln)}
 .pm .two{display:block}
 .pm .two>div:first-child,.pm .two>div:last-child{break-before:page;page-break-before:always}
 .pm .two .ch{height:930px!important}
-.pm #tb{font-size:9.5px;line-height:1.25}.pm #tb th,.pm #tb td{padding:1px 5px}
+.pm #tb{font-size:9.5px;line-height:1.25}.pm .two>div:last-child{break-after:avoid;page-break-after:avoid}.pm .two>div:last-child .card{padding:4px 6px}.pm .two>div:last-child h2{margin:0 0 4px}.pm #tb th,.pm #tb td{padding:1px 5px}
 </style></head><body><main>
 <h1 id="ttl" title="クリックで印刷(A4縦)">都道府県別 求人分類 2025年度・2026年度 比較 <span class="noprint sub">(クリックでA4縦印刷)</span></h1>
 <div class="kpcards" id="kpcards"></div>
@@ -170,9 +170,10 @@ window.addEventListener("resize",sync);sync();
 // A4縦印刷
 var pmS=null;
 function recolor(o,n,tx,bd){Object.keys(Chart.instances).forEach(function(k){var c=Chart.instances[k];c.data.datasets.forEach(function(d){if(typeof d.backgroundColor==="string"){var i=o.indexOf(d.backgroundColor);if(i>=0)d.backgroundColor=n[i]}});c.options.color=tx;c.options.borderColor=bd;var lg=c.options.plugins&&c.options.plugins.legend;if(lg&&lg.labels)lg.labels.color=tx;Object.keys(c.options.scales||{}).forEach(function(a){var sc=c.options.scales[a];if(sc.ticks)sc.ticks.color=tx;if(sc.grid)sc.grid.color=bd})})}
+function fitTb(){var t=document.getElementById("tb"),c=t.parentNode,w=c.parentNode,z=12;t.style.fontSize=z+"px";while(z>6&&(w.offsetHeight>1000||c.scrollWidth>c.clientWidth+1)){z-=.25;t.style.fontSize=z+"px"}}
 function relayout(){sync();Object.keys(Chart.instances).forEach(function(k){var c=Chart.instances[k];c.resize();c.update("none")})}
-function pmOn(){if(pmS)return;var r=document.documentElement;pmS={a:r.getAttribute("data-theme"),o:[C25,C26,C25B,C26B],tx:col("--tx"),bd:col("--bd")};r.setAttribute("data-theme","light");r.classList.add("pm");var m=document.querySelector("main");m.insertBefore(document.getElementById("ana"),document.querySelector(".two"));var n=[col("--c25"),col("--c26"),col("--c25b"),col("--c26b")];recolor(pmS.o,n,col("--tx"),col("--bd"));C25=n[0];C26=n[1];C25B=n[2];C26B=n[3];pmS.n=n;relayout()}
-function pmOff(){if(!pmS)return;var r=document.documentElement,p=pmS;pmS=null;r.classList.remove("pm");document.querySelector("main").appendChild(document.getElementById("ana"));if(p.a===null)r.removeAttribute("data-theme");else r.setAttribute("data-theme",p.a);recolor(p.n,p.o,p.tx,p.bd);C25=p.o[0];C26=p.o[1];C25B=p.o[2];C26B=p.o[3];relayout()}
+function pmOn(){if(pmS)return;var r=document.documentElement;pmS={a:r.getAttribute("data-theme"),o:[C25,C26,C25B,C26B],tx:col("--tx"),bd:col("--bd")};r.setAttribute("data-theme","light");r.classList.add("pm");var m=document.querySelector("main");m.insertBefore(document.getElementById("ana"),document.querySelector(".two"));var n=[col("--c25"),col("--c26"),col("--c25b"),col("--c26b")];recolor(pmS.o,n,col("--tx"),col("--bd"));C25=n[0];C26=n[1];C25B=n[2];C26B=n[3];pmS.n=n;fitTb();relayout()}
+function pmOff(){if(!pmS)return;var r=document.documentElement,p=pmS;pmS=null;r.classList.remove("pm");document.querySelector("main").appendChild(document.getElementById("ana"));if(p.a===null)r.removeAttribute("data-theme");else r.setAttribute("data-theme",p.a);recolor(p.n,p.o,p.tx,p.bd);C25=p.o[0];C26=p.o[1];C25B=p.o[2];C26B=p.o[3];document.getElementById("tb").style.fontSize="";relayout()}
 window.addEventListener("beforeprint",pmOn);window.addEventListener("afterprint",pmOff);
 document.getElementById("ttl").addEventListener("click",function(){window.print()});
 </script></body></html>
