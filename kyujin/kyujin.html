@@ -30,6 +30,7 @@ select,input[type=number]{height:22px;border:1px solid var(--ln);border-radius:4
 .cnt a:hover{text-decoration:underline}
 #ct{position:relative;left:-1pt;margin-left:-5px}
 #clr{padding:0 4px}
+#vw{padding:0 1px;min-width:0;width:auto}
 #prv{position:relative;left:-3pt}
 #nxt{position:relative;left:-3pt}
 #gtool{position:relative;left:-8pt}
@@ -177,7 +178,7 @@ tbody tr.dd td.ddc{height:auto;padding:0;overflow:visible;white-space:normal;bac
     <h1 id="ttl" title="ダブルクリックで 事業所No別一覧 ⇔ 求人一覧 を切替（事業所別では行ダブルクリック／スペースで求人票を展開）">受付求人票<small id="vb"></small></h1>
     <input id="q" type="search" autocomplete="off" placeholder="事業所名(かな・カナ可)/担当者/所在地/就業場所/求人番号/管理No/職業分類  (「/」でOR・ダブルクリックで詳細検索)" title="ダブルクリックで詳細検索">
     <button class="b" id="clr" title="検索条件をすべて消す">クリア</button>
-    <button class="b g" id="vw" title="求人一覧 ⇔ 事業所別一覧（事業所をダブルクリック／左端の▶で求人票を展開）">事業所別一覧</button>
+    <button class="b g" id="vw" title="求人一覧 ⇔ 事業所別一覧（事業所をダブルクリック／左端の▶で求人票を展開）">事業所別</button>
   </div>
   <div class="l2">
     <span class="yl">年度：<b id="yr">-</b></span>
@@ -1485,7 +1486,7 @@ $('#chk').addEventListener('click',()=>{if(S.all.length)runChecks();});
 function toggleView(){
   S.view=S.view==='list'?'group':'list';
   $('#vb').textContent=S.view==='group'?'　[事業所No別]':'';
-  $('#vw').textContent=S.view==='group'?'求人一覧':'事業所別一覧';
+  $('#vw').textContent=S.view==='group'?'求人一覧':'事業所別';
   $('#gtool').style.display=S.view==='group'?'':'none';
   S.page=0;S.ac=null;resort();render();fit();}
 $('#ttl').addEventListener('dblclick',toggleView);
