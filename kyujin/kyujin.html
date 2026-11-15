@@ -161,6 +161,8 @@ tbody tr.dd td.ddc{height:auto;padding:0;overflow:visible;white-space:normal;bac
 .sub th{cursor:default;font-size:11px;z-index:1}
 .sub td{background:#fff!important;cursor:default}
 .sub tr.jr:hover td{background:var(--aml)!important}
+.b.pk{background:#ffd6e3;color:#7a2e48;font-size:9.2px;padding:0 2px;margin-left:2px;min-width:0;width:auto;letter-spacing:-.3px}
+.b.pk:hover{background:#ffc2d6}
 .sub td button.jo{height:18px;font-size:10px;padding:0 6px}
 </style>
 </head>
@@ -176,7 +178,7 @@ tbody tr.dd td.ddc{height:auto;padding:0;overflow:visible;white-space:normal;bac
     <span class="yl">年度：<b id="yr">-</b></span>
     <label>表示数 <select id="ps"><option>50</option><option selected>100</option><option>300</option><option>400</option><option>500</option><option>1000</option><option value="0">全て</option></select></label>
     <span class="cnt"><a id="prv">戻</a><span id="ct"></span><a id="nxt">次</a></span>
-    <span id="gtool" style="display:none"><button class="b s g" id="xa" title="表示中の事業所の求人票をすべて展開">全展開</button> <button class="b s g" id="xc" title="すべて折りたたむ">全折畳</button></span>
+    <span id="gtool" style="display:none"><button class="b s pk" id="xa" title="表示中の事業所の求人票をすべて展開">全開</button><button class="b s pk" id="xc" title="すべて折りたたむ">折畳</button></span>
     <button class="b" id="addc">＋列追加</button>
     <button class="b" id="chk">検証</button>
   </div>
@@ -1083,7 +1085,7 @@ function makeGroups(rows){
     if(!all.has(k))all.set(k,[]);all.get(k).push(r);
     const b=best.get(k);if(!b||newer(r,b))best.set(k,r);}
   return [...best].map(([k,r])=>{const g=Object.assign({},r),a=all.get(k);
-    a.sort((x,y)=>newer(x,y)?-1:newer(y,x)?1:0);
+    a.sort((x,y)=>(x._k==null)-(y._k==null)||(x._k-y._k)||0);
     g._n=a.length;g._rows=a;g._key=k;return g;});
 }
 function gKey(r){return r['事業所No']||('?'+r['事業所名']);}
