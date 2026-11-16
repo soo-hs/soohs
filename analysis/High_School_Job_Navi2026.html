@@ -364,7 +364,7 @@ function applyCsv(buf,name){
   }
   window.csvLoaded=true;
   const all=by.size,tot=Object.keys(J).length;
-  $('totalcnt').textContent='求人票 全'+all.toLocaleString()+'件';
+  $('totalcnt').textContent='求人票 全'+all.toLocaleString()+'件より';
   csvStatus('ok',`✅ <b>${esc(name)}</b> を読込（${all.toLocaleString()}件）｜掲載${tot}件中 一致${hit}件・<b>CSV更新あり${chg}件</b>・CSVに掲載なし${none}件（非表示）｜CSVのみの求人${Math.max(0,all-hit)}件（点数未計算のため非表示）`
     +(chg||none?'<br>※点数・順位・評価理由は作成時の判定です。「CSV更新あり」の印がある求人は点数の再計算が必要です。':''));
   buildTabs();setupTab();render();
