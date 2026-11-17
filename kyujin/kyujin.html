@@ -1053,7 +1053,7 @@ function buildAdv(){
   h+=row('賞与',rad('bonus','あり','あり')+rad('bonus','なし','なし')+rad('bonus','','指定なし',1));
   h+=row('希望する休日',['月曜','火曜','水曜','木曜','金曜','土曜','日曜','祝日','その他'].map((t,i)=>chk('hol',i,t)).join(''));
   h+=row('年間休日数',rg('yh',YHR,'日'));
-  h+=row('転勤',chk('ten',0,'転勤なし')+`<span style="margin-left:12px;font-weight:700;color:var(--nvd)">雇用形態</span>`+rad('emp','正社員','正社員')+rad('emp','以外','正社員以外')+rad('emp','','指定なし',1));
+  h+=row('転勤',chk('ten',0,'転勤なし')+`<span style="margin-left:12px;background:#e8eefa;color:var(--nvd);font-weight:700;font-size:11px;padding:3px 6px;align-self:stretch;display:flex;align-items:center">雇用形態</span>`+rad('emp','正社員','正社員')+rad('emp','以外','正社員以外')+rad('emp','','指定なし',1));
   h+=row('入居可能住宅',chk('house',0,'単身用あり')+chk('house',1,'世帯用あり'));
   h+=row('時間外労働',rad('ot','あり','あり (月平均')+`<input type="number" id="otn" min="0" max="200" style="width:56px" placeholder="10">時間以下)`+rad('ot','なし','なし')+rad('ot','','指定なし',1));
   h+=row('勤務制度',['交替制(シフト制)','裁量労働制','フレックスタイム制','変形労働時間制','上記のような特別な勤務制度ではない'].map((t,i)=>chk('sys',i,t)).join(''));
