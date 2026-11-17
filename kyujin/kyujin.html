@@ -58,6 +58,7 @@ tbody tr.sel td.k0{background:#f5a524!important;color:#3b2a00}
 th.k0,td.k0{position:sticky;left:0;text-align:right;color:var(--nv);font-weight:600;font-size:10px;padding:0 4px}
 th.k0{z-index:5}td.k0{z-index:2;background:#eef3fc!important}
 td.r{text-align:right}
+td.nlt{color:var(--lt)}
 th.light,td.light,.f.light b,.f.light span{color:var(--lt)}
 #msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#fffd;font-size:14px;color:var(--nv);text-align:center;padding:20px;z-index:10;white-space:pre-wrap}
 #dCfm{width:min(380px,92vw)}
@@ -1015,6 +1016,7 @@ function holHit(i,t){
   return tk.includes('他')||/その他|不定|シフト|交替|交代/.test(t);}
 const FWF={'all':['事業所名','事業所カナ','職種','仕事内容','事業内容','管理No','求人番号'],'事業所名':['事業所名','事業所カナ'],'職種':['職種'],'仕事内容':['仕事内容'],'事業内容':['事業内容'],'管理No':['管理No'],'求人番号':['求人番号']};
 
+const isSei=v=>/正社員/.test(v||'')&&!/正社員以外/.test(v||'');
 function matchAdv(r,A){
   if(A.fwt.trim()){const t=ns(FWF[A.fws].map(k=>r[k]).join('\n'));if(!hit(t,segs(A.fwt)))return false;}
   if(A.ad.trim()){const t=ns((r['就業場所住所']||'')+'\n'+r._pl);if(!hit(t,segs(A.ad)))return false;}
@@ -1025,6 +1027,8 @@ function matchAdv(r,A){
   if(A.hol.length){const t=nz(r['休日']);if(!A.hol.every(i=>holHit(i,t)))return false;}
   if(A.yh.length&&!A.yh.some(i=>inR(r._yh,YHR[i])))return false;
   if(A.ten&&!/なし|無|ない/.test(r['転勤']||''))return false;
+  if(A.emp==='正社員'&&!isSei(r['雇用形態']))return false;
+  if(A.emp==='以外'&&(!String(r['雇用形態']||'').trim()||isSei(r['雇用形態'])))return false;
   if(A.house.length&&!A.house.some(i=>{const v=r[i===0?'単身住宅':'世帯住宅']||'';return v&&!/なし|無|不可/.test(v);}))return false;
   if(A.ot==='あり'){if(!/あり|有/.test(r['残業の有無']||''))return false;if(A.otn!=null&&(r._ot==null||r._ot>A.otn))return false;}
   if(A.ot==='なし'&&!(/なし|無/.test(r['残業の有無']||'')||r._ot===0))return false;
@@ -1034,7 +1038,7 @@ function matchAdv(r,A){
     if(!A.sys.some(i=>f[i]))return false;}
   return true;
 }
-function advActive(A){return !!(A.fwt.trim()||A.ad.trim()||A.job.length||A.mg.length||A.bonus||A.hol.length||A.yh.length||A.ten||A.house.length||A.ot||A.sys.length);}
+function advActive(A){return !!(A.fwt.trim()||A.ad.trim()||A.job.length||A.mg.length||A.bonus||A.hol.length||A.yh.length||A.ten||A.emp||A.house.length||A.ot||A.sys.length);}
 
 function buildAdv(){
   const row=(l,inner)=>`<div class="ar"><div class="al">${l}</div><div class="ao">${inner}</div></div>`;
@@ -1049,7 +1053,7 @@ function buildAdv(){
   h+=row('賞与',rad('bonus','あり','あり')+rad('bonus','なし','なし')+rad('bonus','','指定なし',1));
   h+=row('希望する休日',['月曜','火曜','水曜','木曜','金曜','土曜','日曜','祝日','その他'].map((t,i)=>chk('hol',i,t)).join(''));
   h+=row('年間休日数',rg('yh',YHR,'日'));
-  h+=row('転勤',chk('ten',0,'転勤なし'));
+  h+=row('転勤',chk('ten',0,'転勤なし')+`<span style="margin-left:12px;font-weight:700;color:var(--nvd)">雇用形態</span>`+rad('emp','正社員','正社員')+rad('emp','以外','正社員以外')+rad('emp','','指定なし',1));
   h+=row('入居可能住宅',chk('house',0,'単身用あり')+chk('house',1,'世帯用あり'));
   h+=row('時間外労働',rad('ot','あり','あり (月平均')+`<input type="number" id="otn" min="0" max="200" style="width:56px" placeholder="10">時間以下)`+rad('ot','なし','なし')+rad('ot','','指定なし',1));
   h+=row('勤務制度',['交替制(シフト制)','裁量労働制','フレックスタイム制','変形労働時間制','上記のような特別な勤務制度ではない'].map((t,i)=>chk('sys',i,t)).join(''));
@@ -1059,7 +1063,7 @@ function readAdv(){
   const f=$('#advF');const g=n=>[...f.querySelectorAll(`input[name="${n}"]:checked`)].map(e=>+e.value);
   const rv=n=>(f.querySelector(`input[name="${n}"]:checked`)||{}).value||'';
   const on=$('#otn').value;
-  return {fws:$('#fws').value,fwt:$('#fwt').value,ad:$('#ad').value,job:g('job'),mg:g('mg'),bonus:rv('bonus'),hol:g('hol'),yh:g('yh'),ten:g('ten').length>0,house:g('house'),ot:rv('ot'),otn:on===''?null:+on,sys:g('sys')};
+  return {fws:$('#fws').value,fwt:$('#fwt').value,ad:$('#ad').value,job:g('job'),mg:g('mg'),bonus:rv('bonus'),hol:g('hol'),yh:g('yh'),ten:g('ten').length>0,emp:rv('emp'),house:g('house'),ot:rv('ot'),otn:on===''?null:+on,sys:g('sys')};
 }
 
 /* ---------- ソート ---------- */
@@ -1131,7 +1135,8 @@ function render(){
     for(const c of cols){
       if(c.key==='#'){h+=`<td class="k0"${isG?` title="クリックで求人票を${op?'折りたたむ':'展開'}"`:''}>${isG?`<span class="tg0">${op?'▼':'▶'}</span>`:''}${i+1}</td>`;continue;}
       const t=String(cellText(c.key,r));
-      h+=`<td class="${c.money?'r ':''}${c.light?'light':''}" title="${esc(t)}">${esc(t)}</td>`;}
+      const nlt=c.key==='事業所名'&&String(r['雇用形態']||'').trim()&&!isSei(r['雇用形態']);
+      h+=`<td class="${c.money?'r ':''}${c.light?'light':''}${nlt?' nlt':''}" title="${esc(t)}">${esc(t)}</td>`;}
     h+='</tr>';
     if(op)h+=`<tr class="dd"><td class="ddc" colspan="${cols.length}"><div class="ddw">${ddHtml(r)}</div></td></tr>`;}
   h+='</tbody>';
