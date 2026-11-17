@@ -149,6 +149,10 @@ details.more{margin-top:auto;padding-top:.5rem}
 @media(max-width:900px){.tabs{gap:0.25rem}.tab{padding:0.1875rem 0.25rem}}
 .btn-csv{padding:.25rem .3rem!important;font-size:.8125rem!important;white-space:nowrap}
 @media(max-width:600px){.btn-csv{padding:.25rem .3rem!important;font-size:.75rem!important;width:auto!important}}
+.btns{display:flex;flex-wrap:nowrap;align-items:center;gap:.5rem;margin-left:auto}
+.btns .btn-csv{margin-left:0!important;flex:0 0 auto!important}
+.btns .reset{flex:0 0 auto!important;white-space:nowrap}
+@media(max-width:600px){.row:not(.chips)>.btns{flex:1 1 100%;justify-content:space-between;margin-left:0}}
 </style>
 </head>
 <body>
@@ -190,9 +194,11 @@ details.more{margin-top:auto;padding-top:.5rem}
         <option value="ot">残業の少ない順</option>
       </select>
       <span id="prefbox" style="display:none"><label class="lb" for="pref">都道府県</label> <select id="pref"></select></span>
-      <button class="reset" id="reset" type="button">条件をリセット</button>
-      <button class="btn-csv" id="csv" type="button">⬇ CSV保存</button>
-      <button class="btn-csv" id="csvpick" type="button">📂 CSV選択</button><input type="file" id="csvfile" accept=".csv,text/csv" hidden>
+      <div class="btns">
+        <button class="reset" id="reset" type="button">条件をリセット</button>
+        <button class="btn-csv" id="csv" type="button">⬇ CSV保存</button>
+        <button class="btn-csv" id="csvpick" type="button">📂 CSV選択</button><input type="file" id="csvfile" accept=".csv,text/csv" hidden>
+      </div>
     </div>
     <div class="row chips" id="chips"></div>
   </section>
