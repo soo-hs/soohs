@@ -167,6 +167,22 @@ mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline
 @media(min-width:901px) and (max-width:1099px){.tab small{display:block;margin-left:0}}
 @media(max-width:600px) and (min-width:421px){.tabs{grid-template-columns:repeat(5,minmax(0,1fr));gap:.25rem}.tab{padding:.375rem .125rem;font-size:.8125rem}.tab small{font-size:.625rem}}
 @media(max-width:420px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:.375rem}.tab{padding:.375rem .25rem;font-size:.875rem}.tab small{font-size:.6875rem}}
+/* ===== 「気になる」ボタンの配色 ===== */
+.chip[data-k=__fav]{background:linear-gradient(135deg,#fff8e1,#ffe9a8);border-color:#e8b40c;color:#7a4a00;font-weight:800;box-shadow:0 .125rem .25rem rgba(232,180,12,.25)}
+.chip[data-k=__fav]:hover{background:linear-gradient(135deg,#fff3c4,#ffdf85)}
+.chip[data-k=__fav][aria-pressed=true]{background:linear-gradient(135deg,#f5a623,#e8850c);border-color:#c76f00;color:#fff;box-shadow:0 .125rem .375rem rgba(199,111,0,.4)}
+.chip[data-k=__fav][aria-pressed=true] .ys{color:#fff;text-shadow:none}
+/* ===== オンマウスの吹き出し ===== */
+[data-tip]{position:relative}
+[data-tip]::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + .5rem);transform:translateX(-50%);width:max-content;max-width:min(18rem,80vw);background:#263445;color:#fff;font-size:.75rem;font-weight:600;line-height:1.5;text-align:left;white-space:normal;padding:.4rem .65rem;border-radius:.5rem;box-shadow:0 .25rem .75rem rgba(0,0,0,.25);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s;z-index:60}
+[data-tip]::before{content:"";position:absolute;left:50%;bottom:calc(100% + .125rem);transform:translateX(-50%);border:.375rem solid transparent;border-top-color:#263445;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s;z-index:60}
+@media(hover:hover){[data-tip]:hover::after,[data-tip]:hover::before{opacity:1;visibility:visible;transition-delay:.25s}}
+.btns [data-tip]:last-child::after,.btns [data-tip]:nth-last-of-type(1)::after{left:auto;right:0;transform:none}
+/* ===== 800px以上：「ベスト○件」をボタン名の横に表示し、列数は画面幅に自動対応 ===== */
+@media(min-width:800px){
+ .tabs{grid-template-columns:repeat(auto-fit,minmax(11.5rem,1fr))}
+ .tab small{display:inline;margin-left:.375rem}
+}
 </style>
 </head>
 <body>
@@ -211,8 +227,8 @@ mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline
       <span id="prefbox" style="display:none"><label class="lb" for="pref">都道府県</label> <select id="pref"></select></span>
       <div class="btns">
         <button class="reset" id="reset" type="button">条件をリセット</button>
-        <button class="btn-csv" id="csv" type="button">⬇ CSV保存</button>
-        <button class="btn-csv" id="csvpick" type="button">📂 CSV選択</button><input type="file" id="csvfile" accept=".csv,text/csv" hidden>
+        <button class="btn-csv" id="csv" type="button" data-tip="★を付けた気になる求人をCSVファイルに保存します（別のPCやスマホでも読み込めます）">⬇ CSV保存</button>
+        <button class="btn-csv" id="csvpick" type="button" data-tip="保存しておいたCSVファイルを選んで、気になる求人（★）を復元します">📂 CSV選択</button><input type="file" id="csvfile" accept=".csv,text/csv" hidden>
       </div>
     </div>
     <div class="row chips" id="chips"></div>
@@ -279,7 +295,7 @@ function setupTab(){
   $('notice').innerHTML=n?`<div class="notice">💡 ${n}</div>`:'';
 }
 function chipsBuild(){
-  $('chips').innerHTML='<label class="lb">絞り込み</label>'+FILTERS.map(([k,l])=>`<button type="button" class="chip" data-k="${k}" aria-pressed="${state.flt.has(k)}">${l}</button>`).join('')+`<button type="button" class="chip" data-k="__fav" aria-pressed="${state.fav}"><span class="ys">★</span> 気になる(${favs.size})</button>`;
+  $('chips').innerHTML='<label class="lb">絞り込み</label>'+FILTERS.map(([k,l])=>`<button type="button" class="chip" data-k="${k}" aria-pressed="${state.flt.has(k)}">${l}</button>`).join('')+`<button type="button" class="chip" data-k="__fav" data-tip="★を付けた「気になる求人」だけを表示します。もう一度押すと全件に戻ります" aria-pressed="${state.fav}"><span class="ys">★</span> 気になる(${favs.size})</button>`;
   $('chips').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{const k=b.dataset.k;if(k==='__fav')state.fav=!state.fav;else state.flt.has(k)?state.flt.delete(k):state.flt.add(k);state.limit=PAGE;chipsBuild();render()});
 }
 function getList(){
