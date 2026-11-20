@@ -196,6 +196,15 @@ mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline
 @media(min-width:360px) and (max-width:479px){
  .tabs{grid-template-columns:repeat(5,minmax(0,1fr))}
 }
+/* ===== 「ベスト○件」ボタンはスクロールしても常に上部に固定表示 ===== */
+.tabs{position:sticky!important;top:0;z-index:30;background:var(--bg);box-shadow:0 .25rem .375rem -.25rem rgba(70,80,120,.18)}
+/* ===== 800px以上：「ベスト○件」ボタンをなるべく1列（1段）に。幅は等分、広い画面では名前の横に件数 ===== */
+@media(min-width:800px){
+ .tabs{display:grid;grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:minmax(0,1fr);gap:.375rem}
+ .tab{white-space:nowrap;padding:.25rem .25rem}
+ .tab small{display:block;margin-left:0}
+}
+@media(min-width:1800px){.tab small{display:inline;margin-left:.375rem}}
 </style>
 </head>
 <body>
@@ -290,7 +299,7 @@ const scoreColor=t=>t>=70?'#22b573':t>=60?'#2f8cff':t>=50?'#ff9f1c':'#b8c0d0';
 const shownIds=ids=>window.csvLoaded?ids.filter(id=>J[id].csv!=='none'):ids;
 function buildTabs(){
   $('tabs').innerHTML=TABS.map((t,i)=>`<button class="tab" role="tab" data-i="${i}" aria-selected="${i===state.tab}">${esc(t.name)}<small>ベスト${Math.min(t.quota,shownIds(t.ids).length)}件</small></button>`).join('');
-  $('tabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{state.tab=+b.dataset.i;state.pref='';state.limit=PAGE;buildTabs();setupTab();render();window.scrollTo({top:$('tabs').offsetTop-4,behavior:'smooth'})});
+  $('tabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{state.tab=+b.dataset.i;state.pref='';state.limit=PAGE;buildTabs();setupTab();render();{const L=$('list'),T=$('tabs');window.scrollTo({top:Math.max(0,L.getBoundingClientRect().top+window.pageYOffset-T.offsetHeight-6),behavior:'instant'})}});
 }
 function setupTab(){
   const t=TABS[state.tab];
