@@ -183,10 +183,18 @@ mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline
  .tabs{grid-template-columns:repeat(auto-fit,minmax(11.5rem,1fr))}
  .tab small{display:inline;margin-left:.375rem}
 }
-/* ===== 画面幅800〜1099px：3列（4行）、「ベスト○件」はボタン名の下に表示、幅を少し狭く ===== */
-@media(min-width:800px) and (max-width:1099px){
- .tabs{grid-template-columns:repeat(3,minmax(0,1fr));max-width:42rem;margin-left:auto;margin-right:auto}
- .tab small{display:block;margin-left:0}
+/* ===== 799px以下（スマホ・小型タブレット）：「ベスト○件」ボタンの列数を画面幅に合わせて最適化。ボタン幅は必要最小限に ===== */
+@media(max-width:799px){
+ .tabs{width:100%;grid-template-columns:repeat(auto-fit,minmax(4.6rem,1fr));justify-content:center;gap:.3rem}
+ .tab{width:100%;min-width:0;padding:.3rem .2rem;font-size:.8125rem;line-height:1.25;white-space:nowrap}
+ .tab small{display:block;margin-left:0;font-size:.625rem}
+}
+/* 360〜719px：10個を5列×2段にそろえる（端数の段が出ないように） */
+@media(min-width:360px) and (max-width:719px){
+ .tabs{grid-template-columns:repeat(5,minmax(0,6.5rem))}
+}
+@media(min-width:360px) and (max-width:479px){
+ .tabs{grid-template-columns:repeat(5,minmax(0,1fr))}
 }
 </style>
 </head>
