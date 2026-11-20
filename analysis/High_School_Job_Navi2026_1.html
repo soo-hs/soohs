@@ -178,19 +178,15 @@ mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline
 [data-tip]::before{content:"";position:absolute;left:50%;bottom:calc(100% + .125rem);transform:translateX(-50%);border:.375rem solid transparent;border-top-color:#263445;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s;z-index:60}
 @media(hover:hover){[data-tip]:hover::after,[data-tip]:hover::before{opacity:1;visibility:visible;transition-delay:.25s}}
 .btns [data-tip]:last-child::after,.btns [data-tip]:nth-last-of-type(1)::after{left:auto;right:0;transform:none}
-/* ===== 800px以上：「ベスト○件」ボタンの列数を画面幅に合わせる（10個＝常に3列以上・行がそろう列数） ===== */
+/* ===== 800px以上：「ベスト○件」をボタン名の横に表示し、列数は画面幅に自動対応 ===== */
 @media(min-width:800px){
- .tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.5rem;justify-content:stretch;overflow:visible}
- .tabs .tab{width:100%;min-width:0;padding:.45rem .5rem;line-height:1.35;text-align:center;white-space:normal}
- .tabs .tab small{display:inline-block;margin:0 0 0 .3rem;font-size:.75rem;line-height:1.35;white-space:nowrap}
+ .tabs{grid-template-columns:repeat(auto-fit,minmax(11.5rem,1fr))}
+ .tab small{display:inline;margin-left:.375rem}
 }
+/* ===== 800〜1099px：タブは3列（4行）、「ベスト○件」はボタン名の下に表示 ===== */
 @media(min-width:800px) and (max-width:1099px){
  .tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
- .tabs .tab small{display:block;margin:0}
-}
-@media(min-width:2000px){
- .tabs{grid-template-columns:repeat(10,minmax(0,1fr))}
- .tabs .tab small{display:block;margin:0}
+ .tab small{display:block;margin-left:0}
 }
 </style>
 </head>
