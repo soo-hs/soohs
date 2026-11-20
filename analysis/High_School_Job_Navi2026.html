@@ -161,6 +161,12 @@ details.more{margin-top:auto;padding-top:.5rem}
 /* ===== 検索ヒット表示 ===== */
 mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline;text-decoration-color:#ff8fb8;text-decoration-thickness:.12em;text-underline-offset:.18em}
 .qcond{display:inline-block;background:#fff0f6;color:#d1005f;font-weight:800;border-radius:62.44rem;padding:0 .625rem;margin-left:.25rem}
+/* ===== タブボタンの列数を画面サイズに合わせる（10個: 5列×2行 / 2列×5行） ===== */
+.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.375rem;overflow:visible;justify-content:stretch}
+.tab{width:100%;min-width:0;text-align:center;box-sizing:border-box}
+@media(min-width:901px) and (max-width:1099px){.tab small{display:block;margin-left:0}}
+@media(max-width:600px) and (min-width:421px){.tabs{grid-template-columns:repeat(5,minmax(0,1fr));gap:.25rem}.tab{padding:.375rem .125rem;font-size:.8125rem}.tab small{font-size:.625rem}}
+@media(max-width:420px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:.375rem}.tab{padding:.375rem .25rem;font-size:.875rem}.tab small{font-size:.6875rem}}
 </style>
 </head>
 <body>
