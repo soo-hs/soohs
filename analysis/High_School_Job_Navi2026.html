@@ -205,6 +205,11 @@ mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline
  .tab small{display:block;margin-left:0}
 }
 @media(min-width:1800px){.tab small{display:inline;margin-left:.375rem}}
+/* ===== 検索・絞り込みの条件表示バー：タブの下に固定 ===== */
+#count{position:sticky;top:var(--th,3rem);z-index:25;background:var(--bg);margin:0;padding:.25rem .125rem;line-height:1.5;max-height:5.5rem;overflow-y:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
+#count::-webkit-scrollbar{display:none}
+.qc{display:inline-block;white-space:nowrap;background:#e6f1ff;color:#1f6fd6;font-weight:800;border-radius:62.44rem;padding:0 .5rem;margin-left:.25rem}
+.chg{border:1px solid var(--blue);background:#fff;color:var(--blue);border-radius:62.44rem;font:inherit;font-size:.75rem;font-weight:800;padding:0 .6rem;margin-left:.375rem;cursor:pointer}
 </style>
 </head>
 <body>
@@ -299,7 +304,7 @@ const scoreColor=t=>t>=70?'#22b573':t>=60?'#2f8cff':t>=50?'#ff9f1c':'#b8c0d0';
 const shownIds=ids=>window.csvLoaded?ids.filter(id=>J[id].csv!=='none'):ids;
 function buildTabs(){
   $('tabs').innerHTML=TABS.map((t,i)=>`<button class="tab" role="tab" data-i="${i}" aria-selected="${i===state.tab}">${esc(t.name)}<small>ベスト${Math.min(t.quota,shownIds(t.ids).length)}件</small></button>`).join('');
-  $('tabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{state.tab=+b.dataset.i;state.pref='';state.limit=PAGE;buildTabs();setupTab();render();{const L=$('list'),T=$('tabs');window.scrollTo({top:Math.max(0,L.getBoundingClientRect().top+window.pageYOffset-T.offsetHeight-6),behavior:'instant'})}});
+  $('tabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{state.tab=+b.dataset.i;state.pref='';state.limit=PAGE;buildTabs();setupTab();render();{const L=$('list'),T=$('tabs');window.scrollTo({top:Math.max(0,L.getBoundingClientRect().top+window.pageYOffset-T.offsetHeight-$('count').offsetHeight-6),behavior:'instant'})}});
 }
 function setupTab(){
   const t=TABS[state.tab];
@@ -382,9 +387,18 @@ function card(it){
   <button class="star" aria-pressed="${favs.has(key)}" data-key="${esc(key)}" title="気になる">${favs.has(key)?'★':'☆'}</button>
 </article>`;
 }
+function condDesc(){
+  const c=[];
+  if(state.pref)c.push('📍'+esc(state.pref));
+  if(state.sort!=='rank'){const o=$('sort').selectedOptions[0];if(o)c.push('↕'+esc(o.textContent.replace(/（.*$/,'')))}
+  FILTERS.forEach(([k,l])=>{if(state.flt.has(k))c.push(esc(l))});
+  if(state.fav)c.push('★気になる');
+  return (c.length?' ／ <span class="qcond2">絞り込み：'+c.map(x=>'<span class="qc">'+x+'</span>').join('')+'</span>':'')+' <button type="button" class="chg" id="chg">🔍 条件を変更</button>';
+}
+const stickyOff=()=>$('tabs').offsetHeight;
 function render(){
   const arr=getList(),t=TABS[state.tab],view=arr.slice(0,state.limit),bn=window.baseN||0;
-  $('count').innerHTML=`<b>${t.name}</b>：<b>${view.length.toLocaleString()}件</b> を表示中（${arr.length<bn?'条件に合う'+arr.length.toLocaleString()+'件／':''}全${bn.toLocaleString()}件）`+qdesc();
+  $('count').innerHTML=`<b>${t.name}</b>：<b>${view.length.toLocaleString()}件</b> を表示中（${arr.length<bn?'条件に合う'+arr.length.toLocaleString()+'件／':''}全${bn.toLocaleString()}件）`+qdesc()+condDesc();
   const left=arr.length-view.length;
   $('morewrap').innerHTML=left>0?`<button type="button" class="more-btn" id="more">▼ 次の${Math.min(PAGE,left)}件を表示（残り${left.toLocaleString()}件）</button>`:'';
   if(left>0)$('more').onclick=()=>{state.limit+=PAGE;render()};
@@ -409,6 +423,8 @@ $('reset').onclick=()=>{state.limit=PAGE;state.q='';state.sort='rank';state.pref
 $('totop').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
 window.csvLoaded=true;$('totalcnt').textContent='求人票 全'+Object.keys(J).length.toLocaleString()+'件より';
 buildTabs();setupTab();chipsBuild();render();
+document.addEventListener('click',ev=>{if(ev.target.id==='chg'){const P=document.querySelector('.panel');window.scrollTo({top:Math.max(0,P.getBoundingClientRect().top+window.pageYOffset-stickyOff()-6),behavior:'instant'});$('q').focus({preventScroll:true})}});
+(function(){const r=()=>document.documentElement.style.setProperty('--th',stickyOff()+'px');r();if(window.ResizeObserver)new ResizeObserver(r).observe($('tabs'));addEventListener('resize',r)})();
 /* ===== CSV読込（C:\test\kyujin2026.csv）===== */
 const CSV_URL='https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv';
 function parseCsv(t){const R=[];let r=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}else if(c==='"')q=true;else if(c===','){r.push(f);f=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;r.push(f);f='';R.push(r);r=[]}else f+=c}if(f!==''||r.length){r.push(f);R.push(r)}return R}
