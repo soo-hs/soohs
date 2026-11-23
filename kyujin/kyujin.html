@@ -41,7 +41,8 @@ select,input[type=number]{height:22px;border:1px solid var(--ln);border-radius:4
 #nxt{position:relative;left:-3pt}
 #gtool{position:relative;left:-8pt}
 #addc{position:relative;left:-5pt;padding:0 calc(3px - .5pt)}
-@media (max-width:1200px){#chk{display:none}}
+@media (max-width:1200px){#chk{display:none}.l3{display:none}#csv{margin-left:2px}}
+.l2 #csv{position:relative;left:-5pt}
 @media(max-width:700px),(hover:none) and (pointer:coarse) and (max-width:950px){#chk{display:none}}
 #wrap{flex:1 1 auto;overflow:auto;position:relative;background:#fff}
 #wrap:focus{outline:none}
@@ -1509,6 +1510,10 @@ $('#csv').addEventListener('click',()=>{
   toast('全'+(R.length-1)+'件のデータをCSVでダウンロードしました');
 });
 $('#chk').addEventListener('click',()=>{if(S.all.length)runChecks();});
+/* 画面幅1200px以下（スマホ含む）は「csv」を「＋列追加」と同じ行（右隣）に移動 */
+(function(){const mq=window.matchMedia('(max-width:1200px)'),b=$('#csv'),add=$('#addc'),l3=document.querySelector('.l3');
+  const mv=()=>{if(mq.matches)add.after(b);else l3.prepend(b);};
+  mv();(mq.addEventListener?mq.addEventListener('change',mv):mq.addListener(mv));})();
 function toggleView(){
   S.view=S.view==='list'?'group':'list';
   $('#vb').textContent=S.view==='group'?'　[事業所No別]':'';
