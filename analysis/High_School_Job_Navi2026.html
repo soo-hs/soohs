@@ -317,7 +317,7 @@ table.jt{width:100%;border-collapse:collapse;font-size:.8125rem;min-width:46rem}
       <span id="prefbox" style="display:none"><label class="lb" for="pref">都道府県</label> <select id="pref"></select></span>
       <div class="btns">
         <button class="reset" id="reset" type="button">条件をリセット</button>
-        <button class="btn-match" id="match" type="button" data-tip="いくつかの質問に答えるだけで、あなたの希望に合う求人を5件さがします">🎯 質問で最適求人</button>
+        <button class="btn-match" id="match" type="button" data-tip="いくつかの質問に答えるだけで、あなたの希望に合う求人を10件さがします">🎯 質問で最適求人</button>
         <button class="btn-csv" id="csv" type="button" data-tip="★を付けた気になる求人をCSVファイルに保存します（別のPCやスマホでも読み込めます）">⬇ CSV保存</button>
         <button class="btn-csv" id="csvpick" type="button" data-tip="保存しておいたCSVファイルを選んで、気になる求人（★）を復元します">📂 CSV選択</button><input type="file" id="csvfile" accept=".csv,text/csv" hidden>
         <button class="btn-csv" id="listview" type="button" aria-pressed="false" data-tip="求人票を表形式の一覧で表示します。行を押すと詳しい内容が開きます。もう一度押すとカード表示に戻ります">📋 一覧</button>
@@ -698,7 +698,7 @@ function run(){
  for(const id in J){const j=J[id];if(j.csv==='none')continue;const x=MX[j.no];if(!x)continue;j.mc=x[0];j.mp=x[1];all.push(score(id,j,boost))}
  all.sort((a,b)=>(b.gate-a.gate)||(b.pct+b.j.total/1e4)-(a.pct+a.j.total/1e4));
  const out=[],seen=new Set();
- for(const r of all){if(seen.has(r.j.co))continue;seen.add(r.j.co);out.push(r);if(out.length>=5)break}
+ for(const r of all){if(seen.has(r.j.co))continue;seen.add(r.j.co);out.push(r);if(out.length>=10)break}
  return out}
 const EM={type:'🎯',days:'🌴',work:'⏰',ot:'🌙',base:'💴',bonus:'🎁',area:'🗺️',train:'📚',live:'🏠',cat:'🔧'};
 const PR={
