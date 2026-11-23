@@ -181,7 +181,7 @@ mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline
 /* ===== 800px以上：「ベスト○件」をボタン名の横に表示し、列数は画面幅に自動対応 ===== */
 @media(min-width:800px){
  .tabs{grid-template-columns:repeat(auto-fit,minmax(11.5rem,1fr))}
- .tab small{display:inline;margin-left:.375rem}
+ .tab small{display:inline;margin-left:0}
 }
 /* ===== 799px以下（スマホ・小型タブレット）：「ベスト○件」ボタンの列数を画面幅に合わせて最適化。ボタン幅は必要最小限に ===== */
 @media(max-width:799px){
@@ -191,10 +191,18 @@ mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline
 }
 /* 360〜719px：10個を5列×2段にそろえる（端数の段が出ないように） */
 @media(min-width:360px) and (max-width:719px){
- .tabs{grid-template-columns:repeat(5,minmax(0,6.5rem))}
+ .tabs{grid-template-columns:repeat(6,minmax(0,6.5rem))}
 }
 @media(min-width:360px) and (max-width:479px){
  .tabs{grid-template-columns:repeat(5,minmax(0,1fr))}
+}
+/* 479px以下（最小サイズ）：12個を6列×2行にそろえる */
+@media(max-width:479px){
+ .tabs{grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:.25rem}
+ .tab{padding:.25rem .05rem;font-size:.6875rem;border-radius:.625rem;overflow:hidden}
+ .tab small{font-size:.5625rem}
+ .tab .t2{min-width:0;padding:0 .25rem;border-radius:.625rem}
+ .tab-shibu .t1{font-size:calc(1em - 1pt)}
 }
 /* ===== 「ベスト○件」ボタンはスクロールしても常に上部に固定表示 ===== */
 .tabs{position:sticky!important;top:0;z-index:30;background:var(--bg);box-shadow:0 .25rem .375rem -.25rem rgba(70,80,120,.18)}
@@ -204,7 +212,7 @@ mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline
  .tab{white-space:nowrap;padding:.25rem .25rem}
  .tab small{display:block;margin-left:0}
 }
-@media(min-width:1800px){.tab small{display:inline;margin-left:.375rem}}
+@media(min-width:1800px){.tab small{display:inline;margin-left:0}}
 /* ===== 検索・絞り込みの条件表示バー：タブの下に固定 ===== */
 #count{position:sticky;top:var(--th,3rem);z-index:25;background:var(--bg);margin:0;padding:.25rem .125rem;line-height:1.5;max-height:5.5rem;overflow-y:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
 #count::-webkit-scrollbar{display:none}
@@ -237,8 +245,13 @@ mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline
 
 .tab{position:relative}
 .tab .tl{display:inline-block}
-.tab .t2{display:none;position:absolute;left:50%;top:-0.125rem;bottom:-0.125rem;transform:translateX(-50%);width:max-content;min-width:calc(100% + .25rem);padding:0 .75rem;flex-direction:column;align-items:center;justify-content:center;white-space:nowrap;background:#fff;border:.125rem solid var(--blue);border-radius:inherit;z-index:2}
+.tab-shibu .t1{font-size:calc(1em - 1pt)}
+.tab .t2{display:none;position:absolute;left:50%;top:-0.125rem;bottom:-0.125rem;transform:translateX(-50%);width:max-content;min-width:calc(100% + .25rem);padding:0 .75rem;flex-direction:column;align-items:center;justify-content:center;white-space:nowrap;background:#fff;border:.125rem solid var(--blue);border-radius:62.44rem;z-index:2}
 .tab[aria-selected=true] .t2{background:var(--blue)}
+.tab .t2{font-size:.78em;font-weight:600;color:#d98aa8;line-height:1.25}
+.tab .t2 small{font-size:.9em;font-weight:500;color:#e3a6bd}
+.tab[aria-selected=true] .t2{color:#ffd6e5}
+.tab[aria-selected=true] .t2 small{color:#ffc4d9}
 .tab:hover .t2,.tab:focus-visible .t2{display:flex}
 @media(min-width:601px){.tabs{flex-wrap:wrap;justify-content:center;overflow:visible}}
 .tab:last-child .t2{left:auto;right:0;transform:none}
@@ -324,6 +337,7 @@ const J=D.jobs,TABS=D.tabs;
   const BEST={all:200,kanto:50,chubu:50,kansai:50,kyushu:50,kago:50,soo:50,miya:50,shibu:30,kano:30,kirishima:30,osumi3:30};
   TABS.forEach(t=>{
     t.q0=BEST[t.key]||50;
+    if(t.key==='soo')t.tip='曽於市・大崎町';
     if(t.key==='all')return;
     const ext=new Set(t.ext||[]);
     let f;
@@ -364,7 +378,7 @@ const scoreColor=t=>t>=70?'#22b573':t>=60?'#2f8cff':t>=50?'#ff9f1c':'#b8c0d0';
 /* 実際に表示される件数（CSV読込後は「CSVに掲載なし」を除く） */
 const shownIds=ids=>window.csvLoaded?ids.filter(id=>J[id].csv!=='none'):ids;
 function buildTabs(){
-  $('tabs').innerHTML=TABS.map((t,i)=>{const cnt=shownIds(t.ids).length.toLocaleString(),hv=esc(t.tip||t.name);return `<button class="tab" role="tab" data-i="${i}" aria-selected="${i===state.tab}" title="${hv}全${cnt}件"><span class="tl"><span class="t1">${esc(t.name)}<small>ベスト${t.q0}件</small></span><span class="t2">${hv}<small>全${cnt}件</small></span></span></button>`}).join('');
+  $('tabs').innerHTML=TABS.map((t,i)=>{const cnt=shownIds(t.ids).length.toLocaleString(),hv=esc(t.tip||t.name);return `<button class="tab tab-${t.key}" role="tab" data-i="${i}" aria-selected="${i===state.tab}" title="${hv}全${cnt}件"><span class="tl"><span class="t1">${esc(t.name)}<small>ベスト${t.q0}件</small></span><span class="t2">${hv}<small>全${cnt}件</small></span></span></button>`}).join('');
   $('tabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{state.match=null;state.tab=+b.dataset.i;state.pref='';state.limit=TABS[state.tab].q0;buildTabs();setupTab();render();$('list').querySelectorAll('details.more[open]').forEach(d=>d.removeAttribute('open'));{const L=$('list'),T=$('tabs');window.scrollTo({top:Math.max(0,L.getBoundingClientRect().top+window.pageYOffset-T.offsetHeight-$('count').offsetHeight-6),behavior:'instant'})}});
 }
 function setupTab(){
