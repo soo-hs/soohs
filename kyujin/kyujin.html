@@ -9,21 +9,25 @@
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
 body{font:12px/1.35 "Meiryo","Yu Gothic UI","Hiragino Sans",sans-serif;color:var(--tx);background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
-header{flex:0 0 auto;background:linear-gradient(180deg,var(--nv2),var(--nv));color:#fff;padding:3px 8px;display:flex;flex-wrap:wrap;gap:3px 12px;align-items:center;border-bottom:2px solid var(--am)}
-.l1{display:flex;align-items:center;gap:5px;flex:1 1 440px;min-width:0}
-.l2{display:flex;align-items:center;gap:8px;flex:0 0 auto;flex-wrap:wrap}
+header{flex:0 0 auto;background:linear-gradient(180deg,var(--nv2),var(--nv));color:#fff;padding:3px 8px;display:flex;flex-wrap:wrap;gap:3px 6px;align-items:center;border-bottom:2px solid var(--am)}
+.l1{display:flex;align-items:center;gap:3px;flex:1 1 440px;min-width:0}
+.l2{display:flex;align-items:center;gap:8px;flex:0 0 auto;flex-wrap:wrap;margin-right:calc(4mm + 12px)}
 h1{font-size:15px;margin:0;white-space:nowrap;cursor:pointer;user-select:none}
 h1 small{font-size:10px;color:var(--am);font-weight:600}
 #q{flex:1 1 0;min-width:50px;height:22px;border:1px solid transparent;border-radius:4px;padding:0 8px;font-size:12px;background:#fff;color:var(--tx)}
 #q:focus{outline:2px solid var(--am)}
-.yl{white-space:nowrap}.yl b{color:var(--am);font-weight:800;font-size:13px}
-.l2 label{white-space:nowrap}
+.yl{white-space:nowrap;font-size:calc(12px - 1pt)}.yl b{color:var(--am);font-weight:800;font-size:13px}
+.l2 label{white-space:nowrap;font-size:calc(12px - 1pt)}
+#ps{height:18px;padding-top:0;padding-bottom:0}
 select,input[type=number]{height:22px;border:1px solid var(--ln);border-radius:4px;font-size:12px;background:#fff;color:var(--tx)}
 .b{height:22px;padding:0 8px;border:0;border-radius:4px;background:var(--am);color:#3b2a00;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
 .b:hover{filter:brightness(1.08)}
 .b.s{height:20px;padding:0 6px;font-size:10.5px}
 .b.g{background:#e3eaf8;color:var(--nvd)}
-#addc,#chk{padding:0 3px;font-size:10.5px;letter-spacing:-.5px}
+#addc,#chk,#csv{padding:0 3px;font-size:10.5px;letter-spacing:-.5px}
+#csv,#chk{background:#ffd6e3;color:#7a2e48}
+#csv:hover,#chk:hover{background:#ffc2d6;filter:none}
+#csv{padding:0 2px;min-width:0;width:auto}
 .cnt{font-size:10.5px;white-space:nowrap;color:#dbe6ff}
 #ct{position:relative;left:-2pt}
 .cnt a{cursor:pointer;color:var(--am);font-weight:700;padding:0 4px;user-select:none}
@@ -34,7 +38,7 @@ select,input[type=number]{height:22px;border:1px solid var(--ln);border-radius:4
 #prv{position:relative;left:-3pt}
 #nxt{position:relative;left:-3pt}
 #gtool{position:relative;left:-8pt}
-#addc,#chk{position:relative;left:-5pt}
+#addc,#chk,#csv{position:relative;left:-5pt}
 #wrap{flex:1 1 auto;overflow:auto;position:relative;background:#fff}
 #wrap:focus{outline:none}
 td.ac{outline:2px solid var(--nv);outline-offset:-2px}
@@ -187,6 +191,7 @@ tbody tr.dd td.ddc{height:auto;padding:0;overflow:visible;white-space:normal;bac
     <span class="cnt"><a id="prv">戻</a><span id="ct"></span><a id="nxt">次</a></span>
     <span id="gtool" style="display:none"><button class="b s pk" id="xa" title="表示中の事業所の求人票をすべて展開">全開</button><button class="b s pk" id="xc" title="すべて折りたたむ">折畳</button></span>
     <button class="b" id="addc">＋列追加</button>
+    <button class="b" id="csv" title="受付求人票の全データをCSVでダウンロード">csv</button>
     <button class="b" id="chk">検証</button>
   </div>
 </header>
@@ -1487,6 +1492,16 @@ $('#ps').addEventListener('change',e=>{S.ps=+e.target.value;S.page=0;render();})
 $('#prv').addEventListener('click',()=>{S.page--;render();$('#wrap').scrollTop=0;});
 $('#nxt').addEventListener('click',()=>{S.page++;render();$('#wrap').scrollTop=0;});
 $('#addc').addEventListener('click',openCols);
+$('#csv').addEventListener('click',()=>{
+  const R=S.raw;if(!R||!R.length){toast('ダウンロードするデータがありません');return;}
+  const q=v=>{v=v==null?'':String(v);return /[",\r\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+  const txt='\uFEFF'+R.map(r=>r.map(q).join(',')).join('\r\n')+'\r\n';
+  const y=($('#yr').textContent||'').trim(),a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([txt],{type:'text/csv;charset=utf-8'}));
+  a.download='受付求人票'+(/^\d{4}$/.test(y)?y:'')+'.csv';
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  toast('全'+(R.length-1)+'件のデータをCSVでダウンロードしました');
+});
 $('#chk').addEventListener('click',()=>{if(S.all.length)runChecks();});
 function toggleView(){
   S.view=S.view==='list'?'group':'list';
@@ -1560,6 +1575,7 @@ $('#wrap').addEventListener('keydown',e=>{
   try{
     const recs=parseCSV(await loadCSV());
     if(recs.length<2)throw new Error('データ行がありません');
+    S.raw=recs;
     S.all=buildRows(recs);
     const ys=S.all.map(r=>r['年度']).filter(Boolean).sort((a,b)=>cmp(b,a));
     $('#yr').textContent=ys[0]||'-';
