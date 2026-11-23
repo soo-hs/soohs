@@ -255,6 +255,19 @@ mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline
 .tab:hover .t2,.tab:focus-visible .t2{display:flex}
 @media(min-width:601px){.tabs{flex-wrap:wrap;justify-content:center;overflow:visible}}
 .tab:last-child .t2{left:auto;right:0;transform:none}
+
+#listview{background:#8b6bff!important}
+#listview[aria-pressed=true]{background:#5b3fd1!important}
+.list.tbl{display:block!important}
+.tblwrap{overflow-x:auto;background:var(--card);border-radius:.875rem;box-shadow:var(--shadow)}
+table.jt{width:100%;border-collapse:collapse;font-size:.8125rem;min-width:46rem}
+.jt th{position:sticky;top:0;background:var(--blue2);color:var(--ink);font-weight:800;padding:.375rem .5rem;text-align:center;white-space:nowrap}
+.jt td{padding:.3rem .5rem;border-top:1px solid var(--line);vertical-align:middle}
+.jt td.c{text-align:center;white-space:nowrap}.jt td.r{text-align:right;white-space:nowrap}.jt td.sc{font-weight:900}
+.jt td.nm b{display:block;line-height:1.35}.jt td.nm span{display:block;color:var(--sub);font-size:.75rem;line-height:1.35}
+.jt tr.lr{cursor:pointer}.jt tr.lr:hover,.jt tr.lr.open{background:#f3f8ff}
+.jt tr.dr>td{padding:.5rem;background:#fbfdff}
+.jt .star.rs{position:static;font-size:1.25rem}
 </style>
 </head>
 <body>
@@ -302,6 +315,7 @@ mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline
         <button class="btn-match" id="match" type="button" data-tip="いくつかの質問に答えるだけで、あなたの希望に合う求人を5件さがします">🎯 質問で最適求人</button>
         <button class="btn-csv" id="csv" type="button" data-tip="★を付けた気になる求人をCSVファイルに保存します（別のPCやスマホでも読み込めます）">⬇ CSV保存</button>
         <button class="btn-csv" id="csvpick" type="button" data-tip="保存しておいたCSVファイルを選んで、気になる求人（★）を復元します">📂 CSV選択</button><input type="file" id="csvfile" accept=".csv,text/csv" hidden>
+        <button class="btn-csv" id="listview" type="button" aria-pressed="false" data-tip="求人票を表形式の一覧で表示します。行を押すと詳しい内容が開きます。もう一度押すとカード表示に戻ります">📋 一覧</button>
       </div>
     </div>
     <div class="row chips" id="chips"></div>
@@ -356,6 +370,7 @@ const FILTERS=[['tr','転勤なし'],['dorm','寮・社宅あり'],['car','マ�
 const PAGE=200;
 const state={match:null,tab:0,q:'',sort:'rank',pref:'',flt:new Set(),fav:false,limit:PAGE};
 let favs=new Set();
+state.list=false;
 try{favs=new Set(JSON.parse(localStorage.getItem('soo-kyujin-fav')||'[]'))}catch(e){}
 const saveFav=()=>{try{localStorage.setItem('soo-kyujin-fav',JSON.stringify([...favs]))}catch(e){}};
 const $=id=>document.getElementById(id);
@@ -477,9 +492,27 @@ function render(){
   const left=arr.length-view.length;
   $('morewrap').innerHTML=left>0?`<button type="button" class="more-btn" id="more">▼ 次の${Math.min(PAGE,left)}件を表示（残り${left.toLocaleString()}件）</button>`:'';
   if(left>0)$('more').onclick=()=>{state.limit+=PAGE;render()};
-  $('list').innerHTML=arr.length?view.map(card).join(''):(window.csvLoaded?'<div class="empty">条件に合う求人がありません。絞り込みを減らしてみてください。</div>':'<div class="empty">求人データがありません。</div>');
-  $('list').querySelectorAll('.star').forEach(b=>b.onclick=()=>{const k=b.dataset.key;favs.has(k)?favs.delete(k):favs.add(k);saveFav();b.setAttribute('aria-pressed',favs.has(k));b.textContent=favs.has(k)?'★':'☆';const c=$('chips').querySelector('[data-k=__fav]');if(c)c.innerHTML='<span class="ys">★</span> 気になる('+favs.size+')'});
+  $('list').classList.toggle('tbl',!!(state.list&&arr.length));
+  $('list').innerHTML=arr.length?(state.list?listTable(view):view.map(card).join('')):(window.csvLoaded?'<div class="empty">条件に合う求人がありません。絞り込みを減らしてみてください。</div>':'<div class="empty">求人データがありません。</div>');
+  bindStars($('list'));
+  if(state.list)bindRows(view);
 }
+function bindStars(root){root.querySelectorAll('.star').forEach(b=>b.onclick=ev=>{ev.stopPropagation();const k=b.dataset.key;favs.has(k)?favs.delete(k):favs.add(k);saveFav();b.setAttribute('aria-pressed',favs.has(k));b.textContent=favs.has(k)?'★':'☆';const c=$('chips').querySelector('[data-k=__fav]');if(c)c.innerHTML='<span class="ys">★</span> 気になる('+favs.size+')'})}
+/* ===== 一覧（表）表示 ===== */
+function listTable(view){
+  const t=TABS[state.tab];
+  const rows=view.map((it,n)=>{const j=it.j,un=j.total==null,key=t.key+':'+j.no;
+    const ot=j.otn==='なし'?'なし':(j.ot==null?'不明':j.ot+'h');
+    return `<tr class="lr" data-n="${n}" tabindex="0"><td class="c">${un?'—':it.rank}</td><td class="c sc" style="color:${un?'#8a93a6':scoreColor(j.total)}">${un?'未計算':j.total}</td><td class="nm"><b>${hl(j.co)}</b><span>${hl(j.job)}</span></td><td>${hl(j.pref)}${j.city?' '+hl(j.city):''}</td><td class="r">${man(j.base)}</td><td class="r">${j.days==null?'不明':j.days+'日'}</td><td class="c">${ot}</td><td class="c">${j.bonus==='あり'?'あり':'なし'}</td><td class="c">${esc(j.tr||'不明')}</td><td class="c"><button class="star rs" aria-pressed="${favs.has(key)}" data-key="${esc(key)}" title="気になる">${favs.has(key)?'★':'☆'}</button></td></tr>`}).join('');
+  return `<div class="tblwrap"><table class="jt"><thead><tr><th>順位</th><th>点数</th><th>会社名・職種</th><th>勤務地</th><th>基本給</th><th>年休</th><th>残業</th><th>賞与</th><th>転勤</th><th>★</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function bindRows(view){
+  const tb=$('list').querySelector('tbody');if(!tb)return;
+  const toggle=tr=>{const nx=tr.nextElementSibling;if(nx&&nx.classList.contains('dr')){nx.remove();tr.classList.remove('open');return}
+    const d=document.createElement('tr');d.className='dr';d.innerHTML='<td colspan="10">'+card(view[+tr.dataset.n])+'</td>';tr.after(d);tr.classList.add('open');bindStars(d)};
+  tb.querySelectorAll('tr.lr').forEach(tr=>{tr.onclick=()=>toggle(tr);tr.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle(tr)}}});
+}
+$('listview').onclick=()=>{state.list=!state.list;$('listview').setAttribute('aria-pressed',state.list);$('listview').textContent=state.list?'🗂 カード':'📋 一覧';render()};
 function csvSave(){
   const arr=getList(),t=TABS[state.tab];
   const H=['順位','総合点','会社名','職種','都道府県','就業場所住所','アクセス','基本給(円)','月給・手当込(円)','賞与','年間休日','残業(月平均時間)','転勤','マイカー通勤','休日','勤務時間','募集人数','二次募集','労働条件・報酬(50)','勤務地・生活環境(20)','仕事内容・適性(6)','育成・職場環境(14)','企業の健全性(10)','評価の理由','確認したい点','求人番号','受付安定所','ホームページ'];
