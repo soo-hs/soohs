@@ -11,7 +11,8 @@ html,body{height:100%;margin:0}
 body{font:12px/1.35 "Meiryo","Yu Gothic UI","Hiragino Sans",sans-serif;color:var(--tx);background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
 header{flex:0 0 auto;background:linear-gradient(180deg,var(--nv2),var(--nv));color:#fff;padding:3px 8px;display:flex;flex-wrap:wrap;gap:3px 6px;align-items:center;border-bottom:2px solid var(--am)}
 .l1{display:flex;align-items:center;gap:3px;flex:1 1 440px;min-width:0}
-.l2{display:flex;align-items:center;gap:8px;flex:0 0 auto;flex-wrap:wrap;margin-right:calc(4mm + 12px)}
+.l2{display:flex;align-items:center;gap:8px;flex:0 0 auto;flex-wrap:wrap;margin-right:calc(2mm + 6px)}
+.l3{display:flex;align-items:center;gap:3px;flex:0 0 auto;margin-left:auto}
 h1{font-size:15px;margin:0;white-space:nowrap;cursor:pointer;user-select:none}
 h1 small{font-size:10px;color:var(--am);font-weight:600}
 #q{flex:1 1 0;min-width:50px;height:22px;border:1px solid transparent;border-radius:4px;padding:0 8px;font-size:12px;background:#fff;color:var(--tx)}
@@ -25,8 +26,8 @@ select,input[type=number]{height:22px;border:1px solid var(--ln);border-radius:4
 .b.s{height:20px;padding:0 6px;font-size:10.5px}
 .b.g{background:#e3eaf8;color:var(--nvd)}
 #addc,#chk,#csv{padding:0 3px;font-size:10.5px;letter-spacing:-.5px}
-#csv,#chk{background:#ffd6e3;color:#7a2e48}
-#csv:hover,#chk:hover{background:#ffc2d6;filter:none}
+#csv,#chk{background:#fff9d6;color:#5a4a00;border:1px solid #e3d48a}
+#csv:hover,#chk:hover{background:#fff1a8;filter:none}
 #csv{padding:0 2px;min-width:0;width:auto}
 .cnt{font-size:10.5px;white-space:nowrap;color:#dbe6ff}
 #ct{position:relative;left:-2pt}
@@ -38,7 +39,7 @@ select,input[type=number]{height:22px;border:1px solid var(--ln);border-radius:4
 #prv{position:relative;left:-3pt}
 #nxt{position:relative;left:-3pt}
 #gtool{position:relative;left:-8pt}
-#addc,#chk,#csv{position:relative;left:-5pt}
+#addc{position:relative;left:-5pt}
 #wrap{flex:1 1 auto;overflow:auto;position:relative;background:#fff}
 #wrap:focus{outline:none}
 td.ac{outline:2px solid var(--nv);outline-offset:-2px}
@@ -191,6 +192,8 @@ tbody tr.dd td.ddc{height:auto;padding:0;overflow:visible;white-space:normal;bac
     <span class="cnt"><a id="prv">戻</a><span id="ct"></span><a id="nxt">次</a></span>
     <span id="gtool" style="display:none"><button class="b s pk" id="xa" title="表示中の事業所の求人票をすべて展開">全開</button><button class="b s pk" id="xc" title="すべて折りたたむ">折畳</button></span>
     <button class="b" id="addc">＋列追加</button>
+  </div>
+  <div class="l3">
     <button class="b" id="csv" title="受付求人票の全データをCSVでダウンロード">csv</button>
     <button class="b" id="chk">検証</button>
   </div>
