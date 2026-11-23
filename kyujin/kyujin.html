@@ -28,7 +28,8 @@ select,input[type=number]{height:22px;border:1px solid var(--ln);border-radius:4
 #addc,#chk,#csv{padding:0 3px;font-size:10.5px;letter-spacing:-.5px}
 #csv,#chk{background:#fff9d6;color:#5a4a00;border:1px solid #e3d48a}
 #csv:hover,#chk:hover{background:#fff1a8;filter:none}
-#csv{padding:0 2px;min-width:0;width:auto}
+#csv{padding:0 calc(2px - .5pt);min-width:0;width:auto}
+#chk{padding:0 calc(3px - .5pt)}
 .cnt{font-size:10.5px;white-space:nowrap;color:#dbe6ff}
 #ct{position:relative;left:-2pt}
 .cnt a{cursor:pointer;color:var(--am);font-weight:700;padding:0 4px;user-select:none}
