@@ -61,6 +61,8 @@
   }
 
   .header-title span { color: var(--text2); font-weight: 300; font-size: 12px; }
+  .header-title span.csv-download { cursor: pointer; user-select: none; -webkit-user-select: none; }
+  .header-title span.csv-download:hover { color: var(--accent); }
 
   .sidebar-toggle {
     display: flex;
@@ -621,7 +623,7 @@
 <div class="header">
   <div class="header-title">
     <button class="sidebar-toggle" id="sidebarToggle" title="フィルターを表示">☰</button>
-    受付求人票 2025 <span>求人データベース</span>
+    受付求人票 2025 <span class="csv-download" id="csvDownload" title="ダブルクリックで全ての求人票をCSV形式でダウンロード">求人データベース</span>
   </div>
   <div class="search-group">
     <input class="search-input" type="text" id="searchInput" placeholder="🔍 事業所名・職種・所在地を検索…">
@@ -1205,6 +1207,33 @@ document.getElementById('sidebarToggle').addEventListener('click', () => {
   const isCollapsed = sidebar.classList.toggle('collapsed');
   btn.classList.toggle('active', !isCollapsed);
   btn.title = isCollapsed ? 'フィルターを表示' : 'フィルターを非表示';
+});
+
+// ===== CSV DOWNLOAD (「求人データベース」をダブルクリック) =====
+function downloadAllCsv() {
+  const cols = Object.keys(RAW_DATA[0]);
+  const esc = v => {
+    if (v === null || v === undefined) return '';
+    const t = String(v);
+    return /[",\r\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
+  };
+  const lines = [cols.map(esc).join(',')];
+  RAW_DATA.forEach(r => lines.push(cols.map(c => esc(r[c])).join(',')));
+  // UTF-8 BOM付き（Excelで文字化けしないように）
+  const blob = new Blob(['\uFEFF' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '求人データベース.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+document.getElementById('csvDownload').addEventListener('dblclick', e => {
+  e.preventDefault();
+  window.getSelection().removeAllRanges();
+  downloadAllCsv();
 });
 
 init();
