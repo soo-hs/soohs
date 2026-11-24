@@ -747,7 +747,7 @@ const M={
 days:(j,a)=>a==='h120'?(j.days>=120?1:j.days>=115?.7:j.days>=105?.4:0):a==='h105'?(j.days>=105?1:j.days>=100?.5:0):null,
 work:(j,a)=>a==='wk'?+j.f.wk:a==='day'?+j.f.day:a==='both'?avg([+j.f.wk,+j.f.day]):null,
 ot:(j,a)=>{if(a==='any')return null;const o=j.otn==='なし'?0:j.ot;if(o==null)return .4;const T=a==='o10'?10:20;return o<=T?1:o<=T+5?.5:o<=T+10?.2:0},
-base:(j,a)=>{if(a==='any')return null;const T={'21':210000,'19':190000,'175':175000}[a];return cl(1-(T-j.base)/20000)*(j.f.nofix?1:.7)},
+base:(j,a)=>{if(a==='any')return null;const T={'21':210000,'19':190000,'175':175000}[a];if(j.base==null)return .3;return cl(1-(T-j.base)/20000)*(j.f.nofix?1:.7)},
 bonus:(j,a)=>a==='b3'?(j.bm!=null?(j.bm>=3?1:j.bm>=2?.5:.1):(j.bonus==='あり'?.35:0)):a==='full'?((j.bonus==='あり'?.4:0)+(has(j,/昇給/)?.3:0)+(has(j,/手当/)?.3:0)):a==='b1'?+(j.bonus==='あり'):null,
 area:(j,a)=>{let m;if(a==='local'){m=/^曽於/.test(j.city)?1:NEAR.includes(j.city)?.7:0;if(m&&j.tr!=='なし')m*=.7}
  else if(a==='kago')m=+(j.pref==='鹿児島県');else if(a==='minami')m=+(j.pref==='鹿児島県'||j.pref==='宮崎県');
@@ -758,14 +758,31 @@ cat:(j,a)=>{if(!a||!a.length||a.includes('any'))return null;return a.some(i=>j.m
 };
 const BOOST={wlb:['days','work','ot'],pay:['base','bonus','live'],local:['area','live'],career:['train']};
 const TI={wlb:0,pay:1,local:2,career:3};
+/* ===== 5カテゴリー（労働条件・報酬50／勤務地・生活環境20／仕事内容・適性6／育成・職場環境14／企業の健全性10）の点数を土台にする ===== */
+const CMAX=[50,20,6,14,10];
+/* 「重視する軸」ごとの各カテゴリーの重み */
+const CW={wlb:[1.6,1,.6,.8,.6],pay:[1.8,1,.5,.6,.9],local:[1,1.8,.8,.6,.6],career:[1,.8,1,1.8,1],any:[1,1,1,1,1]};
+/* 各質問の答えに応じて、関係するカテゴリーの重みを上乗せ */
+const CBOOST={days:0,work:0,ot:0,base:0,bonus:0,area:1,live:1,train:3,cat:2};
+const OCC=[/溶接|製造|組立|加工|機械|工場|検査|塗装|金属|オペレーター|技能|ライン|鋳造|プレス|整備|修理/,/建設|土木|設備|電気|施工|配管|電工|工事|測量|空調|現場/,/事務|営業|販売|接客|経理|総務|受付|レジ|店舗|窓口|企画|カスタマー/,/介護|看護|医療|福祉|保育|ヘルパー|薬|リハビリ|栄養|歯科|支援員/,/運転|ドライバー|配送|運輸|物流|倉庫|警備|フォーク|輸送|運搬|配達/,/飲食|調理|厨房|サービス|美容|理容|ホテル|旅館|観光|フロント|ウェイター|クリーニング|清掃/,/農|畜産|酪農|養豚|養鶏|食品|水産|漁|園芸|林業|加工食品|飼育/];
+function classify(j){const t=[j.occ,j.job,j.work].join(' ');const r=[];OCC.forEach((re,i)=>{if(re.test(t))r.push(i)});return r}
+function catRatios(j){return j.cat?j.cat.map((v,i)=>cl(v/CMAX[i])):null}
 function score(id,j,boost){
  let sw=0,s=0,det={};
- for(const k in M){const m=M[k](j,ans[k]);if(m==null)continue;let w=k==='area'?2:k==='cat'?1.5:1;if(boost.includes(k))w*=1.8;sw+=w;s+=w*m;det[k]=m}
- const t=ans.type;if(t&&t!=='any'){sw+=1.5;s+=1.5*j.mp[TI[t]]}
+ const cw=(CW[ans.type]||CW.any).slice();
+ /* ①条件への合致（休日・残業・基本給・勤務地など） */
+ for(const k in M){const m=M[k](j,ans[k]);if(m==null)continue;let w=k==='area'?2:k==='cat'?1.5:1;if(boost.includes(k))w*=1.8;sw+=w;s+=w*m;det[k]=m;if(CBOOST[k]!=null)cw[CBOOST[k]]+=.5}
+ /* ②5カテゴリーの点数（希望の重みで加重平均）＝「条件のよさ」 */
+ const cr=catRatios(j);
+ if(cr){const W=cw.reduce((a,b)=>a+b,0),q=cr.reduce((a,v,i)=>a+v*cw[i],0)/W;const w=4;sw+=w;s+=w*q;det.catscore=q}
+ /* ③重視する軸（総合の4パターン点） */
+ const t=ans.type;if(t&&t!=='any'){const mp=j.pat&&j.pat[TI[t]]!=null?j.pat[TI[t]]/100:null;if(mp!=null){sw+=1.5;s+=1.5*cl(mp)}}
  return{id,j,pct:sw?s/sw:0,gate:det.area===undefined||det.area>0}}
 function run(){
  const boost=BOOST[ans.type]||[],all=[];
- for(const id in J){const j=J[id];if(j.csv==='none')continue;const x=MX[j.no];if(!x)continue;j.mc=x[0];j.mp=x[1];all.push(score(id,j,boost))}
+ for(const id in J){const j=J[id];if(j.csv==='none'||j.total==null)continue;
+  const x=MX[j.no];j.mc=x?x[0]:classify(j);all.push(score(id,j,boost))}
+ /* 地域などの必須条件を満たす求人を先に、その中で一致度（＋総合点）の高い順 */
  all.sort((a,b)=>(b.gate-a.gate)||(b.pct+b.j.total/1e4)-(a.pct+a.j.total/1e4));
  const out=[],seen=new Set();
  for(const r of all){if(seen.has(r.j.co))continue;seen.add(r.j.co);out.push(r);if(out.length>=10)break}
