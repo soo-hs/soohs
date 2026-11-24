@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>曽於高校 求人ナビ2026</title>
+<style>
+:root{--bg:#fff9ec;--card:#fff;--ink:#2b3445;--sub:#6b7488;--line:#e8e2d0;--blue:#2f8cff;--blue2:#e6f1ff;--orange:#ff9f1c;--orange2:#fff1d6;--green:#22b573;--green2:#e3f8ee;--red:#e8590c;--red2:#ffeadb;--pink:#ff6b9d;--shadow:0 0.25rem 0.875rem rgba(70,80,120,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:clamp(13px,.5vw + 9.8px,20px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif;line-height:1.7;font-size:1rem}
+header{background:linear-gradient(135deg,#4aa3ff 0%,#69c5ff 55%,#ffd36b 130%);color:#fff;padding:clamp(.5rem,1.6vh,1rem) clamp(.5rem,2vw,1.5rem) clamp(1.75rem,4.5vh,2.5rem);text-align:center}
+header h1{margin:0;font-size:clamp(1.1rem,1.2rem + 1.2vw,1.75rem);line-height:1.3;letter-spacing:.04em;text-shadow:0 0.125rem 0.375rem rgba(0,60,140,.25)}
+header p{margin:0.125rem auto 0;max-width:min(100%,60rem);font-size:clamp(.72rem,.6rem + .5vw,.9rem);line-height:1.5;opacity:.97}
+.wrap{max-width:88rem;margin:-1.5rem auto 0;padding:0 0.875rem 3.75rem}
+.how{background:var(--card);border-radius:0.875rem;box-shadow:var(--shadow);padding:0 1rem;margin-bottom:0.5rem}
+.how summary{cursor:pointer;font-weight:800;padding:0.3rem 0;font-size:0.9rem;line-height:1.4}
+.how summary .tot{float:right;font-weight:800;color:var(--blue);font-size:0.8438rem;white-space:nowrap;margin-left:0.5rem}
+.how .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(11.88rem,1fr));gap:0.5rem;margin:0.25rem 0 0.5rem}
+.how .g{border-radius:0.75rem;padding:0.625rem 0.75rem;font-size:0.8438rem;background:var(--blue2)}
+.how .g b{display:block;font-size:0.9062rem}
+.how .g:nth-child(2){background:var(--orange2)}.how .g:nth-child(3){background:var(--green2)}.how .g:nth-child(4){background:#ffe6ef}.how .g:nth-child(5){background:#efe8ff}
+.how p{font-size:0.8438rem;color:var(--sub);margin:0.25rem 0 0.625rem}
+.how p.nt{margin:0}
+.how p.nt:first-of-type,.how .grid+p.nt{margin-top:.25rem}
+.how p.nt:last-child{margin-bottom:.5rem}
+.tabs{position:sticky;top:0;z-index:20;background:var(--bg);padding:0.5rem 0;display:flex;gap:0.5rem;overflow-x:auto;scrollbar-width:thin}
+.tab{flex:0 0 auto;border:0.125rem solid var(--line);background:#fff;color:var(--ink);border-radius:62.44rem;padding:0.5625rem 1.125rem;font-size:0.9375rem;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:var(--shadow)}
+.tab small{display:block;font-weight:600;font-size:0.7188rem;color:var(--sub);line-height:1.2}
+.tab[aria-selected=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.tab[aria-selected=true] small{color:#e4f0ff}
+.panel{background:var(--card);border-radius:1.125rem;padding:0.5rem 0.75rem;box-shadow:var(--shadow);margin:0.25rem 0 0.5rem}
+#sort{flex:1 1 13.75rem}
+.row{display:flex;flex-wrap:wrap;gap:0.375rem 0.5rem;align-items:center}
+.row+.row{margin-top:0.375rem}
+select{max-width:100%;min-width:0}
+input[type=search],select{font:inherit;font-size:0.875rem;line-height:1.3;padding:0.25rem 0.625rem;border:0.125rem solid var(--line);border-radius:0.5rem;background:#fff;color:var(--ink)}
+input[type=search]{flex:1 1 16.25rem;min-width:0}
+input:focus,select:focus{outline:0.1875rem solid #b9dbff;border-color:var(--blue)}
+label.lb{font-size:0.8125rem;color:var(--sub);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:0.3125rem}
+.chip{border:0.125rem solid var(--line);background:#fff;border-radius:62.44rem;padding:0.0625rem 0.625rem;font:inherit;font-size:0.8125rem;line-height:1.4;font-weight:700;cursor:pointer;color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--orange);border-color:var(--orange);color:#fff}
+.ys{color:#f5c400;text-shadow:0 0 1px #c99a00}
+.chip[data-k=__fav][aria-pressed=true]{background:#fff6c9;border-color:#f5c400;color:var(--ink)}
+.reset{background:none;border:none;color:var(--blue);font:inherit;font-weight:700;cursor:pointer;text-decoration:underline}
+.info{font-size:0.8125rem;color:var(--sub);margin:0.25rem 0.125rem}
+.notice{background:var(--orange2);border-left:0.3125rem solid var(--orange);border-radius:0.5rem;padding:0.1875rem 0.625rem;font-size:0.8125rem;line-height:1.35;margin:0.25rem 0}
+.list{display:grid;gap:0.875rem}
+.card{background:var(--card);border-radius:1.125rem;box-shadow:var(--shadow);padding:1rem;border:0.125rem solid transparent;position:relative}
+.card:hover{border-color:#cfe4ff}
+.top{display:flex;gap:0.75rem;align-items:flex-start}
+.rank{flex:0 0 auto;min-width:3.375rem;text-align:center;border-radius:0.875rem;padding:0.25rem 0.375rem;background:var(--blue2);color:var(--blue);font-weight:900;line-height:1.15}
+.rank span{display:block;font-size:0.6875rem}.rank b{font-size:1.375rem}
+.rank.r1{background:#ffe07a;color:#8a5a00}.rank.r2{background:#e4e9f2;color:#516079}.rank.r3{background:#ffd9bd;color:#9a4c14}
+.ttl{flex:1 1 auto;min-width:0}
+.ttl h2{margin:0;font-size:1.188rem;line-height:1.35;word-break:break-all}
+.job{font-weight:700;color:var(--blue);font-size:0.9375rem}
+.job .occ{display:inline-block;margin-left:0.375rem;font-weight:700;color:#0f7a4b;font-size:0.8438rem}
+.loc{color:var(--sub);font-size:0.8438rem}
+.score{flex:0 0 auto;width:4.625rem;height:4.625rem;border-radius:50%;display:grid;place-items:center;text-align:center;font-weight:900;color:var(--ink);position:relative}
+.score div{width:3.625rem;height:3.625rem;border-radius:50%;background:#fff;display:grid;place-items:center;line-height:1}
+.score b{font-size:1.375rem}.score small{display:block;font-size:0.625rem;color:var(--sub);font-weight:700;margin-top:0.125rem}
+.star{position:absolute;right:0.625rem;bottom:0.625rem;border:none;background:none;font-size:1.625rem;cursor:pointer;color:#ccc;line-height:1}
+.star[aria-pressed=true]{color:#f5c400}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(7.375rem,1fr));gap:0.3125rem;margin:0.5rem 0}
+.fact{background:#f6f9ff;border-radius:0.5rem;padding:0.1875rem 0.5rem;line-height:1.25}
+.fact i{display:block;font-style:normal;font-size:0.6875rem;line-height:1.2;color:var(--sub);font-weight:700}
+.fact b{font-size:0.9375rem;line-height:1.25}
+.fact .sec{display:inline-block;margin-left:0.375rem;padding:0 0.4375rem;border-radius:62.44rem;background:#fff1de;color:#b85a00;font-size:0.6875rem;font-weight:800;white-space:nowrap;vertical-align:middle}
+.fact.ok{background:var(--green2)}.fact.ng{background:var(--red2)}
+.tags{display:flex;flex-wrap:wrap;gap:0.375rem;margin:0.25rem 0 0.5rem}
+.tag{font-size:0.75rem;font-weight:800;padding:0.125rem 0.625rem;border-radius:62.44rem;background:var(--green2);color:#0f7a4b}
+.tag.b{background:var(--blue2);color:#1b66c4}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+@media(max-width:760px){.cols{grid-template-columns:1fr}.score{width:3.875rem;height:3.875rem}.score div{width:3rem;height:3rem}.score b{font-size:1.125rem}}
+.why,.chk{border-radius:0.875rem;padding:0.625rem 0.875rem}
+.why{background:var(--green2)}.chk{background:var(--red2)}
+.why h3,.chk h3,.bars h3{margin:0 0 0.25rem;font-size:0.875rem}
+.why ul,.chk ul{margin:0;padding:0;list-style:none;font-size:0.875rem}
+.why li:before{content:"✔";color:var(--green);font-weight:900;margin-right:0.375rem}
+.chk li:before{content:"！";color:var(--red);font-weight:900;margin-right:0.375rem}
+.chk .none{font-size:0.8438rem;color:var(--sub)}
+.bars{margin-top:0.75rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(11.88rem,1fr));gap:0.375rem 1.125rem}
+.bar{font-size:0.7812rem}
+.bar .t{display:flex;justify-content:space-between;font-weight:700}
+.bar .tr{height:0.5625rem;border-radius:0.5625rem;background:#eef1f7;overflow:hidden;margin-top:0.125rem}
+.bar .fl{height:100%;border-radius:0.5625rem}
+details.more{margin-top:0.75rem;border-top:1px dashed var(--line);padding-top:0.5rem}
+details.more summary{cursor:pointer;font-weight:800;color:var(--blue);font-size:0.9062rem}
+.kno{margin-left:.75rem;font-weight:700;font-size:.8125rem;color:var(--sub);white-space:nowrap}
+.det{font-size:0.875rem;margin-top:0.5rem;display:grid;gap:0.5rem}
+.det h4{margin:0;font-size:0.8125rem;color:var(--sub)}
+.det p{margin:0;white-space:pre-line;word-break:break-word}
+.det a{color:var(--blue);font-weight:700}
+.empty{text-align:center;padding:2.5rem 0.625rem;color:var(--sub);font-weight:700}
+footer{max-width:87.5rem;margin:0 auto;padding:0 0.875rem 2.5rem;font-size:0.7812rem;color:var(--sub)}
+.totop{position:fixed;right:0.875rem;bottom:0.875rem;background:var(--blue);color:#fff;border:none;border-radius:50%;width:2.875rem;height:2.875rem;font-size:1.25rem;cursor:pointer;box-shadow:var(--shadow);z-index:30}
+
+/* ===== 画面サイズ対応 ===== */
+.tabs{flex-wrap:wrap;overflow:visible;justify-content:center}
+.tab{padding:0.5rem 1rem}
+@media(min-width:1100px){
+ .wrap,footer{max-width:85rem}
+ .list{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+ .facts{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:1500px){.wrap,footer{max-width:100rem}.list{grid-template-columns:repeat(3,minmax(0,1fr))}.cols{grid-template-columns:1fr}}
+@media(min-width:1100px) and (max-width:1499px){.cols{grid-template-columns:1fr}}
+@media(max-width:900px){.tabs{position:static}}
+@media(max-width:600px){
+ body{font-size:0.9375rem}
+ .wrap{padding:0 0.5rem 3.125rem}
+ .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:0.375rem}
+ .tab{padding:0.375rem 0.25rem;font-size:0.875rem;border-radius:0.875rem;box-shadow:none}
+ .tab small{font-size:0.6562rem}
+ .panel{padding:0.5rem 0.625rem}
+ .row:not(.chips)>*{flex:1 1 100%}
+ #prefbox{display:block!important;flex:1 1 100%}#prefbox select{width:100%}
+ .ys{color:#f5c400;text-shadow:0 0 1px #c99a00}
+.chip[data-k=__fav][aria-pressed=true]{background:#fff6c9;border-color:#f5c400;color:var(--ink)}
+.reset{flex:0 0 auto!important}
+ .card{padding:0.75rem}
+ .top{flex-wrap:wrap;gap:0.5rem}
+ .ttl{flex:1 1 calc(100% - 8.75rem)}
+ .ttl h2{font-size:1.062rem}
+ .facts{grid-template-columns:repeat(2,1fr);gap:0.375rem}
+ .fact b{font-size:0.9375rem}
+ .bars{grid-template-columns:1fr}
+ .star{right:0.5rem;bottom:0.375rem}
+}
+.btn-csv{background:var(--green);color:#fff;border:none;border-radius:0.5rem;padding:0.3125rem 0.875rem;font:inherit;font-weight:800;font-size:0.875rem;line-height:1.3;cursor:pointer;box-shadow:var(--shadow);margin-left:auto}
+.btn-csv:hover{filter:brightness(1.08)}
+@media(min-width:1180px){.list{grid-template-columns:1fr 1fr;align-items:start}.cols{grid-template-columns:1fr}.tabs{flex-wrap:wrap;overflow:visible}}
+@media(min-width:761px) and (max-width:1179px){.wrap{padding:0 1.25rem 3.75rem}}
+@media(max-width:600px){body{font-size:0.9375rem}.wrap{padding:0 0.625rem 3.75rem}.card{padding:0.75rem}.ttl h2{font-size:1.062rem}.rank{min-width:2.875rem}.rank b{font-size:1.125rem}.facts{grid-template-columns:repeat(2,1fr)}.btn-csv{width:100%;margin-left:0}.panel{padding:0.5rem 0.625rem}.tab{padding:0.5rem 0.875rem;font-size:0.875rem}.row select,#sort{flex:1 1 100%}}
+@media print{header,.tabs,.panel,.totop,.star{display:none}.card{break-inside:avoid;box-shadow:none;border:1px solid #ccc}details.more{display:block}}
+
+.list{align-items:stretch!important}
+.card{display:flex;flex-direction:column}
+details.more{margin-top:auto;padding-top:.5rem}
+.card .bars{margin-bottom:.8rem}
+.fact{min-height:0}
+@media(min-width:2200px){.list{grid-template-columns:repeat(3,1fr)!important}.wrap,footer{max-width:112rem}}
+@media(max-height:560px){.tabs{position:static}}
+/* タブの高さ圧縮 */
+.tabs{padding:0.25rem 0;gap:0.3125rem}
+.tab{padding:0.1875rem 0.75rem;line-height:1.2}
+.tab small{line-height:1.2}
+@media(min-width:901px){.tab small{display:inline;margin-left:0.375rem}}
+@media(max-width:900px){.tabs{gap:0.25rem}.tab{padding:0.1875rem 0.25rem}}
+.btn-csv{padding:.25rem .3rem!important;font-size:.8125rem!important;white-space:nowrap}
+@media(max-width:600px){.btn-csv{padding:.25rem .3rem!important;font-size:.75rem!important;width:auto!important}}
+.btns{display:flex;flex-wrap:nowrap;align-items:center;gap:.5rem;margin-left:auto}
+.btns .btn-csv{margin-left:0!important;flex:0 0 auto!important}
+.btns .reset{flex:0 0 auto!important;white-space:nowrap}
+@media(max-width:600px){.row:not(.chips)>.btns{flex:1 1 100%;justify-content:space-between;margin-left:0}}
+
+.morewrap{text-align:center;margin:1rem 0 .5rem}
+.more-btn{border:0.125rem solid var(--blue);background:#fff;color:var(--blue);border-radius:62.44rem;padding:.75rem 2rem;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:var(--shadow)}
+.more-btn:hover{background:var(--blue);color:#fff}
+/* ===== 検索ヒット表示 ===== */
+mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline;text-decoration-color:#ff8fb8;text-decoration-thickness:.12em;text-underline-offset:.18em}
+.qcond{display:inline-block;background:#fff0f6;color:#d1005f;font-weight:800;border-radius:62.44rem;padding:0 .625rem;margin-left:.25rem}
+/* ===== タブボタンの列数を画面サイズに合わせる（10個: 5列×2行 / 2列×5行） ===== */
+.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.375rem;overflow:visible;justify-content:stretch}
+.tab{width:100%;min-width:0;text-align:center;box-sizing:border-box}
+@media(min-width:901px) and (max-width:1099px){.tab small{display:block;margin-left:0}}
+@media(max-width:600px) and (min-width:421px){.tabs{grid-template-columns:repeat(5,minmax(0,1fr));gap:.25rem}.tab{padding:.375rem .125rem;font-size:.8125rem}.tab small{font-size:.625rem}}
+@media(max-width:420px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:.375rem}.tab{padding:.375rem .25rem;font-size:.875rem}.tab small{font-size:.6875rem}}
+/* ===== 「気になる」ボタンの配色 ===== */
+.chip[data-k=__fav]{background:linear-gradient(135deg,#fff8e1,#ffe9a8);border-color:#e8b40c;color:#7a4a00;font-weight:800;box-shadow:0 .125rem .25rem rgba(232,180,12,.25)}
+.chip[data-k=__fav]:hover{background:linear-gradient(135deg,#fff3c4,#ffdf85)}
+.chip[data-k=__fav][aria-pressed=true]{background:linear-gradient(135deg,#f5a623,#e8850c);border-color:#c76f00;color:#fff;box-shadow:0 .125rem .375rem rgba(199,111,0,.4)}
+.chip[data-k=__fav][aria-pressed=true] .ys{color:#fff;text-shadow:none}
+/* ===== オンマウスの吹き出し ===== */
+[data-tip]{position:relative}
+[data-tip]::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + .5rem);transform:translateX(-50%);width:max-content;max-width:min(18rem,80vw);background:#263445;color:#fff;font-size:.75rem;font-weight:600;line-height:1.5;text-align:left;white-space:normal;padding:.4rem .65rem;border-radius:.5rem;box-shadow:0 .25rem .75rem rgba(0,0,0,.25);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s;z-index:60}
+[data-tip]::before{content:"";position:absolute;left:50%;bottom:calc(100% + .125rem);transform:translateX(-50%);border:.375rem solid transparent;border-top-color:#263445;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s;z-index:60}
+@media(hover:hover){[data-tip]:hover::after,[data-tip]:hover::before{opacity:1;visibility:visible;transition-delay:.25s}}
+.btns [data-tip]:last-child::after,.btns [data-tip]:nth-last-of-type(1)::after{left:auto;right:0;transform:none}
+/* ===== 800px以上：「ベスト○件」をボタン名の横に表示し、列数は画面幅に自動対応 ===== */
+@media(min-width:800px){
+ .tabs{grid-template-columns:repeat(auto-fit,minmax(11.5rem,1fr))}
+ .tab small{display:inline;margin-left:0}
+}
+/* ===== 799px以下（スマホ・小型タブレット）：「ベスト○件」ボタンの列数を画面幅に合わせて最適化。ボタン幅は必要最小限に ===== */
+@media(max-width:799px){
+ .tabs{width:100%;grid-template-columns:repeat(auto-fit,minmax(4.6rem,1fr));justify-content:center;gap:.3rem}
+ .tab{width:100%;min-width:0;padding:.3rem .2rem;font-size:.8125rem;line-height:1.25;white-space:nowrap}
+ .tab small{display:block;margin-left:0;font-size:.625rem}
+}
+/* 360〜719px：10個を5列×2段にそろえる（端数の段が出ないように） */
+@media(min-width:360px) and (max-width:719px){
+ .tabs{grid-template-columns:repeat(6,minmax(0,6.5rem))}
+}
+@media(min-width:360px) and (max-width:479px){
+ .tabs{grid-template-columns:repeat(5,minmax(0,1fr))}
+}
+/* 479px以下（最小サイズ）：12個を6列×2行にそろえる */
+@media(max-width:479px){
+ .tabs{grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:.25rem}
+ .tab{padding:.25rem .05rem;font-size:.6875rem;border-radius:.625rem;overflow:hidden}
+ .tab small{font-size:.5625rem}
+ .tab .t2{min-width:0;padding:0 .25rem;border-radius:.625rem}
+ .tab-shibu .t1{font-size:calc(1em - 1pt)}
+}
+/* ===== 「ベスト○件」ボタンはスクロールしても常に上部に固定表示 ===== */
+.tabs{position:sticky!important;top:0;z-index:30;background:var(--bg);box-shadow:0 .25rem .375rem -.25rem rgba(70,80,120,.18)}
+/* ===== 800px以上：「ベスト○件」ボタンをなるべく1列（1段）に。幅は等分、広い画面では名前の横に件数 ===== */
+@media(min-width:800px){
+ .tabs{display:grid;grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:minmax(0,1fr);gap:.375rem}
+ .tab{white-space:nowrap;padding:.25rem .25rem}
+ .tab small{display:block;margin-left:0}
+}
+@media(min-width:1800px){.tab small{display:inline;margin-left:0}}
+/* ===== 検索・絞り込みの条件表示バー：タブの下に固定 ===== */
+#count{position:sticky;top:var(--th,3rem);z-index:25;background:var(--bg);margin:0;padding:.25rem .125rem;line-height:1.5;max-height:5.5rem;overflow-y:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
+#count::-webkit-scrollbar{display:none}
+.qc{display:inline-block;white-space:nowrap;background:#e6f1ff;color:#1f6fd6;font-weight:800;border-radius:62.44rem;padding:0 .5rem;margin-left:.25rem}
+.chg{border:1px solid var(--blue);background:#fff;color:var(--blue);border-radius:62.44rem;font:inherit;font-size:.75rem;font-weight:800;padding:0 .6rem;margin-left:.375rem;cursor:pointer}
+
+/* ===== 質問で最適求人（job_match 取込） ===== */
+.btn-match{background:var(--orange);color:#fff;border:none;border-radius:.5rem;padding:.3125rem .625rem;font:inherit;font-weight:800;font-size:.875rem;line-height:1.3;cursor:pointer;box-shadow:var(--shadow);white-space:nowrap;flex:0 0 auto}
+.btn-match:hover{filter:brightness(1.07)}
+@media(max-width:600px){.btns{flex-wrap:wrap!important;justify-content:flex-start!important;gap:.375rem!important}.btn-match{padding:.25rem .5rem;font-size:.75rem}}
+.jm-ov{position:fixed;inset:0;z-index:100;background:rgba(30,40,60,.55);display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:1rem .625rem}
+.jm-md{background:var(--bg);border-radius:1.125rem;width:100%;max-width:30rem;padding:.75rem .875rem 1rem;box-shadow:0 .5rem 2rem rgba(0,0,0,.3);margin:auto}
+.jm-hd{display:flex;align-items:center;justify-content:space-between;gap:.5rem;font-weight:800;margin-bottom:.25rem}
+.jm-x{border:none;background:#fff;border-radius:50%;width:2rem;height:2rem;font-size:1rem;cursor:pointer;box-shadow:var(--shadow);color:var(--sub)}
+.jm-bubble{display:flex;gap:.6rem;align-items:flex-start;background:var(--orange2);border-left:.3125rem solid var(--orange);border-radius:.9rem;padding:.55rem .8rem;margin:.25rem 0 .6rem;font-weight:700;font-size:.9rem}
+.jm-av{font-size:1.8rem;line-height:1}
+.jm-box{background:var(--card);border-radius:1.125rem;padding:.9rem 1rem;box-shadow:var(--shadow)}
+.jm-prog{height:.5rem;background:#eef1f7;border-radius:62.44rem;overflow:hidden;margin-bottom:.5rem}.jm-prog i{display:block;height:100%;background:var(--blue);border-radius:62.44rem;transition:width .25s}
+.jm-dots{font-size:.8rem;color:var(--sub);margin-bottom:.3rem;font-weight:700}
+.jm-qn{color:var(--blue);font-weight:800;font-size:.9rem}.jm-qt{font-size:1.15rem;font-weight:800;margin:.1rem 0 .2rem;line-height:1.4}.jm-qh{font-size:.8rem;color:var(--sub);margin:0 0 .7rem}
+.jm-opts{display:grid;gap:.45rem}
+.jm-opt{display:block;width:100%;text-align:left;font:inherit;font-size:.98rem;color:var(--ink);background:#fff;border:.125rem solid var(--line);border-radius:.9rem;padding:.6rem .9rem;cursor:pointer;box-shadow:var(--shadow);min-height:2.8rem}
+.jm-opt b{display:block;font-weight:800}.jm-opt small{color:var(--sub);font-weight:600}
+.jm-opt:hover{border-color:var(--blue)}
+.jm-opt[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}.jm-opt[aria-pressed=true] small{color:#e4f0ff}
+.jm-nav{display:flex;justify-content:space-between;gap:.5rem;margin-top:.8rem}
+.jm-btn{font:inherit;font-size:.95rem;font-weight:800;border:.125rem solid var(--blue);border-radius:62.44rem;padding:.5rem 1.3rem;cursor:pointer;background:var(--blue);color:#fff;box-shadow:var(--shadow)}
+.jm-btn.g{background:#fff;color:var(--blue)}.jm-btn:disabled{opacity:.4;cursor:default}
+.jm-none{padding:1rem;text-align:center}
+
+.tab{position:relative}
+.tab .tl{display:inline-block}
+.tab-shibu .t1{font-size:calc(1em - 1pt)}
+.tab .t2{display:none;position:absolute;left:50%;top:-0.125rem;bottom:-0.125rem;transform:translateX(-50%);width:max-content;min-width:calc(100% + .25rem);padding:0 .75rem;flex-direction:column;align-items:center;justify-content:center;white-space:nowrap;background:#fff;border:.125rem solid var(--blue);border-radius:62.44rem;z-index:2}
+.tab[aria-selected=true] .t2{background:var(--blue)}
+.tab .t2{font-size:.78em;font-weight:600;color:#d98aa8;line-height:1.25}
+.tab .t2 small{font-size:.9em;font-weight:500;color:#e3a6bd}
+.tab[aria-selected=true] .t2{color:#ffd6e5}
+.tab[aria-selected=true] .t2 small{color:#ffc4d9}
+.tab:hover .t2,.tab:focus-visible .t2{display:flex}
+@media(min-width:601px){.tabs{flex-wrap:wrap;justify-content:center;overflow:visible}}
+.tab:last-child .t2{left:auto;right:0;transform:none}
+
+.btn-match{padding:.25rem .3rem!important;font-size:.8125rem!important}
+@media(max-width:600px){.btn-match{padding:.25rem .3rem!important;font-size:.75rem!important}}
+#listview{background:#fff3b0!important;color:#6b5a00!important;font-size:calc(.8125rem - 1pt)!important}
+#listview[aria-pressed=true]{background:#ffe566!important}
+#listview{border:.125rem solid #e0b400!important}
+@media(max-width:600px){#listview{font-size:calc(.75rem - 1pt)!important}}
+.list.tbl{display:block!important}
+.tblwrap{overflow-x:auto;background:var(--card);border-radius:.875rem;box-shadow:var(--shadow)}
+table.jt{width:100%;border-collapse:collapse;font-size:.8125rem;min-width:46rem}
+.jt th{position:sticky;top:0;background:var(--blue2);color:var(--ink);font-weight:800;padding:.375rem .5rem;text-align:center;white-space:nowrap}
+.jt td{padding:.3rem .5rem;border-top:1px solid var(--line);vertical-align:middle}
+.jt td.c{text-align:center;white-space:nowrap}.jt td.r{text-align:right;white-space:nowrap}.jt td.sc{font-weight:900}
+.jt td.nm b{display:block;line-height:1.35}.jt td.nm span{display:block;color:var(--sub);font-size:.75rem;line-height:1.35}
+.jt tr.lr{cursor:pointer}.jt tr.lr:hover,.jt tr.lr.open{background:#f3f8ff}
+.jt tr.dr>td{padding:.5rem;background:#fbfdff}
+.jt .star.rs{position:static;font-size:1.25rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌟 曽於高校 求人ナビ 2026 🌟</h1>
+  <p>曽於高学校に届いた求人票を生徒にとって「条件のよい順」に並べました。気になる求人は ★ を押して集めましょう。</p>
+</header>
+<div class="wrap">
+  <details class="how">
+    <summary>📖 点数（100点満点）の見かた・評価のしくみ<span class="tot" id="totalcnt"></span></summary>
+    <p>高校求人票の「生徒側の評価項目と条件一覧」（5カテゴリー・14項目・合計100点）に沿って、求人票の記載内容を点数にしました。点数が高いほど、生徒にとって条件がよい傾向があります。</p>
+    <div class="grid">
+      <div class="g"><b>💴 労働条件・報酬 50点</b>基本給18（全求人中の順位。固定残業代ありは−3）／手当・賞与・昇給12／休日・休暇12（年間休日100〜125日以上・土日休み）／勤務時間・残業8（夜勤は−1.5）</div>
+      <div class="g"><b>🏠 勤務地・生活環境 20点</b>転勤なし8／通勤（マイカー可・駅から近い）4／住居・生活支援8（単身用の寮・社宅、家賃補助、引越し支援）</div>
+      <div class="g"><b>🔧 仕事内容・適性 6点</b>必要な資格・経験（不問が高得点）4／仕事内容の書き方の明確さ2</div>
+      <div class="g"><b>🎓 育成・職場環境 14点</b>研修・教育制度9（研修・OJT・資格取得支援）／定着・職場環境5（職場見学・育休・採用実績など）</div>
+      <div class="g"><b>🏢 企業の健全性 10点</b>従業員数（規模）4／設立年3／資本金3</div>
+    </div>
+    <p class="nt">※点数は<b>求人票に書かれている情報だけ</b>で計算した目安です。賞与の月数・研修の中身など、書かれていない項目は加点されません。実際の応募は、必ず求人票の原本・職場見学・先生との相談で確認してください。</p>
+    <p class="nt">※「並べ替え」で、自分のタイプ（ワークライフバランス重視／手取り・生活安定重視／地元・通勤重視／キャリア・成長重視）に合わせた順にもできます。</p>
+    <p class="nt">※検索ボックスは、スペースで区切ると「すべてを含む（AND）」、「/」で区切ると「どれかを含む（OR）」になります。例：<b>介護/看護 霧島</b> ＝（介護 または 看護）かつ 霧島。ヒットした言葉は求人票の中で<b style="color:#d1005f">赤紫の太字</b>で表示されます。</p>
+  </details>
+
+  <nav class="tabs" role="tablist" id="tabs"></nav>
+
+  <section class="panel" aria-label="検索と絞り込み">
+    <div class="row">
+      <input type="search" id="q" autocomplete="off" placeholder="🔍 会社名・職種・地名・キーワードで検索（スペース＝かつ／「/」＝または　例：介護/看護 霧島）" title="スペース区切り＝すべてを含む（AND）／「/」区切り＝どれかを含む（OR）。例：「介護/看護 霧島」＝（介護 または 看護）かつ 霧島">
+    </div>
+    <div class="row">
+      <label class="lb" for="sort">並べ替え</label>
+      <select id="sort">
+        <option value="rank">総合点の高い順（おすすめ）</option>
+        <option value="wlb">ワークライフバランス重視（休み・残業）</option>
+        <option value="pay">手取り・生活安定重視（給与・賞与・住まい）</option>
+        <option value="local">地元・通勤重視（転勤なし・マイカー）</option>
+        <option value="career">キャリア・成長重視（資格・研修・企業）</option>
+        <option value="base">基本給の高い順</option>
+        <option value="days">年間休日の多い順</option>
+        <option value="ot">残業の少ない順</option>
+      </select>
+      <span id="prefbox" style="display:none"><label class="lb" for="pref">都道府県</label> <select id="pref"></select></span>
+      <div class="btns">
+        <button class="reset" id="reset" type="button">条件をリセット</button>
+        <button class="btn-match" id="match" type="button" data-tip="いくつかの質問に答えるだけで、あなたの希望に合う求人を10件さがします">🎯 質問で最適求人</button>
+        <button class="btn-csv" id="csv" type="button" data-tip="★を付けた気になる求人をCSVファイルに保存します（別のPCやスマホでも読み込めます）">⬇ CSV保存</button>
+        <button class="btn-csv" id="csvpick" type="button" data-tip="保存しておいたCSVファイルを選んで、気になる求人（★）を復元します">📂 CSV選択</button><input type="file" id="csvfile" accept=".csv,text/csv" hidden>
+        <button class="btn-csv" id="listview" type="button" aria-pressed="false" data-tip="求人票を表形式の一覧で表示します。行を押すと詳しい内容が開きます。もう一度押すとカード表示に戻ります">📋 一覧</button>
+      </div>
+    </div>
+    <div class="row chips" id="chips"></div>
+  </section>
+
+  <div id="notice"></div>
+  <div class="info" id="count"></div>
+  <div class="list" id="list"></div>
+  <div class="morewrap" id="morewrap"></div>
+</div>
+<footer>
+  データ：kyujin2026.csv（鹿児島県立曽於高等学校に届いた2026年度求人）。点数を計算済みの求人は、正社員・募集人数1名以上の求人票のうち同一内容の重複を除いたものです。CSVにあってそれ以外の求人も、CSV読込後はすべて掲載し、記載内容から推定した点数（目安・誤差±3点程度）を付けます。CSVで数値が変わった求人は、変更分だけ点数を再計算して順位を並べ直します。同じ企業の別職種は別の求人として掲載しています。<br>
+  点数・評価理由は求人票の記載からの自動判定です（全国タブは求人票の全件を点数順に掲載し、200件ずつ表示します）。固定残業・賞与月数・資格支援などの判定は文章の読み取りによるため、必ず原本で確認してください。
+</footer>
+<button class="totop" id="totop" aria-label="ページの先頭へ">▲</button>
+
+<script id="data" type="application/json">{"jobs":{},"tabs":[{"key":"all","name":"全国","quota":0,"ext":[],"ids":[],"avail":0,"note":""},{"key":"kanto","name":"関東","quota":0,"ext":[],"ids":[],"avail":0,"note":""},{"key":"chubu","name":"中部","quota":0,"ext":[],"ids":[],"avail":0,"note":""},{"key":"kansai","name":"関西","quota":0,"ext":[],"ids":[],"avail":0,"note":""},{"key":"kyushu","name":"九州","quota":0,"ext":[],"ids":[],"avail":0,"note":""},{"key":"kago","name":"鹿児島県","quota":0,"ext":[],"ids":[],"avail":0,"note":""},{"key":"soo","name":"曽於市","quota":0,"ext":[],"ids":[],"avail":0,"note":""},{"key":"miya","name":"都城市","quota":0,"ext":[],"ids":[],"avail":0,"note":""},{"key":"shibu","name":"志布志市","quota":0,"ext":[],"ids":[],"avail":0,"note":""},{"key":"kano","name":"鹿屋市","quota":0,"ext":[],"ids":[],"avail":0,"note":""}]}</script>
+<script>
+const D=JSON.parse(document.getElementById('data').textContent);
+const J=D.jobs,TABS=D.tabs;
+/* ===== 全件対象化：各地域タブの掲載を「ベスト◯件」ではなく、その地域の全求人（総合点順）にする ===== */
+(function(){
+  const TABF={};window.TABF=TABF;TABF.all=()=>true;
+  const REG={
+    kanto:'茨城県 栃木県 群馬県 埼玉県 千葉県 東京都 神奈川県',
+    chubu:'新潟県 富山県 石川県 福井県 山梨県 長野県 岐阜県 静岡県 愛知県',
+    kansai:'滋賀県 京都府 大阪府 兵庫県 奈良県 和歌山県 三重県',
+    kyushu:'福岡県 佐賀県 長崎県 熊本県 大分県 宮崎県 鹿児島県'
+  };
+  const CITY={soo:'曽於市',miya:'都城市',shibu:'志布志市',kano:'鹿屋市',kirishima:'霧島市'};
+  const base=TABS.find(t=>t.key==='all').ids;            // 総合点順の全件
+  TABS.push({key:'kirishima',name:'霧島市',quota:30,ext:[],ids:[],avail:0,note:''},{key:'osumi3',name:'他3大隅',tip:'東串良町・垂水市・錦江町',quota:30,ext:[],ids:[],avail:0,note:''});
+  const BEST={all:200,kanto:50,chubu:50,kansai:50,kyushu:50,kago:50,soo:50,miya:50,shibu:30,kano:30,kirishima:30,osumi3:30};
+  TABS.forEach(t=>{
+    t.q0=BEST[t.key]||50;
+    if(t.key==='soo')t.tip='曽於市・大崎町';
+    if(t.key==='all')return;
+    const ext=new Set(t.ext||[]);
+    let f;
+    if(REG[t.key]){const ps=new Set(REG[t.key].split(' '));f=j=>ps.has(j.pref)}
+    else if(t.key==='kago')f=j=>j.pref==='鹿児島県';
+    else if(t.key==='soo')f=j=>j.city==='曽於市'||j.city==='曽於郡大崎町';
+    else if(CITY[t.key])f=j=>j.city===CITY[t.key];
+    else if(t.key==='osumi3'){const cs=new Set(['肝属郡東串良町','垂水市','肝属郡錦江町']);f=j=>cs.has(j.city)}
+    else return;
+    const ids=base.filter(id=>f(J[id])||ext.has(id));
+    t.ids=ids;t.quota=ids.length;TABF[t.key]=f;
+  });
+})();
+const CATS=[['労働条件・報酬',50,'#2f8cff'],['勤務地・生活環境',20,'#ff9f1c'],['仕事内容・適性',6,'#22b573'],['育成・職場環境',14,'#ff6b9d'],['企業の健全性',10,'#8b6bff']];
+const FILTERS=[['tr','転勤なし'],['dorm','寮・社宅あり'],['car','マイカー通勤可'],['d120','年休120日以上'],['lo','残業10時間以内'],['wk','土日休み'],['bonus','賞与あり'],['nofix','固定残業の記載なし'],['qual','資格取得支援'],['day','夜勤なし']];
+const PAGE=200;
+const state={match:null,tab:0,q:'',sort:'rank',pref:'',flt:new Set(),fav:false,limit:PAGE};
+let favs=new Set();
+state.list=false;
+try{favs=new Set(JSON.parse(localStorage.getItem('soo-kyujin-fav')||'[]'))}catch(e){}
+const saveFav=()=>{try{localStorage.setItem('soo-kyujin-fav',JSON.stringify([...favs]))}catch(e){}};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* ===== 検索：スペース＝AND／「/」＝OR、ヒット箇所を色付け ===== */
+let QG=[],QL=[],HL=null,HLT=null;
+function setQuery(q){
+  QG=String(q||'').split(/[\s\u3000]+/).map(tok=>[...new Set(tok.split(/[\/／]/).filter(Boolean))]).filter(g=>g.length);
+  QL=QG.map(g=>g.map(w=>w.toLowerCase()));
+  const ws=[...new Set(QG.flat())].sort((a,b)=>b.length-a.length).map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+  HL=ws.length?new RegExp(ws.join('|'),'gi'):null;
+  HLT=ws.length?new RegExp(ws.join('|'),'i'):null;
+}
+const hay=j=>j._h||(j._h=[j.co,j.job,j.occ,j.addr,j.acc,j.pref,j.city,j.hol,j.hours,j.work,j.biz,j.notes,j.no,j.kno,j.office,...(j.good||[]),...(j.warn||[])].join('\n').toLowerCase());
+const hl=s=>{s=String(s==null?'':s);if(!HL)return esc(s);let o='',p=0,m;HL.lastIndex=0;while((m=HL.exec(s))){o+=esc(s.slice(p,m.index))+'<mark class="hit">'+esc(m[0])+'</mark>';p=m.index+m[0].length}return o+esc(s.slice(p))};
+const qdesc=()=>QG.length?` ／ <span class="qcond">検索：${QG.map(g=>g.length>1?'（'+g.map(esc).join(' または ')+'）':esc(g[0])).join(' かつ ')}</span>`:'';
+const man=n=>n==null?'不明':(n/10000).toFixed(n%10000===0?0:1)+'万円';
+const scoreColor=t=>t>=70?'#22b573':t>=60?'#2f8cff':t>=50?'#ff9f1c':'#b8c0d0';
+
+/* 実際に表示される件数（CSV読込後は「CSVに掲載なし」を除く） */
+const shownIds=ids=>window.csvLoaded?ids.filter(id=>J[id].csv!=='none'):ids;
+function buildTabs(){
+  $('tabs').innerHTML=TABS.map((t,i)=>{const cnt=shownIds(t.ids).length.toLocaleString(),hv=esc(t.tip||t.name);return `<button class="tab tab-${t.key}" role="tab" data-i="${i}" aria-selected="${i===state.tab}" title="${hv}全${cnt}件"><span class="tl"><span class="t1">${esc(t.name)}<small>ベスト${t.q0}件</small></span><span class="t2">${hv}<small>全${cnt}件</small></span></span></button>`}).join('');
+  $('tabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{state.match=null;state.tab=+b.dataset.i;state.pref='';state.limit=TABS[state.tab].q0;buildTabs();setupTab();render();$('list').querySelectorAll('details.more[open]').forEach(d=>d.removeAttribute('open'));{const L=$('list'),T=$('tabs');window.scrollTo({top:Math.max(0,L.getBoundingClientRect().top+window.pageYOffset-T.offsetHeight-$('count').offsetHeight-6),behavior:'instant'})}});
+}
+function setupTab(){
+  const t=TABS[state.tab];
+  const prefs={};t.ids.forEach(id=>{if(!window.csvLoaded||J[id].csv==='none')return;const p=J[id].pref;prefs[p]=(prefs[p]||0)+1});
+  const keys=Object.keys(prefs).sort((a,b)=>prefs[b]-prefs[a]);
+  $('prefbox').style.display=keys.length>1?'inline':'none';
+  $('pref').innerHTML='<option value="">すべて</option>'+keys.map(k=>`<option value="${esc(k)}">${esc(k)}（${prefs[k]}）</option>`).join('');
+  $('pref').value=state.pref;
+  let n='';
+  if(t.key==='kanto')n='関東（茨城・栃木・群馬・埼玉・千葉・東京・神奈川）の求人を全件対象にしています。';if(t.key==='chubu')n='中部（新潟・富山・石川・福井・山梨・長野・岐阜・静岡・愛知）の求人を全件対象にしています。';if(t.key==='kansai')n='関西（滋賀・京都・大阪・兵庫・奈良・和歌山・三重）の求人を全件対象にしています。';if(t.key==='kyushu')n='九州（福岡・佐賀・長崎・熊本・大分・宮崎・鹿児島）の求人を全件対象にしています。';
+  const shown=shownIds(t.ids),unc=shown.filter(id=>J[id].csv==='new').length;
+  if(shown.length<t.quota&&t.key!=='soo'&&window.csvLoaded)n=`${esc(t.name)}の求人は条件に合う正社員求人が${shown.length}件のため、全件を掲載しています（目標${t.quota}件）。`;
+  if(t.key==='all')n=`全国タブは「地域」を問わず、求人票の全${shown.length.toLocaleString()}件を点数順に並べています。まず上位200件を表示し、下の「次の200件を表示」を押すと続きが見られます。都道府県で絞り込んだり、「転勤なし」「寮・社宅あり」などで自分に合う求人を探しましょう。${unc?`CSVにあるが点数未計算の求人${unc.toLocaleString()}件は、点数順の末尾に掲載しています。`:''}`;
+  if(t.key==='soo'){const ex=shown.filter(id=>J[id].city==='曽於郡大崎町').length;n=ex?`曽於市内の求人${shown.length-ex}件に加え、曽於郡大崎町の求人${ex}件（「曽於郡大崎町」の印付き）を掲載しています。`:(window.csvLoaded&&shown.length<t.quota?`曽於市内の正社員求人は${shown.length}件のため、全件を掲載しています（目標${t.quota}件）。`:'')}
+  $('notice').innerHTML=n?`<div class="notice">💡 ${n}</div>`:'';
+}
+function chipsBuild(){
+  $('chips').innerHTML='<label class="lb">絞り込み</label>'+FILTERS.map(([k,l])=>`<button type="button" class="chip" data-k="${k}" aria-pressed="${state.flt.has(k)}">${l}</button>`).join('')+`<button type="button" class="chip" data-k="__fav" data-tip="★を付けた「気になる求人」だけを表示します。もう一度押すと全件に戻ります" aria-pressed="${state.fav}"><span class="ys">★</span> 気になる(${favs.size})</button>`;
+  $('chips').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{const k=b.dataset.k;if(k==='__fav')state.fav=!state.fav;else state.flt.has(k)?state.flt.delete(k):state.flt.add(k);state.limit=TABS[state.tab].q0;chipsBuild();render()});
+}
+function getList(){
+  const t=TABS[state.tab];
+  let arr=state.match?state.match.ids.map((id,i)=>({id,rank:i+1,j:J[id],pct:state.match.pct[i]})):t.ids.map((id,i)=>({id,rank:i+1,j:J[id]})).filter(x=>window.csvLoaded&&x.j.csv!=='none');arr.forEach((x,i)=>x.rank=i+1);window.baseN=arr.length;
+  setQuery(state.q);const q=QL;
+  arr=arr.filter(({id,j})=>{
+    if(state.pref&&j.pref!==state.pref)return false;
+    if(state.fav&&!favs.has(t.key+':'+j.no))return false;
+    for(const k of state.flt)if(!j.f[k])return false;
+    if(q.length){const h=hay(j);if(!q.every(g=>g.some(w=>h.includes(w))))return false}
+    return true});
+  const s=state.sort,P={wlb:0,pay:1,local:2,career:3};
+  const cmp={rank:(a,b)=>a.rank-b.rank,base:(a,b)=>(b.j.base||0)-(a.j.base||0)||a.rank-b.rank,days:(a,b)=>(b.j.days||0)-(a.j.days||0)||a.rank-b.rank,
+    ot:(a,b)=>(a.j.otn==='なし'?0:a.j.ot==null?99:a.j.ot)-(b.j.otn==='なし'?0:b.j.ot==null?99:b.j.ot)||a.rank-b.rank};
+  if(P[s]!=null)arr.sort((a,b)=>b.j.pat[P[s]]-a.j.pat[P[s]]||a.rank-b.rank);else arr.sort(cmp[s]);
+  return arr;
+}
+function fact(label,val,cls){return `<div class="fact ${cls||''}"><i>${label}</i><b>${val}</b></div>`}
+function card(it){
+  const j=it.j,t=TABS[state.tab],key=t.key+':'+j.no;
+  const rc=it.rank===1?'r1':it.rank===2?'r2':it.rank===3?'r3':'';
+  const un=j.total==null,col=un?'#b8c0d0':scoreColor(j.total),pct=un?0:Math.min(100,j.total);
+  const dOpen=HLT&&[j.work,j.biz,j.notes,j.no,j.kno,j.office].some(x=>x&&HLT.test(x))?' open':'';
+  const tags=[];
+  if(t.key==='soo'&&j.city==='曽於郡大崎町')tags.unshift('曽於郡大崎町');if(it.pct!=null)tags.unshift('🎯 希望と'+it.pct+'%一致');if(j.f.tr)tags.push('転勤なし');if(j.f.dorm)tags.push('寮・社宅');if(j.f.d120)tags.push('年休120日+');if(j.f.lo)tags.push('残業少');if(j.f.wk)tags.push('土日休み');if(j.f.qual)tags.push('資格支援');if(j.f.car)tags.push('マイカーOK');
+  if(j.estp)tags.push('CSVのみ（推定点）');if(j.etype&&j.etype!=='正社員')tags.push(esc(j.etype));if(j.csv==='chg')tags.push(j.rc?'CSV更新あり（点数を再計算）':'CSV更新あり');if(j.csv==='none')tags.push('CSVに掲載なし');
+  const otTxt=j.otn==='なし'?'なし':(j.ot==null?'不明':'月'+j.ot+'時間');
+  const bon=j.bonus==='あり'?(j.bm?'あり（約'+j.bm+'ヶ月）':'あり'):'なし';
+  const bars=un?'':CATS.map(([n,m,c],i)=>`<div class="bar"><div class="t"><span>${n}</span><span>${j.cat[i]} / ${m}</span></div><div class="tr"><div class="fl" style="width:${Math.min(100,j.cat[i]/m*100)}%;background:${c}"></div></div></div>`).join('');
+  return `<article class="card">
+  <div class="top">
+    <div class="rank ${rc}"><span>${it.pct!=null?'おすすめ':un?'未計算':t.name}</span><b>${un?'—':it.rank+'位'}</b></div>
+    <div class="ttl"><h2>${hl(j.co)}</h2><div class="job">${hl(j.job)}${j.occ?`<span class="occ">【${hl(j.occ)}】</span>`:''}</div><div class="loc">📍 ${hl(j.addr)}${j.acc?'（'+hl(j.acc)+'）':''}</div></div>
+    <div class="score" style="background:conic-gradient(${col} ${pct}%, #eef1f7 0)"><div><span><b>${un?'—':j.total}</b><small>${un?'点数未計算':(j.estp?'推定 /100':(j.rc?'再計算 /100':'/ 100点'))}</small></span></div></div>
+  </div>
+  <div class="tags">${tags.map((x,i)=>`<span class="tag ${i%2?'b':''}">${x}</span>`).join('')}</div>
+  <div class="facts">
+    ${fact('基本給',man(j.base),j.base==null?'':j.base>=215000?'ok':j.base<185000?'ng':'')}
+    ${fact('月給（手当込）',man(j.gross))}
+    ${fact('年間休日',j.days==null?'不明':j.days+'日',j.days==null?'':j.days>=120?'ok':j.days<105?'ng':'')}
+    ${fact('残業',otTxt,(j.otn==='なし'||(j.ot!=null&&j.ot<=10))?'ok':(j.ot!=null&&j.ot>=30)?'ng':'')}
+    ${fact('賞与',bon,j.bonus==='あり'?'':'ng')}
+    ${fact('転勤',j.tr||'不明',j.tr==='なし'?'ok':'')}
+    ${fact('休日',hl(String(j.hol||'').replace('その他','他')))}
+    ${fact('勤務時間',hl(j.hours||''))}
+    ${fact('募集人数',j.n+'名'+(j.sec?'<span class="sec">二次募集あり</span>':''))}
+  </div>
+  <div class="cols">
+    <div class="why"><h3>👍 評価の理由（よい点）</h3><ul>${j.good.length?j.good.map(x=>`<li>${hl(x)}</li>`).join(''):'<li>目立つ加点項目は少なめ</li>'}</ul></div>
+    <div class="chk"><h3>🔎 確認したい点</h3>${j.warn.length?`<ul>${j.warn.map(x=>`<li>${hl(x)}</li>`).join('')}</ul>`:'<div class="none">大きな注意点は見つかりませんでした。詳細は原本で確認しましょう。</div>'}</div>
+  </div>
+  <div class="bars">${bars}</div>
+  <details class="more"${dOpen}><summary>もっと詳しく見る${j.kno?`<span class="kno">管理No：${hl(j.kno)}</span>`:''}</summary>
+    <div class="det">
+      <div><h4>仕事の内容</h4><p>${hl(j.work)}</p></div>
+      <div><h4>会社について（${esc(j.est||'設立不明')}設立・${j.emp?'従業員'+j.emp.toLocaleString()+'名':'従業員数不明'}）</h4><p>${hl(j.biz)}</p></div>
+      <div><h4>特記事項（待遇など）</h4><p>${j.notes?hl(j.notes):'記載なし'}</p></div>
+      <div><h4>求人情報</h4><p>求人番号：${hl(j.no)}（${hl(j.office)}安定所）${j.hp?` ／ <a href="${esc(j.hp)}" target="_blank" rel="noopener noreferrer">ホームページ</a>`:''}</p></div>
+    </div>
+  </details>
+  <button class="star" aria-pressed="${favs.has(key)}" data-key="${esc(key)}" title="気になる">${favs.has(key)?'★':'☆'}</button>
+</article>`;
+}
+function condDesc(){
+  const c=[];
+  if(state.pref)c.push('📍'+esc(state.pref));
+  if(state.sort!=='rank'){const o=$('sort').selectedOptions[0];if(o)c.push('↕'+esc(o.textContent.replace(/（.*$/,'')))}
+  FILTERS.forEach(([k,l])=>{if(state.flt.has(k))c.push(esc(l))});
+  if(state.fav)c.push('★気になる');
+  return (c.length?' ／ <span class="qcond2">絞り込み：'+c.map(x=>'<span class="qc">'+x+'</span>').join('')+'</span>':'')+' <button type="button" class="chg" id="chg">🔍 条件を変更</button>';
+}
+const stickyOff=()=>$('tabs').offsetHeight;
+function render(){
+  const arr=getList(),t=TABS[state.tab],view=arr.slice(0,state.limit),bn=window.baseN||0;
+  $('count').innerHTML=state.match?`🎯 <b>質問で選んだ最適求人</b>：<b>${view.length}件</b> <span class="qcond2">${state.match.tags.map(x=>'<span class="qc">'+x+'</span>').join('')}</span> <button type="button" class="chg" id="mclr">✕ 解除</button>`+condDesc():`<b>${t.name}</b>：<b>${view.length.toLocaleString()}件</b> を表示中（${arr.length<bn?'条件に合う'+arr.length.toLocaleString()+'件／':''}全${bn.toLocaleString()}件）`+qdesc()+condDesc();
+  const left=arr.length-view.length;
+  $('morewrap').innerHTML=left>0?`<button type="button" class="more-btn" id="more">▼ 次の${Math.min(PAGE,left)}件を表示（残り${left.toLocaleString()}件）</button>`:'';
+  if(left>0)$('more').onclick=()=>{state.limit+=PAGE;render()};
+  $('list').classList.toggle('tbl',!!(state.list&&arr.length));
+  $('list').innerHTML=arr.length?(state.list?listTable(view):view.map(card).join('')):(window.csvLoaded?'<div class="empty">条件に合う求人がありません。絞り込みを減らしてみてください。</div>':'<div class="empty">求人データがありません。</div>');
+  bindStars($('list'));
+  if(state.list)bindRows(view);
+}
+function bindStars(root){root.querySelectorAll('.star').forEach(b=>b.onclick=ev=>{ev.stopPropagation();const k=b.dataset.key;favs.has(k)?favs.delete(k):favs.add(k);saveFav();b.setAttribute('aria-pressed',favs.has(k));b.textContent=favs.has(k)?'★':'☆';const c=$('chips').querySelector('[data-k=__fav]');if(c)c.innerHTML='<span class="ys">★</span> 気になる('+favs.size+')'})}
+/* ===== 一覧（表）表示 ===== */
+function listTable(view){
+  const t=TABS[state.tab];
+  const rows=view.map((it,n)=>{const j=it.j,un=j.total==null,key=t.key+':'+j.no;
+    const ot=j.otn==='なし'?'なし':(j.ot==null?'不明':j.ot+'h');
+    return `<tr class="lr" data-n="${n}" tabindex="0"><td class="c">${un?'—':it.rank}</td><td class="c sc" style="color:${un?'#8a93a6':scoreColor(j.total)}">${un?'未計算':j.total}</td><td class="nm"><b>${hl(j.co)}</b><span>${hl(j.job)}</span></td><td>${hl(j.pref)}${j.city?' '+hl(j.city):''}</td><td class="r">${man(j.base)}</td><td class="r">${j.days==null?'不明':j.days+'日'}</td><td class="c">${ot}</td><td class="c">${j.bonus==='あり'?'あり':'なし'}</td><td class="c">${esc(j.tr||'不明')}</td><td class="c"><button class="star rs" aria-pressed="${favs.has(key)}" data-key="${esc(key)}" title="気になる">${favs.has(key)?'★':'☆'}</button></td></tr>`}).join('');
+  return `<div class="tblwrap"><table class="jt"><thead><tr><th>順位</th><th>点数</th><th>会社名・職種</th><th>勤務地</th><th>基本給</th><th>年休</th><th>残業</th><th>賞与</th><th>転勤</th><th>★</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function bindRows(view){
+  const tb=$('list').querySelector('tbody');if(!tb)return;
+  const toggle=tr=>{const nx=tr.nextElementSibling;if(nx&&nx.classList.contains('dr')){nx.remove();tr.classList.remove('open');return}
+    const d=document.createElement('tr');d.className='dr';d.innerHTML='<td colspan="10">'+card(view[+tr.dataset.n])+'</td>';tr.after(d);tr.classList.add('open');bindStars(d)};
+  tb.querySelectorAll('tr.lr').forEach(tr=>{tr.onclick=()=>toggle(tr);tr.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle(tr)}}});
+}
+$('listview').onclick=()=>{state.list=!state.list;$('listview').setAttribute('aria-pressed',state.list);$('listview').textContent=state.list?'🗂 カード':'📋 一覧';render()};
+function csvSave(){
+  const arr=getList(),t=TABS[state.tab];
+  const H=['順位','総合点','会社名','職種','都道府県','就業場所住所','アクセス','基本給(円)','月給・手当込(円)','賞与','年間休日','残業(月平均時間)','転勤','マイカー通勤','休日','勤務時間','募集人数','二次募集','労働条件・報酬(50)','勤務地・生活環境(20)','仕事内容・適性(6)','育成・職場環境(14)','企業の健全性(10)','評価の理由','確認したい点','求人番号','受付安定所','ホームページ'];
+  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const rows=arr.map(({rank,j})=>[rank,j.total,j.co,j.job,j.pref,j.addr,j.acc,j.base,j.gross,j.bonus==='あり'?(j.bm?'あり(約'+j.bm+'ヶ月)':'あり'):'なし',j.days,j.otn==='なし'?0:(j.ot==null?'':j.ot),j.tr,j.car?'可':'不可',j.hol,j.hours,j.n,j.sec?'あり':'',...(j.cat||['','','','','']),j.good.join(' / '),j.warn.join(' / '),j.no,j.office,j.hp]);
+  const txt='\ufeff'+[H,...rows].map(r=>r.map(q).join(',')).join('\r\n');
+  const d=new Date(),p=n=>String(n).padStart(2,'0');
+  const name=`求人ナビ2026_${t.name}_${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}.csv`;
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/csv;charset=utf-8'}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+$('csv').onclick=csvSave;
+$('q').oninput=e=>{state.q=e.target.value;state.limit=TABS[state.tab].q0;render()};
+$('sort').onchange=e=>{state.sort=e.target.value;state.limit=TABS[state.tab].q0;render()};
+$('pref').onchange=e=>{state.pref=e.target.value;state.limit=TABS[state.tab].q0;render()};
+$('reset').onclick=()=>{state.match=null;state.limit=TABS[state.tab].q0;state.q='';state.sort='rank';state.pref='';state.flt.clear();state.fav=false;$('q').value='';$('sort').value='rank';$('pref').value='';chipsBuild();render()};
+$('totop').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+window.csvLoaded=true;$('totalcnt').textContent='求人票 全'+Object.keys(J).length.toLocaleString()+'件より';
+buildTabs();setupTab();chipsBuild();render();
+document.addEventListener('click',ev=>{if(ev.target.id==='chg'){const P=document.querySelector('.panel');window.scrollTo({top:Math.max(0,P.getBoundingClientRect().top+window.pageYOffset-stickyOff()-6),behavior:'instant'});$('q').focus({preventScroll:true})}});
+(function(){const r=()=>document.documentElement.style.setProperty('--th',stickyOff()+'px');r();if(window.ResizeObserver)new ResizeObserver(r).observe($('tabs'));addEventListener('resize',r)})();
+/* ===== CSV読込（C:\test\kyujin2026.csv）===== */
+const CSV_URL='https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv';
+/* ===== 管理番号（kyujin2026.csv の「管理番号」→ 求人票の「管理No」） ===== */
+const KNO_URL='https://soo-hs.github.io/soohs/kyujin/kyujin2026.csv';
+const KNO=new Map();
+function loadKno(buf){
+  let t=new TextDecoder('utf-8').decode(buf);
+  if(t.indexOf('管理番号')<0)t=new TextDecoder('shift_jis').decode(buf);
+  const R=parseCsv(t.replace(/^\ufeff/,'')),ix={};
+  (R[0]||[]).forEach((h,i)=>ix[h.trim()]=i);
+  if(ix['管理番号']==null||ix['求人番号']==null)return 0;
+  let n=0;for(let i=1;i<R.length;i++){const r=R[i],no=String(r[ix['求人番号']]||'').trim(),k=String(r[ix['管理番号']]||'').trim();if(no&&k){KNO.set(no,k);n++}}
+  return n}
+async function applyKno(){
+  try{
+    const buf=await fetch(KNO_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).catch(()=>xhr(KNO_URL));
+    if(!loadKno(buf))return;
+    for(const j of Object.values(J)){if(KNO.has(j.no))j.kno=KNO.get(j.no);j._h=null}
+    render();
+  }catch(e){}
+}
+function parseCsv(t){const R=[];let r=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}else if(c==='"')q=true;else if(c===','){r.push(f);f=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;r.push(f);f='';R.push(r);r=[]}else f+=c}if(f!==''||r.length){r.push(f);R.push(r)}return R}
+function csvStatus(){}
+/* ===== CSVにあって埋め込みデータにない求人も、すべて一覧に載せる（点数は未計算） ===== */
+function addCsvOnly(by,g,num,occKey){
+  const PREF=/^(北海道|東京都|大阪府|京都府|.{2,3}県)/;
+  const have=new Set(Object.values(J).map(j=>j.no));
+  let seq=0;const fresh=[];
+  for(const [no,r] of by){
+    if(!no||have.has(no))continue;
+    const addr=g(r,'住所（就業場所）')||g(r,'住所（所在地）');
+    const pm=addr.match(PREF);const pref=pm?pm[1]:'不明';
+    let city=g(r,'就業場所住所（市区町村）').replace(PREF,'');
+    if(!city){const rest=pm?addr.slice(pm[1].length):addr;const cm=rest.match(/^(.+?郡.+?[町村]|.+?市.+?区|.+?[市区町村])/);city=cm?cm[1]:''}
+    const base=num(g(r,'基本給')),gross=num(g(r,'月給（基本給+手当+固定残業代）')),days=num(g(r,'年間休日数')),ot=num(g(r,'時間外労働の月平均時間数'));
+    const otn=g(r,'時間外労働の有無')||'',bonus=g(r,'賞与有無（新卒）')||'不明',tr=g(r,'転勤の可能性')||'不明',car=g(r,'マイカー通勤の可否')==='可';
+    const hol=g(r,'休日等'),hours=g(r,'就業時間1'),work=g(r,'仕事の内容');
+    const notes=[g(r,'特記事項'),g(r,'補足事項'),g(r,'会社の特長')].filter(Boolean).join('\n');
+    const txt=[hol,hours,notes,work].join('\n'),dorm=g(r,'入居可能住宅（単身用）');
+    let n=['求人数（通勤）','求人数（住込）','求人数（不問）'].reduce((a,k)=>a+(num(g(r,k))||0),0);if(!n)n=num(g(r,'募集人数'))||0;
+    const hp0=g(r,'ホームページ');
+    const j={no,kno:g(r,'管理番号')||KNO.get(no)||'',co:g(r,'事業所名'),job:g(r,'職種'),pref,city,ext:false,addr,acc:g(r,'アクセス（就業場所）'),emp:num(g(r,'従業員数（企業全体）')),est:g(r,'設立'),biz:g(r,'事業内容'),work,notes,
+      base,gross,bonus,bm:null,days,hol,ot,otn,hours,tr,car,hp:hp0?(/^https?:/i.test(hp0)?hp0:'https://'+hp0):'',office:g(r,'受付安定所').replace(/公共職業安定所$/,''),n,sec:g(r,'二次募集の有無')==='あり',occ:occKey?g(r,occKey):'',
+      etype:g(r,'雇用形態'),total:null,cat:null,pat:[0,0,0,0],good:['点数は未計算です（CSVの記載内容をそのまま表示しています）'],warn:['点数・評価は未計算のため、詳細は原本の求人票で確認しましょう'],csv:'new',
+      f:{tr:tr==='なし',dorm:!!dorm&&!/^(なし|無)/.test(dorm),car,d120:days!=null&&days>=120,lo:otn==='なし'||(ot!=null&&ot<=10),wk:/土日|完全週休2日|土曜.*日曜/.test(hol),bonus:bonus==='あり',nofix:!/固定残業|みなし残業/.test(txt),qual:/資格取得(支援|補助|奨励)|資格手当|資格取得.*費用/.test(txt),day:!/夜勤|交替|交代|シフト/.test(hol+'\n'+hours+'\n'+work)}};
+    try{const fe=rcFeats(k=>g(r,k)),sc=rcScore(rcPredict(fe),null),rs=rcReasons(fe,j);j.cat=sc.cat;j.pat=sc.pat;j.total=sc.total;j.good=rs.good;j.warn=rs.warn;j.estp=true}catch(e){}
+    const id='c'+(seq++);J[id]=j;fresh.push(id);
+  }
+  TABS.forEach(t=>{const f=window.TABF&&window.TABF[t.key];if(f)fresh.forEach(id=>{if(f(J[id]))t.ids.push(id)})});
+}
+
+/* ===== 点数の再計算（目安）：求人票CSVの記載から点数を推定する ===== */
+const RC={names:["pb", "gp", "fix", "night", "wk", "bonus", "tr", "car", "dorm", "dn", "d95", "d105", "d110", "d115", "d120", "d125", "d130", "otn", "otu", "o5", "o10", "o20", "o30", "o45", "emp", "e10", "e30", "e50", "e100", "e300", "e1000", "ey", "eyn", "cap", "capn", "k_raise", "k_teate", "k_trans", "k_house", "k_move", "k_train", "k_qual", "k_visit", "k_ikuji", "k_jisseki", "k_fix", "k_night", "bm", "walk", "wmin", "acc0", "need0", "needL", "wlen", "visit", "wage_diff"],W:[[7.349, 17.649, -0.1232, -0.9935, -0.1108, 1.9648, 4.6555, 0.1081, -0.1333, -0.1423, 0.0, 1.7212, 2.2069, -0.9919, 0.6209, -0.4264, -4.4347, 1.406, 0.5963, 0.0, -2.0964, 0.5528, -0.088, 1.5008, 0.0, -0.2996, 0.2506, -0.2154, 0.1288, 0.0852, -0.0457, 0.0558, -0.3941, -0.4116, 0.0598, -0.2314, 1.9751, 0.339, -0.0461, 0.1096, -0.0329, 0.0032, 0.3787, -0.0668, 0.6738, -0.0014, -0.9935, -0.8475, 0.2489, -0.169, -0.0017, -0.1574, -0.0448, 0.1883, 0.031, 0.483, -0.947], [2.9237, 0.361, -0.2349, 0.1204, 0.3381, -0.1874, -0.3827, 7.0555, 1.2217, 3.5228, 0.0, -0.5754, 0.5462, 0.9594, -1.6765, 1.0646, 0.4881, -0.962, -0.0347, 0.0, 0.9323, -1.171, 0.4635, -0.5922, 0.0, -0.1049, -0.1159, 0.003, -0.2353, 0.1527, 0.0174, -0.1068, 0.1279, 0.2365, 0.0369, 0.3223, 0.1482, 0.2627, 0.0569, 2.0688, 0.8847, -0.0575, -0.2169, -0.0332, 0.706, 0.2304, 0.1204, -0.4183, 0.0847, 0.1632, -0.0101, 0.236, 0.1369, 0.5165, 0.6114, 0.8959, 0.2155], [4.535, -0.1922, 0.2194, 0.0394, -0.0736, -0.0006, -0.0869, 0.0338, 0.0812, -0.0253, 0.0, -0.0484, 0.1811, -0.3396, 0.3494, -0.1818, -0.0831, 0.152, -0.0098, 0.0, 0.0275, -0.066, 0.0608, -0.3323, 0.0, 0.0619, -0.0934, -0.0119, -0.063, -0.0789, 0.0055, -0.0068, -0.0684, -0.0735, -0.0188, -0.0347, 0.0076, -0.0627, 0.0912, 0.0084, 0.0694, -0.014, 0.0188, 0.0336, 0.0291, 0.0706, 0.0394, 0.087, -0.032, 0.0066, -0.0043, 0.0054, 0.9905, 0.1129, 1.4624, -0.1714, -0.3125], [-0.9931, 0.1699, 0.2416, -0.2558, -0.3488, -0.0838, 0.7365, 0.319, -0.0929, -0.0214, 0.0, -0.0284, 0.0116, 0.2165, -0.4468, 0.6664, -0.9385, 0.6701, -0.0132, 0.0, -0.1887, 0.0257, 0.4238, -0.5017, 0.0, -0.3364, 0.3549, -0.0521, 0.3378, 0.3263, 0.2216, 0.3295, 0.1922, -0.5895, 0.0043, 0.0737, -0.0496, -0.275, -0.0769, 0.1907, 0.541, 2.5792, 2.9094, -0.1646, 0.6466, 0.6245, -0.2558, -0.1208, -0.022, 0.0516, -0.0021, -0.0192, 0.0024, 0.1521, 0.8159, 0.9206, 0.3391], [4.3269, -0.2879, 0.0821, 0.0057, -0.0048, 0.0241, 0.0406, -0.0118, -0.0044, 0.0574, 0.0, -0.1366, 0.2167, 0.0674, -0.1414, -0.0129, 0.4524, -0.5401, -0.052, 0.0, 0.0252, 0.0269, -0.2395, 0.3506, 0.0, 0.309, 0.929, 0.4494, 0.4192, 0.5581, 0.6677, 0.2847, -2.5537, -2.9658, 0.2753, 1.2309, -0.0823, 0.0591, 0.127, 0.0576, 0.0385, 0.0158, 0.0708, 0.0286, -0.1045, 0.0542, 0.0057, -0.0418, 0.0143, -0.0259, 0.0, 0.0501, -0.0937, 0.059, 0.013, -0.1904, -0.2508], [35.9388, 0.4193, -0.4135, -0.0206, -0.0666, 9.705, -0.3861, 0.33, -0.803, 0.034, 0.0, 8.4095, 10.737, -2.9341, 0.7112, -0.7164, -22.3222, 6.5721, 3.3017, 0.0, -9.7559, 1.8578, -0.4481, 8.3667, 0.0, -1.556, 0.7261, -0.0678, 0.0734, 0.1269, 0.2944, 0.9987, -1.9404, -1.7725, 0.2572, -0.989, -0.1244, -0.6585, 0.2377, -0.2061, -0.0864, 0.0835, 0.3559, -0.42, 2.0381, 0.0271, -0.0206, -4.2079, -0.0236, -0.9037, -0.0115, -1.0247, 0.2237, 1.1302, -0.3955, 1.9647, -0.3924], [-0.8728, 47.461, -1.0852, -2.7141, 0.0239, -0.1924, 12.231, 0.1013, 0.1474, 8.9934, 0.0, -0.0008, 0.7106, -0.1274, -0.9459, 0.7341, -1.0908, 0.5976, -0.0159, 0.0, 1.1767, -1.4221, 0.1065, -1.5617, 0.0, -0.2975, -0.0419, -0.6004, 0.1995, 0.4922, -0.1574, -0.4807, 0.591, 1.0159, 0.0815, 0.6214, 5.3437, 1.9604, -0.186, 5.4231, 2.0702, -0.245, 0.5218, -0.0548, 1.3707, 0.3703, -2.7141, -0.7145, 0.8007, 0.0444, 0.0071, 0.2563, 0.2158, 1.2803, 1.5637, 0.3102, 0.2209], [27.8407, -0.2677, 0.5052, 1.4631, 2.0078, -0.806, -2.5903, 59.1881, 9.7281, -0.2417, 0.0, -4.4562, 2.8267, 4.9463, -6.902, 4.1997, 7.5366, -9.1016, -0.8301, 0.0, 3.542, -4.7937, 4.0303, -1.4799, 0.0, 0.2542, -0.0088, 0.2592, -1.4719, 0.0132, -0.2902, -0.4205, -0.7015, -1.6689, 0.1203, 0.4948, 0.9631, -0.1212, 0.2278, 1.1771, 0.6179, 0.1239, -0.9328, -0.0076, 3.8954, 0.7123, 1.4631, -1.2133, 0.2434, 1.4082, -0.1017, 1.588, -0.2311, 0.0504, 1.3927, 7.3214, -5.3157], [-7.2382, 1.3136, 1.6789, -1.8346, -2.5033, -0.5774, 5.3015, 2.252, -0.6724, -0.1521, 0.0, -0.2504, 0.2901, 1.3415, -3.2178, 4.8405, -6.7167, 4.7883, -0.1004, 0.0, -1.3143, 0.152, 2.9943, -3.4508, 0.0, -2.343, 2.5337, -0.4218, 2.3676, 2.2633, 1.6163, 2.2365, 1.4195, -4.1312, 0.0343, 0.5163, -0.3516, -1.968, -0.5573, 1.3684, 3.8172, 18.6031, 20.7227, -1.1504, 4.6169, 4.3511, -1.8346, -0.8567, -0.1698, 0.3728, -0.0167, -0.1794, 0.005, 1.0491, 5.9924, 6.5199, 2.4397], [18.1784, 17.7086, 0.1798, -1.086, -0.1948, 1.7171, 4.965, 7.5079, 1.0698, 3.3942, 0.0, 0.9195, 3.1891, -0.1132, -1.2751, 1.0851, -4.4499, 0.6716, 0.4968, 0.0, -1.2842, -0.6473, 0.617, 0.4233, 0.0, -0.3695, 1.3189, 0.1656, 0.5955, 1.0403, 0.8632, 0.5573, -2.6932, -3.8118, 0.3572, 1.3769, 1.9964, 0.3217, 0.1509, 2.434, 1.5043, 2.5226, 3.16, -0.2014, 1.9483, 0.9828, -1.086, -1.3417, 0.2937, 0.0301, -0.0185, 0.1156, 0.9879, 1.0231, 2.9235, 1.9167, -0.9265]]};
+const RC_KW={raise:/昇給/,teate:/手当/,trans:/通勤手当/,house:/住宅手当|家賃補助|社宅|寮/,move:/引越|引っ越し|転居/,train:/研修|OJT|教育|指導/,qual:/資格取得|資格手当/,visit:/見学/,ikuji:/育児休|育休|産休|くるみん|えるぼし/,jisseki:/入社実績|卒業生|先輩/,fix:/固定残業|みなし残業/,night:/夜勤|交替|交代|シフト/};
+const RC_BM=/賞与.{0,12}(\d+(?:\.\d+)?)\s*(?:ヶ月|か月|カ月|ケ月)/;
+let RC_BASES=null;
+function rcBases(){if(!RC_BASES){RC_BASES=Object.values(J).filter(j=>j._o&&j._o.total!=null&&j._o.base).map(j=>j._o.base).sort((a,b)=>a-b)}return RC_BASES}
+function rcRank(v){const B=rcBases();let lo=0,hi=B.length;while(lo<hi){const m=(lo+hi)>>1;if(B[m]<v)lo=m+1;else hi=m}return B.length?lo/B.length:0.5}
+function rcEstYear(s){let m=(s||'').match(/(明治|大正|昭和|平成|令和)\s*(元|\d+)/);if(m){const off={明治:1867,大正:1911,昭和:1925,平成:1988,令和:2018}[m[1]];return off+(m[2]==='元'?1:parseInt(m[2],10))}m=(s||'').match(/(1[89]\d\d|20\d\d)/);return m?parseInt(m[1],10):null}
+function rcCapital(s){s=(s||'').replace(/[,，]/g,'');const m=s.match(/(\d+(?:\.\d+)?)\s*(億|万|千万)?/);if(!m)return null;const v=parseFloat(m[1]),u=m[2];return v*(u==='億'?1e8:u==='万'?1e4:u==='千万'?1e7:1)}
+function rcNum(v){const x=parseInt(String(v==null?'':v).replace(/,/g,''),10);return isNaN(x)?null:x}
+function rcFeats(g){
+  const T=['補足事項','特記事項','会社の特長','仕事の内容','休日等','就業時間1'].map(k=>g(k)).join('\n');
+  const b=rcNum(g('基本給')),gr=rcNum(g('月給（基本給+手当+固定残業代）')),d=rcNum(g('年間休日数')),ot=rcNum(g('時間外労働の月平均時間数')),otn=g('時間外労働の有無');
+  const acc=g('アクセス（就業場所）'),wmm=acc.match(/(\d+)\s*分/),walk=acc.indexOf('徒歩')>=0,wm=wmm?parseInt(wmm[1],10):null;
+  const emp=rcNum(g('従業員数（企業全体）'))||0,ey=rcEstYear(g('設立')),cap=rcCapital(g('資本金'));
+  const need=g('必要な知識・技能等'),work=g('仕事の内容'),hol=g('休日等');
+  const f={};
+  f.pb=b?rcRank(b):0;f.gp=gr?rcRank(gr):0;
+  f.fix=RC_KW.fix.test(T)?1:0;f.night=RC_KW.night.test(hol+g('就業時間1')+work)?1:0;
+  f.wk=/土日|完全週休2日|土曜.*日曜/.test(hol)?1:0;f.bonus=g('賞与有無（新卒）')==='あり'?1:0;
+  f.tr=g('転勤の可能性')==='なし'?1:0;f.car=g('マイカー通勤の可否')==='可'?1:0;
+  const dorm=g('入居可能住宅（単身用）');f.dorm=dorm&&!/^(なし|無)/.test(dorm)?1:0;
+  f.dn=d==null?1:0;[95,105,110,115,120,125,130].forEach(k=>{f['d'+k]=d==null?0:Math.max(0,d-k)/10});
+  f.otn=otn==='なし'?1:0;f.otu=(otn!=='なし'&&ot==null)?1:0;
+  [5,10,20,30,45].forEach(k=>{f['o'+k]=(otn==='なし'||ot==null)?0:Math.max(0,Math.min(ot,80)-k)/10});
+  f.emp=Math.log10(emp+1);[10,30,50,100,300,1000].forEach(k=>{f['e'+k]=emp>=k?1:0});
+  f.ey=ey?(ey-1900)/100:0;f.eyn=ey==null?1:0;f.cap=cap?Math.log10(cap):0;f.capn=cap?0:1;
+  for(const k in RC_KW)f['k_'+k]=RC_KW[k].test(T)?1:0;
+  const mm=T.match(RC_BM);f.bm=mm?parseFloat(mm[1]):0;
+  f.walk=(walk&&wm!=null&&wm<=15)?1:0;f.wmin=(wm&&walk)?wm:0;f.acc0=acc?0:1;
+  f.need0=(need==='不問'||need==='')?1:0;f.needL=Math.min(need.length,80)/80;f.wlen=Math.min(work.length,400)/400;
+  f.visit=g('職場見学の受け入れ')==='可'?1:0;f.wage_diff=(gr&&b)?(gr-b)/gr:0;
+  return f}
+function rcPredict(f){
+  const x=[1].concat(RC.names.map(n=>f[n]||0));
+  return RC.W.map(w=>{let s=0;for(let i=0;i<x.length;i++)s+=w[i]*x[i];return s})}
+const RC_MAX=[50,20,6,14,10],r1=v=>Math.round(v*10)/10;
+/* 戻り値：{cat,pat,total}。base があれば「変更分の差」だけを加減（元の点数を尊重）、なければ推定値 */
+function rcScore(pNew,base){
+  const cat=[],pat=[];
+  for(let i=0;i<5;i++){const v=base?base.cat[i]+pNew[i]-base.p[i]:pNew[i];cat.push(r1(Math.max(0,Math.min(RC_MAX[i],v))))}
+  for(let i=0;i<4;i++){const v=base?base.pat[i]+pNew[5+i]-base.p[5+i]:pNew[5+i];pat.push(Math.round(Math.max(0,Math.min(100,v))))}
+  return {cat,pat,total:r1(cat.reduce((a,b)=>a+b,0))}}
+function rcReasons(f,j){
+  const good=[],warn=[];
+  if(j.days!=null&&j.days>=120)good.push('年間休日'+j.days+'日と多い');else if(j.days!=null&&j.days<105)warn.push('年間休日'+j.days+'日（目安105日未満）');
+  if(j.tr==='なし')good.push('転勤なし');else if(j.tr==='あり')warn.push('転勤の可能性あり。範囲を確認');
+  if(j.otn==='なし'||(j.ot!=null&&j.ot<=10))good.push('残業が少ない');else if(j.ot!=null&&j.ot>=30)warn.push('月平均の残業が'+j.ot+'時間と多め');
+  if(j.bonus==='あり')good.push('賞与あり（月数は原本で確認）');else warn.push('賞与の記載なし');
+  if(j.car)good.push('マイカー通勤可');
+  if(f.dorm)good.push('寮・社宅あり');
+  if(f.k_qual)good.push('資格取得支援の記載');
+  if(f.k_train)good.push('研修・教育の記載');
+  if(f.fix)warn.push('固定残業代の記載あり');
+  if(f.night)warn.push('夜勤・交替勤務の可能性');
+  warn.push('CSVの記載から推定した点数です。原本で必ず確認しましょう');
+  return {good,warn}}
+
+function applyCsv(buf,name){
+  for(const k of Object.keys(J))if(k[0]==='c')delete J[k];
+  /* 再読込でも結果が変わらないよう、作成時の値を保存・復元する */
+  for(const j of Object.values(J)){
+    if(!j._o)j._o={base:j.base,gross:j.gross,days:j.days,ot:j.ot,otn:j.otn,bonus:j.bonus,tr:j.tr,car:j.car,hol:j.hol,hours:j.hours,cat:j.cat,pat:j.pat,total:j.total,f:Object.assign({},j.f)};
+    else{const o=j._o;Object.assign(j,{base:o.base,gross:o.gross,days:o.days,ot:o.ot,otn:o.otn,bonus:o.bonus,tr:o.tr,car:o.car,hol:o.hol,hours:o.hours,cat:o.cat,pat:o.pat,total:o.total,f:Object.assign({},o.f)})}
+    j.rc=false;
+  }
+  TABS.forEach(t=>{if(!t.ids0)t.ids0=t.ids.slice();t.ids=t.ids0.slice()});
+  let t=new TextDecoder('utf-8').decode(buf);
+  if(t.indexOf('求人番号')<0)t=new TextDecoder('shift_jis').decode(buf);
+  const R=parseCsv(t.replace(/^\ufeff/,'')),ix={};
+  (R[0]||[]).forEach((h,i)=>ix[h.trim()]=i);
+  const occKey=Object.keys(ix).find(k=>k==='職業分類（日本標準職業分類への変換）')||Object.keys(ix).find(k=>k.indexOf('日本標準職業分類')>=0)||Object.keys(ix).find(k=>k.indexOf('職業分類')===0)||null;
+  if(ix['求人番号']==null)throw new Error('「求人番号」列がありません');
+  const g=(r,k)=>ix[k]==null?'':String(r[ix[k]]||'').trim();
+  const num=v=>{const x=parseInt(String(v).replace(/,/g,''),10);return isNaN(x)?null:x};
+  const by=new Map();for(let i=1;i<R.length;i++)if(R[i].length>1)by.set(g(R[i],'求人番号'),R[i]);
+  let hit=0,chg=0,none=0,recalc=0;
+  for(const j of Object.values(J)){
+    j._h=null;const r=by.get(j.no);
+    if(!r){j.csv='none';none++;continue}
+    hit++;
+    const key=()=>JSON.stringify([j.base,j.gross,j.days,j.ot,j.otn,j.bonus,j.tr,j.car,j.hol,j.hours]),was=key();
+    const oldG=(()=>{const o=j._o,m={'基本給':o.base,'月給（基本給+手当+固定残業代）':o.gross,'年間休日数':o.days,'時間外労働の月平均時間数':o.ot,'時間外労働の有無':o.otn,'賞与有無（新卒）':o.bonus,'転勤の可能性':o.tr,'マイカー通勤の可否':o.car?'可':'不可','休日等':o.hol,'就業時間1':o.hours};return k=>(k in m)?(m[k]==null?'':String(m[k])):g(r,k)})();
+    const b=num(g(r,'基本給')),m=num(g(r,'月給（基本給+手当+固定残業代）')),d=num(g(r,'年間休日数'));
+    if(b!=null)j.base=b;if(m!=null)j.gross=m;if(d!=null)j.days=d;
+    j.ot=num(g(r,'時間外労働の月平均時間数'));j.otn=g(r,'時間外労働の有無')||j.otn;j.bonus=g(r,'賞与有無（新卒）')||j.bonus;
+    j.tr=g(r,'転勤の可能性')||'不明';j.car=g(r,'マイカー通勤の可否')==='可';
+    j.hol=g(r,'休日等')||j.hol;j.hours=g(r,'就業時間1')||j.hours;
+    j.n=['求人数（通勤）','求人数（住込）','求人数（不問）'].reduce((a,k)=>a+(num(g(r,k))||0),0);
+    j.sec=g(r,'二次募集の有無')==='あり';
+    j.occ=occKey?g(r,occKey):'';
+    {const k=g(r,'管理番号');if(k)j.kno=k;else if(KNO.has(j.no))j.kno=KNO.get(j.no)}
+    const hp=g(r,'ホームページ');if(hp)j.hp=/^https?:/i.test(hp)?hp:'https://'+hp;
+    if(key()!==was){j.csv='chg';chg++;
+      j.f.tr=j.tr==='なし';j.f.car=j.car;j.f.d120=j.days>=120;j.f.lo=j.otn==='なし'||(j.ot!=null&&j.ot<=10);j.f.bonus=j.bonus==='あり';j.f.wk=/土日|完全週休2日|土曜.*日曜/.test(j.hol||'');
+      try{const pN=rcPredict(rcFeats(k=>g(r,k))),pO=rcPredict(rcFeats(oldG)),sc=rcScore(pN,{cat:j._o.cat,pat:j._o.pat,p:pO});j.cat=sc.cat;j.pat=sc.pat;j.total=sc.total;j.rc=true;recalc++}catch(e){}}
+    else j.csv='ok';
+  }
+  addCsvOnly(by,g,num,occKey);
+  /* 再計算後の点数で、各タブを総合点の高い順に並べ直す（同点は元の順） */
+  TABS.forEach(t=>{const o=new Map(t.ids.map((id,i)=>[id,i])),v=id=>J[id].total==null?-1:J[id].total;t.ids.sort((a,b)=>(v(b)-v(a))||(o.get(a)-o.get(b)))});
+  window.csvLoaded=true;
+  const all=by.size,tot=Object.keys(J).length;
+  $('totalcnt').textContent='求人票 全'+all.toLocaleString()+'件より';
+  csvStatus('ok',`✅ <b>${esc(name)}</b> を読込（${all.toLocaleString()}件）｜掲載${tot}件中 一致${hit}件・<b>CSV更新あり${chg}件</b>・CSVに掲載なし${none}件（非表示）｜CSVのみの求人${Math.max(0,all-hit)}件（点数未計算のため非表示）`
+    +(chg||none?'<br>※「CSV更新あり」の求人は変更分を反映して点数を再計算し、順位を並べ直しました。':''));
+  buildTabs();setupTab();render();
+}
+const readF=async f=>{try{applyCsv(await f.arrayBuffer(),f.name)}catch(e){csvStatus('ng','⚠ CSVを読み込めませんでした：'+esc(e.message))}};
+function xhr(u){return new Promise((ok,ng)=>{const x=new XMLHttpRequest();x.open('GET',u);x.responseType='arraybuffer';x.onload=()=>x.response&&x.response.byteLength?ok(x.response):ng(new Error('empty'));x.onerror=()=>ng(new Error('blocked'));x.send()})}
+const idb=(m,v)=>new Promise((ok,ng)=>{const q=indexedDB.open('soo-navi',1);q.onupgradeneeded=()=>q.result.createObjectStore('h');q.onerror=()=>ng(q.error);q.onsuccess=()=>{const s=q.result.transaction('h',m==='get'?'readonly':'readwrite').objectStore('h');const x=m==='get'?s.get('csv'):s.put(v,'csv');x.onsuccess=()=>ok(x.result);x.onerror=()=>ng(x.error)}});
+async function pick(){
+  if(window.showOpenFilePicker){try{const [h]=await showOpenFilePicker({types:[{description:'CSV',accept:{'text/csv':['.csv']}}]});try{await idb('put',h)}catch(e){}await readF(await h.getFile());return}catch(e){if(e.name==='AbortError')return}}
+  $('csvfile').click();
+}
+$('csvpick').onclick=pick;
+$('csvfile').onchange=e=>{if(e.target.files[0])readF(e.target.files[0])};
+addEventListener('dragover',e=>e.preventDefault());
+addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f)readF(f)});
+(async()=>{
+  await applyKno();
+  try{applyCsv(await fetch(CSV_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).catch(()=>xhr(CSV_URL)),'soo-hs.github.io/soohs/kyujin/kyujin2026.csv');return}catch(e){}
+  try{const h=await idb('get');if(h){if(await h.queryPermission({mode:'read'})==='granted'){await readF(await h.getFile());return}
+    csvStatus('ng','インターネット上の kyujin2026.csv を読み込めませんでした。右のボタンで前回のCSVを読み込めます。（求人は組み込みデータで表示しています）');
+    $('csvpick').onclick=async()=>{try{if(await h.requestPermission({mode:'read'})==='granted')await readF(await h.getFile());else pick()}catch(e){pick()}};return}}catch(e){}
+  csvStatus('ng','インターネット上の kyujin2026.csv を読み込めませんでした。「CSVを選択」（またはこの画面へドラッグ＆ドロップ）で kyujin2026.csv を指定してください。（求人は組み込みデータで表示しています）');
+})();
+</script>
+
+<script id="mx" type="application/json">{}</script>
+<script>
+/* ===== 質問で最適求人（job_match.html の質問・照合ロジックを取り込み） ===== */
+(function(){
+const MX=JSON.parse(document.getElementById('mx').textContent);
+const CN=['製造・技能','建設・設備・電気','事務・営業・販売','介護・医療・福祉・保育','運輸・物流・警備','飲食・サービス・美容・観光','農畜産・食品'];
+const Q=[
+{k:'type',s:'重視する軸',t:'就職先を選ぶとき、いちばん大切にしたいことは？',h:'進路指導の4つの優先順位パターンです。この答えで、ほかの質問の重みが変わります。',o:[['wlb','ワークライフバランス','休日・残業・土日休みを最優先'],['pay','手取り・生活の安定','基本給・賞与・手当・寮や社宅を重視'],['local','地元・通勤のしやすさ','転勤なし・マイカー通勤・近さを重視'],['career','キャリア・自己成長','資格取得支援・研修・育成体制を重視'],['any','まだ決められない','バランスよく探す']]},
+{k:'days',s:'休日',t:'年間休日は何日くらい欲しい？',h:'年間休日は105日〜120日以上が一つの目安です。',o:[['h120','120日以上','しっかり休みたい'],['h105','105日以上あれば十分',''],['any','こだわらない','']]},
+{k:'work',s:'働き方',t:'休みの取り方・働く時間帯の希望は？',h:'完全週休2日（土日休み）か、シフト・夜勤があるかも確認ポイントです。',o:[['wk','土日が休み',''],['day','夜勤・交替勤務はなし',''],['both','両方とも希望',''],['any','こだわらない','']]},
+{k:'ot',s:'残業',t:'残業（月平均）はどのくらいまでOK？',h:'月の時間外労働が多すぎないかを確認します。',o:[['o10','月10時間以内','ほとんど残業なし'],['o20','月20時間くらいまで',''],['any','こだわらない','']]},
+{k:'base',s:'基本給',t:'基本給（手当を除く）はいくら以上が希望？',h:'手当を除いた基本給が適正か、固定残業代が含まれていないかがポイントです。',o:[['21','21万円以上','上位約3割'],['19','19万円以上','平均より少し上'],['175','17.5万円以上',''],['any','こだわらない','']]},
+{k:'bonus',s:'賞与・手当',t:'賞与や手当について、重視することは？',h:'前年度の賞与実績（3か月分以上が目安）や昇給・各種手当の有無を見ます。',o:[['b3','賞与3か月分以上の実績',''],['full','賞与・昇給・手当が充実',''],['b1','賞与があればOK',''],['any','こだわらない','']]},
+{k:'area',s:'勤務地',t:'どのエリアで働きたい？',h:'就業場所は転勤の有無とあわせて考えます。',o:[['local','地元・近隣（曽於市・大崎町と周辺）','曽於・志布志・都城・鹿屋・霧島など。転勤なしを優先'],['kago','鹿児島県内',''],['minami','鹿児島・宮崎（南九州）',''],['kyu','九州内',''],['all','全国どこでも','']]},
+{k:'train',s:'資格・研修',t:'入社後の資格取得・研修に求めるものは？',h:'資格取得支援（費用補助など）や、新入社員研修・OJT・メンター制度を見ます。',o:[['qual','資格取得を会社が支援',''],['tr','研修・OJTなど育成体制',''],['both','どちらも重視',''],['any','特にこだわらない','']]},
+{k:'live',s:'住まい・通勤',t:'住まいと通勤・転勤の希望は？',h:'自宅通勤の利便性、転勤の有無、寮・社宅の有無を確認します。',o:[['car','自宅からマイカー通勤＋転勤なし',''],['home','自宅通勤で転勤なし',''],['dorm','寮・社宅で一人暮らしOK','住宅手当・家賃補助も含む'],['any','こだわらない','']]},
+{k:'cat',s:'職種',t:'興味のある仕事の分野は？（複数選べます）',h:'仕事内容がイメージできるか、学びとつながるかを確認します。',multi:1,o:[...CN.map((n,i)=>[i,n,'']),['any','こだわらない','']]}
+];
+let ans={},cur=0,msg='';
+const MSG0='まずは気軽に答えてね。正解はないので、思ったままでOKです！';
+const has=(j,r)=>j.good.some(x=>r.test(x));
+const NEAR=['曽於市','曽於郡大崎町','志布志市','都城市','鹿屋市','霧島市','姶良市','日南市','串間市','北諸県郡三股町'];
+const KYU=['福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県'];
+const avg=a=>a.reduce((x,y)=>x+y,0)/a.length;
+const cl=x=>Math.max(0,Math.min(1,x));
+const M={
+days:(j,a)=>a==='h120'?(j.days>=120?1:j.days>=115?.7:j.days>=105?.4:0):a==='h105'?(j.days>=105?1:j.days>=100?.5:0):null,
+work:(j,a)=>a==='wk'?+j.f.wk:a==='day'?+j.f.day:a==='both'?avg([+j.f.wk,+j.f.day]):null,
+ot:(j,a)=>{if(a==='any')return null;const o=j.otn==='なし'?0:j.ot;if(o==null)return .4;const T=a==='o10'?10:20;return o<=T?1:o<=T+5?.5:o<=T+10?.2:0},
+base:(j,a)=>{if(a==='any')return null;const T={'21':210000,'19':190000,'175':175000}[a];if(j.base==null)return .3;return cl(1-(T-j.base)/20000)*(j.f.nofix?1:.7)},
+bonus:(j,a)=>a==='b3'?(j.bm!=null?(j.bm>=3?1:j.bm>=2?.5:.1):(j.bonus==='あり'?.35:0)):a==='full'?((j.bonus==='あり'?.4:0)+(has(j,/昇給/)?.3:0)+(has(j,/手当/)?.3:0)):a==='b1'?+(j.bonus==='あり'):null,
+area:(j,a)=>{let m;if(a==='local'){m=/^曽於/.test(j.city)?1:NEAR.includes(j.city)?.7:0;if(m&&j.tr!=='なし')m*=.7}
+ else if(a==='kago')m=+(j.pref==='鹿児島県');else if(a==='minami')m=+(j.pref==='鹿児島県'||j.pref==='宮崎県');
+ else if(a==='kyu')m=+KYU.includes(j.pref);else return null;return m},
+train:(j,a)=>{const q=j.f.qual?1:has(j,/資格手当/)?.4:0,t=cl((has(j,/研修制度/)?.6:0)+(has(j,/OJT/)?.5:0));return a==='qual'?q:a==='tr'?t:a==='both'?avg([q,t]):null},
+live:(j,a)=>a==='car'?avg([+j.car,+(j.tr==='なし')]):a==='home'?+(j.tr==='なし'):a==='dorm'?+j.f.dorm:null,
+cat:(j,a)=>{if(!a||!a.length||a.includes('any'))return null;return a.some(i=>j.mc.includes(+i))?1:.15}
+};
+const BOOST={wlb:['days','work','ot'],pay:['base','bonus','live'],local:['area','live'],career:['train']};
+const TI={wlb:0,pay:1,local:2,career:3};
+/* ===== 5カテゴリー（労働条件・報酬50／勤務地・生活環境20／仕事内容・適性6／育成・職場環境14／企業の健全性10）の点数を土台にする ===== */
+const CMAX=[50,20,6,14,10];
+/* 「重視する軸」ごとの各カテゴリーの重み */
+const CW={wlb:[1.6,1,.6,.8,.6],pay:[1.8,1,.5,.6,.9],local:[1,1.8,.8,.6,.6],career:[1,.8,1,1.8,1],any:[1,1,1,1,1]};
+/* 各質問の答えに応じて、関係するカテゴリーの重みを上乗せ */
+const CBOOST={days:0,work:0,ot:0,base:0,bonus:0,area:1,live:1,train:3,cat:2};
+const OCC=[/溶接|製造|組立|加工|機械|工場|検査|塗装|金属|オペレーター|技能|ライン|鋳造|プレス|整備|修理/,/建設|土木|設備|電気|施工|配管|電工|工事|測量|空調|現場/,/事務|営業|販売|接客|経理|総務|受付|レジ|店舗|窓口|企画|カスタマー/,/介護|看護|医療|福祉|保育|ヘルパー|薬|リハビリ|栄養|歯科|支援員/,/運転|ドライバー|配送|運輸|物流|倉庫|警備|フォーク|輸送|運搬|配達/,/飲食|調理|厨房|サービス|美容|理容|ホテル|旅館|観光|フロント|ウェイター|クリーニング|清掃/,/農|畜産|酪農|養豚|養鶏|食品|水産|漁|園芸|林業|加工食品|飼育/];
+function classify(j){const t=[j.occ,j.job,j.work].join(' ');const r=[];OCC.forEach((re,i)=>{if(re.test(t))r.push(i)});return r}
+function catRatios(j){return j.cat?j.cat.map((v,i)=>cl(v/CMAX[i])):null}
+function score(id,j,boost){
+ let sw=0,s=0,det={};
+ const cw=(CW[ans.type]||CW.any).slice();
+ /* ①条件への合致（休日・残業・基本給・勤務地など） */
+ for(const k in M){const m=M[k](j,ans[k]);if(m==null)continue;let w=k==='area'?2:k==='cat'?1.5:1;if(boost.includes(k))w*=1.8;sw+=w;s+=w*m;det[k]=m;if(CBOOST[k]!=null)cw[CBOOST[k]]+=.5}
+ /* ②5カテゴリーの点数（希望の重みで加重平均）＝「条件のよさ」 */
+ const cr=catRatios(j);
+ if(cr){const W=cw.reduce((a,b)=>a+b,0),q=cr.reduce((a,v,i)=>a+v*cw[i],0)/W;const w=4;sw+=w;s+=w*q;det.catscore=q}
+ /* ③重視する軸（総合の4パターン点） */
+ const t=ans.type;if(t&&t!=='any'){const mp=j.pat&&j.pat[TI[t]]!=null?j.pat[TI[t]]/100:null;if(mp!=null){sw+=1.5;s+=1.5*cl(mp)}}
+ return{id,j,pct:sw?s/sw:0,gate:det.area===undefined||det.area>0}}
+function run(){
+ const boost=BOOST[ans.type]||[],all=[];
+ for(const id in J){const j=J[id];if(j.csv==='none'||j.total==null)continue;
+  const x=MX[j.no];j.mc=x?x[0]:classify(j);all.push(score(id,j,boost))}
+ /* 地域などの必須条件を満たす求人を先に、その中で一致度（＋総合点）の高い順 */
+ all.sort((a,b)=>(b.gate-a.gate)||(b.pct+b.j.total/1e4)-(a.pct+a.j.total/1e4));
+ const out=[],seen=new Set();
+ for(const r of all){if(seen.has(r.j.co))continue;seen.add(r.j.co);out.push(r);if(out.length>=10)break}
+ return out}
+const EM={type:'🎯',days:'🌴',work:'⏰',ot:'🌙',base:'💴',bonus:'🎁',area:'🗺️',train:'📚',live:'🏠',cat:'🔧'};
+const PR={
+type:{wlb:'休みも大切にしたいんだね。長く元気に働くために、とても大事な視点です！',pay:'生活の安定をしっかり考えられるのは、立派な考え方です！',local:'地元を大切にする気持ち、すてきです。通いやすさは長く続けるコツですよ！',career:'成長したい気持ち、すばらしい！将来がとても楽しみです。',any:'迷っていても大丈夫。いろいろ見比べながら、いっしょに探していきましょう！'},
+days:{h120:'しっかり休んで力を出したい。自分を大切にできていますね！',h105:'現実的でバランスのよい考え方です。いい感覚です！',any:'柔軟に考えられるのは、あなたの強みです！'},
+work:{wk:'土日休みを希望するのは、プライベートも大切にできる人の考え方です！',day:'生活リズムを大事にしているんですね。健康的でいいですね！',both:'働き方をはっきり言えるのは立派です！',any:'どんな働き方にも対応できる、頼もしい姿勢です！'},
+ot:{o10:'時間の使い方を大切にしていて素敵です。',o20:'無理のない範囲を考えられていて、しっかりしています！',any:'やる気があって頼もしいです。でも無理は禁物ですよ！'},
+base:{'21':'高い目標を持てるのは素晴らしい！しっかり働く意欲を感じます。','19':'現実的でバランスのよい目標ですね！','175':'堅実に考えられていますね。まずは安心できる職場探しから！',any:'お金以外のところも見られる広い視野、いいですね！'},
+bonus:{b3:'将来の収入までイメージできているのは、とても大人な視点です！',full:'待遇を総合的に見る目、さすがです！求人票の見方が身についています。',b1:'シンプルに考えられていて、いいですね！',any:'待遇にとらわれず、仕事そのものを見られるのも強みです！'},
+area:{local:'地元で働きたい気持ち、地域の力になります。ありがたい存在です！',kago:'地元の県で働く選択、素敵です！',minami:'南九州で視野を広げるのは、すばらしい考え方です！',kyu:'九州全体で探すなんて、チャレンジ精神がありますね！',all:'広い世界を見ようとする姿勢、とても頼もしいです！'},
+train:{qual:'資格で自分を磨きたい。向上心がすばらしいです！',tr:'育ててもらう環境を大切にできるのは、成長できる人の特徴です！',both:'学ぶ意欲がとても高いですね。きっと伸びますよ！',any:'どんな環境でも頑張れそうですね！'},
+live:{car:'通勤や生活を具体的に考えられていて、しっかりしています！',home:'家族と暮らしながら働く、安心できる選択ですね！',dorm:'一人暮らしにチャレンジする姿勢、かっこいいです！',any:'柔軟で、どんな環境にもなじめそうですね！'}};
+const lbl=(k,v)=>{const q=Q.find(x=>x.k===k),o=q.o.find(o=>String(o[0])===String(v));return o?o[1]:''};
+let ov=null;
+const $$=id=>document.getElementById(id);
+function close(){if(ov){ov.remove();ov=null;document.body.style.overflow=''}}
+function open(){ans={};cur=0;msg=MSG0;if(!ov){ov=document.createElement('div');ov.className='jm-ov';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.onclick=e=>{if(e.target===ov)close()};document.body.appendChild(ov);document.body.style.overflow='hidden'}show()}
+function show(){
+ const q=Q[cur],a=ans[q.k];const sel=v=>q.multi?(a||[]).includes(v):a===v;
+ ov.innerHTML=`<div class="jm-md"><div class="jm-hd"><span>🎯 質問で最適求人</span><button type="button" class="jm-x" id="jmx" aria-label="閉じる">✕</button></div>
+ <div class="jm-bubble"><span class="jm-av">🐥</span><div>${esc(msg)}</div></div>
+ <div class="jm-box"><div class="jm-prog"><i style="width:${cur/Q.length*100}%"></i></div><div class="jm-dots">${cur===Q.length-1?'いよいよ最後の質問です！':'あと'+(Q.length-cur)+'問'}</div><div class="jm-qn">${EM[q.k]} Q${cur+1} / ${Q.length}　${esc(q.s)}</div><div class="jm-qt">${esc(q.t)}</div><p class="jm-qh">${esc(q.h)}</p>
+ <div class="jm-opts">${q.o.map(([v,l,s])=>`<button type="button" class="jm-opt" data-v="${v}" aria-pressed="${sel(v)}"><b>${esc(l)}</b>${s?`<small>${esc(s)}</small>`:''}</button>`).join('')}</div>
+ <div class="jm-nav"><button type="button" class="jm-btn g" id="jmbk" ${cur?'':'disabled'}>← 戻る</button>${q.multi?`<button type="button" class="jm-btn" id="jmnx" ${(a&&a.length)?'':'disabled'}>🔍 求人を検索 →</button>`:''}</div></div></div>`;
+ $$('jmx').onclick=close;
+ $$('jmbk').onclick=()=>{cur--;show()};
+ ov.querySelectorAll('.jm-opt').forEach(b=>b.onclick=()=>{
+  const v=b.dataset.v;
+  if(!q.multi){ans[q.k]=v;msg=(PR[q.k]&&PR[q.k][v])||'いい答えです！';setTimeout(()=>{cur++;show()},150);return}
+  let l=(ans[q.k]||[]).slice();if(v==='any')l=l.includes('any')?[]:['any'];else{l=l.filter(x=>x!=='any');l.includes(v)?l.splice(l.indexOf(v),1):l.push(v)}
+  ans[q.k]=l;show()});
+ if(q.multi)$$('jmnx').onclick=finish;
+ ov.scrollTop=0}
+function finish(){
+ const r=run();
+ const tags=Q.filter(q=>ans[q.k]&&ans[q.k]!=='any'&&!(q.multi&&(ans[q.k].includes('any')||!ans[q.k].length))).map(q=>EM[q.k]+' '+esc(q.multi?ans[q.k].map(v=>lbl(q.k,v)).join('・'):lbl(q.k,ans[q.k])));
+ close();
+ state.match={ids:r.map(x=>x.id),pct:r.map(x=>Math.round(x.pct*100)),tags:tags.length?tags:['希望：こだわりなし']};
+ state.q='';$('q').value='';state.sort='rank';$('sort').value='rank';state.pref='';$('pref').value='';state.flt.clear();state.fav=false;state.limit=TABS[state.tab].q0;
+ chipsBuild();render();
+ $('list').querySelectorAll('details.more[open]').forEach(d=>d.removeAttribute('open'));
+ const L=$('list'),T=$('tabs');window.scrollTo({top:Math.max(0,L.getBoundingClientRect().top+window.pageYOffset-T.offsetHeight-$('count').offsetHeight-6),behavior:'instant'})}
+$$('match').onclick=open;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+document.addEventListener('click',e=>{if(e.target.id==='mclr'){state.match=null;state.limit=TABS[state.tab].q0;render()}});
+})();
+</script>
+</body>
+</html>
