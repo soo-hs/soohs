@@ -243,6 +243,38 @@ mark.hit{background:none;color:#d1005f;font-weight:900;text-decoration:underline
 .jm-btn{font:inherit;font-size:.95rem;font-weight:800;border:.125rem solid var(--blue);border-radius:62.44rem;padding:.5rem 1.3rem;cursor:pointer;background:var(--blue);color:#fff;box-shadow:var(--shadow)}
 .jm-btn.g{background:#fff;color:var(--blue)}.jm-btn:disabled{opacity:.4;cursor:default}
 .jm-none{padding:1rem;text-align:center}
+/* ===== 質問結果：別画面（全画面）表示 ===== */
+.jm-res{position:fixed;inset:0;z-index:110;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.jm-rbar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:.5rem;background:var(--blue);color:#fff;padding:.4rem .75rem;box-shadow:var(--shadow)}
+.jm-rbar b{flex:1 1 auto;font-size:.95rem}
+.jm-rbar .jm-btn{padding:.3rem .9rem;font-size:.85rem;box-shadow:none;white-space:nowrap}
+.jm-rbar .jm-btn.g{border-color:#fff}
+.jm-hero{background:linear-gradient(135deg,#ff9f1c 0%,#ff6b9d 100%);color:#fff;text-align:center;padding:1.25rem .875rem 1.5rem;box-shadow:0 .25rem .75rem rgba(255,107,157,.35)}
+.jm-hero .j1{display:inline-block;background:#fff;color:#e8590c;font-weight:900;font-size:.85rem;border-radius:62.44rem;padding:.1rem .9rem;margin-bottom:.4rem}
+.jm-hero h2{margin:0;font-size:clamp(1.5rem,1.1rem + 2.4vw,2.4rem);line-height:1.3;font-weight:900;letter-spacing:.04em;text-shadow:0 .1875rem .5rem rgba(120,40,0,.35)}
+.jm-hero h2 em{font-style:normal;background:#fff;color:#e8590c;border-radius:.6rem;padding:0 .6rem;margin:0 .2rem;text-shadow:none}
+.jm-hero p{margin:.4rem 0 0;font-size:clamp(.85rem,.8rem + .3vw,1rem);font-weight:700}
+.jm-rbody{max-width:64rem;margin:0 auto;padding:.75rem .875rem 4rem}
+.jm-rtags{margin:0 0 .75rem;line-height:1.9;font-weight:700;text-align:center}
+.jm-rtags .lead{display:block;color:var(--sub);font-size:.8rem}
+.jm-rbody .list{grid-template-columns:1fr!important;align-items:stretch}
+.jm-rbody .cols{grid-template-columns:1fr 1fr!important;gap:.5rem}
+@media(max-width:600px){.jm-rbody .why,.jm-rbody .chk{padding:.5rem .55rem}.jm-rbody .why ul,.jm-rbody .chk ul{font-size:.8rem}}
+.jm-ev{margin-top:.75rem;border-radius:.9rem;border:.125rem solid #ffc86b;background:#fffaf0;overflow:hidden}
+.jm-ev .eh{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;background:var(--orange2);padding:.5rem .875rem}
+.jm-ev .eh h3{margin:0;font-size:.95rem}
+.jm-ev .st{color:var(--orange);font-size:1.25rem;letter-spacing:.1em;line-height:1}
+.jm-ev .gr{font-weight:900;color:#fff;background:var(--orange);border-radius:62.44rem;padding:0 .75rem;font-size:.85rem}
+.jm-ev .eb{padding:.5rem .875rem .7rem;font-size:.875rem}
+.jm-ev .eb p{margin:.1rem 0 .4rem}
+.jm-ev .mt{display:flex;flex-wrap:wrap;gap:.25rem;margin:.2rem 0 .4rem}
+.jm-ev .mt span{font-size:.78rem;font-weight:800;border-radius:62.44rem;padding:0 .55rem}
+.jm-ev .mt .y{background:var(--green2);color:#128a56}.jm-ev .mt .n{background:var(--red2);color:var(--red)}
+.jm-ev h4{margin:.5rem 0 .15rem;font-size:.85rem;color:var(--blue)}
+.jm-ev ul{margin:0;padding:0;list-style:none}
+.jm-ev li{padding-left:1.4rem;position:relative;margin:.15rem 0}
+.jm-ev li:before{content:"💡";position:absolute;left:0}
+
 
 .tab{position:relative}
 .tab .tl{display:inline-block}
@@ -930,17 +962,54 @@ function show(){
   ans[q.k]=l;show()});
  if(q.multi)$$('jmnx').onclick=finish;
  ov.scrollTop=0}
+let rs=null;
+function closeRes(){if(rs){rs.remove();rs=null;document.body.style.overflow=''}}
+/* 総合評価とアドバイス（求人データと回答から自動生成） */
+function evalBlock(x){
+ const j=x.j,pct=x.pct,tot=j.total==null?60:j.total;
+ const sc=pct*.6+tot*.4;
+ const n=sc>=80?5:sc>=72?4:sc>=64?3:sc>=56?2:1;
+ const lab=['','もう少し比べたい求人','条件次第で候補','バランスのよい求人','かなりおすすめ','最優先で検討したい求人'][n];
+ const ok=[],ng=[];
+ Q.forEach(q=>{const a=ans[q.k];if(!M[q.k]||a==null||a==='any'||(q.multi&&(!a.length||a.includes('any'))))return;
+  const m=M[q.k](j,a);if(m==null)return;
+  const t=q.s+'：'+(q.multi?a.map(v=>lbl(q.k,v)).join('・'):lbl(q.k,a));
+  if(m>=.7)ok.push(t);else if(m<.5)ng.push(t)});
+ let cm='希望との一致は'+pct+'%、求人票の総合点は'+(j.total==null?'未計算':j.total+'点')+'です。';
+ cm+=n>=4?'あなたの希望によく合う求人です。まずは職場見学を検討しましょう。':n===3?'希望に合う点が多く、候補として十分です。気になる点を確認して比べましょう。':'合う点・合わない点がはっきり分かれる求人です。他の求人と比べて判断しましょう。';
+ const ad=[];
+ if(j.warn&&j.warn.length)ad.push('「確認したい点」（'+esc(j.warn.slice(0,2).join('・'))+(j.warn.length>2?'ほか':'')+'）は、原本の求人票や面接・見学で必ず確認しましょう。');
+ if(ng.length)ad.push('希望とずれている点（'+esc(ng.map(t=>t.split('：')[0]).join('・'))+'）は、働き始めてから後悔しないよう、先生や家族とも相談して納得できるか考えましょう。');
+ if(j.otn!=='なし'&&(j.ot==null||j.ot>=20))ad.push('残業は'+(j.ot==null?'月の時間が不明':'月'+j.ot+'時間')+'です。実際の残業時間や繁忙期の様子を質問してみましょう。');
+ if(!j.f.nofix)ad.push('固定残業代が基本給などに含まれていないか、何時間分かを確認しましょう。');
+ if(j.base==null)ad.push('基本給が求人票から読み取れません。手当を除いた金額を確認しましょう。');
+ if(j.tr&&j.tr!=='なし')ad.push('転勤の可能性があります。範囲や頻度、寮・社宅の有無を確認しましょう。');
+ if(j.etype&&j.etype!=='正社員')ad.push('雇用形態は「'+esc(j.etype)+'」です。正社員への登用や待遇の違いを確認しましょう。');
+ ad.push('応募前に職場見学をして、雰囲気や仕事内容を自分の目で確かめ、進路指導の先生に相談しましょう。');
+ return `<div class="jm-ev"><div class="eh"><h3>📝 総合評価</h3><span class="st" aria-label="${n}段階中${n}">${'★'.repeat(n)}${'☆'.repeat(5-n)}</span><span class="gr">${lab}</span></div>
+ <div class="eb"><p>${cm}</p>${ok.length||ng.length?`<div class="mt">${ok.map(t=>'<span class="y">◎ '+esc(t)+'</span>').join('')}${ng.map(t=>'<span class="n">△ '+esc(t)+'</span>').join('')}</div>`:''}
+ <h4>💬 アドバイス</h4><ul>${ad.slice(0,4).concat(ad.length>4?ad.slice(-1):[]).filter((v,i,a)=>a.indexOf(v)===i).map(t=>'<li>'+t+'</li>').join('')}</ul></div></div>`}
 function finish(){
  const r=run();
  const tags=Q.filter(q=>ans[q.k]&&ans[q.k]!=='any'&&!(q.multi&&(ans[q.k].includes('any')||!ans[q.k].length))).map(q=>EM[q.k]+' '+esc(q.multi?ans[q.k].map(v=>lbl(q.k,v)).join('・'):lbl(q.k,ans[q.k])));
  close();
- state.match={ids:r.map(x=>x.id),pct:r.map(x=>Math.round(x.pct*100)),tags:tags.length?tags:['希望：こだわりなし']};
- state.q='';$('q').value='';state.sort='rank';$('sort').value='rank';state.pref='';$('pref').value='';state.flt.clear();state.fav=false;state.limit=TABS[state.tab].q0;
- chipsBuild();render();
- $('list').querySelectorAll('details.more[open]').forEach(d=>d.removeAttribute('open'));
- const L=$('list'),T=$('tabs');window.scrollTo({top:Math.max(0,L.getBoundingClientRect().top+window.pageYOffset-T.offsetHeight-$('count').offsetHeight-6),behavior:'instant'})}
+ setQuery('');
+ state.match=null;
+ const items=r.map((x,i)=>({id:x.id,rank:i+1,j:x.j,pct:Math.round(x.pct*100)}));
+ closeRes();
+ rs=document.createElement('div');rs.className='jm-res';rs.setAttribute('role','dialog');rs.setAttribute('aria-modal','true');
+ rs.innerHTML=`<div class="jm-rbar"><b>🎯 質問で最適求人</b><button type="button" class="jm-btn g" id="jrback">← 質問を変更</button><button type="button" class="jm-btn g" id="jrclose">✕ 閉じる</button></div>
+ <div class="jm-hero"><span class="j1">🎉 検索結果</span><h2>あなたにぴったりの求人 <em>${items.length}件</em></h2><p>10個の質問の答えから、希望に合う順に選びました</p></div>
+ <div class="jm-rbody"><p class="jm-rtags"><span class="lead">あなたの希望条件</span>${(tags.length?tags:['希望：こだわりなし']).map(x=>'<span class="qc">'+x+'</span>').join('')}</p><div class="list" id="jrlist">${items.length?items.map(it=>{const h=card(it);return h.replace('<details class="more"',evalBlock(it)+'<details class="more"')}).join(''):'<div class="empty">条件に合う求人がありませんでした。質問を変更してみてください。</div>'}</div></div>`;
+ document.body.appendChild(rs);document.body.style.overflow='hidden';
+ const L=rs.querySelector('#jrlist');
+ bindStars(L);
+ L.addEventListener('dblclick',e=>{const el=e.target.closest&&e.target.closest('.coname');if(!el)return;e.preventDefault();const s=window.getSelection&&window.getSelection();if(s)s.removeAllRanges();coOpen(el.dataset.co)});
+ rs.querySelector('#jrclose').onclick=closeRes;
+ rs.querySelector('#jrback').onclick=()=>{closeRes();cur=Q.length-1;msg='選び直してもOK！答えを変えて、もう一度さがしてみよう。';if(!ov){ov=document.createElement('div');ov.className='jm-ov';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.onclick=e=>{if(e.target===ov)close()};document.body.appendChild(ov);document.body.style.overflow='hidden'}show()};
+ rs.scrollTop=0}
 $$('match').onclick=open;
-document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){close();closeRes()}});
 document.addEventListener('click',e=>{if(e.target.id==='mclr'){state.match=null;state.limit=TABS[state.tab].q0;render()}});
 })();
 </script>
